@@ -8,11 +8,23 @@ const syncSidePanelForTab = async (tabId: number, url?: string) => {
     return
   }
 
+  const isTradePage = !!url && TRADE_URL_PATTERN.test(url)
+
   await chrome.sidePanel.setOptions({
     tabId,
     path: SIDEPANEL_PATH,
-    enabled: !!url && TRADE_URL_PATTERN.test(url)
+    enabled: isTradePage
   })
+
+  const sidePanelApi = chrome.sidePanel as typeof chrome.sidePanel & {
+    close?: (options: { tabId: number }) => Promise<void>
+  }
+
+  if (!isTradePage && sidePanelApi.close) {
+    await sidePanelApi.close({
+      tabId
+    }).catch(() => undefined)
+  }
 }
 
 const configureSidePanelBehavior = async () => {
@@ -62,6 +74,14 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       target: { tabId: sender.tab.id },
       world: "MAIN",
       files: ["poe-trade-plus-main.js"] // Note: This will need to be correctly bundled by Plasmo
+    }).then(() => sendResponse(true))
+      .catch(() => sendResponse(false))
+    return true
+  }
+
+  if (request.query === "open-side-panel" && sender.tab?.id) {
+    void chrome.sidePanel.open({
+      tabId: sender.tab.id
     }).then(() => sendResponse(true))
       .catch(() => sendResponse(false))
     return true
