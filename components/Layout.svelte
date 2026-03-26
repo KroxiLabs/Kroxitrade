@@ -67,6 +67,9 @@
   @use "../lib/styles/variables" as *;
 
   #better-trading-container {
+    width: 360px !important;
+    min-width: 360px !important;
+    max-width: 360px !important;
     min-height: 100vh;
     background-color: $poe-black;
     display: flex;

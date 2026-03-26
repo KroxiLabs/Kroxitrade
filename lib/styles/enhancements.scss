@@ -23,6 +23,8 @@ plasmo-csui {
   top: 0 !important;
   z-index: 2147483647 !important;
   width: var(--bt-sidebar-width, 360px) !important;
+  min-width: var(--bt-sidebar-width, 360px) !important;
+  max-width: var(--bt-sidebar-width, 360px) !important;
   height: 100vh !important;
 }
 
