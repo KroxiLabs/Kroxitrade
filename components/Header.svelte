@@ -12,7 +12,7 @@
   </div>
   
   <div class="toolbar">
-    <div class="sidepanel-badge">Side Panel</div>
+    <div class="sidepanel-badge">In Page</div>
   </div>
 </header>
 

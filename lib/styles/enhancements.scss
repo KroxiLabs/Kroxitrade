@@ -1,5 +1,15 @@
 @use 'variables' as *;
 
+html.bt-has-kroxitrade-sidebar,
+body.bt-has-kroxitrade-sidebar {
+  overflow-x: hidden !important;
+}
+
+body.bt-has-kroxitrade-sidebar {
+  padding-left: var(--bt-sidebar-width, 360px) !important;
+  box-sizing: border-box !important;
+}
+
 @keyframes pinned-glow-keyframes {
   0% { box-shadow: inset 0 0 10px 2px $blue-alt; }
   25% { box-shadow: inset 0 0 20px 10px $blue-alt; }
@@ -47,41 +57,4 @@
   font-weight: bold;
   color: $white;
   margin-bottom: 2px;
-}
-
-#bt-open-sidepanel {
-  position: fixed;
-  right: 18px;
-  bottom: 18px;
-  z-index: 2147483647;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 34px;
-  padding: 0 12px;
-  border: 1px solid rgba($gold, 0.4);
-  background: rgba(10, 10, 10, 0.94);
-  color: $white;
-  font-family: $primary-font;
-  font-size: 13px;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
-  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
-
-  &:hover {
-    background: rgba(24, 24, 24, 0.98);
-    border-color: rgba($gold, 0.72);
-    color: $gold;
-  }
-}
-
-.bt-open-sidepanel__mark {
-  font-size: 12px;
-  line-height: 1;
-  color: $gold;
-}
-
-.bt-open-sidepanel__label {
-  line-height: 1;
 }
