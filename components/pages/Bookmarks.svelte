@@ -21,7 +21,11 @@
   let importText = "";
 
   $: currentLocation = tradeLocationService.locationStore;
-  $: displayedFolders = $bookmarksService.filter(f => !!f.archivedAt === showArchived && f.version === $currentLocation.version);
+  $: displayedFolders = $bookmarksService.filter((folder) => {
+    const matchesArchive = !!folder.archivedAt === showArchived;
+    const matchesVersion = folder.version === $currentLocation.version;
+    return matchesArchive && matchesVersion;
+  });
   $: expandedFoldersStorageKey = `${EXPANDED_FOLDERS_STORAGE_KEY}-${$currentLocation.version}`;
   $: validFolderIds = new Set($bookmarksService.map((folder) => folder.id).filter(Boolean));
   $: {
@@ -146,40 +150,55 @@
 </script>
 
 <div class="bookmarks-page">
-  <section class="action-section primary-actions">
-    <div class="section-heading">ADD OR IMPORT</div>
-    <div class="button-row">
-        <Button label="NEW FOLDER" theme="gold" icon="📁" onClick={createFolder} class="flex-1" />
-        <Button 
-            label={isImportingText ? "CANCEL" : "IMPORT FOLDER"} 
-            theme="gold" 
-            icon={isImportingText ? "×" : "↓"} 
-            onClick={() => isImportingText = !isImportingText} 
-            class="flex-1" 
-        />
+  <section class="toolbar-panel">
+    <div class="toolbar-row">
+      <div class="toolbar-actions">
+        <button class="toolbar-button" type="button" title="New Folder" aria-label="New Folder" on:click={createFolder}>
+          <span class="toolbar-icon">📁</span>
+          <span class="toolbar-label">New</span>
+        </button>
+        <button
+          class:active={isImportingText}
+          class="toolbar-button"
+          type="button"
+          title={isImportingText ? "Cancel Import" : "Import Folder"}
+          aria-label={isImportingText ? "Cancel Import" : "Import Folder"}
+          on:click={() => isImportingText = !isImportingText}
+        >
+          <span class="toolbar-icon">{isImportingText ? "×" : "↓"}</span>
+          <span class="toolbar-label">{isImportingText ? "Cancel" : "Import"}</span>
+        </button>
+        <button class="toolbar-button" type="button" title="Collapse All" aria-label="Collapse All" on:click={collapseAll}>
+          <span class="toolbar-icon">▾</span>
+          <span class="toolbar-label">Collapse</span>
+        </button>
+        <button
+          class:active={showArchived}
+          class="toolbar-button"
+          type="button"
+          title={showArchived ? "Show Active" : "Show Archived"}
+          aria-label={showArchived ? "Show Active" : "Show Archived"}
+          on:click={() => showArchived = !showArchived}
+        >
+          <span class="toolbar-icon">{showArchived ? "☰" : "🗂"}</span>
+          <span class="toolbar-label">{showArchived ? "Active" : "Archive"}</span>
+        </button>
+      </div>
     </div>
 
     {#if isImportingText}
-        <div class="import-text-area">
-            <textarea 
-                bind:value={importText} 
-                placeholder="Paste folder text here..."
-                autofocus
-            ></textarea>
-            <Button label="CONFIRM IMPORT" theme="gold" onClick={processTextImport} />
+      <div class="import-text-area">
+        <textarea 
+          bind:value={importText} 
+          placeholder="Paste folder text here..."
+          autofocus
+        ></textarea>
+        <div class="import-actions">
+          <Button label="CONFIRM IMPORT" theme="gold" onClick={processTextImport} />
         </div>
+      </div>
     {/if}
   </section>
-
-  <div class="view-controls">
-    <Button label="COLLAPSE ALL" theme="gold" onClick={collapseAll} class="flex-1" />
-    <Button 
-        label={showArchived ? "SHOW ACTIVE" : "SHOW ARCHIVED"} 
-        theme="gold" 
-        onClick={() => showArchived = !showArchived} 
-        class="flex-1"
-    />
-  </div>
 
   <LoadingContainer {isLoading}>
     <div class="folders-list">
@@ -217,6 +236,7 @@
     max-width: 100%;
   }
 
+  .toolbar-panel,
   .action-section {
     display: flex;
     flex-direction: column;
@@ -225,6 +245,19 @@
     border: 1px solid rgba($gold, 0.1);
     border-radius: 4px;
     margin: 0 4px;
+  }
+
+  .toolbar-panel {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+    gap: 10px;
+    padding: 10px 12px;
+    background:
+      linear-gradient(180deg, rgba($gold, 0.08), rgba($gold, 0.02)),
+      rgba($black, 0.5);
+    border-color: rgba($gold, 0.14);
+    backdrop-filter: blur(8px);
   }
 
   .backup-section {
@@ -239,6 +272,74 @@
     border-left: none;
     border-right: none;
     border-radius: 0;
+  }
+
+  .toolbar-row {
+    display: block;
+  }
+
+  .toolbar-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .toolbar-button {
+    min-height: 42px;
+    padding: 6px 8px 5px;
+    border: 1px solid rgba($gold, 0.28);
+    border-radius: 4px;
+    background: linear-gradient(180deg, rgba(97, 77, 43, 0.42), rgba(39, 30, 18, 0.9));
+    color: #e3b466;
+    font-family: $primary-font;
+    font-size: 9px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    transition:
+      border-color 0.15s ease,
+      background 0.15s ease,
+      transform 0.15s ease,
+      box-shadow 0.15s ease;
+
+    &:hover {
+      border-color: rgba($gold, 0.42);
+      background: linear-gradient(180deg, rgba(126, 98, 53, 0.54), rgba(55, 41, 22, 0.95));
+      transform: translateY(-1px);
+      box-shadow:
+        inset 0 1px 0 rgba(255, 232, 187, 0.08),
+        0 0 0 1px rgba($gold, 0.04);
+    }
+
+    &.active {
+      border-color: rgba($gold, 0.5);
+      background: linear-gradient(180deg, rgba(140, 109, 57, 0.62), rgba(67, 49, 24, 0.98));
+      color: #f0c77d;
+    }
+  }
+
+  .toolbar-icon {
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .toolbar-label {
+    line-height: 1;
+  }
+
+  @media (min-width: 520px) {
+    .toolbar-row {
+      display: block;
+    }
+
+    .toolbar-actions {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
   }
 
   .section-heading {
@@ -295,8 +396,13 @@
 
           &:focus {
               border-color: $gold;
-          }
-      }
+           }
+       }
+   }
+
+  .import-actions {
+      display: flex;
+      justify-content: flex-end;
   }
 
   :global(.flex-1) { flex: 1; }
