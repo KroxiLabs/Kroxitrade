@@ -44,6 +44,19 @@
     isLoading = false;
   };
 
+  const formatTradeMeta = (trade: BookmarksTradeStruct) => {
+    const meta: string[] = [];
+    const league = trade.location.league || tradeLocationService.current.league || "Standard";
+
+    meta.push(league);
+
+    if (trade.location.type) {
+      meta.push(trade.location.type);
+    }
+
+    return meta.join(" • ");
+  };
+
   const toggleTrade = async (trade: BookmarksTradeStruct) => {
     if (!folder.id) return;
     await bookmarksService.toggleTradeCompletion(trade, folder.id);
@@ -331,6 +344,7 @@
         <ul class="trades-list">
           {#each trades as trade, i (trade.id)}
             <li class="trade-item"
+                class:is-completed={!!trade.completedAt}
                 class:is-dragging={draggedIndex === i}
                 class:is-drag-over={dragOverIndex === i}
                 draggable="true"
@@ -362,7 +376,7 @@
                       {trade.title}
                     </a>
                     <div class="trade-meta">
-                      {trade.location.league || tradeLocationService.current.league || "Standard"}
+                      {formatTradeMeta(trade)}
                     </div>
                   </div>
                 {/if}
@@ -595,6 +609,11 @@
       opacity: 0.3;
       background-color: rgba($gold, 0.1);
     }
+
+    &.is-completed {
+      background: rgba($green, 0.14);
+      border-color: rgba($green, 0.28);
+    }
     
     &.is-drag-over {
       border-bottom: 2px solid $gold;
@@ -633,13 +652,14 @@
     min-width: 0;
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: 4px;
   }
 
   .trade-link {
     color: $white;
     text-decoration: none;
     font-size: 13px;
+    line-height: 1.15;
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -650,12 +670,12 @@
 
   .trade-meta {
     font-size: 10px;
-    color: rgba($gold-alt, 0.58);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
+    line-height: 1.2;
+    color: rgba($gold-alt, 0.52);
+    letter-spacing: 0.03em;
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   .trade-actions {
