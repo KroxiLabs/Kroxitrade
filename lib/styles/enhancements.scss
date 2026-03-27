@@ -81,14 +81,35 @@ plasmo-csui {
 
 .bt-equivalent-pricings {
   display: block;
-  font-size: 15.6px;
-  color: #a38d6d;
-  margin-top: 2px;
+  font-size: 13px;
+  color: rgba(163, 141, 109, 0.72);
+  margin-top: 3px;
   line-height: 1.2;
+  opacity: 0.78;
 }
 
 .bt-equivalent-pricings-equivalent {
   font-weight: normal;
+}
+
+.bt-equivalent-label {
+  margin-right: 4px;
+  color: rgba(163, 141, 109, 0.58);
+  text-transform: lowercase;
+}
+
+.bt-equivalent-amount {
+  color: rgba(163, 141, 109, 0.84);
+}
+
+.bt-equivalent-icon {
+  width: 16px;
+  aspect-ratio: 1 / 1;
+  height: auto;
+  object-fit: contain;
+  vertical-align: middle;
+  margin-left: 2px;
+  opacity: 0.72;
 }
 
 .bt-highlight-stat-filters {

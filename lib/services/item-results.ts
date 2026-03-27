@@ -2,9 +2,9 @@ import { writable } from "svelte/store";
 import { poeNinjaService } from "./poe-ninja";
 import { tradeLocationService } from "./trade-location";
 import { searchPanelService } from "./search-panel";
+import { settings } from "./settings";
 import { slugify } from "../utilities/slugify";
 import { escapeRegex } from "../utilities/escape-regex";
-import { storageService } from "./storage";
 
 
 
@@ -28,11 +28,24 @@ export class ItemResultsService {
   private statNeedles: RegExp[] = [];
   private readonly DIVINE_SLUG = "divine-orb";
   private readonly CHAOS_SLUG = "chaos-orb";
+  private showEquivalentPricing = false;
+  private unsubscribeSettings: (() => void) | null = null;
   async initialize() {
     console.log("[Kroxitrade] Initializing ItemResultsService...");
     if (window.location.protocol === "chrome-extension:") {
       return;
     }
+
+    await settings.load();
+    this.showEquivalentPricing = settings.getCurrent().showEquivalentPricing;
+    this.unsubscribeSettings?.();
+    this.unsubscribeSettings = settings.subscribe((value) => {
+      const changed = this.showEquivalentPricing !== value.showEquivalentPricing;
+      this.showEquivalentPricing = value.showEquivalentPricing;
+      if (changed) {
+        this.refreshEquivalentPricing();
+      }
+    });
     
     try {
       await this.fetchRatios();
@@ -58,7 +71,9 @@ export class ItemResultsService {
   }
 
   private injectEquivalentPricing(row: HTMLElement) {
-    if (!this.chaosRatios) return;
+    this.removeEquivalentPricing(row);
+
+    if (!this.showEquivalentPricing || !this.chaosRatios) return;
 
     // Busca explícitamente el div con class "price" como pidió el usuario
     const priceContainer = row.querySelector("div.price, .details .price") as HTMLElement;
@@ -147,7 +162,7 @@ export class ItemResultsService {
   private appendEquivHtml(container: HTMLElement, htmlContent: string) {
     const el = document.createElement("span");
     el.className = "bt-equivalent-pricings bt-equivalent-pricings-equivalent";
-    el.innerHTML = htmlContent;
+    el.innerHTML = `<span class="bt-equivalent-label">equivalent:</span>${htmlContent}`;
     container.appendChild(el);
   }
 
@@ -156,7 +171,11 @@ export class ItemResultsService {
     const divineUrl = "https://web.poecdn.com/image/Art/2DItems/Currency/CurrencyModValues.png?scale=1&w=1&h=1";
     const iconUrl = slug === this.CHAOS_SLUG ? chaosUrl : divineUrl;
 
-    return `<span>${amount}</span><img src="${iconUrl}" class="currency-icon" style="width: 22px; height: 22px; vertical-align: middle; margin-left: 2px;" alt="${slug}">`;
+    return `<span class="bt-equivalent-amount">${amount}</span><img src="${iconUrl}" class="bt-equivalent-icon currency-icon" alt="${slug}">`;
+  }
+
+  private removeEquivalentPricing(row: HTMLElement) {
+    row.querySelectorAll(".bt-equivalent-pricings-equivalent").forEach((el) => el.remove());
   }
 
   private prepareHighlighting() {
@@ -201,6 +220,11 @@ export class ItemResultsService {
       this.highlightStats(row);
       this.checkMaximumSockets(row);
     });
+  }
+
+  private refreshEquivalentPricing() {
+    const results = document.querySelectorAll(".search-results .result-item, .search-results .row, .result-list .result-item, .row");
+    results.forEach((row) => this.injectEquivalentPricing(row as HTMLElement));
   }
 
   private highlightStats(row: HTMLElement) {

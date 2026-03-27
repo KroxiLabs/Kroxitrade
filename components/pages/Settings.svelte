@@ -7,6 +7,10 @@
     await settings.updateSide(side);
   }
 
+  async function handleEquivalentPricingChange(showEquivalentPricing: boolean) {
+    await settings.updateEquivalentPricingVisibility(showEquivalentPricing);
+  }
+
   onMount(async () => {
     await settings.load();
   });
@@ -29,6 +33,26 @@
         theme={$settings.sidebarSide === 'right' ? 'gold' : 'blue'}
         class="side-btn"
         onClick={() => handleSideChange('right')}
+      />
+    </div>
+  </section>
+
+  <section class="settings-section">
+    <h3 class="section-title">Equivalent Pricing</h3>
+    <p class="section-description">Show or hide the extra chaos/divine equivalent line in trade results.</p>
+
+    <div class="side-selector">
+      <Button
+        label="Hidden"
+        theme={$settings.showEquivalentPricing ? 'blue' : 'gold'}
+        class="side-btn"
+        onClick={() => handleEquivalentPricingChange(false)}
+      />
+      <Button
+        label="Visible"
+        theme={$settings.showEquivalentPricing ? 'gold' : 'blue'}
+        class="side-btn"
+        onClick={() => handleEquivalentPricingChange(true)}
       />
     </div>
   </section>
