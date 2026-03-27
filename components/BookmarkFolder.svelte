@@ -239,14 +239,7 @@
                   on:click={() => copyTrade(trade)}>
                   ⧉
                 </button>
-                <button
-                  type="button"
-                  class="trade-action"
-                  title="Duplicate trade"
-                  aria-label="Duplicate trade"
-                  on:click={() => void duplicateTrade(trade)}>
-                  +
-                </button>
+
                 <button
                   type="button"
                   class="trade-action"

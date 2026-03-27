@@ -144,18 +144,10 @@
 
 <div class="bookmarks-page">
   <section class="action-section primary-actions">
-    <div class="section-heading">Folders</div>
+    <div class="section-heading">ADD OR IMPORT</div>
     <div class="button-row">
         <Button label="NEW FOLDER" theme="gold" icon="📁" onClick={createFolder} class="flex-1" />
         <Button label="IMPORT FOLDER" theme="gold" icon="↓" onFileChange={importFolder} fileAccept=".txt" class="flex-1" />
-    </div>
-  </section>
-
-  <section class="action-section">
-    <div class="section-heading">Backup</div>
-    <div class="button-row">
-        <Button label="SAVE FILE" theme="blue" icon="💾" onClick={exportToFile} class="flex-1" />
-        <Button label="RESTORE FROM FILE" theme="blue" icon="📂" onFileChange={restoreFromFile} fileAccept=".txt" class="flex-1" />
     </div>
   </section>
 
@@ -183,6 +175,14 @@
       {/each}
     </div>
   </LoadingContainer>
+
+  <section class="action-section backup-section">
+    <div class="section-heading">Backup & Restore</div>
+    <div class="button-row">
+        <Button label="SAVE FILE" theme="gold" icon="💾" onClick={exportToFile} class="flex-1" />
+        <Button label="RESTORE FROM FILE" theme="gold" icon="📂" onFileChange={restoreFromFile} fileAccept=".txt" class="flex-1" />
+    </div>
+  </section>
 </div>
 
 <style lang="scss">
@@ -201,16 +201,35 @@
   .action-section {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    padding: 10px;
-    background-color: rgba($white, 0.02);
-    border: 1px solid rgba($white, 0.08);
+    padding: 12px;
+    background: linear-gradient(180deg, rgba($gold, 0.05), transparent);
+    border: 1px solid rgba($gold, 0.1);
+    border-radius: 4px;
+    margin: 0 4px;
+  }
+
+  .backup-section {
+    margin-top: auto;
+    margin-bottom: 0;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 10px 15px;
+    background-color: rgba($black, 0.4);
+    border-top: 1px solid rgba($gold, 0.1);
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
   }
 
   .section-heading {
     font-family: $primary-font;
-    font-size: 12px;
-    color: rgba($white, 0.72);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: $gold;
+    text-transform: uppercase;
+    font-weight: bold;
+    margin-bottom: 8px;
   }
 
   .button-row {
