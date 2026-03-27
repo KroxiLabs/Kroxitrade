@@ -35,10 +35,12 @@ plasmo-csui {
   position: fixed !important;
   top: 0 !important;
   z-index: 2147483647 !important;
-  width: 360px !important;
-  min-width: 360px !important;
-  max-width: 360px !important;
+  width: var(--bt-sidebar-width, 360px) !important;
+  min-width: var(--bt-sidebar-width, 360px) !important;
+  max-width: var(--bt-sidebar-width, 360px) !important;
   height: 100vh !important;
+  min-height: 100vh !important;
+  pointer-events: none !important;
 }
 
 @keyframes pinned-glow-keyframes {
