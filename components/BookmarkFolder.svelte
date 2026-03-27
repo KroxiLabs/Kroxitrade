@@ -12,7 +12,6 @@
 
   export let folder: BookmarksFolderStruct;
   export let expandedFolderIds: string[];
-  export let onEdit: () => void;
   export let onToggleExpansion: (id: string) => void;
   export let onArchiveEvent: () => void;
   export let onDeleteEvent: () => void;
@@ -200,11 +199,45 @@
     editingTradeId = null;
   };
 
+  const replaceSearchWithCurrent = async (trade: BookmarksTradeStruct) => {
+    if (!folder.id || !trade.id) return;
+    
+    const current = tradeLocationService.current;
+    if (!current.slug) {
+        flashMessages.alert("Not on a valid trade page");
+        return;
+    }
+    if (!current.type) {
+        flashMessages.alert("Missing trade type for the current search.");
+        return;
+    }
+
+    const updatedTrade: BookmarksTradeStruct = {
+      ...trade,
+      location: {
+        version: current.version,
+        type: current.type,
+        slug: current.slug,
+        league: current.league
+      }
+    };
+
+    await bookmarksService.persistTrade(updatedTrade, folder.id);
+    await loadTrades();
+    flashMessages.success(`Updated search location for "${trade.title}"`);
+  };
+
 </script>
 
 <div class="folder {isExpanded ? 'is-expanded' : ''} {isArchived ? 'is-archived' : ''}">
   <div class="header">
-    <div class="expansion-wrapper" on:click={(e) => { if (!editingFolder) onToggleExpansion(folder.id || "")}}>
+    <button 
+        type="button"
+        class="expansion-wrapper" 
+        on:click={(e) => { e.stopPropagation(); if (!editingFolder) onToggleExpansion(folder.id || "")}}
+        aria-expanded={isExpanded}
+        aria-label="{isExpanded ? 'Collapse' : 'Expand'} {folder.title}"
+    >
         {#if editingFolder}
           <input 
             type="text" 
@@ -221,7 +254,7 @@
         {#if !isArchived}
             <span class="indicator">{isExpanded ? "▼" : "▶"}</span>
         {/if}
-    </div>
+    </button>
     
     <div class="header-actions">
       <button
@@ -308,6 +341,14 @@
                 <button
                   type="button"
                   class="trade-action"
+                  title="Replace with current search"
+                  aria-label="Replace with current search"
+                  on:click={() => void replaceSearchWithCurrent(trade)}>
+                  ↻
+                </button>
+                <button
+                  type="button"
+                  class="trade-action"
                   title="Copy URL"
                   aria-label="Copy URL"
                   on:click={() => copyTrade(trade)}>
@@ -366,6 +407,13 @@
     flex: 1;
     align-items: center;
     cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    text-align: left;
+    width: 100%;
+    outline: none;
   }
 
   .header-label { flex: 1; font-size: 15px; }
