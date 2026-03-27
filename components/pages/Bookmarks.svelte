@@ -216,7 +216,7 @@
 
   <section class="action-section backup-section">
     <div class="section-heading">Backup & Restore</div>
-    <div class="button-row">
+    <div class="button-row backup-row">
         <Button label="SAVE FILE" theme="gold" icon="💾" onClick={exportToFile} class="flex-1" />
         <Button label="RESTORE FROM FILE" theme="gold" icon="📂" onFileChange={restoreFromFile} fileAccept=".txt" class="flex-1" />
     </div>
@@ -357,6 +357,20 @@
       gap: 6px;
       width: 100%;
       min-width: 0;
+  }
+
+  .backup-row {
+      :global(button) {
+          letter-spacing: 0.05em;
+      }
+
+      :global(.icon),
+      :global(.button-icon),
+      :global(.icon-slot),
+      :global([class*="icon"]) {
+          opacity: 0.68;
+          transform: scale(0.88);
+      }
   }
 
   .view-controls {
