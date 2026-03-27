@@ -254,6 +254,50 @@ if (!(window as any).__KROX_STARTED__) {
     }
   });
 
+  // Preserve Trade Plus behavior on the native trade-site search fields.
+  const findTradeSearchInput = (target: EventTarget | null): HTMLInputElement | null => {
+    if (!(target instanceof Element)) return null;
+
+    const input = target.closest('input.multiselect__input');
+    return input instanceof HTMLInputElement ? input : null;
+  };
+
+  const setNativeInputValue = (input: HTMLInputElement, value: string) => {
+    const descriptor = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value');
+    descriptor?.set?.call(input, value);
+  };
+
+  const ensureRegexPrefix = (input: HTMLInputElement, typedKey?: string) => {
+    const value = input.value ?? '';
+    if (!value || value.startsWith('~') || value.startsWith(' ')) return;
+    if (typedKey === 'Backspace' || typedKey === 'Delete') return;
+
+    const nextValue = `~${value}`;
+    const start = input.selectionStart ?? value.length;
+    const end = input.selectionEnd ?? value.length;
+
+    setNativeInputValue(input, nextValue);
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+
+    requestAnimationFrame(() => {
+      const nextStart = Math.max(1, start + 1);
+      const nextEnd = Math.max(nextStart, end + 1);
+      input.setSelectionRange(nextStart, nextEnd);
+    });
+  };
+
+  document.addEventListener('keyup', (e: KeyboardEvent) => {
+    const input = findTradeSearchInput(e.target);
+    if (!input) return;
+    ensureRegexPrefix(input, e.key);
+  }, true);
+
+  document.addEventListener('input', (e: Event) => {
+    const input = findTradeSearchInput(e.target);
+    if (!input) return;
+    ensureRegexPrefix(input);
+  }, true);
+
 
 
   const getGlobalApp = () => (window as any).app;

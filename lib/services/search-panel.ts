@@ -22,7 +22,8 @@ export class SearchPanelService {
   }
 
   getName() {
-    return this._scrapeInputValue(this.SEARCH_INPUT_SELECTOR);
+    const value = this._scrapeInputValue(this.SEARCH_INPUT_SELECTOR);
+    return this._ensureSearchPrefix(value);
   }
 
   getRarity() {
@@ -49,6 +50,15 @@ export class SearchPanelService {
     if (!value || (nullValue && value === nullValue)) return null;
 
     return value;
+  }
+
+  private _ensureSearchPrefix(value: string | null): string | null {
+    if (!value) return null;
+
+    const trimmed = value.trim();
+    if (!trimmed) return null;
+
+    return trimmed.startsWith("~") ? trimmed : `~${trimmed}`;
   }
 }
 
