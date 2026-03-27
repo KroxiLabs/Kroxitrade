@@ -16,6 +16,9 @@
   let isLoading = false;
   let showArchived = false;
   let loadedExpandedStateKey: string | null = null;
+  
+  let isImportingText = false;
+  let importText = "";
 
   $: currentLocation = tradeLocationService.locationStore;
   $: displayedFolders = $bookmarksService.filter(f => !!f.archivedAt === showArchived && f.version === $currentLocation.version);
@@ -119,26 +122,26 @@
       reader.readAsText(file);
   };
 
-  const importFolder = (event: Event) => {
-      const input = event.target as HTMLInputElement;
-      const file = input.files?.[0];
-      if (!file) return;
+  const processTextImport = async () => {
+      const serialized = importText.trim();
+      if (!serialized) {
+          flashMessages.alert("Please paste the folder data first.");
+          return;
+      }
+
+      const deserialized = bookmarksService.deserializeFolder(serialized);
+      if (!deserialized) {
+          flashMessages.alert("Invalid folder data. Please check the string.");
+          return;
+      }
+
+      const [folder, trades] = deserialized;
+      const folderId = await bookmarksService.persistFolder(folder);
+      await bookmarksService.persistTrades(trades, folderId);
       
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-          const serialized = (e.target?.result as string).trim();
-          const deserialized = bookmarksService.deserializeFolder(serialized);
-          if (!deserialized) {
-              flashMessages.alert("Invalid folder data.");
-              return;
-          }
-          const [folder, trades] = deserialized;
-          const folderId = await bookmarksService.persistFolder(folder);
-          await bookmarksService.persistTrades(trades, folderId);
-          flashMessages.success(`Imported "${folder.title}"!`);
-          input.value = "";
-      };
-      reader.readAsText(file);
+      flashMessages.success(`Imported "${folder.title}"!`);
+      importText = "";
+      isImportingText = false;
   };
 </script>
 
@@ -147,8 +150,25 @@
     <div class="section-heading">ADD OR IMPORT</div>
     <div class="button-row">
         <Button label="NEW FOLDER" theme="gold" icon="📁" onClick={createFolder} class="flex-1" />
-        <Button label="IMPORT FOLDER" theme="gold" icon="↓" onFileChange={importFolder} fileAccept=".txt" class="flex-1" />
+        <Button 
+            label={isImportingText ? "CANCEL" : "IMPORT FOLDER"} 
+            theme="gold" 
+            icon={isImportingText ? "×" : "↓"} 
+            onClick={() => isImportingText = !isImportingText} 
+            class="flex-1" 
+        />
     </div>
+
+    {#if isImportingText}
+        <div class="import-text-area">
+            <textarea 
+                bind:value={importText} 
+                placeholder="Paste folder text here..."
+                autofocus
+            ></textarea>
+            <Button label="CONFIRM IMPORT" theme="gold" onClick={processTextImport} />
+        </div>
+    {/if}
   </section>
 
   <div class="view-controls">
@@ -168,7 +188,6 @@
             {folder} 
             {expandedFolderIds} 
             onToggleExpansion={toggleExpansion} 
-            onEdit={() => {}}
             onArchiveEvent={() => toggleArchive(folder)}
             onDeleteEvent={() => deleteFolder(folder)}
         />
@@ -251,6 +270,33 @@
     margin: 2px 0;
     width: 100%;
     min-width: 0;
+  }
+
+  .import-text-area {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba($gold, 0.1);
+
+      textarea {
+          width: 100%;
+          height: 100px;
+          background: rgba($black, 0.3);
+          border: 1px solid rgba($gold, 0.2);
+          border-radius: 4px;
+          color: $white;
+          font-family: monospace;
+          font-size: 11px;
+          padding: 8px;
+          resize: vertical;
+          outline: none;
+
+          &:focus {
+              border-color: $gold;
+          }
+      }
   }
 
   :global(.flex-1) { flex: 1; }
