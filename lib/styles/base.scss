@@ -8,6 +8,7 @@
   right: auto !important;
   top: 0 !important;
   z-index: 2147483647 !important;
+  pointer-events: none !important;
 }
 
 :host {
@@ -26,6 +27,7 @@
   max-width: $extension-width !important;
   height: 100vh !important;
   min-height: 100vh !important;
+  pointer-events: none !important;
 }
 
 .plasmo-csui-container {
