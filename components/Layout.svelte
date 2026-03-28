@@ -89,6 +89,10 @@
     window.removeEventListener('mouseleave', stopResize);
   });
 
+  $: if (!$settings.showBulkSellers && currentPage === 'bulk') {
+    currentPage = 'bookmarks';
+  }
+
   $: {
     if (typeof document !== 'undefined') {
       const isRight = $settings.sidebarSide === 'right';
@@ -146,12 +150,14 @@
         {translate($languageStore, "layout.nav.bookmarks")}
     </button>
 
-    <button 
-        class="nav-item {currentPage === 'bulk' ? 'is-active' : ''}" 
-        on:click={() => currentPage = 'bulk'}
-    >
-        {translate($languageStore, "layout.nav.bulk")}
-    </button>
+    {#if $settings.showBulkSellers}
+      <button 
+          class="nav-item {currentPage === 'bulk' ? 'is-active' : ''}" 
+          on:click={() => currentPage = 'bulk'}
+      >
+          {translate($languageStore, "layout.nav.bulk")}
+      </button>
+    {/if}
 
     <button 
         class="nav-item {currentPage === 'history' ? 'is-active' : ''}" 
@@ -188,7 +194,7 @@
   <main>
     {#if currentPage === 'bookmarks'}
         <Bookmarks />
-    {:else if currentPage === 'bulk'}
+    {:else if currentPage === 'bulk' && $settings.showBulkSellers}
         <BulkSellers />
     {:else if currentPage === 'history'}
         <History />

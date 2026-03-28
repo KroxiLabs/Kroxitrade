@@ -34,6 +34,10 @@
     await settings.updateEquivalentPricingVisibility(showEquivalentPricing);
   }
 
+  async function handleBulkSellersChange(showBulkSellers: boolean) {
+    await settings.updateBulkSellersVisibility(showBulkSellers);
+  }
+
   async function handleSidebarWidthReset() {
     await settings.updateSidebarWidth(DEFAULT_SIDEBAR_WIDTH);
   }
@@ -121,6 +125,26 @@
         theme={$settings.showEquivalentPricing ? 'gold' : 'blue'}
         class="side-btn"
         onClick={() => handleEquivalentPricingChange(true)}
+      />
+    </div>
+  </section>
+
+  <section class="settings-section">
+    <h3 class="section-title">{translate($languageStore, "settings.bulkTitle")}</h3>
+    <p class="section-description">{translate($languageStore, "settings.bulkDescription")}</p>
+
+    <div class="side-selector">
+      <Button
+        label={translate($languageStore, "settings.hidden")}
+        theme={$settings.showBulkSellers ? 'blue' : 'gold'}
+        class="side-btn"
+        onClick={() => handleBulkSellersChange(false)}
+      />
+      <Button
+        label={translate($languageStore, "settings.visible")}
+        theme={$settings.showBulkSellers ? 'gold' : 'blue'}
+        class="side-btn"
+        onClick={() => handleBulkSellersChange(true)}
       />
     </div>
   </section>
