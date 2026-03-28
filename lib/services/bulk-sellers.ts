@@ -21,6 +21,17 @@ export class BulkSellersService {
     this.refresh();
   }
 
+  teardown() {
+    this.initialized = false;
+    if (this.observerTimer) {
+      clearTimeout(this.observerTimer);
+      this.observerTimer = null;
+    }
+    this.observer?.disconnect();
+    this.observer = null;
+    this.groupsStore.set([]);
+  }
+
   refresh() {
     const groups = this.collectGroups();
     this.groupsStore.set(groups);

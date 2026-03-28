@@ -7,6 +7,7 @@ export type SidebarSide = 'left' | 'right';
 export interface AppSettings {
   sidebarSide: SidebarSide;
   showEquivalentPricing: boolean;
+  showBulkSellers: boolean;
   sidebarWidth: number;
   language: AppLanguage;
 }
@@ -14,6 +15,7 @@ export interface AppSettings {
 const DEFAULT_SETTINGS: AppSettings = {
   sidebarSide: 'right',
   showEquivalentPricing: false,
+  showBulkSellers: false,
   sidebarWidth: 360,
   language: 'en',
 };
@@ -55,6 +57,13 @@ export const settings = {
   async updateEquivalentPricingVisibility(showEquivalentPricing: boolean) {
     update(s => {
       const next = { ...s, showEquivalentPricing };
+      save(next);
+      return next;
+    });
+  },
+  async updateBulkSellersVisibility(showBulkSellers: boolean) {
+    update(s => {
+      const next = { ...s, showBulkSellers };
       save(next);
       return next;
     });
