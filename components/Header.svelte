@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { languageStore, translate } from "../lib/services/i18n";
   export let logoUrl: string;
   export let isMinimized: boolean = false;
   export let onToggleMinimize: () => void = () => {};
@@ -10,12 +11,12 @@
     <img class="logo" src={logoUrl} alt="Kroxitrade" />
     <div class="brand-copy">
       <h1>Kroxitrade</h1>
-      <div class="subtitle">Trade Companion</div>
+      <div class="subtitle">{translate($languageStore, "header.subtitle")}</div>
     </div>
   </div>
   
   <div class="toolbar">
-    <button class="minimize-toggle" on:click={onToggleMinimize} title={isMinimized ? "Expand Sidebar" : "Minimize Sidebar"}>
+    <button class="minimize-toggle" on:click={onToggleMinimize} title={isMinimized ? translate($languageStore, "header.expandSidebar") : translate($languageStore, "header.minimizeSidebar")}>
       <span class="chev-icon">
         {#if sidebarSide === 'left'}
           {isMinimized ? "▶" : "◀"}

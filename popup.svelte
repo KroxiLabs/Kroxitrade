@@ -1,20 +1,28 @@
 <script lang="ts">
+  import { onMount } from "svelte"
+  import { languageStore, setLanguage, translate, type AppLanguage } from "./lib/services/i18n"
+  import { settings } from "./lib/services/settings"
   const tradeLinks = [
     {
-      label: "PoE 1 Trade",
       href: "https://www.pathofexile.com/trade/search",
       logo: poe1Logo,
-      logoAlt: "Path of Exile Trade"
+      logoAltKey: "popup.trade1Alt",
+      labelKey: "popup.trade1"
     },
     {
-      label: "PoE 2 Trade",
       href: "https://www.pathofexile.com/trade2/search/poe2",
       logo: poe2Logo,
-      logoAlt: "Path of Exile 2 Trade"
+      logoAltKey: "popup.trade2Alt",
+      labelKey: "popup.trade2"
     }
   ]
   import poe1Logo from "data-base64:./assets/logo-trade.webp"
   import poe2Logo from "data-base64:./assets/logo-trade2.webp"
+
+  onMount(async () => {
+    await settings.load()
+    setLanguage(($settings.language || "en") as AppLanguage)
+  })
 </script>
 
 <svelte:head>
@@ -23,16 +31,16 @@
 
 <div class="popup-shell">
   <div class="hero">
-    <p>Kroxitrade adds faster navigation and trading helpers to the official Path of Exile trade site.</p>
+    <p>{translate($languageStore, "popup.description")}</p>
   </div>
 
   <div class="trade-grid">
     {#each tradeLinks as link}
       <a class="trade-link" href={link.href} target="_blank" rel="noreferrer">
         <span class="trade-link__logo-wrap">
-          <img class="trade-link__logo" src={link.logo} alt={link.logoAlt} />
+          <img class="trade-link__logo" src={link.logo} alt={translate($languageStore, link.logoAltKey)} />
         </span>
-        <span class="trade-link__label">{link.label}</span>
+        <span class="trade-link__label">{translate($languageStore, link.labelKey)}</span>
       </a>
     {/each}
   </div>

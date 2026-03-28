@@ -10,6 +10,7 @@
   import replaceIcon from "data-text:lucide-static/icons/refresh-cw.svg";
   import trashIcon from "data-text:lucide-static/icons/trash-2.svg";
   import uploadIcon from "data-text:lucide-static/icons/upload.svg";
+  import { languageStore, translate } from "../lib/services/i18n";
   import type { BookmarksFolderStruct, BookmarksTradeStruct } from "../lib/types/bookmarks";
   import { bookmarksService } from "../lib/services/bookmarks";
   import { getActiveTradeTabTitle, openUrlInActiveTab } from "../lib/services/active-trade-tab";
@@ -64,7 +65,7 @@
       meta.push(trade.location.type);
     }
 
-    return meta.join(" • ");
+    return meta.join(translate($languageStore, "folder.metaSeparator"));
   };
 
   const toggleTrade = async (trade: BookmarksTradeStruct) => {
@@ -81,9 +82,9 @@
       trade.location.league || tradeLocationService.current.league || "Standard"
     );
     void copyToClipboard(url).then(() => {
-      flashMessages.success(`Copied ${trade.title} to clipboard`);
+      flashMessages.success(translate($languageStore, "folder.copiedTrade", { title: trade.title }));
     }).catch(() => {
-      flashMessages.alert("Couldn't copy the trade URL.");
+      flashMessages.alert(translate($languageStore, "folder.copyTradeError"));
     });
   };
 
@@ -97,7 +98,7 @@
     if (!folder.id) return;
     await bookmarksService.duplicateTrade(trade, folder.id);
     await loadTrades();
-    flashMessages.success(`Duplicated ${trade.title}`);
+    flashMessages.success(translate($languageStore, "folder.duplicatedTrade", { title: trade.title }));
   };
 
   let draggedIndex: number | null = null;
@@ -145,11 +146,11 @@
     if (!folder.id) return;
     const current = tradeLocationService.current;
     if (!current.slug) {
-        flashMessages.alert("Not on a valid trade page");
+        flashMessages.alert(translate($languageStore, "folder.invalidTradePage"));
         return;
     }
     if (!current.type) {
-        flashMessages.alert("Missing trade type for the current search.");
+        flashMessages.alert(translate($languageStore, "folder.missingTradeType"));
         return;
     }
     const trade = bookmarksService.initializeTradeStructFrom({
@@ -165,7 +166,7 @@
       "Trade";
     await bookmarksService.persistTrade(trade, folder.id);
     await loadTrades();
-    flashMessages.success(`Added "${trade.title}" to folder`);
+    flashMessages.success(translate($languageStore, "folder.addedToFolder", { title: trade.title }));
   };
 
   const openTrade = async (trade: BookmarksTradeStruct) => {
@@ -182,9 +183,9 @@
   const exportFolder = () => {
       const serialized = bookmarksService.serializeFolder(folder, trades);
       void copyToClipboard(serialized).then(() => {
-        flashMessages.success("Folder data copied to clipboard!");
+        flashMessages.success(translate($languageStore, "folder.copiedFolder"));
       }).catch(() => {
-        flashMessages.alert("Couldn't copy the folder data.");
+        flashMessages.alert(translate($languageStore, "folder.copyFolderError"));
       });
   };
 
@@ -203,7 +204,7 @@
 
       await bookmarksService.renameFolder(folder, newTitle);
       folder.title = newTitle;
-      flashMessages.success(`Renamed folder to "${newTitle}"`);
+      flashMessages.success(translate($languageStore, "folder.renamedFolder", { title: newTitle }));
   };
 
   const cancelFolderEdit = () => {
@@ -226,7 +227,7 @@
 
     await bookmarksService.renameTrade(trade, folder.id, newTitle);
     await loadTrades();
-    flashMessages.success(`Renamed search to "${newTitle}"`);
+    flashMessages.success(translate($languageStore, "folder.renamedSearch", { title: newTitle }));
   };
 
   const cancelTradeEdit = () => {
@@ -262,11 +263,11 @@
     
     const current = tradeLocationService.current;
     if (!current.slug) {
-        flashMessages.alert("Not on a valid trade page");
+        flashMessages.alert(translate($languageStore, "folder.invalidTradePage"));
         return;
     }
     if (!current.type) {
-        flashMessages.alert("Missing trade type for the current search.");
+        flashMessages.alert(translate($languageStore, "folder.missingTradeType"));
         return;
     }
 
@@ -282,7 +283,7 @@
 
     await bookmarksService.persistTrade(updatedTrade, folder.id);
     await loadTrades();
-    flashMessages.success(`Updated search location for "${trade.title}"`);
+    flashMessages.success(translate($languageStore, "folder.updatedSearchLocation", { title: trade.title }));
   };
 
 </script>
@@ -299,7 +300,7 @@
   on:dragend={onFolderDragEnd}
 >
   <div class="header">
-    <div class="folder-drag-handle" title="Drag to reorder folder" aria-hidden="true">
+    <div class="folder-drag-handle" title={translate($languageStore, "folder.dragReorder")} aria-hidden="true">
       <span class="action-icon">{@html icons.grip}</span>
     </div>
     <button 
@@ -307,7 +308,7 @@
         class="expansion-wrapper" 
         on:click={(e) => { e.stopPropagation(); if (!editingFolder) onToggleExpansion(folder.id || "")}}
         aria-expanded={isExpanded}
-        aria-label="{isExpanded ? 'Collapse' : 'Expand'} {folder.title}"
+        aria-label={`${isExpanded ? translate($languageStore, "folder.collapse") : translate($languageStore, "folder.expand")} ${folder.title}`}
     >
         {#if editingFolder}
           <input 
@@ -333,32 +334,32 @@
       <button
         type="button"
         class="folder-action"
-        title="Edit folder"
-        aria-label="Edit folder"
+        title={translate($languageStore, "folder.editFolder")}
+        aria-label={translate($languageStore, "folder.editFolder")}
         on:click|stopPropagation={startEditingFolder}>
         <span class="action-icon" aria-hidden="true">{@html icons.edit}</span>
       </button>
       <button
         type="button"
         class="folder-action"
-        title={isArchived ? "Restore folder" : "Archive folder"}
-        aria-label={isArchived ? "Restore folder" : "Archive folder"}
+        title={isArchived ? translate($languageStore, "folder.restoreFolder") : translate($languageStore, "folder.archiveFolder")}
+        aria-label={isArchived ? translate($languageStore, "folder.restoreFolder") : translate($languageStore, "folder.archiveFolder")}
         on:click={onArchiveEvent}>
         <span class="action-icon" aria-hidden="true">{@html isArchived ? icons.restore : icons.archive}</span>
       </button>
       <button
         type="button"
         class="folder-action"
-        title="Export folder"
-        aria-label="Export folder"
+        title={translate($languageStore, "folder.exportFolder")}
+        aria-label={translate($languageStore, "folder.exportFolder")}
         on:click={exportFolder}>
         <span class="action-icon" aria-hidden="true">{@html icons.upload}</span>
       </button>
       <button
         type="button"
         class="folder-action is-danger"
-        title="Delete folder"
-        aria-label="Delete folder"
+        title={translate($languageStore, "folder.deleteFolder")}
+        aria-label={translate($languageStore, "folder.deleteFolder")}
         on:click={onDeleteEvent}>
         <span class="action-icon" aria-hidden="true">{@html icons.trash}</span>
       </button>
@@ -381,7 +382,7 @@
                 on:dragover|preventDefault
                 on:drop|preventDefault={(e) => handleDrop(e, i)}
                 on:dragend={handleDragEnd}>
-              <div class="drag-handle" title="Drag to reorder">≡</div>
+              <div class="drag-handle" title={translate($languageStore, "folder.dragTrade")}>≡</div>
               <div class="trade-info">
                 {#if trade.completedAt}<span class="check">✓</span>{/if}
                 {#if editingTradeId === trade.id}
@@ -413,24 +414,24 @@
                 <button
                   type="button"
                   class="trade-action"
-                  title="Edit search name"
-                  aria-label="Edit search name"
+                  title={translate($languageStore, "folder.editSearchName")}
+                  aria-label={translate($languageStore, "folder.editSearchName")}
                   on:click|stopPropagation={() => startEditingTrade(trade)}>
                   <span class="action-icon" aria-hidden="true">{@html icons.edit}</span>
                 </button>
                 <button
                   type="button"
                   class="trade-action"
-                  title="Replace with current search"
-                  aria-label="Replace with current search"
+                  title={translate($languageStore, "folder.replaceCurrentSearch")}
+                  aria-label={translate($languageStore, "folder.replaceCurrentSearch")}
                   on:click={() => void replaceSearchWithCurrent(trade)}>
                   <span class="action-icon" aria-hidden="true">{@html icons.replace}</span>
                 </button>
                 <button
                   type="button"
                   class="trade-action"
-                  title="Copy URL"
-                  aria-label="Copy URL"
+                  title={translate($languageStore, "folder.copyUrl")}
+                  aria-label={translate($languageStore, "folder.copyUrl")}
                   on:click={() => copyTrade(trade)}>
                   <span class="action-icon" aria-hidden="true">{@html icons.copy}</span>
                 </button>
@@ -438,16 +439,16 @@
                   type="button"
                   class="trade-action"
                   class:is-active={!!trade.completedAt}
-                  title={trade.completedAt ? "Mark as pending" : "Mark as complete"}
-                  aria-label={trade.completedAt ? "Mark as pending" : "Mark as complete"}
+                  title={trade.completedAt ? translate($languageStore, "folder.markPending") : translate($languageStore, "folder.markComplete")}
+                  aria-label={trade.completedAt ? translate($languageStore, "folder.markPending") : translate($languageStore, "folder.markComplete")}
                   on:click={() => void toggleTrade(trade)}>
                   <span class="action-icon" aria-hidden="true">{@html icons.check}</span>
                 </button>
                 <button
                   type="button"
                   class="trade-action is-danger"
-                  title="Delete trade"
-                  aria-label="Delete trade"
+                  title={translate($languageStore, "folder.deleteTrade")}
+                  aria-label={translate($languageStore, "folder.deleteTrade")}
                   on:click={() => void deleteTrade(trade)}>
                   <span class="action-icon" aria-hidden="true">{@html icons.trash}</span>
                 </button>
@@ -456,7 +457,7 @@
           {/each}
         </ul>
         <div class="footer-actions">
-            <Button label="Save current search" theme="gold" onClick={createTradeFromCurrent} />
+            <Button label={translate($languageStore, "folder.saveCurrentSearch")} theme="gold" onClick={createTradeFromCurrent} />
         </div>
       </LoadingContainer>
     </div>

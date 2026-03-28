@@ -1,22 +1,22 @@
 <script lang="ts">
+  import { languageStore, translate } from "../../lib/services/i18n";
   const version = chrome.runtime.getManifest().version
 </script>
 
 <section class="about-page">
   <header class="hero">
-    <div class="eyebrow">About</div>
+    <div class="eyebrow">{translate($languageStore, "about.eyebrow")}</div>
     <h1>Kroxitrade</h1>
     <p>
-      Kroxitrade is a companion for Path of Exile Trade built to save searches, organize folders, track
-      history, and keep recurring trade workflows fast, visual, and easy to manage inside the official site.
+      {translate($languageStore, "about.description")}
     </p>
   </header>
 
   <footer class="about-footer">
     <p class="about-footer__credit">
-      GitHub <a href="https://github.com/KroxiLabs/Kroxitrade" target="_blank" rel="noreferrer"><strong>better-trading</strong></a>
+      {translate($languageStore, "about.github")} <a href="https://github.com/KroxiLabs/Kroxitrade" target="_blank" rel="noreferrer"><strong>better-trading</strong></a>
     </p>
-    <p class="about-footer__meta">Version {version} • Developed by KroxiLabs</p>
+    <p class="about-footer__meta">{translate($languageStore, "about.version", { version })}</p>
   </footer>
 </section>
 

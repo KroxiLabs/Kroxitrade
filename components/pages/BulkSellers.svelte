@@ -3,6 +3,7 @@
   import { storageService } from "../../lib/services/storage";
   import { bulkSellersService } from "../../lib/services/bulk-sellers";
   import { flashMessages } from "../../lib/services/flash";
+  import { languageStore, translate } from "../../lib/services/i18n";
   import AlertMessage from "../AlertMessage.svelte";
   import Button from "../Button.svelte";
 
@@ -54,13 +55,13 @@
 
   const findItem = (id: string) => {
     if (!bulkSellersService.find(id)) {
-      flashMessages.alert("Couldn't locate that listing in the current results.");
+      flashMessages.alert(translate($languageStore, "bulk.findError"));
     }
   };
 
   const buyItem = (id: string) => {
     if (!bulkSellersService.buy(id)) {
-      flashMessages.alert("Couldn't trigger the buy action for that listing.");
+      flashMessages.alert(translate($languageStore, "bulk.buyError"));
     }
   };
 </script>
@@ -103,8 +104,8 @@
                   </div>
 
                   <div class="item-actions">
-                    <Button label="Find" theme="blue" onClick={() => findItem(item.id)} />
-                    <Button label="Buy" theme="gold" onClick={() => buyItem(item.id)} />
+                    <Button label={translate($languageStore, "bulk.find")} theme="blue" onClick={() => findItem(item.id)} />
+                    <Button label={translate($languageStore, "bulk.buy")} theme="gold" onClick={() => buyItem(item.id)} />
                   </div>
                 </div>
               {/each}
@@ -116,7 +117,7 @@
   {:else}
     <AlertMessage
       type="warning"
-      message="No bulk sellers detected yet. Open a trade result list where the same seller appears more than once."
+      message={translate($languageStore, "bulk.empty")}
     />
   {/if}
 </div>

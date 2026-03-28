@@ -7,6 +7,7 @@
   import downloadIcon from "data-text:lucide-static/icons/download.svg";
   import folderPlusIcon from "data-text:lucide-static/icons/folder-plus.svg";
   import xIcon from "data-text:lucide-static/icons/x.svg";
+  import { languageStore, translate } from "../../lib/services/i18n";
   import { bookmarksService } from "../../lib/services/bookmarks";
   import { tradeLocationService } from "../../lib/services/trade-location";
   import { flashMessages } from "../../lib/services/flash";
@@ -81,13 +82,13 @@
 
   const createFolder = async () => {
     const newFolder: BookmarksFolderStruct = {
-      title: "New Folder",
+      title: translate($languageStore, "bookmarks.newFolder"),
       icon: null,
       version: $currentLocation.version,
       archivedAt: null
     };
     await bookmarksService.persistFolder(newFolder);
-    flashMessages.success("Folder created!");
+    flashMessages.success(translate($languageStore, "bookmarks.folderCreated"));
   };
 
   const toggleArchive = async (folder: BookmarksFolderStruct) => {
@@ -97,7 +98,7 @@
   const deleteFolder = async (folder: BookmarksFolderStruct) => {
     if (!folder.id) return;
     await bookmarksService.deleteFolder(folder.id);
-    flashMessages.success("Folder deleted!");
+    flashMessages.success(translate($languageStore, "bookmarks.folderDeleted"));
   };
 
   const collapseAll = () => {
@@ -157,7 +158,7 @@
       a.download = `kroxitrade-backup-${new Date().toISOString().slice(0,10)}.txt`;
       a.click();
       URL.revokeObjectURL(url);
-      flashMessages.success("Backup exported!");
+      flashMessages.success(translate($languageStore, "bookmarks.exported"));
   };
 
   const restoreFromFile = (event: Event) => {
@@ -170,9 +171,9 @@
           const dataString = e.target?.result as string;
           const success = await bookmarksService.restoreFromDataString(dataString);
           if (success) {
-              flashMessages.success("Backup restored!");
+              flashMessages.success(translate($languageStore, "bookmarks.restored"));
           } else {
-              flashMessages.alert("Failed to restore backup.");
+              flashMessages.alert(translate($languageStore, "bookmarks.restoreFailed"));
           }
           input.value = "";
       };
@@ -182,13 +183,13 @@
   const processTextImport = async () => {
       const serialized = importText.trim();
       if (!serialized) {
-          flashMessages.alert("Please paste the folder data first.");
+          flashMessages.alert(translate($languageStore, "bookmarks.pasteFolderData"));
           return;
       }
 
       const deserialized = bookmarksService.deserializeFolder(serialized);
       if (!deserialized) {
-          flashMessages.alert("Invalid folder data. Please check the string.");
+          flashMessages.alert(translate($languageStore, "bookmarks.invalidFolderData"));
           return;
       }
 
@@ -196,7 +197,7 @@
       const folderId = await bookmarksService.persistFolder(folder);
       await bookmarksService.persistTrades(trades, folderId);
       
-      flashMessages.success(`Imported "${folder.title}"!`);
+      flashMessages.success(translate($languageStore, "bookmarks.importedFolder", { title: folder.title }));
       importText = "";
       isImportingText = false;
   };
@@ -228,39 +229,39 @@
   <section class="toolbar-panel">
     <div class="toolbar-row">
       <div class="toolbar-actions">
-        <button class="toolbar-button" type="button" title="New Folder" aria-label="New Folder" on:click={createFolder}>
+        <button class="toolbar-button" type="button" title={translate($languageStore, "bookmarks.toolbar.newFolderTitle")} aria-label={translate($languageStore, "bookmarks.toolbar.newFolderTitle")} on:click={createFolder}>
           <span class="toolbar-icon" aria-hidden="true">{@html toolbarIcons.newFolder}</span>
-          <span class="toolbar-label">New</span>
+          <span class="toolbar-label">{translate($languageStore, "bookmarks.toolbar.new")}</span>
         </button>
         <button
           class:active={isImportingText}
           class="toolbar-button"
           type="button"
-          title={isImportingText ? "Cancel Import" : "Import Folder"}
-          aria-label={isImportingText ? "Cancel Import" : "Import Folder"}
+          title={isImportingText ? translate($languageStore, "bookmarks.toolbar.cancelImport") : translate($languageStore, "bookmarks.toolbar.importFolder")}
+          aria-label={isImportingText ? translate($languageStore, "bookmarks.toolbar.cancelImport") : translate($languageStore, "bookmarks.toolbar.importFolder")}
           on:click={() => isImportingText = !isImportingText}
         >
           <span class="toolbar-icon" aria-hidden="true">
             {@html isImportingText ? toolbarIcons.cancel : toolbarIcons.import}
           </span>
-          <span class="toolbar-label">{isImportingText ? "Cancel" : "Import"}</span>
+          <span class="toolbar-label">{isImportingText ? translate($languageStore, "bookmarks.toolbar.cancel") : translate($languageStore, "bookmarks.toolbar.import")}</span>
         </button>
-        <button class="toolbar-button" type="button" title="Collapse All" aria-label="Collapse All" on:click={collapseAll}>
+        <button class="toolbar-button" type="button" title={translate($languageStore, "bookmarks.toolbar.collapseAll")} aria-label={translate($languageStore, "bookmarks.toolbar.collapseAll")} on:click={collapseAll}>
           <span class="toolbar-icon" aria-hidden="true">{@html toolbarIcons.collapse}</span>
-          <span class="toolbar-label">Collapse</span>
+          <span class="toolbar-label">{translate($languageStore, "bookmarks.toolbar.collapse")}</span>
         </button>
         <button
           class:active={showArchived}
           class="toolbar-button"
           type="button"
-          title={showArchived ? "Show Active" : "Show Archived"}
-          aria-label={showArchived ? "Show Active" : "Show Archived"}
+          title={showArchived ? translate($languageStore, "bookmarks.toolbar.showActive") : translate($languageStore, "bookmarks.toolbar.showArchived")}
+          aria-label={showArchived ? translate($languageStore, "bookmarks.toolbar.showActive") : translate($languageStore, "bookmarks.toolbar.showArchived")}
           on:click={() => showArchived = !showArchived}
         >
           <span class="toolbar-icon" aria-hidden="true">
             {@html showArchived ? toolbarIcons.active : toolbarIcons.archive}
           </span>
-          <span class="toolbar-label">{showArchived ? "Active" : "Archive"}</span>
+          <span class="toolbar-label">{showArchived ? translate($languageStore, "bookmarks.toolbar.active") : translate($languageStore, "bookmarks.toolbar.archive")}</span>
         </button>
       </div>
     </div>
@@ -269,11 +270,11 @@
       <div class="import-text-area">
         <textarea 
           bind:value={importText} 
-          placeholder="Paste folder text here..."
+          placeholder={translate($languageStore, "bookmarks.importPlaceholder")}
           autofocus
         ></textarea>
         <div class="import-actions">
-          <Button label="CONFIRM IMPORT" theme="gold" onClick={processTextImport} />
+          <Button label={translate($languageStore, "bookmarks.confirmImport")} theme="gold" onClick={processTextImport} />
         </div>
       </div>
     {/if}
@@ -302,10 +303,10 @@
   </LoadingContainer>
 
   <section class="action-section backup-section">
-    <div class="section-heading">Backup & Restore</div>
+    <div class="section-heading">{translate($languageStore, "bookmarks.backupTitle")}</div>
     <div class="button-row backup-row">
-        <Button label="SAVE FILE" theme="gold" iconHtml={toolbarIcons.import} onClick={exportToFile} class="flex-1" />
-        <Button label="RESTORE FROM FILE" theme="gold" iconHtml={toolbarIcons.active} onFileChange={restoreFromFile} fileAccept=".txt" class="flex-1" />
+        <Button label={translate($languageStore, "bookmarks.saveFile")} theme="gold" iconHtml={toolbarIcons.import} onClick={exportToFile} class="flex-1" />
+        <Button label={translate($languageStore, "bookmarks.restoreFile")} theme="gold" iconHtml={toolbarIcons.active} onFileChange={restoreFromFile} fileAccept=".txt" class="flex-1" />
     </div>
   </section>
 </div>

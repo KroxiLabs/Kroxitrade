@@ -8,6 +8,7 @@
   import FinerFilters from "./FinerFilters.svelte";
   import logoUrl from "data-base64:~assets/logo.png";
   import { flashMessages } from "../lib/services/flash";
+  import { languageStore, translate } from "../lib/services/i18n";
   import { settings } from "../lib/services/settings";
   import { onDestroy, onMount } from "svelte";
   
@@ -130,7 +131,7 @@
       type="button"
       class="resize-handle"
       class:side-right={$settings.sidebarSide === 'right'}
-      aria-label="Resize sidebar"
+      aria-label={translate($languageStore, "layout.resizeSidebar")}
       on:mousedown={startResize}
     ></button>
   {/if}
@@ -142,33 +143,33 @@
         class="nav-item {currentPage === 'bookmarks' ? 'is-active' : ''}" 
         on:click={() => currentPage = 'bookmarks'}
     >
-        Bookmarks
+        {translate($languageStore, "layout.nav.bookmarks")}
     </button>
 
     <button 
         class="nav-item {currentPage === 'bulk' ? 'is-active' : ''}" 
         on:click={() => currentPage = 'bulk'}
     >
-        Bulk
+        {translate($languageStore, "layout.nav.bulk")}
     </button>
 
     <button 
         class="nav-item {currentPage === 'history' ? 'is-active' : ''}" 
         on:click={() => currentPage = 'history'}
     >
-        History
+        {translate($languageStore, "layout.nav.history")}
     </button>
     <button 
         class="nav-item {currentPage === 'settings' ? 'is-active' : ''}" 
         on:click={() => currentPage = 'settings'}
     >
-        Settings
+        {translate($languageStore, "layout.nav.settings")}
     </button>
     <button 
         class="nav-item {currentPage === 'about' ? 'is-active' : ''}" 
         on:click={() => currentPage = 'about'}
     >
-        About
+        {translate($languageStore, "layout.nav.about")}
     </button>
   </nav>
 
@@ -177,7 +178,7 @@
       <button 
         class="flash flash-{flash.type}" 
         on:click={() => flashMessages.remove(flash.id)}
-        aria-label="Remove alert"
+        aria-label={translate($languageStore, "layout.removeAlert")}
       >
         {flash.message}
       </button>
@@ -206,7 +207,7 @@
     class="floating-restore-btn" 
     class:side-right={$settings.sidebarSide === 'right'}
     on:click={toggleMinimize} 
-    aria-label="Restore Kroxitrade Panel"
+    aria-label={translate($languageStore, "layout.restorePanel")}
   >
     <img src={logoUrl} alt="Logo" class="floater-logo" />
     <span class="chev-icon">{$settings.sidebarSide === 'right' ? "◀" : "▶"}</span>

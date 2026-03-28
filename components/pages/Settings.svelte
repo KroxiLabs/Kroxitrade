@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { languageStore, translate, type AppLanguage } from "../../lib/services/i18n";
   import { settings, type SidebarSide } from "../../lib/services/settings";
   import Button from "../Button.svelte";
   import { onMount } from "svelte";
@@ -17,6 +18,10 @@
     await settings.updateSidebarWidth(DEFAULT_SIDEBAR_WIDTH);
   }
 
+  async function handleLanguageChange(language: AppLanguage) {
+    await settings.updateLanguage(language);
+  }
+
   onMount(async () => {
     await settings.load();
   });
@@ -24,24 +29,24 @@
 
 <div class="settings-page">
   <section class="settings-section">
-    <h3 class="section-title">Sidebar Position</h3>
-    <p class="section-description">Choose which side of the screen you want the Kroxitrade panel to appear.</p>
+    <h3 class="section-title">{translate($languageStore, "settings.sidebarTitle")}</h3>
+    <p class="section-description">{translate($languageStore, "settings.sidebarDescription")}</p>
     
     <div class="side-selector">
       <Button 
-        label="Left" 
+        label={translate($languageStore, "settings.left")} 
         theme={$settings.sidebarSide === 'left' ? 'gold' : 'blue'}
         class="side-btn"
         onClick={() => handleSideChange('left')}
       />
       <Button 
-        label="Right" 
+        label={translate($languageStore, "settings.right")} 
         theme={$settings.sidebarSide === 'right' ? 'gold' : 'blue'}
         class="side-btn"
         onClick={() => handleSideChange('right')}
       />
       <Button
-        label={`RESET WIDTH`}
+        label={translate($languageStore, "settings.resetWidth")}
         theme="blue"
         class="side-btn reset-btn"
         onClick={handleSidebarWidthReset}
@@ -50,18 +55,38 @@
   </section>
 
   <section class="settings-section">
-    <h3 class="section-title">Equivalent Pricing</h3>
-    <p class="section-description">Show or hide the extra chaos/divine equivalent line in trade results.</p>
+    <h3 class="section-title">{translate($languageStore, "settings.languageTitle")}</h3>
+    <p class="section-description">{translate($languageStore, "settings.languageDescription")}</p>
 
     <div class="side-selector">
       <Button
-        label="Hidden"
+        label={translate($languageStore, "settings.languageEnglish")}
+        theme={$settings.language === 'en' ? 'gold' : 'blue'}
+        class="side-btn"
+        onClick={() => handleLanguageChange('en')}
+      />
+      <Button
+        label={translate($languageStore, "settings.languageSpanish")}
+        theme={$settings.language === 'es' ? 'gold' : 'blue'}
+        class="side-btn"
+        onClick={() => handleLanguageChange('es')}
+      />
+    </div>
+  </section>
+
+  <section class="settings-section">
+    <h3 class="section-title">{translate($languageStore, "settings.equivalentTitle")}</h3>
+    <p class="section-description">{translate($languageStore, "settings.equivalentDescription")}</p>
+
+    <div class="side-selector">
+      <Button
+        label={translate($languageStore, "settings.hidden")}
         theme={$settings.showEquivalentPricing ? 'blue' : 'gold'}
         class="side-btn"
         onClick={() => handleEquivalentPricingChange(false)}
       />
       <Button
-        label="Visible"
+        label={translate($languageStore, "settings.visible")}
         theme={$settings.showEquivalentPricing ? 'gold' : 'blue'}
         class="side-btn"
         onClick={() => handleEquivalentPricingChange(true)}

@@ -1,4 +1,5 @@
 import { writable } from 'svelte/store';
+import { setLanguage, type AppLanguage } from './i18n';
 import { storageService } from './storage';
 
 export type SidebarSide = 'left' | 'right';
@@ -7,12 +8,14 @@ export interface AppSettings {
   sidebarSide: SidebarSide;
   showEquivalentPricing: boolean;
   sidebarWidth: number;
+  language: AppLanguage;
 }
 
 const DEFAULT_SETTINGS: AppSettings = {
   sidebarSide: 'right',
   showEquivalentPricing: false,
   sidebarWidth: 360,
+  language: 'en',
 };
 
 let currentSettings: AppSettings = DEFAULT_SETTINGS;
@@ -26,7 +29,9 @@ subscribe((value) => {
 // Load settings from storage
 async function load() {
   const settings = await storageService.getValue<AppSettings>('app-settings');
-  set({ ...DEFAULT_SETTINGS, ...settings });
+  const next = { ...DEFAULT_SETTINGS, ...settings };
+  set(next);
+  setLanguage(next.language);
 }
 
 // Persist settings to storage
@@ -58,6 +63,14 @@ export const settings = {
     update(s => {
       const next = { ...s, sidebarWidth };
       save(next);
+      return next;
+    });
+  },
+  async updateLanguage(language: AppLanguage) {
+    update(s => {
+      const next = { ...s, language };
+      save(next);
+      setLanguage(language);
       return next;
     });
   }

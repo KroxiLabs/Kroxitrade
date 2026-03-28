@@ -3,6 +3,7 @@
   import { tradeLocationService } from "../../lib/services/trade-location";
   import { openUrlInActiveTab } from "../../lib/services/active-trade-tab";
   import { flashMessages } from "../../lib/services/flash";
+  import { languageStore, translate } from "../../lib/services/i18n";
   import { getTradeUrl } from "../../lib/utilities/trade-url";
   import type { TradeLocationHistoryStruct, TradeSiteVersion } from "../../lib/types/trade-location";
 
@@ -45,7 +46,7 @@
   const clearHistory = async () => {
     await tradeLocationService.clearHistoryEntries();
     historyEntries = [];
-    flashMessages.success("History cleared!");
+    flashMessages.success(translate($languageStore, "history.cleared"));
   };
 
   const openHistoryEntry = async (entry: TradeLocationHistoryStruct) => {
@@ -74,14 +75,14 @@
       </ul>
 
       <Button 
-          label="Clear History" 
+          label={translate($languageStore, "history.clear")} 
           theme="gold" 
           icon="✕" 
           onClick={clearHistory} 
           class="clear-button"
       />
     {:else}
-      <AlertMessage type="warning" message="History is empty for PoE {currentVersion}." />
+      <AlertMessage type="warning" message={translate($languageStore, "history.empty", { version: currentVersion })} />
     {/if}
   </LoadingContainer>
 </div>

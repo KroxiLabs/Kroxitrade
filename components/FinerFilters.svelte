@@ -1,17 +1,18 @@
 <script lang="ts">
+  import { languageStore, translate } from "../lib/services/i18n";
   const listModifiers = [
     {
-      name: 'Pseudo Res/Life',
+      key: 'finer.pseudoResLife',
       types: ['life', 'cold', 'fire', 'light', 'chaos'],
       prefix: 'pseudo.pseudo_',
     },
     {
-      name: 'Explicit Res/Life',
+      key: 'finer.explicitResLife',
       types: ['explicit_life', 'explicit_cold', 'explicit_fire', 'explicit_light', 'explicit_chaos'],
       prefix: 'explicit.stat_',
     },
     {
-      name: 'Attack Weapon',
+      key: 'finer.attackWeapon',
       types: [
         'explicit_inc_phy_dmg', 'explicit_add_phy_local', 'explicit_add_fire_local',
         'explicit_add_cold_local', 'explicit_add_light_local', 'explicit_add_chaos_local',
@@ -20,7 +21,7 @@
       prefix: 'explicit.stat_',
     },
     {
-      name: 'Spell Weapon',
+      key: 'finer.spellWeapon',
       types: [
         'explicit_inc_spell_dmg', 'explicit_inc_fire_spell_dmg', 'explicit_inc_cold_spell_dmg',
         'explicit_inc_light_spell_dmg', 'explicit_add_fire_spell_dmg', 'explicit_add_cold_spell_dmg',
@@ -49,18 +50,18 @@
 <div class="finer-filters-container">
   <!-- Header -->
   <div class="finer-header" on:click={() => collapsed = !collapsed}>
-    <span>ADD TO FILTERS</span>
+    <span>{translate($languageStore, "finer.title")}</span>
     <span class="chevron" class:collapsed>▼</span>
   </div>
 
   {#if !collapsed}
     <div class="finer-body">
-      <div class="section-title">- MODIFIERS -</div>
+      <div class="section-title">- {translate($languageStore, "finer.modifiers")} -</div>
       
       <div class="modifiers-list">
         {#each listModifiers as mod}
           <div class="finer-global-btn">
-            <span class="mod-name">{mod.name}</span>
+            <span class="mod-name">{translate($languageStore, mod.key)}</span>
             <button class="action-btn minus" on:click={() => handleAction('global-minus', mod.types, mod.prefix)}>-</button>
             <button class="action-btn plus" on:click={() => handleAction('global-plus', mod.types, mod.prefix)}>+</button>
           </div>
