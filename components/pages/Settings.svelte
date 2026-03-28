@@ -5,6 +5,17 @@
   import { onMount } from "svelte";
 
   const DEFAULT_SIDEBAR_WIDTH = 360;
+  const languages: Array<{ code: AppLanguage; label: string }> = [
+    { code: "en", label: "English" },
+    { code: "es", label: "Español" },
+    { code: "pt", label: "Português" },
+    { code: "ru", label: "Русский" },
+    { code: "th", label: "ไทย" },
+    { code: "de", label: "Deutsch" },
+    { code: "fr", label: "Français" },
+    { code: "ja", label: "日本語" },
+    { code: "ko", label: "한국어" }
+  ];
 
   async function handleSideChange(side: SidebarSide) {
     await settings.updateSide(side);
@@ -58,19 +69,15 @@
     <h3 class="section-title">{translate($languageStore, "settings.languageTitle")}</h3>
     <p class="section-description">{translate($languageStore, "settings.languageDescription")}</p>
 
-    <div class="side-selector">
-      <Button
-        label={translate($languageStore, "settings.languageEnglish")}
-        theme={$settings.language === 'en' ? 'gold' : 'blue'}
-        class="side-btn"
-        onClick={() => handleLanguageChange('en')}
-      />
-      <Button
-        label={translate($languageStore, "settings.languageSpanish")}
-        theme={$settings.language === 'es' ? 'gold' : 'blue'}
-        class="side-btn"
-        onClick={() => handleLanguageChange('es')}
-      />
+    <div class="language-selector">
+      {#each languages as language (language.code)}
+        <Button
+          label={language.label}
+          theme={$settings.language === language.code ? 'gold' : 'blue'}
+          class="language-btn"
+          onClick={() => handleLanguageChange(language.code)}
+        />
+      {/each}
     </div>
   </section>
 
@@ -155,5 +162,15 @@
 
   :global(.reset-btn) {
     flex: 1.35;
+  }
+
+  .language-selector {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  :global(.language-btn) {
+    min-width: 0;
   }
 </style>
