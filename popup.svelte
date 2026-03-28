@@ -13,8 +13,8 @@
       logoAlt: "Path of Exile 2 Trade"
     }
   ]
-  import poe1Logo from "data-base64:./assets/logo-trade.png"
-  import poe2Logo from "data-base64:./assets/logo-trade2.png"
+  import poe1Logo from "data-base64:./assets/logo-trade.webp"
+  import poe2Logo from "data-base64:./assets/logo-trade2.webp"
 </script>
 
 <svelte:head>
