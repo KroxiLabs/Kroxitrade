@@ -223,11 +223,12 @@
         <span class="nav-item__label">{translate($languageStore, "layout.nav.settings")}</span>
     </button>
     <button 
-        class="nav-item {currentPage === 'about' ? 'is-active' : ''}" 
+        class="nav-item nav-item--icon-only {currentPage === 'about' ? 'is-active' : ''}" 
+        title={translate($languageStore, "layout.nav.about")}
+        aria-label={translate($languageStore, "layout.nav.about")}
         on:click={() => currentPage = 'about'}
     >
         <span class="nav-item__icon" aria-hidden="true">{@html navIcons.about}</span>
-        <span class="nav-item__label">{translate($languageStore, "layout.nav.about")}</span>
     </button>
   </nav>
 
@@ -498,6 +499,14 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  .nav-item--icon-only {
+    flex: 0 0 32px;
+    width: 32px;
+    min-width: 32px;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .flash-messages {
