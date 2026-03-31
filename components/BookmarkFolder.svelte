@@ -59,13 +59,23 @@
     const meta: string[] = [];
     const league = trade.location.league || tradeLocationService.current.league || "Standard";
 
-    meta.push(league);
+    meta.push(formatLeagueLabel(league));
 
     if (trade.location.type) {
       meta.push(trade.location.type);
     }
 
     return meta.join(translate($languageStore, "folder.metaSeparator"));
+  };
+
+  const formatLeagueLabel = (league: string) => {
+    const normalizedLeague = league.replace(/^(poe2|xbox|sony)\//i, "");
+
+    try {
+      return decodeURIComponent(normalizedLeague);
+    } catch {
+      return normalizedLeague.replace(/%20/g, " ");
+    }
   };
 
   const toggleTrade = async (trade: BookmarksTradeStruct) => {

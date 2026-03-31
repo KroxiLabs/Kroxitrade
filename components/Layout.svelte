@@ -15,12 +15,17 @@
   import { flashMessages } from "../lib/services/flash";
   import { languageStore, translate } from "../lib/services/i18n";
   import { settings } from "../lib/services/settings";
+  import { storageService } from "../lib/services/storage";
+  import { tradeLocationService } from "../lib/services/trade-location";
   import { onDestroy, onMount } from "svelte";
   
+  const MINIMIZED_STORAGE_KEY = "layout-minimized";
+
   let currentPage: 'bookmarks' | 'bulk' | 'history' | 'about' | 'settings' = 'bookmarks';
   let isMinimized = false;
   let isResizing = false;
   let liveSidebarWidth: number | null = null;
+  let loadedMinimizedStateKey: string | null = null;
 
   const MIN_SIDEBAR_WIDTH = 300;
   const MAX_SIDEBAR_WIDTH = 560;
@@ -52,6 +57,15 @@
 
   const toggleMinimize = () => {
     isMinimized = !isMinimized;
+  };
+
+  const loadMinimizedState = (storageKey: string) => {
+    isMinimized = storageService.getLocalValue(storageKey) === "true";
+    loadedMinimizedStateKey = storageKey;
+  };
+
+  const persistMinimizedState = (storageKey: string, minimized: boolean) => {
+    storageService.setLocalValue(storageKey, minimized ? "true" : "false");
   };
 
   const updateSidebarWidthCssVar = () => {
@@ -100,6 +114,7 @@
 
   onMount(async () => {
     await settings.load();
+    tradeLocationService.startPolling();
 
     window.addEventListener('mousemove', handleResizeMove);
     window.addEventListener('mouseup', stopResize);
@@ -114,6 +129,15 @@
 
   $: if (!$settings.showBulkSellers && currentPage === 'bulk') {
     currentPage = 'bookmarks';
+  }
+
+  $: currentLocation = tradeLocationService.locationStore;
+  $: minimizedStorageKey = `${MINIMIZED_STORAGE_KEY}-${$currentLocation.version}`;
+  $: if (minimizedStorageKey && loadedMinimizedStateKey !== minimizedStorageKey) {
+    loadMinimizedState(minimizedStorageKey);
+  }
+  $: if (loadedMinimizedStateKey === minimizedStorageKey) {
+    persistMinimizedState(minimizedStorageKey, isMinimized);
   }
 
   $: {

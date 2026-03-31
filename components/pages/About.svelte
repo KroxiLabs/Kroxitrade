@@ -1,6 +1,8 @@
 <script lang="ts">
   import { languageStore, translate } from "../../lib/services/i18n";
-  const version = chrome.runtime.getManifest().version
+  import { hasValidExtensionContext } from "../../lib/utilities/extension-context";
+
+  const version = hasValidExtensionContext() ? chrome.runtime.getManifest().version : "dev"
 </script>
 
 <section class="about-page">
