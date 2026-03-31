@@ -2,8 +2,7 @@
   <img src="assets/logo.webp" alt="Poe Trade Plus Logo" width="120" />
   <h1>Poe Trade Plus Companion</h1>
   <p><em>Browser extension for a faster, cleaner Path of Exile Trade workflow</em></p>
-  
-  [<img src="https://storage.googleapis.com/web-dev-uploads/image/WlD8wC6g8khYvJJryawbSLuzwZo1/UV4C4ybeBTsZt446U8G3.png" alt="Available in the Chrome Web Store" width="248" height="75" />](https://chromewebstore.google.com/detail/poe-trade-plus/igofmcebdienfacijkhdppcfiglcbffb)
+    [<img src="assets/chrome-button.webp" alt="Available in the Chrome Web Store" width="248" height="75" />](https://chromewebstore.google.com/detail/poe-trade-plus/igofmcebdienfacijkhdppcfiglcbffb)
 </div>
 
 ---
@@ -120,7 +119,7 @@ The unpacked production extension is generated in `build/chrome-mv3-prod`.
 npm run package
 ```
 
-This command creates a zip file in `build/` such as `Poe Trade Plus.zip`, using the contents of `build/chrome-mv3-prod`.
+This command creates a zip file in `build/` such as `Poe Trade Plus-1.0.58.zip`, using the contents of `build/chrome-mv3-prod`.
 
 ## Permissions and Integrations
 
