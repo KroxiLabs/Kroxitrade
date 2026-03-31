@@ -410,6 +410,7 @@
                     <a
                       class="trade-link"
                       href={getTradeUrl(trade.location.version, trade.location.type, trade.location.slug, trade.location.league || tradeLocationService.current.league || 'Standard')}
+                      title={trade.title}
                       on:click|preventDefault={() => void openTrade(trade)}
                     >
                       {trade.title}
