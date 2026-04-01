@@ -22,6 +22,7 @@
   
   import Button from "./Button.svelte";
   import LoadingContainer from "./LoadingContainer.svelte";
+  import TradeActionsMenu from "./TradeActionsMenu.svelte";
 
   export let folder: BookmarksFolderStruct;
   export let expandedFolderIds: string[];
@@ -421,49 +422,14 @@
                   </div>
                 {/if}
               </div>
-              <div class="trade-actions">
-                <button
-                  type="button"
-                  class="trade-action"
-                  title={translate($languageStore, "folder.editSearchName")}
-                  aria-label={translate($languageStore, "folder.editSearchName")}
-                  on:click|stopPropagation={() => startEditingTrade(trade)}>
-                  <span class="action-icon" aria-hidden="true">{@html icons.edit}</span>
-                </button>
-                <button
-                  type="button"
-                  class="trade-action"
-                  title={translate($languageStore, "folder.replaceCurrentSearch")}
-                  aria-label={translate($languageStore, "folder.replaceCurrentSearch")}
-                  on:click={() => void replaceSearchWithCurrent(trade)}>
-                  <span class="action-icon" aria-hidden="true">{@html icons.replace}</span>
-                </button>
-                <button
-                  type="button"
-                  class="trade-action"
-                  title={translate($languageStore, "folder.copyUrl")}
-                  aria-label={translate($languageStore, "folder.copyUrl")}
-                  on:click={() => copyTrade(trade)}>
-                  <span class="action-icon" aria-hidden="true">{@html icons.copy}</span>
-                </button>
-                <button
-                  type="button"
-                  class="trade-action"
-                  class:is-active={!!trade.completedAt}
-                  title={trade.completedAt ? translate($languageStore, "folder.markPending") : translate($languageStore, "folder.markComplete")}
-                  aria-label={trade.completedAt ? translate($languageStore, "folder.markPending") : translate($languageStore, "folder.markComplete")}
-                  on:click={() => void toggleTrade(trade)}>
-                  <span class="action-icon" aria-hidden="true">{@html icons.check}</span>
-                </button>
-                <button
-                  type="button"
-                  class="trade-action is-danger"
-                  title={translate($languageStore, "folder.deleteTrade")}
-                  aria-label={translate($languageStore, "folder.deleteTrade")}
-                  on:click={() => void deleteTrade(trade)}>
-                  <span class="action-icon" aria-hidden="true">{@html icons.trash}</span>
-                </button>
-              </div>
+              <TradeActionsMenu
+                trade={trade}
+                onEdit={() => startEditingTrade(trade)}
+                onReplace={() => replaceSearchWithCurrent(trade)}
+                onCopy={() => copyTrade(trade)}
+                onToggle={() => void toggleTrade(trade)}
+                onDelete={() => void deleteTrade(trade)}
+              />
             </li>
           {/each}
         </ul>
@@ -482,7 +448,6 @@
     margin-bottom: 10px;
     border: 1px solid rgba($gold, 0.12);
     border-radius: 8px;
-    overflow: hidden;
     background:
       linear-gradient(180deg, rgba($gold, 0.035), rgba($gold, 0.015)),
       rgba($black, 0.4);
@@ -745,49 +710,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-  }
-
-  .trade-actions {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-shrink: 0;
-    padding-left: 8px;
-    border-left: 1px solid rgba($white, 0.05);
-  }
-
-  .trade-action {
-    width: 24px;
-    height: 24px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    border: 1px solid rgba($white, 0.12);
-    background-color: rgba($black, 0.45);
-    color: rgba($white, 0.82);
-    font-size: 12px;
-    line-height: 1;
-    cursor: pointer;
-    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
-
-    &:hover {
-      background-color: rgba($white, 0.08);
-      border-color: rgba($gold, 0.38);
-      color: $white;
-    }
-
-    &.is-active {
-      background-color: rgba($green, 0.18);
-      border-color: rgba($green, 0.5);
-      color: #d7ffd7;
-    }
-
-    &.is-danger:hover {
-      background-color: rgba($red, 0.18);
-      border-color: rgba($red, 0.5);
-      color: #ffd7d7;
-    }
   }
 
   .check {
