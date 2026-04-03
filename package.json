@@ -12,9 +12,12 @@
   "scripts": {
     "dev": "plasmo dev",
     "build:chrome": "plasmo build",
-    "build:firefox": "npx plasmo build --target=firefox-mv2",
-    "package:chrome": "node scripts/bump-version.cjs && npx plasmo build && node scripts/archive-build.cjs",
-    "package:firefox": "npx plasmo build --target=firefox-mv2 && node scripts/archive-build.cjs firefox-mv2-prod"
+    "build:firefox": "plasmo build --target=firefox-mv2",
+    "build": "npm run build:chrome && npm run build:firefox",
+    "version:bump": "node scripts/bump-version.cjs",
+    "archive:chrome": "node scripts/archive-build.cjs",
+    "archive:firefox": "node scripts/archive-build.cjs firefox-mv2-prod",
+    "package": "npm run version:bump && npm run package:chrome && npm run package:firefox"
   },
   "dependencies": {
     "js-base64": "^3.7.8",
