@@ -228,6 +228,7 @@
 
   let editingFolder = false
   let folderEditTitle = ""
+  let isSavingFolderTitle = false
 
   const startEditingFolder = () => {
     folderEditTitle = folder.title
@@ -235,15 +236,21 @@
   }
 
   const saveFolderTitle = async () => {
+    if (isSavingFolderTitle) return
     editingFolder = false
     const newTitle = folderEditTitle.trim()
     if (!newTitle || newTitle === folder.title) return
 
-    await bookmarksService.renameFolder(folder, newTitle)
-    folder.title = newTitle
-    flashMessages.success(
-      translate($languageStore, "folder.renamedFolder", { title: newTitle })
-    )
+    isSavingFolderTitle = true
+    try {
+      await bookmarksService.renameFolder(folder, newTitle)
+      folder.title = newTitle
+      flashMessages.success(
+        translate($languageStore, "folder.renamedFolder", { title: newTitle })
+      )
+    } finally {
+      isSavingFolderTitle = false
+    }
   }
 
   const cancelFolderEdit = () => {
@@ -252,6 +259,7 @@
 
   let editingTradeId: string | null = null
   let tradeEditTitle = ""
+  let savingTradeId: string | null = null
 
   const startEditingTrade = (trade: BookmarksTradeStruct) => {
     if (!trade.id) return
@@ -260,15 +268,21 @@
   }
 
   const saveTradeTitle = async (trade: BookmarksTradeStruct) => {
+    if (!trade.id || savingTradeId === trade.id) return
     editingTradeId = null
     const newTitle = tradeEditTitle.trim()
     if (!newTitle || !folder.id || newTitle === trade.title) return
 
-    await bookmarksService.renameTrade(trade, folder.id, newTitle)
-    await loadTrades()
-    flashMessages.success(
-      translate($languageStore, "folder.renamedSearch", { title: newTitle })
-    )
+    savingTradeId = trade.id
+    try {
+      await bookmarksService.renameTrade(trade, folder.id, newTitle)
+      await loadTrades()
+      flashMessages.success(
+        translate($languageStore, "folder.renamedSearch", { title: newTitle })
+      )
+    } finally {
+      savingTradeId = null
+    }
   }
 
   const cancelTradeEdit = () => {
