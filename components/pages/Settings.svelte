@@ -109,8 +109,19 @@
 
 <div class="settings-page">
   <section class="settings-section">
-    <h3 class="section-title">{translate($languageStore, "settings.sidebarTitle")}</h3>
-    <p class="section-description">{translate($languageStore, "settings.sidebarDescription")}</p>
+    <div class="section-heading">
+      <h3 class="section-title">{translate($languageStore, "settings.sidebarTitle")}</h3>
+      <div class="info-tooltip">
+        <button
+          type="button"
+          class="info-tooltip__trigger"
+          aria-label={translate($languageStore, "settings.sidebarDescription")}
+        >
+          i
+        </button>
+        <div class="info-tooltip__content">{translate($languageStore, "settings.sidebarDescription")}</div>
+      </div>
+    </div>
     
     <div class="side-selector">
       <Button 
@@ -135,8 +146,19 @@
   </section>
 
   <section class="settings-section">
-    <h3 class="section-title">{translate($languageStore, "settings.languageTitle")}</h3>
-    <p class="section-description">{translate($languageStore, "settings.languageDescription")}</p>
+    <div class="section-heading">
+      <h3 class="section-title">{translate($languageStore, "settings.languageTitle")}</h3>
+      <div class="info-tooltip">
+        <button
+          type="button"
+          class="info-tooltip__trigger"
+          aria-label={translate($languageStore, "settings.languageDescription")}
+        >
+          i
+        </button>
+        <div class="info-tooltip__content">{translate($languageStore, "settings.languageDescription")}</div>
+      </div>
+    </div>
 
     <div class="language-selector" bind:this={languageSelectorEl}>
       <div class="language-preview">
@@ -180,8 +202,19 @@
   </section>
 
   <section class="settings-section">
-    <h3 class="section-title">{translate($languageStore, "settings.equivalentTitle")}</h3>
-    <p class="section-description">{translate($languageStore, "settings.equivalentDescription")}</p>
+    <div class="section-heading">
+      <h3 class="section-title">{translate($languageStore, "settings.equivalentTitle")}</h3>
+      <div class="info-tooltip">
+        <button
+          type="button"
+          class="info-tooltip__trigger"
+          aria-label={translate($languageStore, "settings.equivalentDescription")}
+        >
+          i
+        </button>
+        <div class="info-tooltip__content">{translate($languageStore, "settings.equivalentDescription")}</div>
+      </div>
+    </div>
 
     <div class="side-selector">
       <Button
@@ -200,8 +233,19 @@
   </section>
 
   <section class="settings-section">
-    <h3 class="section-title">{translate($languageStore, "settings.bulkTitle")}</h3>
-    <p class="section-description">{translate($languageStore, "settings.bulkDescription")}</p>
+    <div class="section-heading">
+      <h3 class="section-title">{translate($languageStore, "settings.bulkTitle")}</h3>
+      <div class="info-tooltip">
+        <button
+          type="button"
+          class="info-tooltip__trigger"
+          aria-label={translate($languageStore, "settings.bulkDescription")}
+        >
+          i
+        </button>
+        <div class="info-tooltip__content">{translate($languageStore, "settings.bulkDescription")}</div>
+      </div>
+    </div>
 
     <div class="side-selector">
       <Button
@@ -220,8 +264,19 @@
   </section>
 
   <section class="settings-section">
-    <h3 class="section-title">{translate($languageStore, "settings.compactActionsTitle")}</h3>
-    <p class="section-description">{translate($languageStore, "settings.compactActionsDescription")}</p>
+    <div class="section-heading">
+      <h3 class="section-title">{translate($languageStore, "settings.compactActionsTitle")}</h3>
+      <div class="info-tooltip">
+        <button
+          type="button"
+          class="info-tooltip__trigger"
+          aria-label={translate($languageStore, "settings.compactActionsDescription")}
+        >
+          i
+        </button>
+        <div class="info-tooltip__content">{translate($languageStore, "settings.compactActionsDescription")}</div>
+      </div>
+    </div>
 
     <div class="side-selector">
       <Button
@@ -272,7 +327,7 @@
   }
 
   .section-title {
-    margin: 0 0 8px;
+    margin: 0;
     font-family: $primary-font;
     font-size: 14px;
     text-transform: uppercase;
@@ -280,11 +335,12 @@
     color: $gold;
   }
 
-  .section-description {
-    margin: 0 0 16px;
-    font-size: 12px;
-    color: rgba($white, 0.6);
-    line-height: 1.5;
+  .section-heading {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+    min-width: 0;
   }
 
   .side-selector {
@@ -457,5 +513,58 @@
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
+  }
+
+  .info-tooltip {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+
+    &:hover .info-tooltip__content,
+    &:focus-within .info-tooltip__content {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+  }
+
+  .info-tooltip__trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    border: 1px solid rgba($gold, 0.28);
+    border-radius: 999px;
+    background: rgba($gold, 0.08);
+    color: rgba($gold, 0.9);
+    font-family: $primary-font;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    cursor: help;
+  }
+
+  .info-tooltip__content {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 8;
+    width: min(260px, calc(100vw - 64px));
+    padding: 10px 12px;
+    border: 1px solid rgba($gold, 0.18);
+    border-radius: 4px;
+    background: #14110d;
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
+    color: rgba($white, 0.82);
+    font-size: 11px;
+    line-height: 1.5;
+    text-transform: none;
+    letter-spacing: normal;
+    opacity: 0;
+    transform: translateY(-4px);
+    pointer-events: none;
+    transition: opacity 0.16s ease, transform 0.16s ease;
   }
 </style>
