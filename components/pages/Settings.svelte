@@ -15,6 +15,7 @@
   import editIcon from "data-text:lucide-static/icons/pencil.svg";
   import replaceIcon from "data-text:lucide-static/icons/refresh-cw.svg";
   import copyIcon from "data-text:lucide-static/icons/copy.svg";
+  import liveIcon from "data-text:lucide-static/icons/activity.svg";
   import toggleIcon from "data-text:lucide-static/icons/check.svg";
   import deleteIcon from "data-text:lucide-static/icons/trash-2.svg";
 
@@ -35,6 +36,7 @@
     { id: "edit", labelKey: "folder.editSearchName", icon: normalizeSettingsIcon(editIcon) },
     { id: "replace", labelKey: "folder.replaceCurrentSearch", icon: normalizeSettingsIcon(replaceIcon) },
     { id: "copy", labelKey: "folder.copyUrl", icon: normalizeSettingsIcon(copyIcon) },
+    { id: "openLive", labelKey: "folder.openLiveSearch", icon: normalizeSettingsIcon(liveIcon) },
     { id: "toggle", labelKey: "settings.compactTradeActionToggle", icon: normalizeSettingsIcon(toggleIcon) },
     { id: "delete", labelKey: "folder.deleteTrade", icon: normalizeSettingsIcon(deleteIcon) }
   ];

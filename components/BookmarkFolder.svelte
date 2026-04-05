@@ -106,6 +106,20 @@
       })
   }
 
+  const openTradeLive = async (trade: BookmarksTradeStruct) => {
+    await openUrlInActiveTab(
+      getTradeUrl(
+        trade.location.version,
+        trade.location.type,
+        trade.location.slug,
+        trade.location.league ||
+          tradeLocationService.current.league ||
+          "Standard",
+        "/live"
+      )
+    )
+  }
+
   const deleteTrade = async (trade: BookmarksTradeStruct) => {
     if (!folder.id || !trade.id) return
     try {
@@ -471,6 +485,7 @@
                         onEdit={() => startEditingTrade(trade)}
                         onReplace={() => void replaceSearchWithCurrent(trade)}
                         onCopy={() => copyTrade(trade)}
+                        onOpenLive={() => void openTradeLive(trade)}
                         onToggle={() => void toggleTrade(trade)}
                         onDelete={() => void deleteTrade(trade)} />
                     </div>
@@ -485,6 +500,7 @@
                         onEdit={() => startEditingTrade(trade)}
                         onReplace={() => void replaceSearchWithCurrent(trade)}
                         onCopy={() => copyTrade(trade)}
+                        onOpenLive={() => void openTradeLive(trade)}
                         onToggle={() => void toggleTrade(trade)}
                         onDelete={() => void deleteTrade(trade)} />
                     </div>
