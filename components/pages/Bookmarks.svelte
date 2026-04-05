@@ -110,7 +110,10 @@
       version: $currentLocation.version,
       archivedAt: null
     };
-    await bookmarksService.persistFolder(newFolder);
+    const folderId = await bookmarksService.persistFolder(newFolder);
+    if (folderId && !expandedFolderIds.includes(folderId)) {
+      expandedFolderIds = [...expandedFolderIds, folderId];
+    }
     flashMessages.success(translate($languageStore, "bookmarks.folderCreated"));
   };
 
