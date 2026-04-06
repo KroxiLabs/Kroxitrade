@@ -261,31 +261,29 @@
         />
       </div>
 
-      {#if $settings.compactActionsMenu}
-        <div class="compact-options">
-          <div class="compact-options__heading">
-            <div class="compact-options__title">{translate($languageStore, "settings.compactTradeActionsTitle")}</div>
-          </div>
-          <p class="section-description section-description--compact">{translate($languageStore, "settings.compactTradeActionsDescription")}</p>
-          <div class="compact-options__grid">
-            {#each compactTradeActionOptions as option (option.id)}
-              <label
-                class="compact-option"
-                class:is-selected={$settings.compactBookmarkTradeActions.includes(option.id)}
-                title={translate($languageStore, option.labelKey)}
-              >
-                <input
-                  type="checkbox"
-                  checked={$settings.compactBookmarkTradeActions.includes(option.id)}
-                  on:change={(event) => handleCompactTradeActionInput(event, option.id)}
-                  aria-label={translate($languageStore, option.labelKey)}
-                />
-                <span class="compact-option__icon" aria-hidden="true">{@html option.icon}</span>
-              </label>
-            {/each}
-          </div>
+      <div class="compact-options">
+        <div class="compact-options__heading">
+          <div class="compact-options__title">{translate($languageStore, "settings.tradeActionsTitle")}</div>
         </div>
-      {/if}
+        <p class="section-description section-description--compact">{translate($languageStore, "settings.tradeActionsDescription")}</p>
+        <div class="compact-options__grid">
+          {#each compactTradeActionOptions as option (option.id)}
+            <label
+              class="compact-option"
+              class:is-selected={$settings.compactBookmarkTradeActions.includes(option.id)}
+              title={translate($languageStore, option.labelKey)}
+            >
+              <input
+                type="checkbox"
+                checked={$settings.compactBookmarkTradeActions.includes(option.id)}
+                on:change={(event) => handleCompactTradeActionInput(event, option.id)}
+                aria-label={translate($languageStore, option.labelKey)}
+              />
+              <span class="compact-option__icon" aria-hidden="true">{@html option.icon}</span>
+            </label>
+          {/each}
+        </div>
+      </div>
     </section>
 
     <section class="settings-section settings-section--wide">

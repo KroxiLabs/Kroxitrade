@@ -201,6 +201,9 @@ const translations = {
     "settings.compactTradeActionsTitle": "Trade Actions Outside Menu",
     "settings.compactTradeActionsDescription":
       "Choose which saved-search actions stay visible in compact mode. If none are selected, only the three-dot menu is shown. If all or all but one are selected, every action stays visible.",
+    "settings.tradeActionsTitle": "Visible Trade Actions",
+    "settings.tradeActionsDescription":
+      "Choose which saved-search actions stay visible outside the menu in both classic and compact layouts. If none are selected, only the three-dot menu is shown.",
     "settings.compactTradeActionToggle": "Complete / Pending",
     "about.eyebrow": "About",
     "about.description":
@@ -497,6 +500,9 @@ const translations = {
     "settings.compactTradeActionsTitle": "Acciones visibles fuera del menú",
     "settings.compactTradeActionsDescription":
       "Elegí qué acciones de cada búsqueda guardada quedan visibles en modo compacto. Si no seleccionás ninguna, solo se ven los tres puntos. Si seleccionás todas o todas menos una, se muestran todas.",
+    "settings.tradeActionsTitle": "Acciones visibles de cada búsqueda",
+    "settings.tradeActionsDescription":
+      "Elegí qué acciones de cada búsqueda guardada quedan visibles fuera del menú tanto en el diseño clásico como en el compacto. Si no seleccionás ninguna, solo se ven los tres puntos.",
     "settings.compactTradeActionToggle": "Completar / Pendiente",
     "about.eyebrow": "Acerca de",
     "about.description":

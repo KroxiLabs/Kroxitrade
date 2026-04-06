@@ -70,6 +70,12 @@
   $: compactVisibleActions = actions.filter((action) =>
     compactVisibleActionIds.includes(action.id)
   );
+  $: configuredInlineActions = actions.filter((action) =>
+    compactVisibleActionIds.includes(action.id)
+  );
+  $: primaryInlineActions = actions.filter((action) =>
+    primaryActionIds.includes(action.id)
+  );
   $: shouldShowAllCompactActions =
     compactMode &&
     compactVisibleActionIds.length > 0 &&
@@ -79,12 +85,20 @@
     ? shouldShowAllCompactActions
       ? actions
       : compactVisibleActions
-    : actions;
+    : configuredInlineActions.length > 0
+      ? configuredInlineActions
+      : primaryInlineActions.length > 0
+      ? primaryInlineActions
+      : actions;
   $: dropdownActions = showAsCompact
     ? shouldShowAllCompactActions
       ? []
       : actions.filter((action) => !compactVisibleActionIds.includes(action.id))
-    : [];
+    : configuredInlineActions.length > 0
+      ? actions.filter((action) => !compactVisibleActionIds.includes(action.id))
+      : primaryInlineActions.length > 0
+      ? actions.filter((action) => !primaryActionIds.includes(action.id))
+      : [];
 
   const getDisplayLabel = (action: typeof actions[0]) => {
     if (action.customLabel) return action.customLabel;
@@ -130,7 +144,7 @@
 
   {:else}
     <div class="actions-inline">
-      {#each actions as action}
+      {#each inlineActions as action}
         <button
           type="button"
           class="btn btn--icon"
@@ -142,6 +156,20 @@
           <span class="btn__icon" aria-hidden="true">{@html normalizeIcon(action.icon)}</span>
         </button>
       {/each}
+
+      {#if dropdownActions.length > 0}
+        <button
+          type="button"
+          class="btn btn--icon menu-trigger"
+          title={translate ? translate(dropdownLabel) : dropdownLabel}
+          aria-label={translate ? translate(dropdownLabel) : dropdownLabel}
+          aria-expanded={isOpen}
+          on:click|stopPropagation={toggleMenu}
+          bind:this={triggerRef}
+        >
+          <span class="btn__icon" aria-hidden="true">{@html normalizeIcon(dropdownIcon || "")}</span>
+        </button>
+      {/if}
     </div>
   {/if}
 
