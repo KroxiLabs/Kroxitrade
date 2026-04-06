@@ -39,7 +39,6 @@ jobs:
         with:
           generate_release_notes: true
           files: |
-            build/chrome-mv3-prod.zip
-            build/firefox-mv3-prod.zip
+            build/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
