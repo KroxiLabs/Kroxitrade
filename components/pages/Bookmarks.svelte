@@ -345,7 +345,7 @@
     <div class="toolbar-sticky" data-tutorial="bookmarks-toolbar" bind:this={toolbarStickyEl}>
       <section class="toolbar-panel">
         <div class="toolbar-row">
-          <div class="toolbar-actions">
+          <div class="toolbar-actions toolbar-actions--primary">
             <button class="toolbar-button" data-tutorial="new-folder" type="button" title={translate($languageStore, "bookmarks.toolbar.newFolderTitle")} aria-label={translate($languageStore, "bookmarks.toolbar.newFolderTitle")} on:click={createFolder}>
               <span class="toolbar-icon" aria-hidden="true">{@html toolbarIcons.newFolder}</span>
               <span class="toolbar-label">{translate($languageStore, "bookmarks.toolbar.new")}</span>
@@ -363,6 +363,9 @@
               </span>
               <span class="toolbar-label">{isImportingText ? translate($languageStore, "bookmarks.toolbar.cancel") : translate($languageStore, "bookmarks.toolbar.import")}</span>
             </button>
+          </div>
+
+          <div class="toolbar-actions toolbar-actions--secondary">
             <button class="toolbar-button" type="button" title={translate($languageStore, "bookmarks.toolbar.collapseAll")} aria-label={translate($languageStore, "bookmarks.toolbar.collapseAll")} on:click={collapseAll}>
               <span class="toolbar-icon" aria-hidden="true">{@html toolbarIcons.collapse}</span>
               <span class="toolbar-label">{translate($languageStore, "bookmarks.toolbar.collapse")}</span>
@@ -508,7 +511,10 @@
   }
 
   .toolbar-row {
-    display: block;
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    gap: 6px;
+    align-items: start;
   }
 
   .bookmarks-page :global(.loading-container) {
@@ -520,6 +526,10 @@
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 6px;
+  }
+
+  .toolbar-actions--secondary {
+    opacity: 0.88;
   }
 
   .toolbar-button {
@@ -555,6 +565,25 @@
       border-color: rgba($gold, 0.38);
       background: rgba(54, 42, 28, 0.96);
       color: #e2b56e;
+    }
+  }
+
+  .toolbar-actions--secondary .toolbar-button {
+    min-height: 34px;
+    border-color: rgba($gold, 0.14);
+    background: rgba($black, 0.22);
+    color: rgba(215, 167, 95, 0.84);
+
+    &:hover {
+      border-color: rgba($gold, 0.24);
+      background: rgba(33, 27, 20, 0.82);
+      box-shadow: inset 0 1px 0 rgba(255, 232, 187, 0.02);
+    }
+
+    &.active {
+      border-color: rgba($gold, 0.26);
+      background: rgba(47, 38, 28, 0.88);
+      color: #ddb26b;
     }
   }
 
@@ -601,11 +630,13 @@
 
   @media (min-width: 520px) {
     .toolbar-row {
-      display: block;
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
     }
+  }
 
-    .toolbar-actions {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
+  @container (max-width: 359px) {
+    .toolbar-row {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 
