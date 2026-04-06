@@ -164,322 +164,237 @@
 </script>
 
 <div class="settings-page">
-  <section class="settings-section" data-tutorial="settings-tutorial">
-    <div class="section-heading">
-      <h3 class="section-title">{translate($languageStore, "settings.onboardingTitle")}</h3>
-      <div class="info-tooltip">
-        <button
-          type="button"
-          class="info-tooltip__trigger"
-          aria-label={translate($languageStore, "settings.onboardingDescription")}
-        >
-          i
-        </button>
-        <div class="info-tooltip__content">{translate($languageStore, "settings.onboardingDescription")}</div>
+  <div class="settings-grid">
+    <section class="settings-section settings-section--feature settings-section--wide" data-tutorial="settings-language">
+      <div class="section-heading">
+        <h3 class="section-title">{translate($languageStore, "settings.languageTitle")}</h3>
       </div>
-    </div>
+      <p class="section-description">{translate($languageStore, "settings.languageDescription")}</p>
 
-    <div class="side-selector">
-      <Button
-        label={translate($languageStore, "settings.reopenTutorial")}
-        theme="gold"
-        class="side-btn"
-        onClick={onOpenTutorial}
-      />
-    </div>
-  </section>
+      <div class="language-selector" bind:this={languageSelectorEl}>
+        <div class="language-preview">
+          <img class="language-flag" src={selectedLanguage.flag} alt={selectedLanguage.label} />
+        </div>
 
-  <section class="settings-section" data-tutorial="settings-sidebar">
-    <div class="section-heading">
-      <h3 class="section-title">{translate($languageStore, "settings.sidebarTitle")}</h3>
-      <div class="info-tooltip">
-        <button
-          type="button"
-          class="info-tooltip__trigger"
-          aria-label={translate($languageStore, "settings.sidebarDescription")}
-        >
-          i
-        </button>
-        <div class="info-tooltip__content">{translate($languageStore, "settings.sidebarDescription")}</div>
+        <div class="language-select-wrap">
+          <button
+            type="button"
+            class="language-select"
+            aria-haspopup="listbox"
+            aria-expanded={isLanguageMenuOpen}
+            on:click={toggleLanguageMenu}
+          >
+            <span class="language-option__native">{selectedLanguage.label}</span>
+            <span class="language-option__translated">{getLocalizedLanguageName(selectedLanguage.code)}</span>
+          </button>
+
+          {#if isLanguageMenuOpen}
+            <div class="language-menu" role="listbox" aria-label={translate($languageStore, "settings.languageTitle")}>
+              {#each languages as language (language.code)}
+                <button
+                  type="button"
+                  class="language-menu__item"
+                  class:is-active={language.code === $settings.language}
+                  role="option"
+                  aria-selected={language.code === $settings.language}
+                  on:click={(event) => selectLanguage(event, language.code)}
+                >
+                  <span class="language-menu__flag-wrap">
+                    <img class="language-flag" src={language.flag} alt={language.label} />
+                  </span>
+                  <span class="language-option__native">{language.label}</span>
+                  <span class="language-option__translated">{getLocalizedLanguageName(language.code)}</span>
+                </button>
+              {/each}
+            </div>
+          {/if}
+        </div>
       </div>
-    </div>
+    </section>
+
+    <section class="settings-section settings-section--wide" data-tutorial="settings-sidebar">
+      <div class="section-heading">
+        <h3 class="section-title">{translate($languageStore, "settings.sidebarTitle")}</h3>
+      </div>
+      <p class="section-description">{translate($languageStore, "settings.sidebarDescription")}</p>
     
-    <div class="side-selector">
-      <Button 
-        label={translate($languageStore, "settings.left")} 
-        theme={$settings.sidebarSide === 'left' ? 'gold' : 'blue'}
-        class="side-btn"
-        onClick={() => handleSideChange('left')}
-      />
-      <Button 
-        label={translate($languageStore, "settings.right")} 
-        theme={$settings.sidebarSide === 'right' ? 'gold' : 'blue'}
-        class="side-btn"
-        onClick={() => handleSideChange('right')}
-      />
-      <Button
-        label={translate($languageStore, "settings.resetWidth")}
-        theme="blue"
-        class="side-btn reset-btn"
-        onClick={handleSidebarWidthReset}
-      />
-    </div>
-  </section>
-
-  <section class="settings-section" data-tutorial="settings-language">
-    <div class="section-heading">
-      <h3 class="section-title">{translate($languageStore, "settings.languageTitle")}</h3>
-      <div class="info-tooltip">
-        <button
-          type="button"
-          class="info-tooltip__trigger"
-          aria-label={translate($languageStore, "settings.languageDescription")}
-        >
-          i
-        </button>
-        <div class="info-tooltip__content">{translate($languageStore, "settings.languageDescription")}</div>
+      <div class="side-selector">
+        <Button 
+          label={translate($languageStore, "settings.left")} 
+          theme={$settings.sidebarSide === 'left' ? 'gold' : 'blue'}
+          class="side-btn"
+          onClick={() => handleSideChange('left')}
+        />
+        <Button 
+          label={translate($languageStore, "settings.right")} 
+          theme={$settings.sidebarSide === 'right' ? 'gold' : 'blue'}
+          class="side-btn"
+          onClick={() => handleSideChange('right')}
+        />
+        <Button
+          label={translate($languageStore, "settings.resetWidth")}
+          theme="blue"
+          class="side-btn reset-btn"
+          onClick={handleSidebarWidthReset}
+        />
       </div>
-    </div>
+    </section>
 
-    <div class="language-selector" bind:this={languageSelectorEl}>
-      <div class="language-preview">
-        <img class="language-flag" src={selectedLanguage.flag} alt={selectedLanguage.label} />
+    <section class="settings-section settings-section--wide" data-tutorial="settings-bookmarks">
+      <div class="section-heading">
+        <h3 class="section-title">{translate($languageStore, "settings.compactActionsTitle")}</h3>
+      </div>
+      <p class="section-description">{translate($languageStore, "settings.compactActionsDescription")}</p>
+
+      <div class="side-selector">
+        <Button
+          label={translate($languageStore, "settings.compactActionsDefault")}
+          theme={$settings.compactActionsMenu ? 'blue' : 'gold'}
+          class="side-btn"
+          onClick={() => handleCompactActionsMenuChange(false)}
+        />
+        <Button
+          label={translate($languageStore, "settings.compactActionsCompact")}
+          theme={$settings.compactActionsMenu ? 'gold' : 'blue'}
+          class="side-btn"
+          onClick={() => handleCompactActionsMenuChange(true)}
+        />
       </div>
 
-      <div class="language-select-wrap">
-        <button
-          type="button"
-          class="language-select"
-          aria-haspopup="listbox"
-          aria-expanded={isLanguageMenuOpen}
-          on:click={toggleLanguageMenu}
-        >
-          <span class="language-option__native">{selectedLanguage.label}</span>
-          <span class="language-option__translated">{getLocalizedLanguageName(selectedLanguage.code)}</span>
-        </button>
-
-        {#if isLanguageMenuOpen}
-          <div class="language-menu" role="listbox" aria-label={translate($languageStore, "settings.languageTitle")}>
-            {#each languages as language (language.code)}
-              <button
-                type="button"
-                class="language-menu__item"
-                class:is-active={language.code === $settings.language}
-                role="option"
-                aria-selected={language.code === $settings.language}
-                on:click={(event) => selectLanguage(event, language.code)}
+      {#if $settings.compactActionsMenu}
+        <div class="compact-options">
+          <div class="compact-options__heading">
+            <div class="compact-options__title">{translate($languageStore, "settings.compactTradeActionsTitle")}</div>
+          </div>
+          <p class="section-description section-description--compact">{translate($languageStore, "settings.compactTradeActionsDescription")}</p>
+          <div class="compact-options__grid">
+            {#each compactTradeActionOptions as option (option.id)}
+              <label
+                class="compact-option"
+                class:is-selected={$settings.compactBookmarkTradeActions.includes(option.id)}
+                title={translate($languageStore, option.labelKey)}
               >
-                <span class="language-menu__flag-wrap">
-                  <img class="language-flag" src={language.flag} alt={language.label} />
-                </span>
-                <span class="language-option__native">{language.label}</span>
-                <span class="language-option__translated">{getLocalizedLanguageName(language.code)}</span>
-              </button>
+                <input
+                  type="checkbox"
+                  checked={$settings.compactBookmarkTradeActions.includes(option.id)}
+                  on:change={(event) => handleCompactTradeActionInput(event, option.id)}
+                  aria-label={translate($languageStore, option.labelKey)}
+                />
+                <span class="compact-option__icon" aria-hidden="true">{@html option.icon}</span>
+              </label>
             {/each}
           </div>
-        {/if}
-      </div>
-    </div>
-  </section>
-
-  <section class="settings-section" data-tutorial="settings-equivalent">
-    <div class="settings-inline-row">
-      <div class="section-heading section-heading--inline">
-        <h3 class="section-title">{translate($languageStore, "settings.equivalentTitle")}</h3>
-        <div class="info-tooltip">
-          <button
-            type="button"
-            class="info-tooltip__trigger"
-            aria-label={translate($languageStore, "settings.equivalentDescription")}
-          >
-            i
-          </button>
-          <div class="info-tooltip__content">{translate($languageStore, "settings.equivalentDescription")}</div>
         </div>
+      {/if}
+    </section>
+
+    <section class="settings-section settings-section--wide">
+      <div class="section-heading">
+        <h3 class="section-title">{translate($languageStore, "settings.resultsTitle")}</h3>
       </div>
-
-      <button
-        type="button"
-        class="toggle-row toggle-row--inline"
-        class:is-active={$settings.showEquivalentPricing}
-        role="switch"
-        aria-checked={$settings.showEquivalentPricing}
-        aria-label={translate($languageStore, "settings.equivalentTitle")}
-        on:click={() => handleEquivalentPricingChange(!$settings.showEquivalentPricing)}
-      >
-        <span class="toggle-switch">
-          <span class="toggle-switch__thumb"></span>
-        </span>
-        <span class="toggle-state">{toggleSwitchLabel($settings.showEquivalentPricing)}</span>
-      </button>
-    </div>
-  </section>
-
-  <section class="settings-section" data-tutorial="settings-bulk">
-    <div class="settings-inline-row">
-      <div class="section-heading section-heading--inline">
-        <h3 class="section-title">{translate($languageStore, "settings.bulkTitle")}</h3>
-        <div class="info-tooltip">
-          <button
-            type="button"
-            class="info-tooltip__trigger"
-            aria-label={translate($languageStore, "settings.bulkDescription")}
-          >
-            i
-          </button>
-          <div class="info-tooltip__content">{translate($languageStore, "settings.bulkDescription")}</div>
-        </div>
-      </div>
-
-      <button
-        type="button"
-        class="toggle-row toggle-row--inline"
-        class:is-active={$settings.showBulkSellers}
-        role="switch"
-        aria-checked={$settings.showBulkSellers}
-        aria-label={translate($languageStore, "settings.bulkTitle")}
-        on:click={() => handleBulkSellersChange(!$settings.showBulkSellers)}
-      >
-        <span class="toggle-switch">
-          <span class="toggle-switch__thumb"></span>
-        </span>
-        <span class="toggle-state">{toggleSwitchLabel($settings.showBulkSellers)}</span>
-      </button>
-    </div>
-  </section>
-
-  <section class="settings-section" data-tutorial="settings-history">
-    <div class="settings-inline-row">
-      <div class="section-heading section-heading--inline">
-        <h3 class="section-title">{translate($languageStore, "settings.historyTitle")}</h3>
-        <div class="info-tooltip">
-          <button
-            type="button"
-            class="info-tooltip__trigger"
-            aria-label={translate($languageStore, "settings.historyDescription")}
-          >
-            i
-          </button>
-          <div class="info-tooltip__content">{translate($languageStore, "settings.historyDescription")}</div>
-        </div>
-      </div>
-
-      <button
-        type="button"
-        class="toggle-row toggle-row--inline"
-        class:is-active={$settings.showHistory}
-        role="switch"
-        aria-checked={$settings.showHistory}
-        aria-label={translate($languageStore, "settings.historyTitle")}
-        on:click={() => handleHistoryChange(!$settings.showHistory)}
-      >
-        <span class="toggle-switch">
-          <span class="toggle-switch__thumb"></span>
-        </span>
-        <span class="toggle-state">{toggleSwitchLabel($settings.showHistory)}</span>
-      </button>
-    </div>
-  </section>
-
-  <section class="settings-section" data-tutorial="settings-filters">
-    <div class="settings-inline-row">
-      <div class="section-heading section-heading--inline">
-        <h3 class="section-title">{translate($languageStore, "settings.finerFiltersTitle")}</h3>
-        <div class="info-tooltip">
-          <button
-            type="button"
-            class="info-tooltip__trigger"
-            aria-label={translate($languageStore, "settings.finerFiltersDescription")}
-          >
-            i
-          </button>
-          <div class="info-tooltip__content">{translate($languageStore, "settings.finerFiltersDescription")}</div>
-        </div>
-      </div>
-
-      <button
-        type="button"
-        class="toggle-row toggle-row--inline"
-        class:is-active={$settings.showFinerFilters}
-        role="switch"
-        aria-checked={$settings.showFinerFilters}
-        aria-label={translate($languageStore, "settings.finerFiltersTitle")}
-        on:click={() => handleFinerFiltersChange(!$settings.showFinerFilters)}
-      >
-        <span class="toggle-switch">
-          <span class="toggle-switch__thumb"></span>
-        </span>
-        <span class="toggle-state">{toggleSwitchLabel($settings.showFinerFilters)}</span>
-      </button>
-    </div>
-  </section>
-
-  <section class="settings-section" data-tutorial="settings-bookmarks">
-    <div class="section-heading">
-      <h3 class="section-title">{translate($languageStore, "settings.compactActionsTitle")}</h3>
-      <div class="info-tooltip">
-        <button
-          type="button"
-          class="info-tooltip__trigger"
-          aria-label={translate($languageStore, "settings.compactActionsDescription")}
-        >
-          i
-        </button>
-        <div class="info-tooltip__content">{translate($languageStore, "settings.compactActionsDescription")}</div>
-      </div>
-    </div>
-
-    <div class="side-selector">
-      <Button
-        label={translate($languageStore, "settings.compactActionsDefault")}
-        theme={$settings.compactActionsMenu ? 'blue' : 'gold'}
-        class="side-btn"
-        onClick={() => handleCompactActionsMenuChange(false)}
-      />
-      <Button
-        label={translate($languageStore, "settings.compactActionsCompact")}
-        theme={$settings.compactActionsMenu ? 'gold' : 'blue'}
-        class="side-btn"
-        onClick={() => handleCompactActionsMenuChange(true)}
-      />
-    </div>
-
-    {#if $settings.compactActionsMenu}
-      <div class="compact-options">
-        <div class="compact-options__heading">
-          <div class="compact-options__title">{translate($languageStore, "settings.compactTradeActionsTitle")}</div>
-          <div class="info-tooltip">
-            <button
-              type="button"
-              class="info-tooltip__trigger"
-              aria-label={translate($languageStore, "settings.compactTradeActionsDescription")}
-            >
-              i
-            </button>
-            <div class="info-tooltip__content">{translate($languageStore, "settings.compactTradeActionsDescription")}</div>
+      <div class="settings-row-list">
+        <div class="settings-row" data-tutorial="settings-equivalent">
+          <div class="settings-row__copy">
+            <div class="settings-row__title">{translate($languageStore, "settings.equivalentTitle")}</div>
+            <div class="settings-row__description">{translate($languageStore, "settings.equivalentDescription")}</div>
           </div>
+          <button
+            type="button"
+            class="toggle-row toggle-row--inline"
+            class:is-active={$settings.showEquivalentPricing}
+            role="switch"
+            aria-checked={$settings.showEquivalentPricing}
+            aria-label={translate($languageStore, "settings.equivalentTitle")}
+            on:click={() => handleEquivalentPricingChange(!$settings.showEquivalentPricing)}
+          >
+            <span class="toggle-switch">
+              <span class="toggle-switch__thumb"></span>
+            </span>
+            <span class="toggle-state">{toggleSwitchLabel($settings.showEquivalentPricing)}</span>
+          </button>
         </div>
-        <div class="compact-options__grid">
-          {#each compactTradeActionOptions as option (option.id)}
-            <label
-              class="compact-option"
-              class:is-selected={$settings.compactBookmarkTradeActions.includes(option.id)}
-              title={translate($languageStore, option.labelKey)}
-            >
-              <input
-                type="checkbox"
-                checked={$settings.compactBookmarkTradeActions.includes(option.id)}
-                on:change={(event) => handleCompactTradeActionInput(event, option.id)}
-                aria-label={translate($languageStore, option.labelKey)}
-              />
-              <span class="compact-option__icon" aria-hidden="true">{@html option.icon}</span>
-            </label>
-          {/each}
+
+        <div class="settings-row" data-tutorial="settings-bulk">
+          <div class="settings-row__copy">
+            <div class="settings-row__title">{translate($languageStore, "settings.bulkTitle")}</div>
+            <div class="settings-row__description">{translate($languageStore, "settings.bulkDescription")}</div>
+          </div>
+          <button
+            type="button"
+            class="toggle-row toggle-row--inline"
+            class:is-active={$settings.showBulkSellers}
+            role="switch"
+            aria-checked={$settings.showBulkSellers}
+            aria-label={translate($languageStore, "settings.bulkTitle")}
+            on:click={() => handleBulkSellersChange(!$settings.showBulkSellers)}
+          >
+            <span class="toggle-switch">
+              <span class="toggle-switch__thumb"></span>
+            </span>
+            <span class="toggle-state">{toggleSwitchLabel($settings.showBulkSellers)}</span>
+          </button>
+        </div>
+
+        <div class="settings-row" data-tutorial="settings-history">
+          <div class="settings-row__copy">
+            <div class="settings-row__title">{translate($languageStore, "settings.historyTitle")}</div>
+            <div class="settings-row__description">{translate($languageStore, "settings.historyDescription")}</div>
+          </div>
+          <button
+            type="button"
+            class="toggle-row toggle-row--inline"
+            class:is-active={$settings.showHistory}
+            role="switch"
+            aria-checked={$settings.showHistory}
+            aria-label={translate($languageStore, "settings.historyTitle")}
+            on:click={() => handleHistoryChange(!$settings.showHistory)}
+          >
+            <span class="toggle-switch">
+              <span class="toggle-switch__thumb"></span>
+            </span>
+            <span class="toggle-state">{toggleSwitchLabel($settings.showHistory)}</span>
+          </button>
+        </div>
+
+        <div class="settings-row" data-tutorial="settings-filters">
+          <div class="settings-row__copy">
+            <div class="settings-row__title">{translate($languageStore, "settings.finerFiltersTitle")}</div>
+            <div class="settings-row__description">{translate($languageStore, "settings.finerFiltersDescription")}</div>
+          </div>
+          <button
+            type="button"
+            class="toggle-row toggle-row--inline"
+            class:is-active={$settings.showFinerFilters}
+            role="switch"
+            aria-checked={$settings.showFinerFilters}
+            aria-label={translate($languageStore, "settings.finerFiltersTitle")}
+            on:click={() => handleFinerFiltersChange(!$settings.showFinerFilters)}
+          >
+            <span class="toggle-switch">
+              <span class="toggle-switch__thumb"></span>
+            </span>
+            <span class="toggle-state">{toggleSwitchLabel($settings.showFinerFilters)}</span>
+          </button>
         </div>
       </div>
-    {/if}
-  </section>
+    </section>
 
+    <section class="settings-section settings-section--feature settings-section--wide" data-tutorial="settings-tutorial">
+      <div class="section-heading">
+        <h3 class="section-title">{translate($languageStore, "settings.onboardingTitle")}</h3>
+      </div>
+      <p class="section-description">{translate($languageStore, "settings.onboardingDescription")}</p>
+
+      <div class="section-actions">
+        <Button
+          label={translate($languageStore, "settings.reopenTutorial")}
+          theme="gold"
+          class="side-btn"
+          onClick={onOpenTutorial}
+        />
+      </div>
+    </section>
+  </div>
 </div>
 
 <style lang="scss">
@@ -489,10 +404,15 @@
   .settings-page {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 14px;
     padding: 5px;
     color: $white;
     animation: fade-in 0.3s ease;
+  }
+
+  .settings-grid {
+    display: grid;
+    gap: 14px;
   }
 
   @keyframes fade-in {
@@ -501,15 +421,20 @@
   }
 
   .settings-section {
-    background: rgba($white, 0.02);
-    border: 1px solid rgba($white, 0.06);
+    background:
+      linear-gradient(180deg, rgba($white, 0.03), rgba($white, 0.015)),
+      rgba($white, 0.02);
+    border: 1px solid rgba($white, 0.07);
     padding: 16px;
-    border-radius: 4px;
+    border-radius: 8px;
+    box-shadow: inset 0 1px 0 rgba($white, 0.02);
+  }
 
-    &.info {
-      background: rgba($blue, 0.05);
-      border-color: rgba($blue, 0.2);
-    }
+  .settings-section--feature {
+    background:
+      linear-gradient(180deg, rgba($gold, 0.08), rgba($gold, 0.02)),
+      rgba($white, 0.02);
+    border-color: rgba($gold, 0.12);
   }
 
   .section-title {
@@ -525,12 +450,27 @@
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 14px;
+    margin-bottom: 10px;
     min-width: 0;
   }
 
   .section-heading--inline {
     margin-bottom: 0;
+  }
+
+  .section-description {
+    margin: 0;
+    color: rgba($white, 0.72);
+    font-size: 11px;
+    line-height: 1.55;
+  }
+
+  .section-description--compact {
+    margin-top: 8px;
+  }
+
+  .section-actions {
+    margin-top: 14px;
   }
 
   .settings-inline-row {
@@ -540,10 +480,55 @@
     gap: 16px;
   }
 
+  .settings-row-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 12px 0;
+    border-top: 1px solid rgba($white, 0.07);
+  }
+
+  .settings-row:first-child {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .settings-row:last-child {
+    padding-bottom: 0;
+  }
+
+  .settings-row__copy {
+    min-width: 0;
+  }
+
+  .settings-row__title {
+    color: rgba($white, 0.94);
+    font-family: $primary-font;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .settings-row__description {
+    margin-top: 4px;
+    color: rgba($white, 0.66);
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
   .side-selector {
     display: flex;
     gap: 10px;
     flex-wrap: wrap;
+    margin-top: 14px;
   }
 
   .toggle-row {
@@ -931,6 +916,15 @@
   }
 
   @media (max-width: 430px) {
+    .settings-grid {
+      gap: 12px;
+    }
+
+    .settings-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
     .settings-inline-row {
       flex-direction: column;
       align-items: stretch;
@@ -952,6 +946,16 @@
     .compact-option {
       animation: none !important;
       transition: none !important;
+    }
+  }
+
+  @media (min-width: 520px) {
+    .settings-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .settings-section--wide {
+      grid-column: 1 / -1;
     }
   }
 </style>

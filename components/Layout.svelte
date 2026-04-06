@@ -628,6 +628,7 @@
     padding: 11px 4px 10px;
     background: transparent;
     border: 0;
+    border-radius: 0;
     color: rgba($white, 0.56);
     font-family: $primary-font;
     font-size: 11px;
@@ -639,7 +640,12 @@
       box-shadow 0.2s ease;
     border-bottom: 1px solid transparent;
 
-    &:hover { color: $white; }
+    &:hover {
+      color: $white;
+      border-bottom-color: rgba($gold, 0.22);
+      background-color: rgba($white, 0.03);
+    }
+
     &.is-active { 
         color: $white; 
         border-bottom-color: $gold;

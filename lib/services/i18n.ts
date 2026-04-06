@@ -176,6 +176,7 @@ const translations = {
     "settings.onboardingDescription":
       "Open the quick onboarding again to review the main actions and tabs.",
     "settings.reopenTutorial": "Open Tutorial",
+    "settings.resultsTitle": "Results Tools",
     "settings.equivalentTitle": "Equivalent Pricing",
     "settings.equivalentDescription":
       "Show or hide the extra chaos/divine equivalent line in trade results.",
@@ -456,6 +457,7 @@ const translations = {
     "settings.onboardingDescription":
       "Volvé a abrir la guía rápida para repasar las acciones y pestañas principales.",
     "settings.reopenTutorial": "Abrir tutorial",
+    "settings.resultsTitle": "Herramientas de resultados",
     "settings.equivalentTitle": "Precio equivalente",
     "settings.equivalentDescription":
       "Mostrá u ocultá la línea extra con equivalencias en chaos/divine en los resultados.",
@@ -610,6 +612,7 @@ const portugueseTranslations: Record<string, TranslationValue> = {
     "Escolha o idioma usado pela interface da extensão.",
   "settings.languageEnglish": "Inglês",
   "settings.languageSpanish": "Espanhol",
+  "settings.resultsTitle": "Ferramentas de resultados",
   "settings.equivalentTitle": "Preço equivalente",
   "settings.equivalentDescription":
     "Mostre ou oculte a linha extra com equivalência em chaos/divine nos resultados.",
@@ -737,6 +740,7 @@ const germanTranslations: Record<string, TranslationValue> = {
     "Wähle die Sprache der Erweiterungsoberfläche.",
   "settings.languageEnglish": "Englisch",
   "settings.languageSpanish": "Spanisch",
+  "settings.resultsTitle": "Ergebniswerkzeuge",
   "settings.equivalentTitle": "Äquivalenzpreis",
   "settings.equivalentDescription":
     "Zeige oder verberge die zusätzliche Zeile mit Chaos/Divine-Äquivalenten in den Ergebnissen.",
@@ -855,9 +859,10 @@ const frenchTranslations: Record<string, TranslationValue> = {
   "settings.resetWidth": "Réinitialiser la largeur",
   "settings.languageTitle": "Langue",
   "settings.languageDescription":
-    "Choisissez la langue utilisée par l’interface de l’extension.",
+    "Choisissez la langue utilisée par l'interface de l'extension.",
   "settings.languageEnglish": "Anglais",
   "settings.languageSpanish": "Espagnol",
+  "settings.resultsTitle": "Outils de résultats",
   "settings.equivalentTitle": "Prix équivalent",
   "settings.equivalentDescription":
     "Afficher ou masquer la ligne supplémentaire avec l’équivalent chaos/divine dans les résultats.",
@@ -982,6 +987,7 @@ const russianTranslations: Record<string, TranslationValue> = {
   "settings.languageDescription": "Выберите язык интерфейса расширения.",
   "settings.languageEnglish": "Английский",
   "settings.languageSpanish": "Испанский",
+  "settings.resultsTitle": "Инструменты результатов",
   "settings.equivalentTitle": "Эквивалентная цена",
   "settings.equivalentDescription":
     "Показывать или скрывать дополнительную строку с эквивалентом в chaos/divine в результатах.",
@@ -1100,6 +1106,7 @@ const thaiTranslations: Record<string, TranslationValue> = {
   "settings.languageDescription": "เลือกภาษาที่ใช้ในส่วนติดต่อของส่วนขยาย",
   "settings.languageEnglish": "อังกฤษ",
   "settings.languageSpanish": "สเปน",
+  "settings.resultsTitle": "เครื่องมือผลลัพธ์",
   "settings.equivalentTitle": "ราคาเทียบเท่า",
   "settings.equivalentDescription":
     "แสดงหรือซ่อนบรรทัดเพิ่มเติมที่แสดงราคาเทียบเท่า chaos/divine ในผลลัพธ์",
@@ -1223,6 +1230,7 @@ const japaneseTranslations: Record<string, TranslationValue> = {
     "拡張機能のインターフェースで使用する言語を選択してください。",
   "settings.languageEnglish": "英語",
   "settings.languageSpanish": "スペイン語",
+  "settings.resultsTitle": "検索結果ツール",
   "settings.equivalentTitle": "等価価格",
   "settings.equivalentDescription":
     "検索結果に追加表示される chaos/divine 等価行を表示または非表示にします。",
@@ -1351,6 +1359,7 @@ const koreanTranslations: Record<string, TranslationValue> = {
     "확장 프로그램 인터페이스에 사용할 언어를 선택하세요.",
   "settings.languageEnglish": "영어",
   "settings.languageSpanish": "스페인어",
+  "settings.resultsTitle": "결과 도구",
   "settings.equivalentTitle": "환산 가격",
   "settings.equivalentDescription":
     "결과에 추가로 표시되는 chaos/divine 환산 줄을 표시하거나 숨깁니다.",
