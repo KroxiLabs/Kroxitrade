@@ -1,12 +1,12 @@
 <script lang="ts">
   import { flip } from "svelte/animate";
   import { onDestroy, onMount, tick } from "svelte";
-  import archiveIcon from "data-text:lucide-static/icons/archive.svg";
-  import archiveRestoreIcon from "data-text:lucide-static/icons/archive-restore.svg";
-  import chevronsUpIcon from "data-text:lucide-static/icons/chevrons-up.svg";
-  import downloadIcon from "data-text:lucide-static/icons/download.svg";
-  import folderPlusIcon from "data-text:lucide-static/icons/folder-plus.svg";
-  import xIcon from "data-text:lucide-static/icons/x.svg";
+  import archiveIcon from "lucide-static/icons/archive.svg?raw";
+  import archiveRestoreIcon from "lucide-static/icons/archive-restore.svg?raw";
+  import chevronsUpIcon from "lucide-static/icons/chevrons-up.svg?raw";
+  import downloadIcon from "lucide-static/icons/download.svg?raw";
+  import folderPlusIcon from "lucide-static/icons/folder-plus.svg?raw";
+  import xIcon from "lucide-static/icons/x.svg?raw";
   import { languageStore, translate } from "../../lib/services/i18n";
   import { bookmarksService } from "../../lib/services/bookmarks";
   import { tradeLocationService } from "../../lib/services/trade-location";
@@ -462,8 +462,7 @@
     container-type: inline-size;
   }
 
-  .toolbar-panel,
-  .action-section {
+  .toolbar-panel {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
@@ -623,30 +622,6 @@
     .toolbar-actions--secondary {
       flex: 1 1 0;
     }
-  }
-
-  .section-heading {
-    font-family: $primary-font;
-    font-size: 10px;
-    letter-spacing: 0.1em;
-    color: $gold;
-    text-transform: uppercase;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-
-  .button-row {
-      display: flex;
-      gap: 6px;
-      width: 100%;
-      min-width: 0;
-  }
-
-  .view-controls {
-      display: flex;
-      gap: 6px;
-      width: 100%;
-      min-width: 0;
   }
 
   .folders-list {

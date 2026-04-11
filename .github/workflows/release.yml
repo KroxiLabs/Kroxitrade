@@ -16,23 +16,20 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: latest
-          run_install: true
-
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: pnpm
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
 
       - name: Build Chrome package
-        run: pnpm package:chrome
+        run: npm run package:chrome
 
       - name: Build Firefox package
-        run: pnpm package:firefox
+        run: npm run package:firefox
 
       - name: Create GitHub release
         uses: softprops/action-gh-release@v2

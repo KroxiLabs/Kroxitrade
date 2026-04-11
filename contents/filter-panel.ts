@@ -1,26 +1,23 @@
-import type { PlasmoCSConfig } from "plasmo"
+export const initFilterPanel = () => {
+  console.log("[Krox-MainWorld] Script injected and running!")
 
-export const config: PlasmoCSConfig = {
-  matches: ["https://www.pathofexile.com/trade*"],
-  world: "MAIN"
-}
+  window.addEventListener("message", (event) => {
+    if (event.source !== window) return
 
-console.log("[Krox-MainWorld] Script injected and running!");
+    const data = event.data
+    if (!data || data.source !== "poe-trade-plus-debug") return
 
-window.addEventListener("message", (event) => {
-  if (event.source !== window) return;
+    console.log(`[Poe Trade Plus->Page] ${data.label}`, data.payload)
+  })
 
-  const data = event.data;
-  if (!data || data.source !== "poe-trade-plus-debug") return;
+  console.log("[Krox-MainWorld] Page debug relay ready")
 
-  console.log(`[Poe Trade Plus->Page] ${data.label}`, data.payload);
-});
+  if ((window as any).__KROX_STARTED__) {
+    return
+  }
 
-console.log("[Krox-MainWorld] Page debug relay ready");
-
-if (!(window as any).__KROX_STARTED__) {
-  console.log("[Krox-MainWorld] Starting Finer Filters initialization...");
-  (window as any).__KROX_STARTED__ = true;
+  console.log("[Krox-MainWorld] Starting Finer Filters initialization...")
+  ;(window as any).__KROX_STARTED__ = true
 
   // ---------- helpers ----------
   const $ = (sel: string, root = document) => root.querySelector(sel);

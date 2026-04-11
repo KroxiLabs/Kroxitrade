@@ -381,7 +381,7 @@
       <div class="onboarding-highlight" style={highlightStyle}></div>
     {/if}
 
-    <section
+    <div
       bind:this={coachmarkElement}
       class="onboarding-coachmark"
       class:is-above={coachmarkPlacement === "above"}
@@ -441,7 +441,7 @@
             onClick={nextStep} />
         </div>
       </div>
-    </section>
+    </div>
   </div>
 {/if}
 

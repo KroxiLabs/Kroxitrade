@@ -16,8 +16,8 @@
       labelKey: "popup.trade2"
     }
   ]
-  import poe1Logo from "data-base64:./assets/logo-trade.webp"
-  import poe2Logo from "data-base64:./assets/logo-trade2.webp"
+  import poe1Logo from "./assets/logo-trade.webp?inline"
+  import poe2Logo from "./assets/logo-trade2.webp?inline"
 
   onMount(async () => {
     await settings.load()
@@ -47,18 +47,38 @@
 </div>
 
 <style>
+  :global(html) {
+    width: 388px;
+    min-width: 388px;
+    max-width: 388px;
+    background:
+      radial-gradient(circle at top left, rgba(184, 124, 52, 0.18), transparent 38%),
+      linear-gradient(180deg, #0f0d0b 0%, #070707 100%);
+  }
+
   :global(body) {
     margin: 0;
-    min-width: 300px;
+    width: 388px;
+    min-width: 388px;
+    max-width: 388px;
     background:
       radial-gradient(circle at top left, rgba(184, 124, 52, 0.18), transparent 38%),
       linear-gradient(180deg, #0f0d0b 0%, #070707 100%);
     color: #f0dfbd;
     font-family: Georgia, "Times New Roman", serif;
+    box-sizing: border-box;
+  }
+
+  :global(#app) {
+    width: 388px;
+    min-width: 388px;
+    max-width: 388px;
+    box-sizing: border-box;
   }
 
   .popup-shell {
     padding: 14px;
+    box-sizing: border-box;
   }
 
   .hero {

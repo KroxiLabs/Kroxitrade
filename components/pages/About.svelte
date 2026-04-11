@@ -31,8 +31,7 @@
     color: #d8c7a7;
   }
 
-  .hero,
-  .card {
+  .hero {
     border: 1px solid rgba(168, 129, 73, 0.24);
     background: linear-gradient(180deg, rgba(17, 16, 14, 0.96), rgba(9, 9, 8, 0.96));
     box-shadow: inset 0 1px 0 rgba(255, 226, 178, 0.04);
@@ -65,10 +64,6 @@
     color: #cbb694;
     font-size: 11px;
     line-height: 1.55;
-  }
-
-  .credit {
-    color: #dfc592;
   }
 
   .about-footer {

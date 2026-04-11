@@ -4,13 +4,9 @@ import preprocess from "svelte-preprocess"
  * @type {import('@sveltejs/kit').Config}
  */
 const config = {
-  preprocess: preprocess({
-    scss: {
-      api: "modern-compiler",
-    },
-  }),
+  preprocess: preprocess(),
   compilerOptions: {
-    css: 'injected',
+    css: "injected"
   }
 }
 

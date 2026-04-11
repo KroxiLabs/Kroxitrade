@@ -49,10 +49,14 @@
 
 <div class="finer-filters-container">
   <!-- Header -->
-  <div class="finer-header" on:click={() => collapsed = !collapsed}>
+  <button
+    type="button"
+    class="finer-header"
+    aria-expanded={!collapsed}
+    on:click={() => collapsed = !collapsed}>
     <span>{translate($languageStore, "finer.title")}</span>
     <span class="chevron" class:collapsed>▼</span>
-  </div>
+  </button>
 
   {#if !collapsed}
     <div class="finer-body">
@@ -84,6 +88,8 @@
   }
 
   .finer-header {
+    border: none;
+    width: 100%;
     background: linear-gradient(180deg, rgba($gold, 0.08), transparent);
     padding: 10px 15px;
     display: flex;
@@ -92,6 +98,7 @@
     cursor: pointer;
     user-select: none;
     border-bottom: 1px solid rgba($gold, 0.05);
+    text-align: left;
 
     span {
       color: $gold;

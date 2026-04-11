@@ -5,13 +5,13 @@
   import type { BookmarksFolderStruct } from "~lib/types/bookmarks";
   import { normalizeIcon } from "~lib/utilities/icons";
 
-  import editIcon from "data-text:lucide-static/icons/pencil.svg";
-  import copyIcon from "data-text:lucide-static/icons/copy.svg";
-  import uploadIcon from "data-text:lucide-static/icons/upload.svg";
-  import trashIcon from "data-text:lucide-static/icons/trash-2.svg";
-  import archiveIcon from "data-text:lucide-static/icons/archive.svg";
-  import archiveRestoreIcon from "data-text:lucide-static/icons/archive-restore.svg";
-  import moreIcon from "data-text:lucide-static/icons/more-horizontal.svg";
+  import editIcon from "lucide-static/icons/pencil.svg?raw";
+  import copyIcon from "lucide-static/icons/copy.svg?raw";
+  import uploadIcon from "lucide-static/icons/upload.svg?raw";
+  import trashIcon from "lucide-static/icons/trash-2.svg?raw";
+  import archiveIcon from "lucide-static/icons/archive.svg?raw";
+  import archiveRestoreIcon from "lucide-static/icons/archive-restore.svg?raw";
+  import moreIcon from "lucide-static/icons/more-horizontal.svg?raw";
 
   export let folder: BookmarksFolderStruct;
   export let onRename: () => void;

@@ -7,21 +7,21 @@
   import { tradeLocationService } from "../../lib/services/trade-location";
   import Button from "../Button.svelte";
   import { onDestroy, onMount } from "svelte";
-  import flagBR from "data-base64:../../assets/BR.png";
-  import flagDE from "data-base64:../../assets/DE.png";
-  import flagES from "data-base64:../../assets/ES.png";
-  import flagFR from "data-base64:../../assets/FR.png";
-  import flagGB from "data-base64:../../assets/GB.png";
-  import flagJP from "data-base64:../../assets/JP.png";
-  import flagKR from "data-base64:../../assets/KR.png";
-  import flagRU from "data-base64:../../assets/RU.png";
-  import flagTH from "data-base64:../../assets/TH.png";
-  import editIcon from "data-text:lucide-static/icons/pencil.svg";
-  import replaceIcon from "data-text:lucide-static/icons/refresh-cw.svg";
-  import copyIcon from "data-text:lucide-static/icons/copy.svg";
-  import liveIcon from "data-text:lucide-static/icons/activity.svg";
-  import toggleIcon from "data-text:lucide-static/icons/check.svg";
-  import deleteIcon from "data-text:lucide-static/icons/trash-2.svg";
+  import flagBR from "../../assets/BR.png?inline";
+  import flagDE from "../../assets/DE.png?inline";
+  import flagES from "../../assets/ES.png?inline";
+  import flagFR from "../../assets/FR.png?inline";
+  import flagGB from "../../assets/GB.png?inline";
+  import flagJP from "../../assets/JP.png?inline";
+  import flagKR from "../../assets/KR.png?inline";
+  import flagRU from "../../assets/RU.png?inline";
+  import flagTH from "../../assets/TH.png?inline";
+  import editIcon from "lucide-static/icons/pencil.svg?raw";
+  import replaceIcon from "lucide-static/icons/refresh-cw.svg?raw";
+  import copyIcon from "lucide-static/icons/copy.svg?raw";
+  import liveIcon from "lucide-static/icons/activity.svg?raw";
+  import toggleIcon from "lucide-static/icons/check.svg?raw";
+  import deleteIcon from "lucide-static/icons/trash-2.svg?raw";
 
   export let onOpenTutorial: () => void = () => {};
 
@@ -561,10 +561,6 @@
     min-width: 0;
   }
 
-  .section-heading--inline {
-    margin-bottom: 0;
-  }
-
   .section-description {
     margin: 0;
     color: rgba($white, 0.72);
@@ -582,13 +578,6 @@
 
   .section-actions {
     margin-top: 14px;
-  }
-
-  .settings-inline-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
   }
 
   .settings-row-list {
@@ -932,77 +921,6 @@
     background: rgba($white, 0.04);
   }
 
-  .language-label {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    font-family: $primary-font;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .info-tooltip {
-    position: relative;
-    display: inline-flex;
-    flex: 0 0 auto;
-
-    &:hover .info-tooltip__content,
-    &:focus-within .info-tooltip__content {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-  }
-
-  .info-tooltip__trigger {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    padding: 0;
-    border: 1px solid rgba($gold, 0.28);
-    border-radius: 999px;
-    background: rgba($gold, 0.08);
-    color: rgba($gold, 0.9);
-    font-family: $primary-font;
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1;
-    cursor: help;
-
-    &:focus-visible {
-      box-shadow:
-        0 0 0 1px rgba($gold, 0.28),
-        0 0 0 3px rgba($gold, 0.12);
-    }
-  }
-
-  .info-tooltip__content {
-    position: absolute;
-    top: calc(100% + 8px);
-    left: 0;
-    z-index: 8;
-    width: min(260px, calc(100vw - 64px));
-    padding: 10px 12px;
-    border: 1px solid rgba($gold, 0.18);
-    border-radius: 4px;
-    background: #14110d;
-    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
-    color: rgba($white, 0.82);
-    font-size: 11px;
-    line-height: 1.5;
-    text-transform: none;
-    letter-spacing: normal;
-    opacity: 0;
-    transform: translateY(-4px);
-    pointer-events: none;
-    transition: opacity 0.16s ease, transform 0.16s ease;
-  }
-
   .compact-options {
     margin-top: 14px;
     padding-top: 14px;
@@ -1101,12 +1019,6 @@
       align-items: stretch;
     }
 
-    .settings-inline-row {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 12px;
-    }
-
     .toggle-row--inline {
       width: 100%;
     }
@@ -1118,7 +1030,6 @@
     .toggle-switch__thumb,
     .language-select,
     .language-menu__item,
-    .info-tooltip__content,
     .compact-option {
       animation: none !important;
       transition: none !important;

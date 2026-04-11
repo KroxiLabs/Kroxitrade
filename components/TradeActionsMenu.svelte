@@ -5,13 +5,13 @@
   import type { BookmarksTradeStruct } from "~lib/types/bookmarks";
   import { normalizeIcon } from "~lib/utilities/icons";
 
-  import editIcon from "data-text:lucide-static/icons/pencil.svg";
-  import replaceIcon from "data-text:lucide-static/icons/refresh-cw.svg";
-  import copyIcon from "data-text:lucide-static/icons/copy.svg";
-  import liveIcon from "data-text:lucide-static/icons/activity.svg";
-  import checkIcon from "data-text:lucide-static/icons/check.svg";
-  import trashIcon from "data-text:lucide-static/icons/trash-2.svg";
-  import moreIcon from "data-text:lucide-static/icons/more-horizontal.svg";
+  import editIcon from "lucide-static/icons/pencil.svg?raw";
+  import replaceIcon from "lucide-static/icons/refresh-cw.svg?raw";
+  import copyIcon from "lucide-static/icons/copy.svg?raw";
+  import liveIcon from "lucide-static/icons/activity.svg?raw";
+  import checkIcon from "lucide-static/icons/check.svg?raw";
+  import trashIcon from "lucide-static/icons/trash-2.svg?raw";
+  import moreIcon from "lucide-static/icons/more-horizontal.svg?raw";
 
   export let trade: BookmarksTradeStruct;
   export let onEdit: () => void;

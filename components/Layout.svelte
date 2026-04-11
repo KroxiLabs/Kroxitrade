@@ -1,9 +1,9 @@
 <script lang="ts">
-  import bookmarkIcon from "data-text:lucide-static/icons/bookmark.svg";
-  import clockIcon from "data-text:lucide-static/icons/history.svg";
-  import infoIcon from "data-text:lucide-static/icons/info.svg";
-  import layersIcon from "data-text:lucide-static/icons/layers-3.svg";
-  import settingsIcon from "data-text:lucide-static/icons/settings-2.svg";
+  import bookmarkIcon from "lucide-static/icons/bookmark.svg?raw";
+  import clockIcon from "lucide-static/icons/history.svg?raw";
+  import infoIcon from "lucide-static/icons/info.svg?raw";
+  import layersIcon from "lucide-static/icons/layers-3.svg?raw";
+  import settingsIcon from "lucide-static/icons/settings-2.svg?raw";
   import Header from "./Header.svelte";
   import Bookmarks from "./pages/Bookmarks.svelte";
   import BulkSellers from "./pages/BulkSellers.svelte";
@@ -13,7 +13,7 @@
   import About from "./pages/About.svelte";
   import FinerFilters from "./FinerFilters.svelte";
   import WelcomeDialog from "./WelcomeDialog.svelte";
-  import logoUrl from "data-base64:~assets/logo.webp";
+  import logoUrl from "~assets/logo.webp?inline";
   import { flashMessages } from "../lib/services/flash";
   import { bookmarksService } from "../lib/services/bookmarks";
   import { languageStore, translate } from "../lib/services/i18n";
@@ -325,8 +325,7 @@
       document.documentElement.classList.toggle('bt-sidebar-minimized', isMinimized);
       document.body.classList.toggle('bt-is-resizing-sidebar', isResizing);
 
-      // Target all possible plasmo host containers and apply direct styles for extra robustness
-      const hosts = document.querySelectorAll('plasmo-csui, #plasmo-shadow-container');
+      const hosts = document.querySelectorAll('#kroxitrade-root');
       hosts.forEach((h: any) => {
         h.classList.toggle('is-side-right', isRight);
         h.classList.toggle('is-side-left', !isRight);

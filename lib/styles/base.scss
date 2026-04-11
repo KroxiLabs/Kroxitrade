@@ -1,6 +1,6 @@
 @use 'variables' as *;
 
-:host, #plasmo-shadow-container {
+#kroxitrade-root {
   width: var(--bt-sidebar-width, $extension-width) !important;
   max-width: var(--bt-sidebar-width, $extension-width) !important;
   position: fixed !important;
@@ -13,50 +13,9 @@
   right: auto !important;
 
   /* Right position override */
-  &:host(.is-side-right), &.is-side-right {
+  &.is-side-right {
     left: auto !important;
     right: 0 !important;
-  }
-}
-
-:host(.is-side-right) .plasmo-csui-container,
-#plasmo-shadow-container.is-side-right .plasmo-csui-container {
-  inset: 0 0 0 auto !important;
-}
-
-:host {
-  display: block !important;
-  width: var(--bt-sidebar-width, $extension-width) !important;
-  min-width: var(--bt-sidebar-width, $extension-width) !important;
-  max-width: var(--bt-sidebar-width, $extension-width) !important;
-  height: 100vh !important;
-  min-height: 100vh !important;
-}
-
-#plasmo-shadow-container {
-  display: block !important;
-  width: var(--bt-sidebar-width, $extension-width) !important;
-  min-width: var(--bt-sidebar-width, $extension-width) !important;
-  max-width: var(--bt-sidebar-width, $extension-width) !important;
-  height: 100vh !important;
-  min-height: 100vh !important;
-  pointer-events: none !important;
-}
-
-.plasmo-csui-container {
-  position: fixed !important;
-  display: block !important;
-  width: var(--bt-sidebar-width, $extension-width) !important;
-  min-width: var(--bt-sidebar-width, $extension-width) !important;
-  max-width: var(--bt-sidebar-width, $extension-width) !important;
-  height: 100vh !important;
-  min-height: 100vh !important;
-  pointer-events: none !important;
-  inset: 0 auto 0 0 !important;
-
-  :host(.is-side-right) &,
-  .is-side-right & {
-    inset: 0 0 0 auto !important;
   }
 }
 
@@ -142,14 +101,7 @@
 }
 
 /* Side-Right Overrides */
-:host(.is-side-right), 
-#plasmo-shadow-container.is-side-right {
+#kroxitrade-root.is-side-right {
   left: auto !important;
   right: 0 !important;
 }
-
-:host(.is-side-right) .plasmo-csui-container,
-#plasmo-shadow-container.is-side-right .plasmo-csui-container {
-  inset: 0 0 0 auto !important;
-}
-
