@@ -31,6 +31,7 @@
 
   export let open = false
   export let showHistoryStep = true
+  export let showEquivalentStep = true
   export let onClose: () => void = () => {}
   export let onStepChange: (
     page: OnboardingPage,
@@ -208,6 +209,10 @@
   $: steps = showHistoryStep
     ? allSteps
     : allSteps.filter((step) => step.id !== "history")
+
+  $: if (!showEquivalentStep) {
+    steps = steps.filter((step) => step.id !== "settings-equivalent")
+  }
 
   const getQueryRoot = (): Document | ShadowRoot => {
     const root = layerElement?.getRootNode()

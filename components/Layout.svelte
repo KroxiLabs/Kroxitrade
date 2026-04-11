@@ -31,6 +31,7 @@
   const VERSION_NOTICE_SEEN_KEY = "layout-version-notice-seen";
 
   let currentPage: 'bookmarks' | 'bulk' | 'history' | 'about' | 'settings' = 'bookmarks';
+  let currentTradeVersion: "1" | "2" = tradeLocationService.current.version;
   let isMinimized = false;
   let isResizing = false;
   let liveSidebarWidth: number | null = null;
@@ -195,6 +196,9 @@
   onMount(async () => {
     await settings.load();
     tradeLocationService.startPolling();
+    const unsubscribeLocation = tradeLocationService.locationStore.subscribe((location) => {
+      currentTradeVersion = location.version;
+    });
     welcomeLanguage = $settings.language;
     appVersion = hasValidExtensionContext()
       ? chrome.runtime.getManifest().version
@@ -218,6 +222,10 @@
     window.addEventListener('mousemove', handleResizeMove);
     window.addEventListener('mouseup', stopResize);
     window.addEventListener('mouseleave', stopResize);
+
+    return () => {
+      unsubscribeLocation();
+    };
   });
 
   const closeOnboarding = async () => {
@@ -460,6 +468,7 @@
   <OnboardingModal
     open={showOnboarding}
     showHistoryStep={$settings.showHistory}
+    showEquivalentStep={currentTradeVersion !== '2'}
     onClose={closeOnboarding}
     onStepChange={handleOnboardingStepChange} />
 

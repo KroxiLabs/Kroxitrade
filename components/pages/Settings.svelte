@@ -73,6 +73,7 @@
   let isLanguageMenuOpen = false;
   let isRefreshingEquivalentRatios = false;
   let languageSelectorEl: HTMLDivElement | null = null;
+  let currentTradeVersion: "1" | "2" = tradeLocationService.current.version;
 
   async function handleSideChange(side: SidebarSide) {
     await settings.updateSide(side);
@@ -208,8 +209,16 @@
 
   onMount(async () => {
     await settings.load();
+    currentTradeVersion = tradeLocationService.current.version;
+    const unsubscribeLocation = tradeLocationService.locationStore.subscribe((location) => {
+      currentTradeVersion = location.version;
+    });
     document.addEventListener("click", handleDocumentClick);
     document.addEventListener("keydown", handleDocumentKeydown);
+
+    return () => {
+      unsubscribeLocation();
+    };
   });
 
   onDestroy(() => {
@@ -219,6 +228,7 @@
 
   $: selectedLanguage =
     languages.find((language) => language.code === $settings.language) ?? languages[0];
+  $: showEquivalentPricingSetting = currentTradeVersion !== "2";
 </script>
 
 <div class="settings-page">
@@ -372,42 +382,44 @@
         <h3 class="section-title">{translate($languageStore, "settings.resultsTitle")}</h3>
       </div>
       <div class="settings-row-list">
-        <div class="settings-row" data-tutorial="settings-equivalent">
-          <div class="settings-row__copy">
-            <div class="settings-row__title">{translate($languageStore, "settings.equivalentTitle")}</div>
-            <div class="settings-row__description">{translate($languageStore, "settings.equivalentDescription")}</div>
-            <div class="settings-row__hint settings-row__hint--actions">
-              <span>{translate($languageStore, "settings.equivalentSource")}</span>
-              <button
-                type="button"
-                class="mini-action"
-                on:click={handleEquivalentPricingRefresh}
-                disabled={isRefreshingEquivalentRatios}
-              >
-                {translate(
-                  $languageStore,
-                  isRefreshingEquivalentRatios
-                    ? "settings.equivalentRefreshLoading"
-                    : "settings.equivalentRefresh"
-                )}
-              </button>
+        {#if showEquivalentPricingSetting}
+          <div class="settings-row" data-tutorial="settings-equivalent">
+            <div class="settings-row__copy">
+              <div class="settings-row__title">{translate($languageStore, "settings.equivalentTitle")}</div>
+              <div class="settings-row__description">{translate($languageStore, "settings.equivalentDescription")}</div>
+              <div class="settings-row__hint settings-row__hint--actions">
+                <span>{translate($languageStore, "settings.equivalentSource")}</span>
+                <button
+                  type="button"
+                  class="mini-action"
+                  on:click={handleEquivalentPricingRefresh}
+                  disabled={isRefreshingEquivalentRatios}
+                >
+                  {translate(
+                    $languageStore,
+                    isRefreshingEquivalentRatios
+                      ? "settings.equivalentRefreshLoading"
+                      : "settings.equivalentRefresh"
+                  )}
+                </button>
+              </div>
             </div>
+            <button
+              type="button"
+              class="toggle-row toggle-row--inline"
+              class:is-active={$settings.showEquivalentPricing}
+              role="switch"
+              aria-checked={$settings.showEquivalentPricing}
+              aria-label={translate($languageStore, "settings.equivalentTitle")}
+              on:click={() => handleEquivalentPricingChange(!$settings.showEquivalentPricing)}
+            >
+              <span class="toggle-switch">
+                <span class="toggle-switch__thumb"></span>
+              </span>
+              <span class="toggle-state">{toggleSwitchLabel($settings.showEquivalentPricing)}</span>
+            </button>
           </div>
-          <button
-            type="button"
-            class="toggle-row toggle-row--inline"
-            class:is-active={$settings.showEquivalentPricing}
-            role="switch"
-            aria-checked={$settings.showEquivalentPricing}
-            aria-label={translate($languageStore, "settings.equivalentTitle")}
-            on:click={() => handleEquivalentPricingChange(!$settings.showEquivalentPricing)}
-          >
-            <span class="toggle-switch">
-              <span class="toggle-switch__thumb"></span>
-            </span>
-            <span class="toggle-state">{toggleSwitchLabel($settings.showEquivalentPricing)}</span>
-          </button>
-        </div>
+        {/if}
 
         <div class="settings-row" data-tutorial="settings-bulk">
           <div class="settings-row__copy">

@@ -7,6 +7,17 @@ export const config: PlasmoCSConfig = {
 
 console.log("[Krox-MainWorld] Script injected and running!");
 
+window.addEventListener("message", (event) => {
+  if (event.source !== window) return;
+
+  const data = event.data;
+  if (!data || data.source !== "poe-trade-plus-debug") return;
+
+  console.log(`[Poe Trade Plus->Page] ${data.label}`, data.payload);
+});
+
+console.log("[Krox-MainWorld] Page debug relay ready");
+
 if (!(window as any).__KROX_STARTED__) {
   console.log("[Krox-MainWorld] Starting Finer Filters initialization...");
   (window as any).__KROX_STARTED__ = true;

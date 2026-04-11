@@ -5,6 +5,7 @@ import { searchPanelService } from "./search-panel";
 import { settings } from "./settings";
 import { slugify } from "../utilities/slugify";
 import { escapeRegex } from "../utilities/escape-regex";
+import { emitPageDebug } from "../utilities/page-debug";
 
 
 
@@ -28,6 +29,22 @@ export class ItemResultsService {
   private statNeedles: RegExp[] = [];
   private readonly DIVINE_SLUG = "divine-orb";
   private readonly CHAOS_SLUG = "chaos-orb";
+  private readonly currencySlugAliases: Record<string, string> = {
+    chaos: "chaos-orb",
+    divine: "divine-orb",
+    exalted: "exalted-orb",
+    exalt: "exalted-orb",
+    regal: "regal-orb",
+    vaal: "vaal-orb",
+    alchemy: "orb-of-alchemy",
+    annul: "orb-of-annulment",
+    annullment: "orb-of-annulment",
+    transmute: "orb-of-transmutation",
+    transmutation: "orb-of-transmutation",
+    augment: "orb-of-augmentation",
+    augmentation: "orb-of-augmentation",
+    chance: "orb-of-chance"
+  };
   private readonly CHAOS_ICON_URL = "https://web.poecdn.com/image/Art/2DItems/Currency/CurrencyRerollRare.png?scale=1&w=1&h=1";
   private readonly DIVINE_ICON_URL = "https://web.poecdn.com/image/Art/2DItems/Currency/CurrencyModValues.png?scale=1&w=1&h=1";
   private showEquivalentPricing = false;
@@ -43,6 +60,9 @@ export class ItemResultsService {
 
   async initialize() {
     console.log("[Poe Trade Plus] Initializing ItemResultsService...");
+    emitPageDebug("item-results-initialize", {
+      href: window.location.href
+    });
     if (window.location.protocol === "chrome-extension:") {
       return;
     }
@@ -88,14 +108,39 @@ export class ItemResultsService {
 
 
   private async fetchRatios(forceFresh = false) {
-    const { league, type, slug } = tradeLocationService.current;
+    const { league, type, slug, version } = tradeLocationService.current;
 
-    if (!league || !type || !slug) {
+    if (version === "2") {
       this.chaosRatios = null;
+      emitPageDebug("poe-ninja-skip", {
+        reason: "poe2-disabled",
+        league,
+        type,
+        slug,
+        version
+      });
+      this.refreshEquivalentPricing();
+      return;
+    }
+
+    if (!league) {
+      this.chaosRatios = null;
+      emitPageDebug("poe-ninja-skip", {
+        reason: "missing-league",
+        league,
+        type,
+        slug
+      });
       return;
     }
 
     console.log("[Poe Trade Plus] Current league detected:", league);
+    emitPageDebug("poe-ninja-fetching-for-league", {
+      league,
+      type,
+      slug,
+      forceFresh
+    });
     this.chaosRatios = forceFresh
       ? await poeNinjaService.fetchFreshChaosRatiosFor(league)
       : await poeNinjaService.fetchChaosRatiosFor(league);
@@ -107,6 +152,11 @@ export class ItemResultsService {
   }
 
   private injectEquivalentPricing(row: HTMLElement) {
+    if (tradeLocationService.current.version === "2") {
+      this.removeEquivalentPricing(row);
+      return;
+    }
+
     const priceInfo = this.extractPriceInfo(row);
     if (!priceInfo) {
       console.debug("[Poe Trade Plus] Skipping pricing injection - Missing price info for row", row);
@@ -122,6 +172,11 @@ export class ItemResultsService {
 
     if (!currencyText || isNaN(amount)) {
       this.removeEquivalentPricing(row);
+      emitPageDebug("equivalent-missing-details", {
+        currency: currencyText,
+        amount,
+        html: priceContainer.innerHTML
+      });
       console.debug("[Poe Trade Plus] Skipping pricing injection - Missing details:", {
         currency: currencyText,
         amount,
@@ -130,7 +185,7 @@ export class ItemResultsService {
       return;
     }
 
-    const slug = slugify(currencyText);
+    const slug = this.resolveCurrencySlug(currencyText);
     const ratio = this.chaosRatios[slug];
     const divineRatio = this.chaosRatios[this.DIVINE_SLUG];
     const parts: Array<{ amount: number | string; slug: string } | { separator: true }> = [];
@@ -175,10 +230,22 @@ export class ItemResultsService {
         parts.push({ amount: chaosEquiv, slug: this.CHAOS_SLUG });
     } else {
         this.removeEquivalentPricing(row);
+        emitPageDebug("equivalent-unresolved", {
+          amount,
+          currencyText,
+          slug,
+          availableSample: this.chaosRatios ? Object.keys(this.chaosRatios).slice(0, 10) : []
+        });
         console.debug(`[Poe Trade Plus] Could not determine equivalence for ${amount} ${currencyText} (slug: ${slug})`);
         return;
     }
 
+    emitPageDebug("equivalent-rendered", {
+      amount,
+      currencyText,
+      slug,
+      parts
+    });
     this.renderEquivalentPricing(priceContainer, parts);
   }
 
@@ -236,6 +303,11 @@ export class ItemResultsService {
     }
 
     return "";
+  }
+
+  private resolveCurrencySlug(currencyText: string) {
+    const baseSlug = slugify(currencyText);
+    return this.currencySlugAliases[baseSlug] || baseSlug;
   }
 
   private renderEquivalentPricing(
