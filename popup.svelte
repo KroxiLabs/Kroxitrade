@@ -16,8 +16,8 @@
       labelKey: "popup.trade2"
     }
   ]
-  import poe1Logo from "data-base64:./assets/logo-trade.webp"
-  import poe2Logo from "data-base64:./assets/logo-trade2.webp"
+  import poe1Logo from "./assets/logo-trade.webp?inline"
+  import poe2Logo from "./assets/logo-trade2.webp?inline"
 
   onMount(async () => {
     await settings.load()

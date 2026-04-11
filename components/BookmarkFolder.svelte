@@ -1,5 +1,5 @@
 <script lang="ts">
-  import gripVerticalIcon from "data-text:lucide-static/icons/grip-vertical.svg"
+import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
   import { flip } from "svelte/animate"
   import { tick } from "svelte"
   import { slide } from "svelte/transition"

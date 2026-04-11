@@ -7,21 +7,21 @@
   import { tradeLocationService } from "../../lib/services/trade-location";
   import Button from "../Button.svelte";
   import { onDestroy, onMount } from "svelte";
-  import flagBR from "data-base64:../../assets/BR.png";
-  import flagDE from "data-base64:../../assets/DE.png";
-  import flagES from "data-base64:../../assets/ES.png";
-  import flagFR from "data-base64:../../assets/FR.png";
-  import flagGB from "data-base64:../../assets/GB.png";
-  import flagJP from "data-base64:../../assets/JP.png";
-  import flagKR from "data-base64:../../assets/KR.png";
-  import flagRU from "data-base64:../../assets/RU.png";
-  import flagTH from "data-base64:../../assets/TH.png";
-  import editIcon from "data-text:lucide-static/icons/pencil.svg";
-  import replaceIcon from "data-text:lucide-static/icons/refresh-cw.svg";
-  import copyIcon from "data-text:lucide-static/icons/copy.svg";
-  import liveIcon from "data-text:lucide-static/icons/activity.svg";
-  import toggleIcon from "data-text:lucide-static/icons/check.svg";
-  import deleteIcon from "data-text:lucide-static/icons/trash-2.svg";
+  import flagBR from "../../assets/BR.png?inline";
+  import flagDE from "../../assets/DE.png?inline";
+  import flagES from "../../assets/ES.png?inline";
+  import flagFR from "../../assets/FR.png?inline";
+  import flagGB from "../../assets/GB.png?inline";
+  import flagJP from "../../assets/JP.png?inline";
+  import flagKR from "../../assets/KR.png?inline";
+  import flagRU from "../../assets/RU.png?inline";
+  import flagTH from "../../assets/TH.png?inline";
+  import editIcon from "lucide-static/icons/pencil.svg?raw";
+  import replaceIcon from "lucide-static/icons/refresh-cw.svg?raw";
+  import copyIcon from "lucide-static/icons/copy.svg?raw";
+  import liveIcon from "lucide-static/icons/activity.svg?raw";
+  import toggleIcon from "lucide-static/icons/check.svg?raw";
+  import deleteIcon from "lucide-static/icons/trash-2.svg?raw";
 
   export let onOpenTutorial: () => void = () => {};
 

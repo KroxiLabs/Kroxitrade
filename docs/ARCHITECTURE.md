@@ -36,4 +36,4 @@ It injects base styles, shifts the Path of Exile trade page to make room for the
 
 - The popup is informational only; the main product experience lives on the trade website itself.
 - Pinned items are session-only and are not persisted to extension storage.
-- The codebase still includes generated folders such as `build/` and `.plasmo/` locally, but source changes should happen in the top-level source files.
+- The codebase still includes generated folders such as `build/` and `.wxt/` locally, but source changes should happen in the top-level source files.

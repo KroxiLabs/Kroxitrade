@@ -1,24 +1,23 @@
 {
-  "extends": "plasmo/templates/tsconfig.base",
-  "exclude": [
-    "node_modules"
-  ],
-  "include": [
-    ".plasmo/index.d.ts",
-    "./**/*.ts",
-    "./**/*.svelte"
-  ],
+  "extends": "./.wxt/tsconfig.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "lib": ["ES2022", "DOM"],
-    "module": "ESNext",
-    "moduleResolution": "Node",
+    "baseUrl": ".",
     "paths": {
-      "~*": [
+      "~assets/*": [
+        "./assets/*"
+      ],
+      "~components/*": [
+        "./components/*"
+      ],
+      "~lib/*": [
+        "./lib/*"
+      ],
+      "~/*": [
         "./*"
       ]
     },
-    "baseUrl": ".",
-    "types": ["svelte", "chrome"]
+    "types": [
+      "chrome"
+    ]
   }
 }

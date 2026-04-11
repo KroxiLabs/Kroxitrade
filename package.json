@@ -10,22 +10,23 @@
     "joacoesteban"
   ],
   "scripts": {
-    "dev": "plasmo dev",
-    "build:chrome": "plasmo build",
-    "build:firefox": "plasmo build --target=firefox-mv3",
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build:chrome": "wxt build",
+    "build:firefox": "wxt build -b firefox",
     "build": "npm run build:chrome && npm run build:firefox",
     "version:bump": "node scripts/bump-version.cjs",
-    "archive:chrome": "node scripts/archive-build.cjs",
-    "archive:firefox": "node scripts/archive-build.cjs firefox-mv3-prod",
-    "package:chrome": "npm run build:chrome && npm run archive:chrome",
-    "package:firefox": "npm run build:firefox && npm run archive:firefox",
-    "package": "npm run version:bump && npm run package:chrome && npm run package:firefox"
+    "zip:chrome": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "package:chrome": "npm run zip:chrome",
+    "package:firefox": "npm run zip:firefox",
+    "package": "npm run version:bump && npm run package:chrome && npm run package:firefox",
+    "postinstall": "wxt prepare"
   },
   "dependencies": {
     "js-base64": "^3.7.8",
     "lucide-static": "^1.7.0",
-    "plasmo": "latest",
-    "svelte": "4.2.9",
+    "svelte": "^5.38.1",
     "svelte-preprocess": "5.1.3",
     "svgo": "^3.3.3"
   },
@@ -33,43 +34,19 @@
     "@ianvs/prettier-plugin-sort-imports": "4.1.1",
     "@types/chrome": "0.0.258",
     "@types/node": "20.11.5",
+    "@wxt-dev/module-svelte": "^2.0.5",
     "prettier": "3.2.4",
-    "typescript": "5.3.3"
+    "sass-embedded": "^1.99.0",
+    "typescript": "5.3.3",
+    "wxt": "^0.20.20"
   },
   "overrides": {
+    "content-security-policy-parser": "0.6.0",
     "msgpackr": "^1.11.9"
   },
   "sass": {
     "silenceDeprecations": [
       "legacy-js-api"
-    ]
-  },
-  "manifest": {
-    "permissions": [
-      "storage",
-      "tabs"
-    ],
-    "browser_specific_settings": {
-      "gecko": {
-        "id": "poe-trade-plus@kroxilabs.com",
-        "data_collection_permissions": {
-          "required": [
-            "none"
-          ]
-        }
-      }
-    },
-    "host_permissions": [
-      "https://www.pathofexile.com/*",
-      "https://br.pathofexile.com/*",
-      "https://ru.pathofexile.com/*",
-      "https://th.pathofexile.com/*",
-      "https://de.pathofexile.com/*",
-      "https://fr.pathofexile.com/*",
-      "https://es.pathofexile.com/*",
-      "https://jp.pathofexile.com/*",
-      "https://poe.game.daum.net/*",
-      "https://poe.ninja/*"
     ]
   }
 }

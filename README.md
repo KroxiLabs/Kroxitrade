@@ -10,7 +10,7 @@
 
 ---
 
-**Poe Trade Plus** is a browser extension that injects a native companion sidebar into the official Path of Exile trade site. It combines bookmark management, search history, search-result enhancements, and quality-of-life trading tools in a single Svelte + TypeScript extension built with Plasmo.
+**Poe Trade Plus** is a browser extension that injects a native companion sidebar into the official Path of Exile trade site. It combines bookmark management, search history, search-result enhancements, and quality-of-life trading tools in a single Svelte + TypeScript extension built with WXT.
 
 The project currently focuses on making recurring trade searches easier to save, revisit, compare, and navigate without leaving the official site.
 
@@ -62,7 +62,7 @@ The project currently focuses on making recurring trade searches easier to save,
 
 ## Tech Stack
 
-- **Plasmo** for browser extension structure and MV3 integration
+- **WXT** for browser extension structure and MV3 integration
 - **Svelte 4** for the injected UI
 - **TypeScript** for extension and domain logic
 - **Sass** for theming and trade-site layout enhancements
@@ -71,16 +71,19 @@ The project currently focuses on making recurring trade searches easier to save,
 ## Project Structure
 
 ```text
-assets/              Branding assets
+entrypoints/         WXT entrypoints for popup, background, and content scripts
+assets/              Branding assets and imported media
 components/          Svelte UI components and panel pages
-contents/            Content scripts injected into the trade site
+contents/            Shared content-script logic and mounted Svelte app
 lib/services/        Bookmarks, trade tracking, settings, result enhancements, poe.ninja
 lib/styles/          Base and enhancement styles for the site and sidebar
 lib/types/           Shared TypeScript models
 lib/utilities/       Small helpers for URLs, IDs, clipboard, dates, and parsing
+public/              Static extension assets copied as-is into the bundle
 scripts/             Build/version helper scripts
-background.ts        Background bridge for poe.ninja requests
-popup.svelte         Extension popup entry
+background.ts        Background bridge logic used by the WXT background entrypoint
+popup.svelte         Shared popup Svelte component
+wxt.config.ts        WXT build and manifest configuration
 ```
 
 See `docs/ARCHITECTURE.md` for a deeper architectural overview if you want to explore the internal services and messaging flow.
@@ -104,7 +107,7 @@ npm install
 npm run dev
 ```
 
-Load the generated development output from `build/chrome-mv3-dev` in your browser's extensions page.
+Load the generated development output from `build/chrome-mv3` in your browser's extensions page.
 
 ### Production build
 
@@ -114,7 +117,7 @@ npm run build
 
 This build step also runs the local version bump script before generating the final extension bundle.
 
-The unpacked production extension is generated in `build/chrome-mv3-prod`.
+The unpacked production extension is generated in `build/chrome-mv3`.
 
 ### Package the extension
 
@@ -122,7 +125,7 @@ The unpacked production extension is generated in `build/chrome-mv3-prod`.
 npm run package
 ```
 
-This command creates a zip file in `build/` such as `Poe Trade Plus-1.0.58.zip`, using the contents of `build/chrome-mv3-prod`.
+This command creates browser-specific zip files in `build/`, such as `poe-trade-plus-1.0.70-chrome.zip` and `poe-trade-plus-1.0.70-firefox.zip`.
 
 ## Permissions and Integrations
 
