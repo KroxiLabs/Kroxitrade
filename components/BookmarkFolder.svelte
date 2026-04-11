@@ -445,7 +445,7 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
   on:dragover|preventDefault
   on:drop|preventDefault={(e) => onFolderDrop(e, folder.id || "")}
   on:dragend={onFolderDragEnd}>
-  <div class="header">
+  <div class="folder-header">
     <div
       class="folder-drag-handle"
       title={translate($languageStore, "folder.dragReorder")}
@@ -708,7 +708,7 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
     }
   }
 
-  .header {
+  .folder-header {
     display: flex;
     align-items: stretch;
     gap: 8px;

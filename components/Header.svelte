@@ -6,7 +6,7 @@
   export let sidebarSide: 'left' | 'right' = 'left';
 </script>
 
-<header class="header">
+<header class="sidebar-header">
   <div class="brand">
     <img class="logo" src={logoUrl} alt="Poe Trade Plus" />
     <div class="brand-copy">
@@ -32,7 +32,7 @@
   @use "sass:color";
   @use "../lib/styles/variables" as *;
 
-  .header {
+  .sidebar-header {
     padding: 14px 14px 12px;
     background-color: color.adjust($black, $lightness: 3%);
     border-bottom: 1px solid rgba($gold, 0.18);
