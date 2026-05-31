@@ -174,19 +174,15 @@ export const initFilterPanel = () => {
 
     if (mod.querySelector('#btns-finer')) return;
 
-    mod.style.position = "relative";
     mod.style.overflow = "visible";
-    mod.style.display = "";
-    mod.style.width = "";
-    mod.style.boxSizing = "";
-    mod.style.textAlign = "";
 
     const rowId = mod.dataset.rowid || getRowId(mod);
     const statHash = mod.dataset.hash || '';
     if (rowId) btns.setAttribute('data-rowid', rowId);
     if (statHash) btns.setAttribute('data-hash', statHash);
 
-    mod.appendChild(btns);
+    const host = mod.querySelector('.lc.r.su, .lc.r.pr, .lc.r') as HTMLElement | null;
+    (host || mod).appendChild(btns);
   };
 
   const decorateMod = (mod: HTMLElement, ISGs: any[]) => {
