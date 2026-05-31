@@ -146,14 +146,14 @@ body.bt-has-kroxitrade-sidebar.bt-sidebar-minimized {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 20px;
-  height: 20px;
+  width: 17px;
+  height: 17px;
   padding: 0;
   color: $white;
   border: 1px solid rgba($black, 0.85);
   border-radius: 2px;
   cursor: pointer;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 1;
   font-weight: 700;
   position: relative;
@@ -216,7 +216,8 @@ body.bt-has-kroxitrade-sidebar.bt-sidebar-minimized {
 
 .results.compact .item-popup__content .item-mod .lc.r.su:hover #btns-finer,
 .results.compact .item-popup__content .item-mod .lc.r.pr:hover #btns-finer,
-.results.compact .item-popup__content .item-mod .lc.r:hover #btns-finer {
+.results.compact .item-popup__content .item-mod .lc.r:hover #btns-finer,
+.results.compact .item-popup__content .item-mod:hover #btns-finer {
   display: inline-flex;
   opacity: 1;
   pointer-events: auto;
