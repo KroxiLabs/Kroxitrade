@@ -230,6 +230,15 @@ export const initFilterPanel = () => {
     });
   };
 
+  let layoutRefreshTimer: ReturnType<typeof setTimeout> | null = null;
+  const refreshButtonsForLayout = () => {
+    if (layoutRefreshTimer) clearTimeout(layoutRefreshTimer);
+    layoutRefreshTimer = setTimeout(() => {
+      scanVisibleMods();
+      layoutRefreshTimer = null;
+    }, 80);
+  };
+
   // step 1: hover a result row -> check filters
   onEnter('.resultset > .row, .resultset > .result-item, .search-results .result-item, .search-results .row', (e: any, row: HTMLElement) => {
     if (row.classList.contains('finer-processed')) return;
@@ -261,6 +270,11 @@ export const initFilterPanel = () => {
     }
   });
   observer.observe(document.body, { childList: true, subtree: true });
+
+  on('click', '.layout-btn', () => {
+    refreshButtonsForLayout();
+    setTimeout(refreshButtonsForLayout, 220);
+  });
 
   // step 3: click ± inside the buttons
   on('click', '[data-action="add-filter"]', (e: any, el: HTMLElement) => {
