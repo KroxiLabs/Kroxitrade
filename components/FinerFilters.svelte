@@ -1,5 +1,6 @@
 <script lang="ts">
   import { languageStore, translate } from "../lib/services/i18n";
+  import { emitFinerFiltersAction } from "../lib/utilities/finer-filters-bridge";
   const listModifiers = [
     {
       key: 'finer.pseudoResLife',
@@ -37,13 +38,11 @@
   let collapsed = true; // start collapsed
 
   function handleAction(action: 'global-plus' | 'global-minus', types: string[], prefix: string) {
-    document.dispatchEvent(new CustomEvent('krox-finer-action', {
-      detail: {
-        action,
-        types: types.join(','),
-        prefix
-      }
-    }));
+    emitFinerFiltersAction({
+      action,
+      types: types.join(','),
+      prefix
+    });
   }
 </script>
 

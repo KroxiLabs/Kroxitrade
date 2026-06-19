@@ -1,3 +1,5 @@
+import { isFinerFiltersActionMessage } from "~/lib/utilities/finer-filters-bridge"
+
 export const initFilterPanel = () => {
   if ((window as any).__KROX_STARTED__) {
     return
@@ -6,404 +8,486 @@ export const initFilterPanel = () => {
   ;(window as any).__KROX_STARTED__ = true
 
   // ---------- helpers ----------
-  const $ = (sel: string, root = document) => root.querySelector(sel);
-  const $$ = (sel: string, root = document) => Array.from(root.querySelectorAll(sel));
-  const on = (type: string, selector: string, handler: Function, opts?: any) => {
-    document.addEventListener(type, (e: any) => {
-      const el = e.target.closest(selector);
-      if (!el) return;
-      handler.call(el, e, el);
-    }, opts);
-  };
+  const $ = (sel: string, root = document) => root.querySelector(sel)
+  const $$ = (sel: string, root = document) =>
+    Array.from(root.querySelectorAll(sel))
+  const on = (
+    type: string,
+    selector: string,
+    handler: Function,
+    opts?: any
+  ) => {
+    document.addEventListener(
+      type,
+      (e: any) => {
+        const el = e.target.closest(selector)
+        if (!el) return
+        handler.call(el, e, el)
+      },
+      opts
+    )
+  }
   const onEnter = (selector: string, handler: Function) => {
-    document.addEventListener('mouseover', (e: any) => {
-      const el = e.target.closest(selector);
-      if (!el) return;
-      const rt = e.relatedTarget;
-      if (rt && (rt === el || el.contains(rt))) return;
-      handler.call(el, e, el);
-    });
-  };
+    document.addEventListener("mouseover", (e: any) => {
+      const el = e.target.closest(selector)
+      if (!el) return
+      const rt = e.relatedTarget
+      if (rt && (rt === el || el.contains(rt))) return
+      handler.call(el, e, el)
+    })
+  }
   const onLeave = (selector: string, handler: Function) => {
-    document.addEventListener('mouseout', (e: any) => {
-      const el = e.target.closest(selector);
-      if (!el) return;
-      const rt = e.relatedTarget;
-      if (rt && (rt === el || el.contains(rt))) return;
-      handler.call(el, e, el);
-    });
-  };
+    document.addEventListener("mouseout", (e: any) => {
+      const el = e.target.closest(selector)
+      if (!el) return
+      const rt = e.relatedTarget
+      if (rt && (rt === el || el.contains(rt))) return
+      handler.call(el, e, el)
+    })
+  }
   const h = (html: string) => {
-    const t = document.createElement('template');
-    t.innerHTML = html.trim();
-    return t.content.firstElementChild;
-  };
+    const t = document.createElement("template")
+    t.innerHTML = html.trim()
+    return t.content.firstElementChild
+  }
 
-  const listModifiers = [];
+  const listModifiers = []
   listModifiers.push({
-    name: 'Pseudo Res/Life',
-    types: ['life', 'cold', 'fire', 'light', 'chaos'],
-    prefix: 'pseudo.pseudo_',
-  });
+    name: "Pseudo Res/Life",
+    types: ["life", "cold", "fire", "light", "chaos"],
+    prefix: "pseudo.pseudo_"
+  })
   listModifiers.push({
-    name: 'Explicit Res/Life',
-    types: ['explicit_life', 'explicit_cold', 'explicit_fire', 'explicit_light', 'explicit_chaos'],
-    prefix: 'explicit.stat_',
-  });
-  listModifiers.push({
-    name: 'Attack Weapon',
+    name: "Explicit Res/Life",
     types: [
-      'explicit_inc_phy_dmg',
-      'explicit_add_phy_local',
-      'explicit_add_fire_local',
-      'explicit_add_cold_local',
-      'explicit_add_light_local',
-      'explicit_add_chaos_local',
-      'explicit_inc_attack_speed_local',
-      'explicit_inc_crit_chance',
-      'explicit_global_crit_mult',
+      "explicit_life",
+      "explicit_cold",
+      "explicit_fire",
+      "explicit_light",
+      "explicit_chaos"
     ],
-    prefix: 'explicit.stat_',
-  });
+    prefix: "explicit.stat_"
+  })
   listModifiers.push({
-    name: 'Spell Weapon',
+    name: "Attack Weapon",
     types: [
-      'explicit_inc_spell_dmg',
-      'explicit_inc_fire_spell_dmg',
-      'explicit_inc_cold_spell_dmg',
-      'explicit_inc_light_spell_dmg',
-      'explicit_add_fire_spell_dmg',
-      'explicit_add_cold_spell_dmg',
-      'explicit_add_light_spell_dmg',
-      'explicit_gain_extra_fire_damage',
-      'explicit_gain_extra_cold_damage',
-      'explicit_gain_extra_light_damage',
-      'explicit_level_all_spells',
-      'explicit_level_all_fire_spells',
-      'explicit_level_all_cold_spells',
-      'explicit_level_all_light_spells',
-      'explicit_level_all_physical_spells',
-      'explicit_level_all_chaos_spells',
-      'explicit_inc_cast_speed',
-      'explicit_global_crit_mult'
+      "explicit_inc_phy_dmg",
+      "explicit_add_phy_local",
+      "explicit_add_fire_local",
+      "explicit_add_cold_local",
+      "explicit_add_light_local",
+      "explicit_add_chaos_local",
+      "explicit_inc_attack_speed_local",
+      "explicit_inc_crit_chance",
+      "explicit_global_crit_mult"
     ],
-    prefix: 'explicit.stat_',
-  });
-
-
+    prefix: "explicit.stat_"
+  })
+  listModifiers.push({
+    name: "Spell Weapon",
+    types: [
+      "explicit_inc_spell_dmg",
+      "explicit_inc_fire_spell_dmg",
+      "explicit_inc_cold_spell_dmg",
+      "explicit_inc_light_spell_dmg",
+      "explicit_add_fire_spell_dmg",
+      "explicit_add_cold_spell_dmg",
+      "explicit_add_light_spell_dmg",
+      "explicit_gain_extra_fire_damage",
+      "explicit_gain_extra_cold_damage",
+      "explicit_gain_extra_light_damage",
+      "explicit_level_all_spells",
+      "explicit_level_all_fire_spells",
+      "explicit_level_all_cold_spells",
+      "explicit_level_all_light_spells",
+      "explicit_level_all_physical_spells",
+      "explicit_level_all_chaos_spells",
+      "explicit_inc_cast_speed",
+      "explicit_global_crit_mult"
+    ],
+    prefix: "explicit.stat_"
+  })
 
   // ---------- overlay/button templates ----------
-  const filteredOverlay = () => h(`<div class="finer-filtered-overlay"></div>`);
-  const buttonsTemplate = () => h(`
+  const filteredOverlay = () => h(`<div class="finer-filtered-overlay"></div>`)
+  const buttonsTemplate = () =>
+    h(`
     <span id="btns-finer">
       <span class="btn-finer rm"  data-action="rmv-filter"  title="remove this mod from your search results">-</span>
       <span class="btn-finer add" data-action="add-filter"  title="add this mod to your search filters">+</span>
-    </span>`);
+    </span>`)
 
   // ---------- map ----------
   const modMap: Record<string, string> = {
-    life:"total_life",
-    cold:"total_cold_resistance",
-    fire:"total_fire_resistance",
-    light:"total_lightning_resistance",
-    chaos:"total_chaos_resistance",
-    move:"increased_movement_speed",
-    allR:"total_elemental_resistance",
-    explicit_life:"3299347043",
-    explicit_cold:"4220027924",
-    explicit_fire:"3372524247",
-    explicit_light:"1671376347",
-    explicit_chaos:"2923486259",
-    explicit_inc_phy_dmg:"1509134228",
-    explicit_add_phy_local:"1940865751",
-    explicit_add_fire_local:"709508406",
-    explicit_add_cold_local:"1037193709",
-    explicit_add_light_local:"3336890334",
-    explicit_add_chaos_local:"2223678961",
-    explicit_inc_attack_speed_local:"210067635",
-    explicit_inc_crit_chance:"2375316951",
-    explicit_global_crit_mult:"3556824919",
-    explicit_inc_spell_dmg:"2974417149",
-    explicit_inc_fire_spell_dmg:"3962278098",
-    explicit_inc_cold_spell_dmg:"3291658075",
-    explicit_inc_light_spell_dmg:"2231156303",
-    explicit_add_fire_spell_dmg:"1133016593",
-    explicit_add_cold_spell_dmg:"2469416729",
-    explicit_add_light_spell_dmg:"2831165374",
-    explicit_level_all_spells:"124131830",
-    explicit_level_all_fire_spells:"591105508",
-    explicit_level_all_cold_spells:"2254480358",
-    explicit_level_all_light_spells:"1545858329",
-    explicit_level_all_physical_spells:"4226189338",
-    explicit_level_all_chaos_spells:"2891184298",
-    explicit_inc_cast_speed:"737908626",
-    explicit_gain_extra_fire_damage:"3015669065",
-    explicit_gain_extra_cold_damage:"2505884597",
-    explicit_gain_extra_light_damage:"3278136794",
-  };
-  const createFilter = (id: string) => id && ({ id, value:{}, disabled:false });
+    life: "total_life",
+    cold: "total_cold_resistance",
+    fire: "total_fire_resistance",
+    light: "total_lightning_resistance",
+    chaos: "total_chaos_resistance",
+    move: "increased_movement_speed",
+    allR: "total_elemental_resistance",
+    explicit_life: "3299347043",
+    explicit_cold: "4220027924",
+    explicit_fire: "3372524247",
+    explicit_light: "1671376347",
+    explicit_chaos: "2923486259",
+    explicit_inc_phy_dmg: "1509134228",
+    explicit_add_phy_local: "1940865751",
+    explicit_add_fire_local: "709508406",
+    explicit_add_cold_local: "1037193709",
+    explicit_add_light_local: "3336890334",
+    explicit_add_chaos_local: "2223678961",
+    explicit_inc_attack_speed_local: "210067635",
+    explicit_inc_crit_chance: "2375316951",
+    explicit_global_crit_mult: "3556824919",
+    explicit_inc_spell_dmg: "2974417149",
+    explicit_inc_fire_spell_dmg: "3962278098",
+    explicit_inc_cold_spell_dmg: "3291658075",
+    explicit_inc_light_spell_dmg: "2231156303",
+    explicit_add_fire_spell_dmg: "1133016593",
+    explicit_add_cold_spell_dmg: "2469416729",
+    explicit_add_light_spell_dmg: "2831165374",
+    explicit_level_all_spells: "124131830",
+    explicit_level_all_fire_spells: "591105508",
+    explicit_level_all_cold_spells: "2254480358",
+    explicit_level_all_light_spells: "1545858329",
+    explicit_level_all_physical_spells: "4226189338",
+    explicit_level_all_chaos_spells: "2891184298",
+    explicit_inc_cast_speed: "737908626",
+    explicit_gain_extra_fire_damage: "3015669065",
+    explicit_gain_extra_cold_damage: "2505884597",
+    explicit_gain_extra_light_damage: "3278136794"
+  }
+  const createFilter = (id: string) => id && { id, value: {}, disabled: false }
 
-  const finder = (vm: any, v: string) => vm?.$vnode?.tag?.includes?.(v);
-  const getApp = () => (window as any).app;
-  const findVueItem = (tags: string[]) => tags.reduce((acc, v) => acc?.$children?.find?.((e: any) => finder(e, v)), getApp());
-  const ItemResultPanelVueItem = () => findVueItem(["item-results-panel"]);
-  const findVueResultItem = (_itemId: string) => findVueItem(["item-results-panel","resultset"])?.$children?.find?.((e: any) => e.itemId === _itemId);
+  const finder = (vm: any, v: string) => vm?.$vnode?.tag?.includes?.(v)
+  const getApp = () => (window as any).app
+  const findVueItem = (tags: string[]) =>
+    tags.reduce(
+      (acc, v) => acc?.$children?.find?.((e: any) => finder(e, v)),
+      getApp()
+    )
+  const ItemResultPanelVueItem = () => findVueItem(["item-results-panel"])
+  const findVueResultItem = (_itemId: string) =>
+    findVueItem(["item-results-panel", "resultset"])?.$children?.find?.(
+      (e: any) => e.itemId === _itemId
+    )
   const ItemSearchGroupsVueItems = (_type?: string) => {
-    const panel = findVueItem(["item-search-panel","item-filter-panel"]);
-    return panel?.$children?.filter?.((e: any) => finder(e,"stat-filter-group") && (_type ? e.group.type === _type : true)) || [];
-  };
+    const panel = findVueItem(["item-search-panel", "item-filter-panel"])
+    return (
+      panel?.$children?.filter?.(
+        (e: any) =>
+          finder(e, "stat-filter-group") &&
+          (_type ? e.group.type === _type : true)
+      ) || []
+    )
+  }
 
-  const modSelectors = '.item-popup__content .item-mod, .itemBoxContent > .content > div, .content [class*="Mod"], .item-stats .stat-line';
+  const modSelectors =
+    '.item-popup__content .item-mod, .itemBoxContent > .content > div, .content [class*="Mod"], .item-stats .stat-line'
 
   const getRowId = (mod: HTMLElement) => {
-    const row = mod.closest('[data-id]') as HTMLElement | null;
-    return row?.getAttribute('data-id') || row?.id || mod.dataset.rowid || '';
-  };
+    const row = mod.closest("[data-id]") as HTMLElement | null
+    return row?.getAttribute("data-id") || row?.id || mod.dataset.rowid || ""
+  }
 
   const attachButtons = (mod: HTMLElement) => {
-    const btns = (mod.querySelector('#btns-finer') as HTMLElement | null) || buttonsTemplate();
-    if (!btns) return;
+    const btns =
+      (mod.querySelector("#btns-finer") as HTMLElement | null) ||
+      buttonsTemplate()
+    if (!btns) return
 
-    const staleWrappers = mod.querySelectorAll(':scope > .finer-mod-content, :scope > .finer-mod-actions');
+    const staleWrappers = mod.querySelectorAll(
+      ":scope > .finer-mod-content, :scope > .finer-mod-actions"
+    )
     staleWrappers.forEach((wrapper) => {
       while (wrapper.firstChild) {
-        mod.insertBefore(wrapper.firstChild, wrapper);
+        mod.insertBefore(wrapper.firstChild, wrapper)
       }
-      wrapper.remove();
-    });
+      wrapper.remove()
+    })
 
-    mod.style.overflow = "visible";
+    mod.style.overflow = "visible"
 
-    const rowId = mod.dataset.rowid || getRowId(mod);
-    const statHash = mod.dataset.hash || '';
-    if (rowId) btns.setAttribute('data-rowid', rowId);
-    if (statHash) btns.setAttribute('data-hash', statHash);
+    const rowId = mod.dataset.rowid || getRowId(mod)
+    const statHash = mod.dataset.hash || ""
+    if (rowId) btns.setAttribute("data-rowid", rowId)
+    if (statHash) btns.setAttribute("data-hash", statHash)
 
-    const isImplicitMod = mod.classList.contains('item-mod--implicit');
-    const isUniqueExplicitMod = !!mod.closest('.item-popup--unique') && mod.classList.contains('item-mod--explicit');
-    const isSpecialMod = isImplicitMod || isUniqueExplicitMod;
-    const isCompactResults = !!mod.closest('.results.compact');
-    btns.classList.remove('finer-fixed-right');
-    const host = isSpecialMod && isCompactResults
-      ? (mod.querySelector('.lc.l') as HTMLElement | null)
-      : (mod.querySelector('.lc.r.su, .lc.r.pr, .lc.r') as HTMLElement | null);
+    const isImplicitMod = mod.classList.contains("item-mod--implicit")
+    const isUniqueExplicitMod =
+      !!mod.closest(".item-popup--unique") &&
+      mod.classList.contains("item-mod--explicit")
+    const isSpecialMod = isImplicitMod || isUniqueExplicitMod
+    const isCompactResults = !!mod.closest(".results.compact")
+    btns.classList.remove("finer-fixed-right")
+    const host =
+      isSpecialMod && isCompactResults
+        ? (mod.querySelector(".lc.l") as HTMLElement | null)
+        : (mod.querySelector(".lc.r.su, .lc.r.pr, .lc.r") as HTMLElement | null)
 
     if (isSpecialMod && !isCompactResults) {
-      btns.classList.add('finer-fixed-right');
+      btns.classList.add("finer-fixed-right")
     }
 
-    const nextHost = host || mod;
+    const nextHost = host || mod
     if (btns.parentElement !== nextHost) {
-      btns.parentElement?.removeChild(btns);
-      nextHost.appendChild(btns);
+      btns.parentElement?.removeChild(btns)
+      nextHost.appendChild(btns)
     }
-  };
+  }
 
   const decorateMod = (mod: HTMLElement, ISGs: any[]) => {
-    const sEl = mod.querySelector('.lc.s') as HTMLElement;
-    const fieldVal = sEl?.dataset?.field || sEl?.getAttribute('data-field') || '';
-    const modHash = fieldVal.startsWith('stat.') ? fieldVal.slice(5) : fieldVal;
-    if (!modHash) return;
+    const sEl = mod.querySelector(".lc.s") as HTMLElement
+    const fieldVal =
+      sEl?.dataset?.field || sEl?.getAttribute("data-field") || ""
+    const modHash = fieldVal.startsWith("stat.") ? fieldVal.slice(5) : fieldVal
+    if (!modHash) return
 
-    mod.dataset.hash = modHash;
-    const rowId = getRowId(mod);
-    if (rowId) mod.dataset.rowid = rowId;
+    mod.dataset.hash = modHash
+    const rowId = getRowId(mod)
+    if (rowId) mod.dataset.rowid = rowId
 
-    const isInFilters = ISGs.some((isg: any) => isg.filters && isg.filters.some((f: any) => f.id === modHash));
+    const isInFilters = ISGs.some(
+      (isg: any) =>
+        isg.filters && isg.filters.some((f: any) => f.id === modHash)
+    )
     if (isInFilters) {
-      mod.classList.add('finer-filtered');
-      if (!mod.querySelector('.finer-filtered-overlay')) {
-        const overlay = filteredOverlay();
-        if (overlay) mod.appendChild(overlay);
+      mod.classList.add("finer-filtered")
+      if (!mod.querySelector(".finer-filtered-overlay")) {
+        const overlay = filteredOverlay()
+        if (overlay) mod.appendChild(overlay)
       }
     } else {
-      mod.classList.add('finer-filterable');
+      mod.classList.add("finer-filterable")
     }
 
-    attachButtons(mod);
-  };
+    attachButtons(mod)
+  }
 
   const scanVisibleMods = (root: ParentNode = document) => {
-    const ISGs = ItemSearchGroupsVueItems();
-    Array.from(root.querySelectorAll(modSelectors) as NodeListOf<HTMLElement>).forEach((mod) => {
-      decorateMod(mod, ISGs);
-    });
-  };
+    const ISGs = ItemSearchGroupsVueItems()
+    Array.from(
+      root.querySelectorAll(modSelectors) as NodeListOf<HTMLElement>
+    ).forEach((mod) => {
+      decorateMod(mod, ISGs)
+    })
+  }
 
-  let layoutRefreshTimer: ReturnType<typeof setTimeout> | null = null;
+  let layoutRefreshTimer: ReturnType<typeof setTimeout> | null = null
   const refreshButtonsForLayout = () => {
-    if (layoutRefreshTimer) clearTimeout(layoutRefreshTimer);
+    if (layoutRefreshTimer) clearTimeout(layoutRefreshTimer)
     layoutRefreshTimer = setTimeout(() => {
-      scanVisibleMods();
-      layoutRefreshTimer = null;
-    }, 80);
-  };
+      scanVisibleMods()
+      layoutRefreshTimer = null
+    }, 80)
+  }
 
   // step 1: hover a result row -> check filters
-  onEnter('.resultset > .row, .resultset > .result-item, .search-results .result-item, .search-results .row', (e: any, row: HTMLElement) => {
-    if (row.classList.contains('finer-processed')) return;
-    
-    // Check if the vue app exists
-    if (!getApp()) {
-      console.warn("[Krox-MainWorld] Vue 'window.app' not found. Is this PoE 2 Trade?");
+  onEnter(
+    ".resultset > .row, .resultset > .result-item, .search-results .result-item, .search-results .row",
+    (e: any, row: HTMLElement) => {
+      if (row.classList.contains("finer-processed")) return
+
+      // Check if the vue app exists
+      if (!getApp()) {
+        console.warn(
+          "[Krox-MainWorld] Vue 'window.app' not found. Is this PoE 2 Trade?"
+        )
+      }
+
+      const mods = Array.from(
+        row.querySelectorAll(modSelectors)
+      ) as HTMLElement[]
+      const ISGs = ItemSearchGroupsVueItems()
+
+      mods.forEach((mod) => decorateMod(mod, ISGs))
+
+      row.classList.add("finer-processed")
     }
-
-      const mods = Array.from(row.querySelectorAll(modSelectors)) as HTMLElement[];
-      const ISGs = ItemSearchGroupsVueItems();
-
-      mods.forEach((mod) => decorateMod(mod, ISGs));
-
-      row.classList.add('finer-processed');
-    });
+  )
 
   // step 2: make buttons visible on item mods
-  scanVisibleMods();
+  scanVisibleMods()
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       mutation.addedNodes.forEach((node) => {
-        if (!(node instanceof HTMLElement)) return;
+        if (!(node instanceof HTMLElement)) return
         if (node.matches?.(modSelectors)) {
-          decorateMod(node, ItemSearchGroupsVueItems());
+          decorateMod(node, ItemSearchGroupsVueItems())
         }
-        scanVisibleMods(node);
-      });
+        scanVisibleMods(node)
+      })
     }
-  });
-  observer.observe(document.body, { childList: true, subtree: true });
+  })
+  observer.observe(document.body, { childList: true, subtree: true })
 
-  on('click', '.layout-btn', () => {
-    refreshButtonsForLayout();
-    setTimeout(refreshButtonsForLayout, 220);
-  });
+  on("click", ".layout-btn", () => {
+    refreshButtonsForLayout()
+    setTimeout(refreshButtonsForLayout, 220)
+  })
 
   // step 3: click ± inside the buttons
-  on('click', '[data-action="add-filter"]', (e: any, el: HTMLElement) => {
-    addOrRemoveFilter(e, true, el);
-  });
-  on('click', '[data-action="rmv-filter"]', (e: any, el: HTMLElement) => {
-    addOrRemoveFilter(e, false, el);
-  });
+  on("click", '[data-action="add-filter"]', (e: any, el: HTMLElement) => {
+    addOrRemoveFilter(e, true, el)
+  })
+  on("click", '[data-action="rmv-filter"]', (e: any, el: HTMLElement) => {
+    addOrRemoveFilter(e, false, el)
+  })
+
+  const applyFinerFiltersAction = (detail: {
+    action: "global-plus" | "global-minus"
+    types: string
+    prefix: string
+  }) => {
+    if (detail.action !== "global-plus" && detail.action !== "global-minus")
+      return
+
+    const more = detail.action === "global-plus"
+    const hashes = (detail.types || "").split(",").filter(Boolean)
+    const prefix = detail.prefix || "pseudo.pseudo_"
+
+    const ISG_AND = ItemSearchGroupsVueItems("and")?.find(
+      (g: any) => g.index === 0
+    )
+    let reload = false
+
+    hashes.forEach((hash: string) => {
+      const reHashed = `${prefix}${modMap[hash]}`
+      const current = ISG_AND?.filters?.find((f: any) => f.id === reHashed)
+      if (current) {
+        const idx = ISG_AND.filters.indexOf(current)
+        const curVal = ISG_AND.state.filters[idx].value || {}
+        const curMin = curVal.min || 0
+        if (curMin || more)
+          ISG_AND.updateFilter(idx, { min: curMin + (more ? 10 : -10) })
+        else ISG_AND.removeFilter(idx)
+        reload = true
+      } else if (more && ISG_AND?.selectFilter) {
+        ISG_AND.selectFilter(createFilter(reHashed))
+        reload = true
+      }
+    })
+
+    if (reload && getGlobalApp()?.save) {
+      getGlobalApp().save(true)
+    }
+  }
 
   // listener for actions dispatched from the Svelte sidebar
-  document.addEventListener('krox-finer-action', (e: any) => {
-    const detail = e.detail;
-    if (!detail) return;
-    
-    if (detail.action === 'global-plus' || detail.action === 'global-minus') {
-        const more = detail.action === 'global-plus';
-        const hashes = (detail.types || '').split(',').filter(Boolean);
-        const prefix = detail.prefix || 'pseudo.pseudo_';
-        
-        const ISG_AND = ItemSearchGroupsVueItems('and')?.find((g: any) => g.index === 0);
-        let reload = false;
+  const handleFinerFiltersMessage = (e: MessageEvent<unknown>) => {
+    if (!isFinerFiltersActionMessage(e)) return
+    applyFinerFiltersAction(e.data.detail)
+  }
 
-        hashes.forEach((hash: string) => {
-          const reHashed = `${prefix}${modMap[hash]}`;
-          const current = ISG_AND?.filters?.find((f: any) => f.id === reHashed);
-          if (current) {
-            const idx = ISG_AND.filters.indexOf(current);
-            const curVal = ISG_AND.state.filters[idx].value || {};
-            const curMin = curVal.min || 0;
-            if (curMin || more) ISG_AND.updateFilter(idx, { min: curMin + (more ? 10 : -10) });
-            else ISG_AND.removeFilter(idx);
-            reload = true;
-          } else if (more && ISG_AND?.selectFilter) {
-            ISG_AND.selectFilter(createFilter(reHashed));
-            reload = true;
-          }
-        });
-
-        if (reload && getGlobalApp()?.save) {
-          getGlobalApp().save(true);
-        }
-    }
-  });
+  window.addEventListener("message", handleFinerFiltersMessage)
+  document.addEventListener("krox-finer-action", (e: any) => {
+    const detail = e.detail
+    if (!detail) return
+    applyFinerFiltersAction(detail)
+  })
 
   // Preserve Trade Plus behavior on the native trade-site search fields.
-  const findTradeSearchInput = (target: EventTarget | null): HTMLInputElement | null => {
-    if (!(target instanceof Element)) return null;
+  const findTradeSearchInput = (
+    target: EventTarget | null
+  ): HTMLInputElement | null => {
+    if (!(target instanceof Element)) return null
 
-    const input = target.closest('input.multiselect__input');
-    return input instanceof HTMLInputElement ? input : null;
-  };
+    const input = target.closest("input.multiselect__input")
+    return input instanceof HTMLInputElement ? input : null
+  }
 
   const setNativeInputValue = (input: HTMLInputElement, value: string) => {
-    const descriptor = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value');
-    descriptor?.set?.call(input, value);
-  };
+    const descriptor = Object.getOwnPropertyDescriptor(
+      window.HTMLInputElement.prototype,
+      "value"
+    )
+    descriptor?.set?.call(input, value)
+  }
 
-  const prefixingInputs = new WeakSet<HTMLInputElement>();
+  const prefixingInputs = new WeakSet<HTMLInputElement>()
 
   const ensureRegexPrefix = (input: HTMLInputElement, inputType?: string) => {
-    const value = input.value ?? '';
-    if (!value || value.startsWith('~') || value.startsWith(' ')) return;
-    if (inputType?.startsWith('delete')) return;
-    if (prefixingInputs.has(input)) return;
+    const value = input.value ?? ""
+    if (!value || value.startsWith("~") || value.startsWith(" ")) return
+    if (inputType?.startsWith("delete")) return
+    if (prefixingInputs.has(input)) return
 
-    prefixingInputs.add(input);
+    prefixingInputs.add(input)
 
     try {
-      const start = input.selectionStart ?? value.length;
-      const end = input.selectionEnd ?? value.length;
-      const canUseRangeText = typeof input.setRangeText === 'function' && start !== null && end !== null;
+      const start = input.selectionStart ?? value.length
+      const end = input.selectionEnd ?? value.length
+      const canUseRangeText =
+        typeof input.setRangeText === "function" &&
+        start !== null &&
+        end !== null
 
       if (canUseRangeText) {
-        input.setRangeText('~', 0, 0, 'preserve');
+        input.setRangeText("~", 0, 0, "preserve")
       } else {
-        setNativeInputValue(input, `~${value}`);
-        input.setSelectionRange(start + 1, end + 1);
+        setNativeInputValue(input, `~${value}`)
+        input.setSelectionRange(start + 1, end + 1)
       }
 
-      input.dispatchEvent(new Event('input', { bubbles: true }));
+      input.dispatchEvent(new Event("input", { bubbles: true }))
     } finally {
       queueMicrotask(() => {
-        prefixingInputs.delete(input);
-      });
+        prefixingInputs.delete(input)
+      })
     }
-  };
+  }
 
-  document.addEventListener('input', (e: Event) => {
-    const input = findTradeSearchInput(e.target);
-    if (!input) return;
-    const inputEvent = e as InputEvent;
-    if (inputEvent.isComposing) return;
-    ensureRegexPrefix(input, inputEvent.inputType);
-  }, true);
+  document.addEventListener(
+    "input",
+    (e: Event) => {
+      const input = findTradeSearchInput(e.target)
+      if (!input) return
+      const inputEvent = e as InputEvent
+      if (inputEvent.isComposing) return
+      ensureRegexPrefix(input, inputEvent.inputType)
+    },
+    true
+  )
 
-
-
-  const getGlobalApp = () => (window as any).app;
+  const getGlobalApp = () => (window as any).app
 
   // ---------- interactions ----------
 
-
   function addOrRemoveFilter(e: any, isAnd: boolean, btn: HTMLElement) {
-    e.preventDefault();
-    e.stopPropagation();
-    const filterType = isAnd ? 'and' : 'not';
-    const btns = btn.closest('#btns-finer') as HTMLElement | null;
-    const modEl = btn.closest('.item-mod, .itemBoxContent > .content > div, .content [class*="Mod"], .item-stats .stat-line') as HTMLElement | null;
-    const rowId = btns?.dataset?.rowid || modEl?.dataset?.rowid;
-    if (!rowId) return;
-    
-    const VueElem = findVueResultItem(rowId) || {};
-    const statHash = btns?.dataset?.hash || modEl?.dataset?.hash;
-    const newFilter = createFilter(statHash || "");
-    const group = ItemSearchGroupsVueItems(filterType)?.find((g: any) => g.index !== 0);
-    const globalStore = getGlobalApp()?.$store;
+    e.preventDefault()
+    e.stopPropagation()
+    const filterType = isAnd ? "and" : "not"
+    const btns = btn.closest("#btns-finer") as HTMLElement | null
+    const modEl = btn.closest(
+      '.item-mod, .itemBoxContent > .content > div, .content [class*="Mod"], .item-stats .stat-line'
+    ) as HTMLElement | null
+    const rowId = btns?.dataset?.rowid || modEl?.dataset?.rowid
+    if (!rowId) return
+
+    const VueElem = findVueResultItem(rowId) || {}
+    const statHash = btns?.dataset?.hash || modEl?.dataset?.hash
+    const newFilter = createFilter(statHash || "")
+    const group = ItemSearchGroupsVueItems(filterType)?.find(
+      (g: any) => g.index !== 0
+    )
+    const globalStore = getGlobalApp()?.$store
 
     if (group && group.selectFilter) {
-        group.selectFilter(newFilter);
+      group.selectFilter(newFilter)
     } else if (globalStore?.commit) {
-        globalStore.commit('pushStatGroup', { type: filterType, filters: [newFilter] });
+      globalStore.commit("pushStatGroup", {
+        type: filterType,
+        filters: [newFilter]
+      })
     }
 
     if (getGlobalApp()?.save) {
-        getGlobalApp().save(true);
+      getGlobalApp().save(true)
     }
-    const panel = ItemResultPanelVueItem();
+    const panel = ItemResultPanelVueItem()
     if (panel?.search) {
-        panel.search();
+      panel.search()
     }
   }
 }
