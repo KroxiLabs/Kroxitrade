@@ -152,8 +152,7 @@ export class BulkSellersService {
       ".details .itemName",
       ".details .title",
       ".details h3",
-      ".header .title",
-      ".title"
+      ".header .title"
     ];
 
     for (const selector of candidates) {
@@ -165,10 +164,22 @@ export class BulkSellersService {
 
     const detailsText = row.querySelector<HTMLElement>(".details")?.textContent?.replace(/\s+/g, " ").trim();
     if (detailsText) {
-      return detailsText.slice(0, 80);
+      return this.cleanListingText(detailsText);
     }
 
     return null;
+  }
+
+  private cleanListingText(text: string) {
+    return text
+      .replace(/\s+/g, " ")
+      .replace(/\bAsking Price:\s*/i, "")
+      .replace(/\bFee:\s*[\d.,]+\s*[a-z%]*\b/gi, "")
+      .replace(/\bAcc:\s*[^\s]+/i, "")
+      .replace(/\blisted\s+\d+\s+(?:minute|minutes|hour|hours|day|days|week|weeks|month|months|year|years)\s+ago\b/i, "")
+      .replace(/\b(?:price|note)\b.*$/i, "")
+      .trim()
+      .replace(/\s{2,}/g, " ");
   }
 
   private extractPriceLabel(row: HTMLElement) {

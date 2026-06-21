@@ -13,6 +13,7 @@
   let collapsedSellers: string[] = [];
   let collapsedLookup = new Set<string>();
   let visitedItems = new Set<string>();
+  let visitedSellerLookup = new Set<string>();
 
   const loadCollapsedState = () => {
     const raw = storageService.getLocalValue(COLLAPSED_STORAGE_KEY);
@@ -70,6 +71,10 @@
     }
   }
 
+  $: visitedSellerLookup = new Set(
+    $bulkSellers.filter((group) => group.items.some((item) => visitedItems.has(item.id))).map((group) => group.seller)
+  );
+
   const findItem = (id: string) => {
     if (!bulkSellersService.find(id)) {
       flashMessages.alert(translate($languageStore, "bulk.findError"));
@@ -96,39 +101,39 @@
               <span class="seller-caret">{collapsedLookup.has(group.seller) ? "▶" : "▼"}</span>
               <div class="seller-name">{group.seller}</div>
             </div>
-            <div class="seller-count">({group.total})</div>
+            <div class="seller-header-meta">
+              {#if visitedSellerLookup.has(group.seller)}
+                <span class="visited-badge">{translate($languageStore, "bulk.visited")}</span>
+              {/if}
+              <div class="seller-count">({group.total})</div>
+            </div>
           </button>
 
           {#if !collapsedLookup.has(group.seller)}
             <div class="seller-items">
               {#each group.items as item (item.id)}
-                <div class="seller-item">
-                  <div class="item-text">
-                    <div class="item-name" title={item.itemName}>{item.itemName}</div>
-                    <div class="item-price">
-                      {#if item.priceAmount}
-                        <span class="price-amount">{item.priceAmount}</span>
-                      {/if}
+                <div class="seller-item" title={item.itemName} aria-label={`${item.itemName}: ${item.priceLabel}`}>
+                  <div class="item-price">
+                    <span class="price-prefix">{translate($languageStore, "bulk.price")}</span>
+                    {#if item.priceAmount}
+                      <span class="price-amount">{item.priceAmount}</span>
+                    {/if}
 
-                      {#if item.currencyIconUrl}
-                        <img
-                          class="currency-icon"
-                          src={item.currencyIconUrl}
-                          alt={item.currencyIconAlt || item.priceLabel}
-                          title={item.priceLabel}
-                        />
-                      {:else}
-                        <span class="price-fallback">{item.priceLabel}</span>
-                      {/if}
-                    </div>
+                    {#if item.currencyIconUrl}
+                      <img
+                        class="currency-icon"
+                        src={item.currencyIconUrl}
+                        alt={item.currencyIconAlt || item.priceLabel}
+                        title={item.priceLabel}
+                      />
+                    {:else}
+                      <span class="price-fallback">{item.priceLabel}</span>
+                    {/if}
                   </div>
 
                   <div class="item-actions">
                     <Button label={translate($languageStore, "bulk.find")} theme="blue" onClick={() => findItem(item.id)} />
                     <Button label={translate($languageStore, "bulk.buy")} theme="gold" onClick={() => buyItem(item.id)} />
-                    {#if visitedItems.has(item.id)}
-                      <span class="visited-badge">{translate($languageStore, "bulk.visited")}</span>
-                    {/if}
                   </div>
                 </div>
               {/each}
@@ -185,6 +190,13 @@
     text-align: left;
   }
 
+  .seller-header-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+  }
+
   .seller-header:hover {
     background: rgba($white, 0.05);
   }
@@ -224,46 +236,38 @@
   }
 
   .seller-item {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 10px;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    padding: 10px 12px;
+    gap: 8px;
+    padding: 6px 10px;
     border-top: 1px solid rgba($white, 0.05);
+    min-width: 0;
   }
 
   .seller-item:first-child {
     border-top: 0;
   }
 
-  .item-text {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    gap: 10px;
-    align-items: center;
-    min-width: 0;
-  }
-
-  .item-name {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    color: rgba($white, 0.88);
-    font-size: 12px;
-  }
-
   .item-price {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 5px;
+    min-width: 0;
     font-size: 12px;
     white-space: nowrap;
+  }
+
+  .price-prefix {
+    color: rgba($white, 0.9);
+    font-family: $primary-font;
+    font-weight: 600;
   }
 
   .price-amount {
     color: $poe-rare;
     font-family: $primary-font;
+    font-weight: 700;
   }
 
   .currency-icon {
@@ -282,24 +286,29 @@
     display: flex;
     gap: 6px;
     flex: 0 0 auto;
+    align-items: center;
+    flex-wrap: nowrap;
   }
 
   .item-actions :global(.button) {
-    min-width: 64px;
+    min-width: 58px;
+    height: 24px;
     padding: 0 10px;
+    font-size: 10px;
+    white-space: nowrap;
   }
 
   .visited-badge {
     display: inline-flex;
     align-items: center;
     padding: 0 8px;
-    height: 28px;
+    height: 20px;
     background: rgba($green, 0.15);
     border: 1px solid rgba($green, 0.4);
     border-radius: 2px;
     color: $green;
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: 9px;
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -308,16 +317,7 @@
 
   @container (max-width: 359px) {
     .seller-item {
-      grid-template-columns: 1fr;
-    }
-
-    .item-text {
-      grid-template-columns: 1fr;
-      gap: 4px;
-    }
-
-    .item-actions {
-      justify-content: flex-start;
+      gap: 6px;
     }
   }
 </style>

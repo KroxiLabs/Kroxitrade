@@ -227,6 +227,7 @@ const translations = {
       `Version ${version} • Developed by KroxiLabs`,
     "bulk.empty":
       "No bulk sellers detected yet. Open a trade result list where the same seller appears more than once.",
+    "bulk.price": "Price:",
     "bulk.find": "Find",
     "bulk.buy": "Buy",
     "bulk.findError": "Couldn't locate that listing in the current results.",
@@ -546,6 +547,7 @@ const translations = {
       `Versión ${version} • Desarrollado por KroxiLabs`,
     "bulk.empty":
       "Todavía no se detectaron vendedores bulk. Abrí una lista de resultados donde el mismo vendedor aparezca más de una vez.",
+    "bulk.price": "Precio:",
     "bulk.find": "Buscar",
     "bulk.buy": "Comprar",
     "bulk.findError":
@@ -710,6 +712,7 @@ const portugueseTranslations: Record<string, TranslationValue> = {
     `Versão ${version} • Desenvolvido por KroxiLabs`,
   "bulk.empty":
     "Nenhum vendedor bulk detectado ainda. Abra uma lista de resultados onde o mesmo vendedor apareça mais de uma vez.",
+  "bulk.price": "Preço:",
   "bulk.find": "Buscar",
   "bulk.buy": "Comprar",
   "bulk.findError":
@@ -840,6 +843,7 @@ const germanTranslations: Record<string, TranslationValue> = {
     `Version ${version} • Entwickelt von KroxiLabs`,
   "bulk.empty":
     "Noch keine Bulk-Verkäufer erkannt. Öffne eine Ergebnisliste, in der derselbe Verkäufer mehr als einmal erscheint.",
+  "bulk.price": "Preis:",
   "bulk.find": "Finden",
   "bulk.buy": "Kaufen",
   "bulk.findError":
@@ -966,6 +970,7 @@ const frenchTranslations: Record<string, TranslationValue> = {
     `Version ${version} • Développé par KroxiLabs`,
   "bulk.empty":
     "Aucun vendeur bulk détecté pour le moment. Ouvrez une liste de résultats où le même vendeur apparaît plus d’une fois.",
+  "bulk.price": "Prix :",
   "bulk.find": "Trouver",
   "bulk.buy": "Acheter",
   "bulk.findError":
@@ -1093,6 +1098,7 @@ const russianTranslations: Record<string, TranslationValue> = {
   "about.version": ({ version }) => `Версия ${version} • Разработано KroxiLabs`,
   "bulk.empty":
     "Продавцы bulk пока не обнаружены. Откройте список результатов, где один и тот же продавец встречается больше одного раза.",
+  "bulk.price": "Цена:",
   "bulk.find": "Найти",
   "bulk.buy": "Купить",
   "bulk.findError": "Не удалось найти этот лот в текущих результатах.",
@@ -1215,6 +1221,7 @@ const thaiTranslations: Record<string, TranslationValue> = {
   "about.version": ({ version }) => `เวอร์ชัน ${version} • พัฒนาโดย KroxiLabs`,
   "bulk.empty":
     "ยังไม่พบผู้ขายแบบ bulk เปิดหน้าผลลัพธ์ที่มีผู้ขายคนเดิมมากกว่าหนึ่งรายการ",
+  "bulk.price": "ราคา:",
   "bulk.find": "ค้นหา",
   "bulk.buy": "ซื้อ",
   "bulk.findError": "ไม่พบรายการนี้ในผลลัพธ์ปัจจุบัน",
@@ -1342,6 +1349,7 @@ const japaneseTranslations: Record<string, TranslationValue> = {
   "about.version": ({ version }) => `バージョン ${version} • KroxiLabs 開発`,
   "bulk.empty":
     "まだ Bulk 販売者は検出されていません。同じ販売者が複数回表示される結果一覧を開いてください。",
+  "bulk.price": "価格:",
   "bulk.find": "検索",
   "bulk.buy": "購入",
   "bulk.findError": "現在の結果内でこの出品を見つけられませんでした。",
@@ -1474,6 +1482,7 @@ const koreanTranslations: Record<string, TranslationValue> = {
   "about.version": ({ version }) => `버전 ${version} • KroxiLabs 개발`,
   "bulk.empty":
     "아직 Bulk 판매자가 감지되지 않았습니다. 같은 판매자가 두 번 이상 나타나는 결과 목록을 열어 주세요.",
+  "bulk.price": "가격:",
   "bulk.find": "찾기",
   "bulk.buy": "구매",
   "bulk.findError": "현재 결과에서 해당 목록을 찾을 수 없습니다.",
