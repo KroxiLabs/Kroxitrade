@@ -316,13 +316,13 @@ export class ItemResultsService {
 
     parts.forEach((part) => {
       if ("separator" in part) {
-        el.appendChild(this.createTextSpan("bt-equivalent-separator", "+"));
+        el!.appendChild(this.createTextSpan("bt-equivalent-separator", "+"));
         return;
       }
 
-      el.appendChild(this.createCurrencyFragment(part.amount, part.slug));
+      el!.appendChild(this.createCurrencyFragment(part.amount, part.slug));
     });
-    this.syncEquivalentVisibility(el);
+    this.syncEquivalentVisibility(el!);
   }
 
   private createCurrencyFragment(amount: number | string, slug: string) {
@@ -420,10 +420,11 @@ export class ItemResultsService {
     if (this.statNeedles.length === 0) return;
 
     const mods = row.querySelectorAll(".explicitMod, .pseudoMod, .implicitMod");
-    mods.forEach((mod: HTMLElement) => {
-        const text = mod.textContent || "";
+    mods.forEach((mod) => {
+        const element = mod as HTMLElement;
+        const text = element.textContent || "";
         if (this.statNeedles.some(n => n.test(text))) {
-            mod.classList.add("bt-highlight-stat-filters");
+            element.classList.add("bt-highlight-stat-filters");
         }
     });
   }

@@ -30,7 +30,9 @@ export default defineContentScript({
         return mount(App, { target: container })
       },
       onRemove: (app) => {
-        unmount(app)
+        if (app) {
+          unmount(app)
+        }
       }
     })
 

@@ -11,9 +11,8 @@ export type AppLanguage =
   | "ja"
   | "ko"
 
-type TranslationValue =
-  | string
-  | ((params?: Record<string, string | number>) => string)
+type TranslationParams = Record<string, string | number>
+type TranslationValue = string | ((params: TranslationParams) => string)
 
 const translations = {
   en: {
@@ -1595,14 +1594,14 @@ export const setLanguage = (language: AppLanguage) => {
 export const translate = (
   language: AppLanguage,
   key: string,
-  params?: Record<string, string | number>
+  params?: TranslationParams
 ) => {
   const dictionary = extendedTranslations[language] || extendedTranslations.en
   const fallback = extendedTranslations.en[key]
   const value = dictionary[key] ?? fallback ?? key
 
   if (typeof value === "function") {
-    return value(params)
+    return value(params ?? {})
   }
 
   return value

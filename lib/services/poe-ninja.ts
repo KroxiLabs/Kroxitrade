@@ -80,12 +80,6 @@ export class PoeNinjaService {
     }
 
     const uri = `${URIS.currencies}&league=${encodeURIComponent(normalizedLeague)}${game ? `&game=${game}` : ""}`;
-    console.log("[Poe Trade Plus] Requesting poe.ninja ratios:", {
-      league,
-      normalizedLeague,
-      game,
-      uri
-    });
     emitPageDebug("poe-ninja-request", {
       league,
       normalizedLeague,
@@ -111,12 +105,6 @@ export class PoeNinjaService {
     if (!response) throw new Error("Failed to fetch from poe.ninja via background");
 
     const parsed = this.parseChaosRatios(response);
-    console.log("[Poe Trade Plus] Poe.ninja ratios parsed:", {
-      league,
-      normalizedLeague,
-      game,
-      entries: Object.keys(parsed).length
-    });
     emitPageDebug("poe-ninja-response", {
       league,
       normalizedLeague,
@@ -149,12 +137,6 @@ export class PoeNinjaService {
       }
     };
 
-    console.log("[Poe Trade Plus] Requesting official PoE2 exchange ratios:", {
-      league,
-      normalizedLeague,
-      url,
-      body
-    });
     emitPageDebug("poe2-exchange-request", {
       league,
       normalizedLeague,
@@ -189,12 +171,6 @@ export class PoeNinjaService {
     const parsed = this.parseOfficialPoe2ChaosRatios(response);
     const entries = Object.keys(parsed).length;
 
-    console.log("[Poe Trade Plus] Official PoE2 exchange ratios parsed:", {
-      league,
-      normalizedLeague,
-      entries,
-      divineRatio: parsed["divine-orb"]
-    });
     emitPageDebug("poe2-exchange-response", {
       league,
       normalizedLeague,

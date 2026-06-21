@@ -8,11 +8,8 @@ export const registerBackgroundHandlers = () => {
   registered = true
 
   chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
-    console.log("[Poe Trade Plus-BG] Received message:", request.query, request)
-
     if (request.query === "poe-ninja") {
       const url = `https://poe.ninja/api${request.resource}`
-      console.log("[Poe Trade Plus-BG] Requesting poe.ninja:", url)
 
       fetch(url)
         .then(async (r) => {
@@ -22,14 +19,6 @@ export const registerBackgroundHandlers = () => {
           return r.json()
         })
         .then((response) => {
-          const lineCount = Array.isArray(response?.lines)
-            ? response.lines.length
-            : 0
-          console.log("[Poe Trade Plus-BG] Poe-ninja response received:", {
-            url,
-            success: !!response,
-            lineCount
-          })
           sendResponse(response)
         })
         .catch((err) => {
@@ -44,10 +33,6 @@ export const registerBackgroundHandlers = () => {
 
     if (request.query === "trade-exchange-rate") {
       const url = request.url as string
-      console.log("[Poe Trade Plus-BG] Requesting official trade exchange:", {
-        url,
-        body: request.body
-      })
 
       fetch(url, {
         method: "POST",
@@ -62,16 +47,6 @@ export const registerBackgroundHandlers = () => {
             throw new Error(`trade exchange responded with status ${response.status}`)
           }
           const json = await response.json()
-          const resultCount = json?.result ? Object.keys(json.result).length : 0
-          console.log(
-            "[Poe Trade Plus-BG] Official trade exchange response received:",
-            {
-              url,
-              ok: response.ok,
-              status: response.status,
-              resultCount
-            }
-          )
           sendResponse(json)
         })
         .catch((err) => {
