@@ -8,9 +8,11 @@
   import Button from "../Button.svelte";
 
   const COLLAPSED_STORAGE_KEY = "bulk-sellers-collapsed";
+  const VISITED_STORAGE_KEY = "bulk-sellers-visited";
   const bulkSellers = bulkSellersService;
   let collapsedSellers: string[] = [];
   let collapsedLookup = new Set<string>();
+  let visitedItems = new Set<string>();
 
   const loadCollapsedState = () => {
     const raw = storageService.getLocalValue(COLLAPSED_STORAGE_KEY);
@@ -27,6 +29,20 @@
     storageService.setLocalValue(COLLAPSED_STORAGE_KEY, JSON.stringify(collapsedSellers));
   };
 
+  const loadVisitedState = () => {
+    const raw = storageService.getLocalValue(VISITED_STORAGE_KEY);
+    try {
+      const parsed = raw ? JSON.parse(raw) : [];
+      visitedItems = new Set(Array.isArray(parsed) ? parsed.filter((v): v is string => typeof v === "string") : []);
+    } catch {
+      visitedItems = new Set();
+    }
+  };
+
+  const persistVisitedState = () => {
+    storageService.setLocalValue(VISITED_STORAGE_KEY, JSON.stringify(Array.from(visitedItems)));
+  };
+
   const toggleSeller = (seller: string) => {
     if (collapsedLookup.has(seller)) {
       collapsedSellers = collapsedSellers.filter((entry) => entry !== seller);
@@ -39,6 +55,7 @@
 
   onMount(() => {
     loadCollapsedState();
+    loadVisitedState();
   });
 
   $: collapsedLookup = new Set(collapsedSellers);
@@ -62,6 +79,9 @@
   const buyItem = (id: string) => {
     if (!bulkSellersService.buy(id)) {
       flashMessages.alert(translate($languageStore, "bulk.buyError"));
+    } else {
+      visitedItems = new Set([...visitedItems, id]);
+      persistVisitedState();
     }
   };
 </script>
@@ -106,6 +126,9 @@
                   <div class="item-actions">
                     <Button label={translate($languageStore, "bulk.find")} theme="blue" onClick={() => findItem(item.id)} />
                     <Button label={translate($languageStore, "bulk.buy")} theme="gold" onClick={() => buyItem(item.id)} />
+                    {#if visitedItems.has(item.id)}
+                      <span class="visited-badge">{translate($languageStore, "bulk.visited")}</span>
+                    {/if}
                   </div>
                 </div>
               {/each}
@@ -264,6 +287,23 @@
   .item-actions :global(.button) {
     min-width: 64px;
     padding: 0 10px;
+  }
+
+  .visited-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0 8px;
+    height: 28px;
+    background: rgba($green, 0.15);
+    border: 1px solid rgba($green, 0.4);
+    border-radius: 2px;
+    color: $green;
+    font-family: $primary-font;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
   }
 
   @container (max-width: 359px) {
