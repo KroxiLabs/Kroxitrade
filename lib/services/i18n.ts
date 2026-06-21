@@ -223,6 +223,7 @@ const translations = {
     "about.description":
       "Poe Trade Plus is a companion for Path of Exile Trade built to save searches, organize folders, track history, and keep recurring trade workflows fast, visual, and easy to manage inside the official site.",
     "about.github": "GitHub",
+    "about.patreon": "Patreon",
     "about.version": ({ version }) =>
       `Version ${version} • Developed by KroxiLabs`,
     "bulk.empty":
@@ -543,6 +544,7 @@ const translations = {
     "about.description":
       "Poe Trade Plus es un complemento para Path of Exile Trade creado para guardar búsquedas, organizar carpetas, seguir el historial y hacer que los flujos de trade repetidos sean rápidos, visuales y fáciles de manejar dentro del sitio oficial.",
     "about.github": "GitHub",
+    "about.patreon": "Patreon",
     "about.version": ({ version }) =>
       `Versión ${version} • Desarrollado por KroxiLabs`,
     "bulk.empty":
@@ -708,6 +710,7 @@ const portugueseTranslations: Record<string, TranslationValue> = {
   "about.eyebrow": "Sobre",
   "about.description":
     "Poe Trade Plus é um complemento para o Path of Exile Trade criado para salvar buscas, organizar pastas, acompanhar o histórico e manter fluxos de trade recorrentes rápidos, visuais e fáceis de gerenciar dentro do site oficial.",
+  "about.patreon": "Patreon",
   "about.version": ({ version }) =>
     `Versão ${version} • Desenvolvido por KroxiLabs`,
   "bulk.empty":
@@ -839,6 +842,7 @@ const germanTranslations: Record<string, TranslationValue> = {
   "settings.compactTradeActionToggle": "Abgeschlossen / Offen",
   "about.description":
     "Poe Trade Plus ist ein Begleiter für Path of Exile Trade, entwickelt zum Speichern von Suchen, Organisieren von Ordnern, Nachverfolgen des Verlaufs und für schnelle, übersichtliche wiederkehrende Handelsabläufe direkt auf der offiziellen Seite.",
+  "about.patreon": "Patreon",
   "about.version": ({ version }) =>
     `Version ${version} • Entwickelt von KroxiLabs`,
   "bulk.empty":
@@ -966,6 +970,7 @@ const frenchTranslations: Record<string, TranslationValue> = {
   "about.eyebrow": "À propos",
   "about.description":
     "Poe Trade Plus est un compagnon pour Path of Exile Trade conçu pour sauvegarder des recherches, organiser des dossiers, suivre l’historique et garder les routines de trade rapides, visuelles et faciles à gérer directement sur le site officiel.",
+  "about.patreon": "Patreon",
   "about.version": ({ version }) =>
     `Version ${version} • Développé par KroxiLabs`,
   "bulk.empty":
@@ -1095,6 +1100,7 @@ const russianTranslations: Record<string, TranslationValue> = {
   "about.eyebrow": "О проекте",
   "about.description":
     "Poe Trade Plus — это дополнение для торговли Path of Exile, созданное для сохранения поисков, организации папок, отслеживания истории и удобной работы с повторяющимися торговыми сценариями прямо на официальном сайте.",
+  "about.patreon": "Patreon",
   "about.version": ({ version }) => `Версия ${version} • Разработано KroxiLabs`,
   "bulk.empty":
     "Продавцы bulk пока не обнаружены. Откройте список результатов, где один и тот же продавец встречается больше одного раза.",
@@ -1218,6 +1224,7 @@ const thaiTranslations: Record<string, TranslationValue> = {
   "about.eyebrow": "เกี่ยวกับ",
   "about.description":
     "Poe Trade Plus เป็นส่วนเสริมสำหรับ Path of Exile Trade ที่สร้างขึ้นเพื่อบันทึกการค้นหา จัดระเบียบโฟลเดอร์ ติดตามประวัติ และทำให้การซื้อขายที่ทำซ้ำบ่อยรวดเร็ว มองเห็นได้ง่าย และจัดการได้สะดวกภายในเว็บไซต์ทางการ",
+  "about.patreon": "Patreon",
   "about.version": ({ version }) => `เวอร์ชัน ${version} • พัฒนาโดย KroxiLabs`,
   "bulk.empty":
     "ยังไม่พบผู้ขายแบบ bulk เปิดหน้าผลลัพธ์ที่มีผู้ขายคนเดิมมากกว่าหนึ่งรายการ",
@@ -1346,6 +1353,7 @@ const japaneseTranslations: Record<string, TranslationValue> = {
   "about.eyebrow": "概要",
   "about.description":
     "Poe Trade Plus は Path of Exile Trade 用の補助ツールで、検索の保存、フォルダー整理、履歴管理を行い、繰り返し使うトレード作業を公式サイト上で素早く見やすく簡単に管理できるようにします。",
+  "about.patreon": "Patreon",
   "about.version": ({ version }) => `バージョン ${version} • KroxiLabs 開発`,
   "bulk.empty":
     "まだ Bulk 販売者は検出されていません。同じ販売者が複数回表示される結果一覧を開いてください。",
@@ -1479,6 +1487,7 @@ const koreanTranslations: Record<string, TranslationValue> = {
   "about.eyebrow": "정보",
   "about.description":
     "Poe Trade Plus는 Path of Exile Trade용 보조 도구로, 검색 저장, 폴더 정리, 기록 추적을 지원하며 반복적인 거래 작업을 공식 사이트 안에서 빠르고 보기 쉽게 관리할 수 있게 해줍니다.",
+  "about.patreon": "Patreon",
   "about.version": ({ version }) => `버전 ${version} • KroxiLabs 개발`,
   "bulk.empty":
     "아직 Bulk 판매자가 감지되지 않았습니다. 같은 판매자가 두 번 이상 나타나는 결과 목록을 열어 주세요.",

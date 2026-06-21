@@ -16,7 +16,18 @@
 
   <footer class="about-footer">
     <p class="about-footer__credit">
-      {translate($languageStore, "about.github")} <a href="https://github.com/KroxiLabs/Kroxitrade" target="_blank" rel="noreferrer"><strong>Poe Trade Plus</strong></a>
+      <a class="about-link" href="https://github.com/KroxiLabs/Kroxitrade" target="_blank" rel="noreferrer">
+        <img class="about-link__icon" src="https://cdn.simpleicons.org/github/f0e0bf" alt="" aria-hidden="true" />
+        <span>{translate($languageStore, "about.github")}</span>
+        <strong>Poe Trade Plus</strong>
+      </a>
+    </p>
+    <p class="about-footer__support">
+      <a class="about-link" href="https://www.patreon.com/cw/KroxiLabs" target="_blank" rel="noreferrer">
+        <img class="about-link__icon" src="https://cdn.simpleicons.org/patreon/ff424d" alt="" aria-hidden="true" />
+        <span>{translate($languageStore, "about.patreon")}</span>
+        <strong>KroxiLabs</strong>
+      </a>
     </p>
     <p class="about-footer__meta">{translate($languageStore, "about.version", { version })}</p>
   </footer>
@@ -72,20 +83,35 @@
   }
 
   .about-footer__credit,
+  .about-footer__support,
   .about-footer__meta {
     margin-top: 0;
-    font-size: 10px;
+    font-size: 11px;
     line-height: 1.45;
     color: rgba(203, 182, 148, 0.58);
   }
 
-  .about-footer__credit a {
+  .about-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     color: rgba(240, 224, 191, 0.82);
     text-decoration: none;
   }
 
-  .about-footer__credit a:hover,
-  .about-footer__credit a:focus-visible {
+  .about-link strong {
+    font-weight: 700;
+  }
+
+  .about-link__icon {
+    width: 13px;
+    height: 13px;
+    flex: 0 0 auto;
+    display: block;
+  }
+
+  .about-link:hover,
+  .about-link:focus-visible {
     color: #f0e0bf;
     text-decoration: underline;
     outline: none;
