@@ -31,9 +31,17 @@ function extractKeys(content, marker) {
 const enContent = fs.readFileSync(path.join(dir, "en.ts"), "utf8");
 const enKeys = extractKeys(enContent, "englishTranslations");
 
-const files = fs
-  .readdirSync(dir)
-  .filter((file) => file.endsWith(".ts") && file !== "types.ts");
+const files = [
+  "en.ts",
+  "es.ts",
+  "pt.ts",
+  "de.ts",
+  "fr.ts",
+  "ru.ts",
+  "th.ts",
+  "ja.ts",
+  "ko.ts"
+];
 
 for (const file of files) {
   const content = fs.readFileSync(path.join(dir, file), "utf8");
