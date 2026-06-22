@@ -53,6 +53,8 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "bulk.findError": "Не удалось найти этот лот в текущих результатах.",
   "bulk.buyError": "Не удалось выполнить покупку для этого лота.",
   "bulk.visited": "ПОСЕЩЕНО",
+  "bulk.emptyTitle": "Повторяющихся продавцов пока нет",
+  "bulk.refresh": "Обновить результаты",
   "bookmarks.newFolder": "Новая папка",
   "bookmarks.folderCreated": "Папка создана!",
   "bookmarks.folderDeleted": "Папка удалена!",
@@ -74,7 +76,20 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "bookmarks.toolbar.archive": "Архив",
   "bookmarks.toolbar.showActive": "Показать активные",
   "bookmarks.toolbar.showArchived": "Показать архив",
+  "bookmarks.importTitle": "Импорт папки",
+  "bookmarks.importDescription":
+    "Вставьте ниже экспортированный текст папки, чтобы восстановить ее как сохраненную папку закладок.",
   "bookmarks.importPlaceholder": "Вставьте сюда текст папки...",
+  "bookmarks.importHint":
+    "Используйте полную строку экспорта из ранее экспортированной папки.",
+  "bookmarks.emptyEyebrow": "Закладки",
+  "bookmarks.emptyTitle": "Создайте первую папку",
+  "bookmarks.emptyDescription":
+    "Сохраняйте часто используемые торговые поиски в папках, чтобы быстро открывать их позже.",
+  "bookmarks.emptyArchivedTitle": "Архивированных папок пока нет",
+  "bookmarks.emptyArchivedDescription":
+    "Архивированные папки появятся здесь, когда вы уберете их из активного списка закладок.",
+  "bookmarks.emptyArchivedAction": "Показать активные папки",
   "bookmarks.confirmImport": "Подтвердить импорт",
   "bookmarks.backupTitle": "Резервное копирование и восстановление",
   "bookmarks.saveFile": "Сохранить файл",
@@ -82,6 +97,8 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "history.clear": "Очистить историю",
   "history.cleared": "История очищена!",
   "history.empty": ({ version }) => `История пуста для PoE ${version}.`,
+  "history.emptyDescription":
+    "Недавние торговые поиски появятся здесь после открытия на официальном сайте торговли.",
   "history.today": "Сегодня",
   "history.yesterday": "Вчера",
   "folder.copiedTrade": ({ title }) => `${title} скопирован в буфер обмена`,

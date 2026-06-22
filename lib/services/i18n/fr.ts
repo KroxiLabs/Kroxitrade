@@ -56,6 +56,8 @@ export const frenchTranslations: Record<string, TranslationValue> = {
     "Impossible de localiser cette annonce dans les résultats actuels.",
   "bulk.buyError": "Impossible de déclencher l’achat pour cette annonce.",
   "bulk.visited": "VISITÉ",
+  "bulk.emptyTitle": "Aucun vendeur répété pour le moment",
+  "bulk.refresh": "Actualiser les résultats",
   "bookmarks.newFolder": "Nouveau dossier",
   "bookmarks.folderCreated": "Dossier créé !",
   "bookmarks.folderDeleted": "Dossier supprimé !",
@@ -78,7 +80,20 @@ export const frenchTranslations: Record<string, TranslationValue> = {
   "bookmarks.toolbar.archive": "Archive",
   "bookmarks.toolbar.showActive": "Afficher les actifs",
   "bookmarks.toolbar.showArchived": "Afficher les archivés",
+  "bookmarks.importTitle": "Importer un dossier",
+  "bookmarks.importDescription":
+    "Collez ci-dessous le texte du dossier exporté pour le restaurer comme dossier de favoris sauvegardé.",
   "bookmarks.importPlaceholder": "Collez ici le texte du dossier...",
+  "bookmarks.importHint":
+    "Utilisez la chaîne complète exportée depuis un dossier précédent.",
+  "bookmarks.emptyEyebrow": "Favoris",
+  "bookmarks.emptyTitle": "Créez votre premier dossier",
+  "bookmarks.emptyDescription":
+    "Enregistrez vos recherches de trade les plus utilisées dans des dossiers pour les rouvrir rapidement plus tard.",
+  "bookmarks.emptyArchivedTitle": "Aucun dossier archivé pour le moment",
+  "bookmarks.emptyArchivedDescription":
+    "Les dossiers archivés apparaîtront ici lorsque vous les retirerez de la liste active.",
+  "bookmarks.emptyArchivedAction": "Afficher les dossiers actifs",
   "bookmarks.confirmImport": "Confirmer l’import",
   "bookmarks.backupTitle": "Sauvegarde et restauration",
   "bookmarks.saveFile": "Enregistrer le fichier",
@@ -87,6 +102,8 @@ export const frenchTranslations: Record<string, TranslationValue> = {
   "history.cleared": "Historique effacé !",
   "history.empty": ({ version }) =>
     `L’historique est vide pour PoE ${version}.`,
+  "history.emptyDescription":
+    "Vos recherches de trade récentes apparaîtront ici une fois ouvertes depuis le site officiel.",
   "history.today": "Aujourd'hui",
   "history.yesterday": "Hier",
   "folder.copiedTrade": ({ title }) => `${title} copié dans le presse-papiers`,

@@ -53,6 +53,8 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "bulk.findError": "ไม่พบรายการนี้ในผลลัพธ์ปัจจุบัน",
   "bulk.buyError": "ไม่สามารถเรียกใช้การซื้อสำหรับรายการนี้ได้",
   "bulk.visited": "เยี่ยมชมแล้ว",
+  "bulk.emptyTitle": "ยังไม่มีผู้ขายซ้ำ",
+  "bulk.refresh": "รีเฟรชผลลัพธ์",
   "bookmarks.newFolder": "โฟลเดอร์ใหม่",
   "bookmarks.folderCreated": "สร้างโฟลเดอร์แล้ว!",
   "bookmarks.folderDeleted": "ลบโฟลเดอร์แล้ว!",
@@ -74,7 +76,20 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "bookmarks.toolbar.archive": "เก็บถาวร",
   "bookmarks.toolbar.showActive": "แสดงที่ใช้งานอยู่",
   "bookmarks.toolbar.showArchived": "แสดงที่เก็บถาวร",
+  "bookmarks.importTitle": "นำเข้าโฟลเดอร์",
+  "bookmarks.importDescription":
+    "วางข้อความโฟลเดอร์ที่ส่งออกไว้ด้านล่างเพื่อกู้คืนเป็นโฟลเดอร์บุ๊กมาร์กที่บันทึกไว้",
   "bookmarks.importPlaceholder": "วางข้อความโฟลเดอร์ที่นี่...",
+  "bookmarks.importHint":
+    "ใช้ข้อความส่งออกแบบเต็มจากโฟลเดอร์ที่เคยส่งออกไว้",
+  "bookmarks.emptyEyebrow": "บุ๊กมาร์ก",
+  "bookmarks.emptyTitle": "สร้างโฟลเดอร์แรกของคุณ",
+  "bookmarks.emptyDescription":
+    "บันทึกการค้นหา trade ที่ใช้บ่อยไว้ในโฟลเดอร์ เพื่อเปิดซ้ำได้รวดเร็วในภายหลัง",
+  "bookmarks.emptyArchivedTitle": "ยังไม่มีโฟลเดอร์ที่เก็บถาวร",
+  "bookmarks.emptyArchivedDescription":
+    "โฟลเดอร์ที่เก็บถาวรจะแสดงที่นี่เมื่อคุณย้ายออกจากรายการบุ๊กมาร์กที่ใช้งานอยู่",
+  "bookmarks.emptyArchivedAction": "แสดงโฟลเดอร์ที่ใช้งานอยู่",
   "bookmarks.confirmImport": "ยืนยันการนำเข้า",
   "bookmarks.backupTitle": "สำรองและกู้คืน",
   "bookmarks.saveFile": "บันทึกไฟล์",
@@ -82,6 +97,8 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "history.clear": "ล้างประวัติ",
   "history.cleared": "ล้างประวัติแล้ว!",
   "history.empty": ({ version }) => `ไม่มีประวัติสำหรับ PoE ${version}`,
+  "history.emptyDescription":
+    "การค้นหา trade ล่าสุดจะแสดงที่นี่เมื่อคุณเปิดจากเว็บไซต์ trade อย่างเป็นทางการ",
   "history.today": "วันนี้",
   "history.yesterday": "เมื่อวาน",
   "folder.copiedTrade": ({ title }) => `คัดลอก ${title} ไปยังคลิปบอร์ดแล้ว`,

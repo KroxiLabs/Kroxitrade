@@ -218,6 +218,8 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "bulk.findError": "Couldn't locate that listing in the current results.",
     "bulk.buyError": "Couldn't trigger the buy action for that listing.",
     "bulk.visited": "VISITED",
+    "bulk.emptyTitle": "No repeated sellers yet",
+    "bulk.refresh": "Refresh Results",
     "bookmarks.newFolder": "New Folder",
     "bookmarks.folderCreated": "Folder created!",
     "bookmarks.folderDeleted": "Folder deleted!",
@@ -271,6 +273,8 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "history.clear": "Clear History",
     "history.cleared": "History cleared!",
     "history.empty": ({ version }) => `History is empty for PoE ${version}.`,
+    "history.emptyDescription":
+      "Recent trade searches will appear here once you open them from the official trade site.",
     "history.today": "Today",
     "history.yesterday": "Yesterday",
     "folder.metaSeparator": " • ",

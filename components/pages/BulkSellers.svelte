@@ -1,11 +1,12 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import layersIcon from "lucide-static/icons/layers-3.svg?raw";
   import { storageService } from "../../lib/services/storage";
   import { bulkSellersService } from "../../lib/services/bulk-sellers";
   import { flashMessages } from "../../lib/services/flash";
   import { languageStore, translate } from "../../lib/services/i18n";
-  import AlertMessage from "../AlertMessage.svelte";
   import Button from "../Button.svelte";
+  import EmptyState from "../EmptyState.svelte";
 
   const COLLAPSED_STORAGE_KEY = "bulk-sellers-collapsed";
   const VISITED_STORAGE_KEY = "bulk-sellers-visited";
@@ -89,6 +90,10 @@
       persistVisitedState();
     }
   };
+
+  const refreshBulkSellers = () => {
+    bulkSellersService.refresh();
+  };
 </script>
 
 <div class="bulk-sellers-page">
@@ -146,9 +151,13 @@
       {/each}
     </div>
   {:else}
-    <AlertMessage
-      type="warning"
-      message={translate($languageStore, "bulk.empty")}
+    <EmptyState
+      iconHtml={layersIcon}
+      eyebrow={translate($languageStore, "layout.nav.bulk")}
+      title={translate($languageStore, "bulk.emptyTitle")}
+      description={translate($languageStore, "bulk.empty")}
+      actionLabel={translate($languageStore, "bulk.refresh")}
+      onAction={refreshBulkSellers}
     />
   {/if}
 </div>

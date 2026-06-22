@@ -220,6 +220,8 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "bulk.buyError":
       "No se pudo ejecutar la acción de compra para esa publicación.",
     "bulk.visited": "VISITADO",
+    "bulk.emptyTitle": "Todavía no hay vendedores repetidos",
+    "bulk.refresh": "Actualizar resultados",
     "bookmarks.newFolder": "Nueva carpeta",
     "bookmarks.folderCreated": "¡Carpeta creada!",
     "bookmarks.folderDeleted": "¡Carpeta eliminada!",
@@ -273,6 +275,8 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "history.cleared": "¡Historial borrado!",
     "history.empty": ({ version }) =>
       `El historial está vacío para PoE ${version}.`,
+    "history.emptyDescription":
+      "Tus búsquedas recientes de trade van a aparecer acá cuando las abras desde el sitio oficial.",
     "history.today": "Hoy",
     "history.yesterday": "Ayer",
     "folder.metaSeparator": " • ",

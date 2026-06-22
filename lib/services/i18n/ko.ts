@@ -58,6 +58,8 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "bulk.findError": "현재 결과에서 해당 목록을 찾을 수 없습니다.",
   "bulk.buyError": "해당 목록에 대해 구매 동작을 실행할 수 없습니다.",
   "bulk.visited": "방문함",
+  "bulk.emptyTitle": "아직 반복 판매자가 없습니다",
+  "bulk.refresh": "결과 새로고침",
   "bookmarks.newFolder": "새 폴더",
   "bookmarks.folderCreated": "폴더를 만들었습니다!",
   "bookmarks.folderDeleted": "폴더를 삭제했습니다!",
@@ -79,7 +81,20 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "bookmarks.toolbar.archive": "보관",
   "bookmarks.toolbar.showActive": "활성 표시",
   "bookmarks.toolbar.showArchived": "보관 표시",
+  "bookmarks.importTitle": "폴더 가져오기",
+  "bookmarks.importDescription":
+    "내보낸 폴더 텍스트를 아래에 붙여 넣어 저장된 북마크 폴더로 복원하세요.",
   "bookmarks.importPlaceholder": "여기에 폴더 텍스트를 붙여 넣으세요...",
+  "bookmarks.importHint":
+    "이전에 내보낸 폴더의 전체 내보내기 문자열을 사용하세요.",
+  "bookmarks.emptyEyebrow": "북마크",
+  "bookmarks.emptyTitle": "첫 폴더 만들기",
+  "bookmarks.emptyDescription":
+    "자주 쓰는 거래 검색을 폴더에 저장해 나중에 빠르게 다시 열 수 있습니다.",
+  "bookmarks.emptyArchivedTitle": "아직 보관된 폴더가 없습니다",
+  "bookmarks.emptyArchivedDescription":
+    "활성 북마크 목록에서 이동한 보관 폴더가 여기에 표시됩니다.",
+  "bookmarks.emptyArchivedAction": "활성 폴더 표시",
   "bookmarks.confirmImport": "가져오기 확인",
   "bookmarks.backupTitle": "백업 및 복원",
   "bookmarks.saveFile": "파일 저장",
@@ -87,6 +102,8 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "history.clear": "기록 지우기",
   "history.cleared": "기록을 지웠습니다!",
   "history.empty": ({ version }) => `PoE ${version}의 기록이 비어 있습니다.`,
+  "history.emptyDescription":
+    "공식 거래 사이트에서 연 최근 거래 검색이 여기에 표시됩니다.",
   "history.today": "오늘",
   "history.yesterday": "어제",
   "folder.copiedTrade": ({ title }) => `${title}을(를) 클립보드에 복사했습니다`,

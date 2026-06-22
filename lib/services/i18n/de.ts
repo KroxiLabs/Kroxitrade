@@ -55,6 +55,8 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "bulk.buyError":
     "Die Kaufaktion für diesen Eintrag konnte nicht ausgelöst werden.",
   "bulk.visited": "BESUCHT",
+  "bulk.emptyTitle": "Noch keine wiederholten Verkäufer",
+  "bulk.refresh": "Ergebnisse aktualisieren",
   "bookmarks.newFolder": "Neuer Ordner",
   "bookmarks.folderCreated": "Ordner erstellt!",
   "bookmarks.folderDeleted": "Ordner gelöscht!",
@@ -76,7 +78,20 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "bookmarks.toolbar.archive": "Archiv",
   "bookmarks.toolbar.showActive": "Aktive anzeigen",
   "bookmarks.toolbar.showArchived": "Archivierte anzeigen",
+  "bookmarks.importTitle": "Ordner importieren",
+  "bookmarks.importDescription":
+    "Füge unten den exportierten Ordnertext ein, um ihn als gespeicherten Lesezeichenordner wiederherzustellen.",
   "bookmarks.importPlaceholder": "Ordnertext hier einfügen...",
+  "bookmarks.importHint":
+    "Verwende die vollständige Exportzeichenfolge aus einem zuvor exportierten Ordner.",
+  "bookmarks.emptyEyebrow": "Lesezeichen",
+  "bookmarks.emptyTitle": "Erstelle deinen ersten Ordner",
+  "bookmarks.emptyDescription":
+    "Speichere deine meistgenutzten Handelssuchen in Ordnern, damit du sie später schnell wieder öffnen kannst.",
+  "bookmarks.emptyArchivedTitle": "Noch keine archivierten Ordner",
+  "bookmarks.emptyArchivedDescription":
+    "Archivierte Ordner erscheinen hier, wenn du sie aus der aktiven Lesezeichenliste entfernst.",
+  "bookmarks.emptyArchivedAction": "Aktive Ordner anzeigen",
   "bookmarks.confirmImport": "Import bestätigen",
   "bookmarks.backupTitle": "Backup & Wiederherstellung",
   "bookmarks.saveFile": "Datei speichern",
@@ -84,6 +99,8 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "history.clear": "Verlauf löschen",
   "history.cleared": "Verlauf gelöscht!",
   "history.empty": ({ version }) => `Der Verlauf für PoE ${version} ist leer.`,
+  "history.emptyDescription":
+    "Zuletzt geöffnete Handelssuchen erscheinen hier, sobald du sie auf der offiziellen Handelsseite öffnest.",
   "history.today": "Heute",
   "history.yesterday": "Gestern",
   "folder.copiedTrade": ({ title }) => `${title} in die Zwischenablage kopiert`,

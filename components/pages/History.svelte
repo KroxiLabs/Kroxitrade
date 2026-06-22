@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from "svelte";
+  import historyIcon from "lucide-static/icons/history.svg?raw";
   import { tradeLocationService } from "../../lib/services/trade-location";
   import { openUrlInActiveTab } from "../../lib/services/active-trade-tab";
   import { flashMessages } from "../../lib/services/flash";
@@ -8,8 +9,8 @@
   import type { TradeLocationHistoryStruct, TradeSiteVersion } from "../../lib/types/trade-location";
 
   import Button from "../Button.svelte";
+  import EmptyState from "../EmptyState.svelte";
   import LoadingContainer from "../LoadingContainer.svelte";
-  import AlertMessage from "../AlertMessage.svelte";
 
   type HistoryGroup = {
     id: string;
@@ -195,7 +196,12 @@
         class="clear-button"
       />
     {:else}
-      <AlertMessage type="warning" message={translate($languageStore, "history.empty", { version: currentVersion })} />
+      <EmptyState
+        iconHtml={historyIcon}
+        eyebrow={translate($languageStore, "layout.nav.history")}
+        title={translate($languageStore, "history.empty", { version: currentVersion })}
+        description={translate($languageStore, "history.emptyDescription")}
+      />
     {/if}
   </LoadingContainer>
 </div>

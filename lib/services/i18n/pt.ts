@@ -58,6 +58,8 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
     "Não foi possível localizar essa listagem nos resultados atuais.",
   "bulk.buyError": "Não foi possível acionar a compra dessa listagem.",
   "bulk.visited": "VISITADO",
+  "bulk.emptyTitle": "Ainda não há vendedores repetidos",
+  "bulk.refresh": "Atualizar resultados",
   "bookmarks.newFolder": "Nova pasta",
   "bookmarks.folderCreated": "Pasta criada!",
   "bookmarks.folderDeleted": "Pasta excluída!",
@@ -79,7 +81,20 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
   "bookmarks.toolbar.archive": "Arquivo",
   "bookmarks.toolbar.showActive": "Mostrar ativas",
   "bookmarks.toolbar.showArchived": "Mostrar arquivadas",
+  "bookmarks.importTitle": "Importar pasta",
+  "bookmarks.importDescription":
+    "Cole o texto exportado da pasta abaixo para restaurá-la como uma pasta de favoritos salva.",
   "bookmarks.importPlaceholder": "Cole aqui o texto da pasta...",
+  "bookmarks.importHint":
+    "Use a string completa exportada anteriormente de uma pasta.",
+  "bookmarks.emptyEyebrow": "Favoritos",
+  "bookmarks.emptyTitle": "Crie sua primeira pasta",
+  "bookmarks.emptyDescription":
+    "Salve suas buscas de trade mais usadas em pastas para reabri-las rapidamente depois.",
+  "bookmarks.emptyArchivedTitle": "Ainda não há pastas arquivadas",
+  "bookmarks.emptyArchivedDescription":
+    "Pastas arquivadas aparecerão aqui quando você removê-las da lista ativa de favoritos.",
+  "bookmarks.emptyArchivedAction": "Mostrar pastas ativas",
   "bookmarks.confirmImport": "Confirmar importação",
   "bookmarks.backupTitle": "Backup e restauração",
   "bookmarks.saveFile": "Salvar arquivo",
@@ -88,6 +103,8 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
   "history.cleared": "Histórico limpo!",
   "history.empty": ({ version }) =>
     `O histórico está vazio para PoE ${version}.`,
+  "history.emptyDescription":
+    "Suas buscas recentes de trade aparecerão aqui quando você as abrir no site oficial.",
   "history.today": "Hoje",
   "history.yesterday": "Ontem",
   "folder.copiedTrade": ({ title }) =>

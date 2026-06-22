@@ -17,6 +17,7 @@
   import BookmarkFolder from "../BookmarkFolder.svelte";
   import Button from "../Button.svelte";
   import ConfirmDialog from "../ConfirmDialog.svelte";
+  import EmptyState from "../EmptyState.svelte";
   import LoadingContainer from "../LoadingContainer.svelte";
 
   const EXPANDED_FOLDERS_STORAGE_KEY = "bookmark-folders-expanded";
@@ -383,28 +384,14 @@
   <LoadingContainer {isLoading}>
     <div class="folders-list">
       {#if isEmptyState}
-        <section class="empty-state">
-          <div class="empty-state-eyebrow">{translate($languageStore, "bookmarks.emptyEyebrow")}</div>
-          <h3 class="empty-state-title">
-            {translate($languageStore, showArchived ? "bookmarks.emptyArchivedTitle" : "bookmarks.emptyTitle")}
-          </h3>
-          <p class="empty-state-description">
-            {translate($languageStore, showArchived ? "bookmarks.emptyArchivedDescription" : "bookmarks.emptyDescription")}
-          </p>
-          <div class="empty-state-actions">
-            {#if showArchived}
-              <Button
-                label={translate($languageStore, "bookmarks.emptyArchivedAction")}
-                theme="gold"
-                onClick={() => showArchived = false} />
-            {:else}
-              <Button
-                label={translate($languageStore, "bookmarks.toolbar.newFolderTitle")}
-                theme="gold"
-                onClick={createFolder} />
-            {/if}
-          </div>
-        </section>
+        <EmptyState
+          iconHtml={toolbarIcons.newFolder}
+          eyebrow={translate($languageStore, "bookmarks.emptyEyebrow")}
+          title={translate($languageStore, showArchived ? "bookmarks.emptyArchivedTitle" : "bookmarks.emptyTitle")}
+          description={translate($languageStore, showArchived ? "bookmarks.emptyArchivedDescription" : "bookmarks.emptyDescription")}
+          actionLabel={translate($languageStore, showArchived ? "bookmarks.emptyArchivedAction" : "bookmarks.toolbar.newFolderTitle")}
+          onAction={showArchived ? () => showArchived = false : createFolder}
+        />
       {:else}
         {#each displayedFolders as folder (folder.id)}
           <div class="folder-shell" animate:flip={{ duration: 180 }}>
@@ -630,50 +617,6 @@
     width: 100%;
     min-width: 0;
   }
-
-  .empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 8px;
-    margin: 4px;
-    padding: 16px 14px;
-    border: 1px dashed rgba($gold, 0.18);
-    border-radius: 8px;
-    background:
-      linear-gradient(180deg, rgba($gold, 0.05), rgba($gold, 0.015)),
-      rgba($black, 0.28);
-  }
-
-  .empty-state-eyebrow {
-    font-family: $primary-font;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: rgba($gold-alt, 0.82);
-  }
-
-  .empty-state-title {
-    margin: 0;
-    font-family: "Fontin", serif;
-    font-size: 18px;
-    line-height: 1.15;
-    color: rgba($white, 0.96);
-  }
-
-  .empty-state-description {
-    margin: 0;
-    font-size: 12px;
-    line-height: 1.5;
-    color: rgba($white, 0.74);
-  }
-
-  .empty-state-actions {
-    display: flex;
-    padding-top: 2px;
-  }
-
 
   .import-text-area {
       display: flex;
