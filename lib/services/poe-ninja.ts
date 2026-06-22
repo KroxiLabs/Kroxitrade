@@ -64,12 +64,25 @@ export class PoeNinjaService {
   }
 
   async fetchFreshChaosRatiosFor(league: string): Promise<PoeNinjaCurrenciesRatios> {
-    await storageService.deleteValue(RATIOS_CACHE_KEY, league);
+    // Stale-while-revalidate: keep the previous cache entry so we can fall
+    // back to it if the network request fails. Previously the cache was
+    // deleted up front, leaving no fallback when poe.ninja was unreachable.
+    const stale = await storageService.getStaleValue<PoeNinjaCurrenciesRatios>(RATIOS_CACHE_KEY, league);
 
-    const ratios = await this.requestChaosRatiosFor(league);
-    await storageService.setEphemeralValue(RATIOS_CACHE_KEY, ratios, dateDelta(RATIOS_CACHE_DURATION), league);
-
-    return ratios;
+    try {
+      const ratios = await this.requestChaosRatiosFor(league);
+      await storageService.setEphemeralValue(RATIOS_CACHE_KEY, ratios, dateDelta(RATIOS_CACHE_DURATION), league);
+      return ratios;
+    } catch (error) {
+      if (stale && Object.keys(stale).length > 0) {
+        emitPageDebug("poe-ninja-stale-fallback", {
+          league,
+          entries: Object.keys(stale).length
+        });
+        return stale;
+      }
+      throw error;
+    }
   }
 
   private async requestChaosRatiosFor(league: string): Promise<PoeNinjaCurrenciesRatios> {

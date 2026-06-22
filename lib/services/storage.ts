@@ -38,6 +38,11 @@ export class StorageService {
     return value;
   }
 
+  async getStaleValue<T>(key: string, league: string | null = null): Promise<T | null> {
+    const payload = await this.read(this.formatKey(key, league));
+    return payload ? (payload.value as T) : null;
+  }
+
   private formatKey(key: string, league: string | null) {
     return (league ? `${key}--${league}` : key).toLowerCase();
   }

@@ -363,6 +363,9 @@ export class ItemResultsService {
   }
 
   private observerTimer: ReturnType<typeof setTimeout> | null = null;
+  private observerRetries = 0;
+  private readonly OBSERVER_MAX_RETRIES = 10;
+  private readonly OBSERVER_RETRY_DELAY = 2000;
 
   private startObserving() {
     const observer = new MutationObserver((mutations) => {
@@ -372,15 +375,23 @@ export class ItemResultsService {
 
     const target = document.querySelector(".search-results, .resultset, .results");
     if (target) {
+      this.observerRetries = 0;
       observer.observe(target, { childList: true, subtree: true });
       this.enhanceResults();
-    } else {
-      // Fallback: observe body but keep trying to find the specific container
+    } else if (this.observerRetries < this.OBSERVER_MAX_RETRIES) {
+      // Fallback: observe body but keep trying to find the specific container.
+      // Cap retries so we don't poll forever if the page never renders results.
+      this.observerRetries++;
       observer.observe(document.body, { childList: true, subtree: true });
       setTimeout(() => {
         observer.disconnect();
         this.startObserving();
-      }, 2000);
+      }, this.OBSERVER_RETRY_DELAY);
+    } else {
+      emitPageDebug("observer-give-up", {
+        retries: this.observerRetries,
+        reason: "max-retries-reached"
+      });
     }
   }
 
