@@ -1,0 +1,323 @@
+import type { TranslationValue } from "./types"
+
+export const englishTranslations: Record<string, TranslationValue> = {
+    "app.name": "Poe Trade Plus",
+    "header.subtitle": "Trade Companion",
+    "header.expandSidebar": "Expand Sidebar",
+    "header.minimizeSidebar": "Minimize Sidebar",
+    "layout.nav.bookmarks": "Bookmarks",
+    "layout.nav.bulk": "Bulk",
+    "layout.nav.history": "History",
+    "layout.nav.settings": "Settings",
+    "layout.nav.about": "About",
+    "layout.removeAlert": "Remove alert",
+    "layout.resizeSidebar": "Resize sidebar",
+    "layout.restorePanel": "Restore Poe Trade Plus Panel",
+    "layout.versionNoticeEyebrow": "New Version",
+    "layout.versionNoticeMessage": ({ version }) =>
+      `Poe Trade Plus was updated to ${version}.`,
+    "layout.versionNoticeClose": "Close new version message",
+    "welcome.title": "Welcome to Poe Trade Plus",
+    "welcome.message":
+      "Choose the language you want to use for the extension before you start.",
+    "welcome.languageLabel": "Interface language",
+    "welcome.continue": "Continue",
+    "onboarding.badge": "Quick Tour",
+    "onboarding.title": "Welcome to Poe Trade Plus",
+    "onboarding.subtitle":
+      "Follow these steps in order and the guide will point at the exact place to click.",
+    "onboarding.stepCounter": ({ current, total }) => `Step ${current} of ${total}`,
+    "onboarding.step1Eyebrow": "Bookmarks",
+    "onboarding.step1Title": "Create your first folder",
+    "onboarding.step1Body":
+      "Start here. This button creates the folder where your saved searches will live.",
+    "onboarding.step1Highlight1":
+      "Stay on the Bookmarks tab.",
+    "onboarding.step1Highlight2":
+      "Click New Folder once to create a category.",
+    "onboarding.step1Highlight3":
+      "The new folder will appear below this toolbar.",
+    "onboarding.step2Eyebrow": "Bookmarks",
+    "onboarding.step2Title": "Save the current search into that folder",
+    "onboarding.step2Body":
+      "This action turns the trade page you are viewing right now into a saved bookmark.",
+    "onboarding.step2Highlight1":
+      "Open the folder you want to use if it is collapsed.",
+    "onboarding.step2Highlight2":
+      "Go to the bottom area inside that folder.",
+    "onboarding.step2Highlight3":
+      "Click Save current search while you are on the trade query you want to keep.",
+    "onboarding.step3Eyebrow": "History",
+    "onboarding.step3Title": "Find your recent searches",
+    "onboarding.step3Body":
+      "This tab is for searches you opened recently, even if you did not save them as bookmarks.",
+    "onboarding.step3Highlight1":
+      "Click the History tab in the top navigation.",
+    "onboarding.step3Highlight2":
+      "Use it to reopen recent searches quickly.",
+    "onboarding.step3Highlight3":
+      "If you want to keep one permanently, save it later from Bookmarks.",
+    "onboarding.step4Eyebrow": "Settings",
+    "onboarding.step4Title": "Reopen the guide from here",
+    "onboarding.step4Body":
+      "This first settings block is just for the tutorial itself.",
+    "onboarding.step4Highlight1":
+      "Use Open Tutorial whenever you want to run this guide again.",
+    "onboarding.step4Highlight2":
+      "It is useful after updates or when you want to revisit a feature.",
+    "onboarding.step4Highlight3":
+      "The next steps will mark the rest of the settings one by one.",
+    "onboarding.step5Eyebrow": "Settings",
+    "onboarding.step5Title": "Sidebar Position",
+    "onboarding.step5Body":
+      "These controls change where the extension lives on the screen and how wide it starts.",
+    "onboarding.step5Highlight1":
+      "Left moves the panel to the left side of the trade site.",
+    "onboarding.step5Highlight2":
+      "Right moves it to the right side.",
+    "onboarding.step5Highlight3":
+      "Reset Width restores the default sidebar width if you resized it.",
+    "onboarding.step6Eyebrow": "Settings",
+    "onboarding.step6Title": "Language",
+    "onboarding.step6Body":
+      "This section changes the language used by the extension interface.",
+    "onboarding.step6Highlight1":
+      "Open the selector to see every available language.",
+    "onboarding.step6Highlight2":
+      "The flag and labels show the current choice.",
+    "onboarding.step6Highlight3":
+      "Changing this updates the extension text across the panel.",
+    "onboarding.step7Eyebrow": "Settings",
+    "onboarding.step7Title": "Equivalent Pricing",
+    "onboarding.step7Body":
+      "This toggle controls the extra line that converts listed prices into chaos or divine equivalents.",
+    "onboarding.step7Highlight1":
+      "Turn it on if you want quick conversion help in results.",
+    "onboarding.step7Highlight2":
+      "Turn it off if you prefer a cleaner trade list.",
+    "onboarding.step7Highlight3":
+      "It only affects how prices are shown, not the search itself.",
+    "onboarding.step8Eyebrow": "Settings",
+    "onboarding.step8Title": "Bulk Sellers",
+    "onboarding.step8Body":
+      "This toggle shows or hides the Bulk tab.",
+    "onboarding.step8Highlight1":
+      "Enable it if you want grouped repeated sellers from the current results.",
+    "onboarding.step8Highlight2":
+      "Disable it if you do not use the Bulk helper often.",
+    "onboarding.step8Highlight3":
+      "When hidden, the Bulk tab disappears from the top navigation.",
+    "onboarding.step9Eyebrow": "Settings",
+    "onboarding.step9Title": "History",
+    "onboarding.step9Body":
+      "This toggle shows or hides the History tab.",
+    "onboarding.step9Highlight1":
+      "Enable it if you want fast access to recent searches.",
+    "onboarding.step9Highlight2":
+      "Disable it if you only use saved bookmarks.",
+    "onboarding.step9Highlight3":
+      "When hidden, the History tab is removed from the navigation.",
+    "onboarding.step10Eyebrow": "Settings",
+    "onboarding.step10Title": "Add To Filters",
+    "onboarding.step10Body":
+      "This toggle controls the helper panel that adds found modifiers directly into the search filters.",
+    "onboarding.step10Highlight1":
+      "Enable it to keep the Add To Filters helper visible.",
+    "onboarding.step10Highlight2":
+      "Disable it if you want a simpler sidebar.",
+    "onboarding.step10Highlight3":
+      "It affects the helper panel at the bottom of the extension.",
+    "onboarding.step11Eyebrow": "Settings",
+    "onboarding.step11Title": "Bookmark Layout",
+    "onboarding.step11Body":
+      "These controls change how saved searches and their action buttons are displayed in bookmarks.",
+    "onboarding.step11Highlight1":
+      "Classic keeps the fuller bookmark layout.",
+    "onboarding.step11Highlight2":
+      "Compact moves actions into a tighter layout with a three-dot menu.",
+    "onboarding.step11Highlight3":
+      "If Compact is enabled, the extra options below choose which actions stay visible.",
+    "onboarding.sampleFolder": "Tutorial Folder",
+    "onboarding.sampleTrade": "Example Bookmark",
+    "onboarding.back": "Back",
+    "onboarding.next": "Next",
+    "onboarding.skip": "Skip",
+    "onboarding.finish": "Start using it",
+    "popup.description":
+      "Poe Trade Plus adds faster navigation and trading helpers to the official Path of Exile trade site.",
+    "popup.trade1": "PoE 1 Trade",
+    "popup.trade2": "PoE 2 Trade",
+    "popup.trade1Alt": "Path of Exile Trade",
+    "popup.trade2Alt": "Path of Exile 2 Trade",
+    "settings.sidebarTitle": "Sidebar Position",
+    "settings.sidebarDescription":
+      "Choose which side of the screen you want the Poe Trade Plus panel to appear.",
+    "settings.left": "Left",
+    "settings.right": "Right",
+    "settings.resetWidth": "Reset Width",
+    "settings.languageTitle": "Language",
+    "settings.languageDescription":
+      "Choose the language used by the extension interface.",
+    "settings.languageEnglish": "English",
+    "settings.languageSpanish": "Spanish",
+    "settings.onboardingTitle": "Tutorial",
+    "settings.onboardingDescription":
+      "Open the quick onboarding again to review the main actions and tabs.",
+    "settings.reopenTutorial": "Open Tutorial",
+    "settings.resultsTitle": "Results Tools",
+    "settings.equivalentTitle": "Equivalent Pricing",
+    "settings.equivalentDescription":
+      "Show or hide the extra chaos/divine equivalent line in trade results.",
+    "settings.equivalentSource":
+      "Uses poe.ninja ratios cached every 15 minutes.",
+    "settings.equivalentRefresh": "Refresh Ratio",
+    "settings.equivalentRefreshLoading": "Refreshing...",
+    "settings.equivalentRefreshSuccess": ({ league }) =>
+      `Equivalent pricing ratios refreshed for ${league}.`,
+    "settings.equivalentRefreshError":
+      "Could not refresh the poe.ninja ratio right now.",
+    "settings.equivalentRefreshUnavailable":
+      "Open a trade league first to refresh the poe.ninja ratio.",
+    "settings.bulkTitle": "Bulk Sellers",
+    "settings.bulkDescription":
+      "Show or hide the bulk sellers tab that groups repeated sellers from the current trade results.",
+    "settings.historyTitle": "History",
+    "settings.historyDescription":
+      "Show or hide the history tab that stores your recently opened searches.",
+    "settings.finerFiltersTitle": "Add To Filters",
+    "settings.finerFiltersDescription":
+      "Show or hide the Add to Filters panel at the bottom of the sidebar.",
+    "settings.hidden": "Hidden",
+    "settings.visible": "Visible",
+    "settings.on": "On",
+    "settings.off": "Off",
+    "settings.compactActionsTitle": "Bookmark Layout",
+    "settings.compactActionsDescription":
+      "Choose a more compact layout for saved searches, with the league name and all actions grouped inside a three-dot menu.",
+    "settings.compactActionsDefault": "Classic",
+    "settings.compactActionsCompact": "Compact",
+    "settings.compactTradeActionsTitle": "Trade Actions Outside Menu",
+    "settings.compactTradeActionsDescription":
+      "Choose which saved-search actions stay visible in compact mode. If none are selected, only the three-dot menu is shown. If all or all but one are selected, every action stays visible.",
+    "settings.tradeActionsTitle": "Visible Trade Actions",
+    "settings.tradeActionsDescription":
+      "Choose which saved-search actions stay visible outside the menu in both classic and compact layouts. If none are selected, only the three-dot menu is shown.",
+    "settings.compactTradeActionToggle": "Complete / Pending",
+    "about.eyebrow": "About",
+    "about.description":
+      "Poe Trade Plus is a companion for Path of Exile Trade built to save searches, organize folders, track history, and keep recurring trade workflows fast, visual, and easy to manage inside the official site.",
+    "about.github": "GitHub",
+    "about.patreon": "Patreon",
+    "about.version": ({ version }) =>
+      `Version ${version} • Developed by KroxiLabs`,
+    "bulk.empty":
+      "No bulk sellers detected yet. Open a trade result list where the same seller appears more than once.",
+    "bulk.price": "Price:",
+    "bulk.find": "Find",
+    "bulk.buy": "Buy",
+    "bulk.findError": "Couldn't locate that listing in the current results.",
+    "bulk.buyError": "Couldn't trigger the buy action for that listing.",
+    "bulk.visited": "VISITED",
+    "bookmarks.newFolder": "New Folder",
+    "bookmarks.folderCreated": "Folder created!",
+    "bookmarks.folderDeleted": "Folder deleted!",
+    "bookmarks.exported": "Backup exported!",
+    "bookmarks.restored": "Backup restored!",
+    "bookmarks.restoreFailed": "Failed to restore backup.",
+    "bookmarks.pasteFolderData": "Please paste the folder data first.",
+    "bookmarks.invalidFolderData":
+      "Invalid folder data. Please check the string.",
+    "bookmarks.importedFolder": ({ title }) => `Imported "${title}"!`,
+    "bookmarks.toolbar.new": "New",
+    "bookmarks.toolbar.newFolderTitle": "New Folder",
+    "bookmarks.toolbar.cancel": "Cancel",
+    "bookmarks.toolbar.import": "Import",
+    "bookmarks.toolbar.cancelImport": "Cancel Import",
+    "bookmarks.toolbar.importFolder": "Import Folder",
+    "bookmarks.toolbar.collapse": "Collapse",
+    "bookmarks.toolbar.collapseAll": "Collapse All",
+    "bookmarks.toolbar.active": "Active",
+    "bookmarks.toolbar.archive": "Archive",
+    "bookmarks.toolbar.showActive": "Show Active",
+    "bookmarks.toolbar.showArchived": "Show Archived",
+    "bookmarks.importTitle": "Import folder",
+    "bookmarks.importDescription":
+      "Paste the exported folder text below to restore it as a saved bookmarks folder.",
+    "bookmarks.importPlaceholder": "Paste folder text here...",
+    "bookmarks.importHint":
+      "Use the full export string from a previously exported folder.",
+    "bookmarks.emptyEyebrow": "Bookmarks",
+    "bookmarks.emptyTitle": "Create your first folder",
+    "bookmarks.emptyDescription":
+      "Save your most-used trade searches in folders so you can reopen them quickly later.",
+    "bookmarks.emptyArchivedTitle": "No archived folders yet",
+    "bookmarks.emptyArchivedDescription":
+      "Archived folders will appear here when you move them out of your active bookmarks list.",
+    "bookmarks.emptyArchivedAction": "Show active folders",
+    "bookmarks.confirmImport": "Confirm Import",
+    "bookmarks.backupTitle": "Backup & Restore",
+    "bookmarks.backupDescription":
+      "Save a file copy of your folders or restore one you exported earlier.",
+    "bookmarks.saveFile": "Save File",
+    "bookmarks.restoreFile": "Restore From File",
+    "confirm.cancel": "Cancel",
+    "confirm.delete": "Delete",
+    "confirm.deleteFolderTitle": "Delete folder?",
+    "confirm.deleteFolderMessage": ({ title }) =>
+      `This will permanently delete "${title}" and all saved trades inside it.`,
+    "confirm.deleteTradeTitle": "Delete saved trade?",
+    "confirm.deleteTradeMessage": ({ title }) =>
+      `This will permanently delete "${title}" from the folder.`,
+    "history.clear": "Clear History",
+    "history.cleared": "History cleared!",
+    "history.empty": ({ version }) => `History is empty for PoE ${version}.`,
+    "history.today": "Today",
+    "history.yesterday": "Yesterday",
+    "folder.metaSeparator": " • ",
+    "folder.copiedTrade": ({ title }) => `Copied ${title} to clipboard`,
+    "folder.copyTradeError": "Couldn't copy the trade URL.",
+    "folder.duplicatedTrade": ({ title }) => `Duplicated ${title}`,
+    "folder.invalidTradePage": "Not on a valid trade page",
+    "folder.missingTradeType": "Missing trade type for the current search.",
+    "folder.addedToFolder": ({ title }) => `Added "${title}" to folder`,
+    "folder.copiedFolder": "Folder data copied to clipboard!",
+    "folder.copyFolderError": "Couldn't copy the folder data.",
+    "folder.renamedFolder": ({ title }) => `Renamed folder to "${title}"`,
+    "folder.renamedSearch": ({ title }) => `Renamed search to "${title}"`,
+    "folder.updatedSearchLocation": ({ title }) =>
+      `Updated search location for "${title}"`,
+    "folder.dragReorder": "Drag to reorder folder",
+    "folder.collapse": "Collapse",
+    "folder.expand": "Expand",
+    "folder.editFolder": "Edit folder",
+    "folder.restoreFolder": "Restore folder",
+    "folder.archiveFolder": "Archive folder",
+    "folder.exportFolder": "Export folder",
+    "folder.deleteFolder": "Delete folder",
+    "folder.dragTrade": "Drag to reorder",
+    "folder.editSearchName": "Edit search name",
+    "folder.replaceCurrentSearch": "Replace with current search",
+    "folder.copyUrl": "Copy URL",
+    "folder.openLiveSearch": "Open live search",
+    "folder.markPending": "Mark as pending",
+    "folder.markComplete": "Mark as complete",
+    "folder.deleteTrade": "Delete trade",
+    "folder.actionsMenu": "More actions",
+    "folder.renameFolder": "Rename folder",
+    "folder.chooseIcon": "Choose a folder icon",
+    "folder.noIcon": "No icon",
+    "folder.duplicateFolder": "Duplicate folder",
+    "folder.duplicatedFolder": ({ title }) => `Duplicated folder "${title}"`,
+    "folder.saveFolderChanges": "Save folder",
+    "folder.saveCurrentSearch": "Save current search",
+    "folder.loadTradesError": "Couldn't load trades.",
+    "folder.deleteTradeError": "Couldn't delete trade.",
+    "folder.duplicateTradeError": "Couldn't duplicate trade.",
+    "folder.duplicateFolderError": "Couldn't duplicate folder.",
+    "finer.title": "Add to Filters",
+    "finer.modifiers": "Modifiers",
+    "finer.pseudoResLife": "Pseudo Res/Life",
+    "finer.explicitResLife": "Explicit Res/Life",
+    "finer.attackWeapon": "Attack Weapon",
+    "finer.spellWeapon": "Spell Weapon"
+  } as Record<string, TranslationValue>

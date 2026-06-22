@@ -6,6 +6,7 @@ import { settings } from "./settings";
 import { slugify } from "../utilities/slugify";
 import { escapeRegex } from "../utilities/escape-regex";
 import { emitPageDebug } from "../utilities/page-debug";
+import { getCurrencyIconUrl } from "../data/currency-icons";
 
 
 
@@ -45,8 +46,6 @@ export class ItemResultsService {
     augmentation: "orb-of-augmentation",
     chance: "orb-of-chance"
   };
-  private readonly CHAOS_ICON_URL = "https://web.poecdn.com/image/Art/2DItems/Currency/CurrencyRerollRare.png?scale=1&w=1&h=1";
-  private readonly DIVINE_ICON_URL = "https://web.poecdn.com/image/Art/2DItems/Currency/CurrencyModValues.png?scale=1&w=1&h=1";
   private showEquivalentPricing = false;
   private unsubscribeSettings: (() => void) | null = null;
   private unsubscribeLocation: (() => void) | null = null;
@@ -332,7 +331,7 @@ export class ItemResultsService {
     const icon = document.createElement("img");
     icon.className = "bt-equivalent-icon currency-icon";
     icon.alt = slug;
-    icon.src = slug === this.CHAOS_SLUG ? this.CHAOS_ICON_URL : this.DIVINE_ICON_URL;
+    icon.src = getCurrencyIconUrl(slug === this.CHAOS_SLUG ? "chaos" : "divine");
     fragment.appendChild(icon);
 
     return fragment;
