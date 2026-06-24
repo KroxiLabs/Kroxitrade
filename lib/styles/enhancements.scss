@@ -30,6 +30,15 @@ body.bt-dev-result-actions-visible .row > .left > button.searchBy {
   pointer-events: auto !important;
 }
 
+.row > .left > button.copy.bt-copy-pob-enabled {
+  display: block !important;
+}
+
+.row > .left > button.copy.bt-copy-pob-copied {
+  filter: brightness(1.6) sepia(0.35);
+  box-shadow: 0 0 8px rgba($gold-alt, 0.75);
+}
+
 /* Fix for Path of Exile fixed elements */
 .bt-has-kroxitrade-sidebar .top-bar-container,
 .bt-has-kroxitrade-sidebar .header,

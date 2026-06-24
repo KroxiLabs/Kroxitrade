@@ -6,6 +6,8 @@ import { slugify } from "../utilities/slugify";
 import { escapeRegex } from "../utilities/escape-regex";
 import { emitPageDebug } from "../utilities/page-debug";
 import { getCurrencyIconUrl } from "../data/currency-icons";
+import { copyItemForPob } from "../utilities/copy-item-for-pob";
+import { flashMessages } from "./flash";
 
 
 
@@ -55,6 +57,21 @@ export class ItemResultsService {
   private searchRefreshTimers: number[] = [];
   private readonly handleDocumentClick = (event: MouseEvent) => {
     const target = event.target as Element | null;
+    const copyButton = target?.closest<HTMLButtonElement>("button.copy");
+
+    if (copyButton && tradeLocationService.current.version === "2") {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      const row = copyButton.closest<HTMLElement>(".row, .result-item");
+      if (row && copyItemForPob(row)) {
+        this.showCopyFeedback(copyButton);
+      } else {
+        flashMessages.alert("Could not copy this item for Path of Building.");
+      }
+      return;
+    }
+
     if (!target?.closest(".btn.search-btn")) return;
     this.schedulePostSearchRefresh();
   };
@@ -90,7 +107,19 @@ export class ItemResultsService {
 
     this.prepareHighlighting();
     this.startObserving();
+    document.removeEventListener("click", this.handleDocumentClick, true);
     document.addEventListener("click", this.handleDocumentClick, true);
+  }
+
+  private showCopyFeedback(button: HTMLButtonElement) {
+    const originalTitle = button.title;
+    button.classList.add("bt-copy-pob-copied");
+    button.title = "Copied for Path of Building";
+
+    window.setTimeout(() => {
+      button.classList.remove("bt-copy-pob-copied");
+      button.title = originalTitle;
+    }, 1500);
   }
 
   private async handleLocationChange() {
@@ -372,6 +401,7 @@ export class ItemResultsService {
 
     results.forEach((row: Element) => {
       const typedRow = row as HTMLElement;
+      this.enablePoe2CopyButton(typedRow);
       this.injectEquivalentPricing(typedRow);
 
       if (typedRow.hasAttribute("bt-enhanced")) {
@@ -382,6 +412,20 @@ export class ItemResultsService {
       this.highlightStats(typedRow);
       this.checkMaximumSockets(typedRow);
     });
+  }
+
+  private enablePoe2CopyButton(row: HTMLElement) {
+    if (tradeLocationService.current.version !== "2") return;
+
+    const copyButton = row.querySelector<HTMLButtonElement>(".left > button.copy");
+    if (!copyButton) return;
+
+    copyButton.hidden = false;
+    copyButton.removeAttribute("hidden");
+    copyButton.classList.remove("hidden");
+    copyButton.classList.add("bt-copy-pob-enabled");
+    copyButton.style.removeProperty("display");
+    copyButton.style.removeProperty("visibility");
   }
 
   private refreshEquivalentPricing() {
