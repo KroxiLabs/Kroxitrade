@@ -181,6 +181,8 @@ export class BulkSellersService {
       ".itemHeader .name",
       ".itemHeader .title",
       ".itemHeader .lprice .title",
+      ".item-popup__header",
+      ".item-popup__header-line",
       ".details .itemName",
       ".details .title",
       ".details h3",

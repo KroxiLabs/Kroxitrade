@@ -1,5 +1,4 @@
-import { writable } from "svelte/store";
-import { poeNinjaService } from "./poe-ninja";
+import { poeNinjaService, type PoeNinjaCurrencyData } from "./poe-ninja";
 import { tradeLocationService } from "./trade-location";
 import { searchPanelService } from "./search-panel";
 import { settings } from "./settings";
@@ -26,10 +25,13 @@ const ILVL_THRESHOLDS = [
 
 
 export class ItemResultsService {
-  private chaosRatios: Record<string, number> | null = null;
+  private currencyData: PoeNinjaCurrencyData | null = null;
   private statNeedles: RegExp[] = [];
-  private readonly DIVINE_SLUG = "divine-orb";
   private readonly CHAOS_SLUG = "chaos-orb";
+  private readonly referenceSlugs = {
+    "1": ["divine-orb", "chaos-orb"],
+    "2": ["exalted-orb", "divine-orb", "chaos-orb", "orb-of-annulment"]
+  } as const;
   private readonly currencySlugAliases: Record<string, string> = {
     chaos: "chaos-orb",
     divine: "divine-orb",
@@ -107,21 +109,8 @@ export class ItemResultsService {
   private async fetchRatios(forceFresh = false) {
     const { league, type, slug, version } = tradeLocationService.current;
 
-    if (version === "2") {
-      this.chaosRatios = null;
-      emitPageDebug("poe-ninja-skip", {
-        reason: "poe2-disabled",
-        league,
-        type,
-        slug,
-        version
-      });
-      this.refreshEquivalentPricing();
-      return;
-    }
-
     if (!league) {
-      this.chaosRatios = null;
+      this.currencyData = null;
       emitPageDebug("poe-ninja-skip", {
         reason: "missing-league",
         league,
@@ -137,9 +126,9 @@ export class ItemResultsService {
       slug,
       forceFresh
     });
-    this.chaosRatios = forceFresh
-      ? await poeNinjaService.fetchFreshChaosRatiosFor(league)
-      : await poeNinjaService.fetchChaosRatiosFor(league);
+    this.currencyData = forceFresh
+      ? await poeNinjaService.fetchFreshCurrencyDataFor(league, version)
+      : await poeNinjaService.fetchCurrencyDataFor(league, version);
   }
 
   async forceRefreshEquivalentPricing() {
@@ -148,11 +137,6 @@ export class ItemResultsService {
   }
 
   private injectEquivalentPricing(row: HTMLElement) {
-    if (tradeLocationService.current.version === "2") {
-      this.removeEquivalentPricing(row);
-      return;
-    }
-
     const priceInfo = this.extractPriceInfo(row);
     if (!priceInfo) {
       return;
@@ -160,7 +144,7 @@ export class ItemResultsService {
 
     const { container: priceContainer, amount, currencyText } = priceInfo;
 
-    if (!this.chaosRatios) {
+    if (!this.currencyData) {
       this.removeEquivalentPricing(row);
       return;
     }
@@ -176,56 +160,37 @@ export class ItemResultsService {
     }
 
     const slug = this.resolveCurrencySlug(currencyText);
-    const ratio = this.chaosRatios[slug];
-    const divineRatio = this.chaosRatios[this.DIVINE_SLUG];
-    const parts: Array<{ amount: number | string; slug: string } | { separator: true }> = [];
-
-    if (slug === this.DIVINE_SLUG && ratio) {
-        // Original price is Divine, e.g. 1.4 Divines
-        const totalChaos = Math.round(amount * ratio);
-        const wholeDivines = Math.floor(amount);
-        const remainderFraction = amount - wholeDivines;
-        const remainderChaos = Math.round(remainderFraction * ratio);
-
-        if (wholeDivines > 0 && remainderChaos > 0) {
-            parts.push({ amount: wholeDivines, slug: this.DIVINE_SLUG });
-            parts.push({ separator: true });
-            parts.push({ amount: remainderChaos, slug: this.CHAOS_SLUG });
-        } else if (wholeDivines === 0 && remainderChaos > 0) {
-            parts.push({ amount: remainderChaos, slug: this.CHAOS_SLUG });
-        } else {
-            parts.push({ amount: totalChaos, slug: this.CHAOS_SLUG });
-        }
-
-    } else if (slug === this.CHAOS_SLUG && divineRatio && amount >= divineRatio * 0.5) {
-        // Original price is Chaos, e.g. 195 Chaos
-        const wholeDivines = Math.floor(amount / divineRatio);
-        const remainderChaos = Math.round(amount % divineRatio);
-
-        if (wholeDivines > 0) {
-            parts.push({ amount: wholeDivines, slug: this.DIVINE_SLUG });
-            if (remainderChaos > 0) {
-                parts.push({ separator: true });
-                parts.push({ amount: remainderChaos, slug: this.CHAOS_SLUG });
-            }
-        } else {
-            // Less than 1 Divine (e.g. 100 chaos). Just show fraction: 0.7 Divine
-            const fraction = (amount / divineRatio).toFixed(1);
-            parts.push({ amount: fraction, slug: this.DIVINE_SLUG });
-        }
-
-    } else if (slug !== this.CHAOS_SLUG && slug !== this.DIVINE_SLUG && ratio) {
-        // Other currencies (like Exalted orbs). Just show total chaos equivalent.
-        const chaosEquiv = Math.round(amount * ratio);
-        parts.push({ amount: chaosEquiv, slug: this.CHAOS_SLUG });
-    } else {
+    const pricedCurrency = this.currencyData[slug];
+    if (!pricedCurrency) {
       this.removeEquivalentPricing(row);
       emitPageDebug("equivalent-unresolved", {
         amount,
         currencyText,
         slug,
-        availableSample: this.chaosRatios ? Object.keys(this.chaosRatios).slice(0, 10) : []
+        availableSample: Object.keys(this.currencyData).slice(0, 10)
       });
+      return;
+    }
+
+    const version = tradeLocationService.current.version;
+    const valueInPrimary = amount * pricedCurrency.value;
+    const parts = this.referenceSlugs[version]
+      .filter((referenceSlug) => referenceSlug !== slug)
+      .flatMap((referenceSlug) => {
+        const reference = this.currencyData?.[referenceSlug];
+        if (!reference?.value) return [];
+
+        const equivalent = valueInPrimary / reference.value;
+        const rounded = equivalent >= 10
+          ? Math.round(equivalent)
+          : Math.round(equivalent * 10) / 10;
+        if (!rounded) return [];
+
+        return [{ amount: rounded, slug: referenceSlug, icon: reference.icon }];
+      });
+
+    if (parts.length === 0) {
+      this.removeEquivalentPricing(row);
       return;
     }
 
@@ -301,7 +266,7 @@ export class ItemResultsService {
 
   private renderEquivalentPricing(
     container: HTMLElement,
-    parts: Array<{ amount: number | string; slug: string } | { separator: true }>
+    parts: Array<{ amount: number | string; slug: string; icon: string }>
   ) {
     let el = container.querySelector(".bt-equivalent-pricings-equivalent") as HTMLElement | null;
     if (!el) {
@@ -313,25 +278,23 @@ export class ItemResultsService {
     el.replaceChildren();
     el.appendChild(this.createTextSpan("bt-equivalent-label", "equivalent:"));
 
-    parts.forEach((part) => {
-      if ("separator" in part) {
-        el!.appendChild(this.createTextSpan("bt-equivalent-separator", "+"));
-        return;
+    parts.forEach((part, index) => {
+      if (index > 0) {
+        el!.appendChild(this.createTextSpan("bt-equivalent-separator", "="));
       }
-
-      el!.appendChild(this.createCurrencyFragment(part.amount, part.slug));
+      el!.appendChild(this.createCurrencyFragment(part.amount, part.slug, part.icon));
     });
     this.syncEquivalentVisibility(el!);
   }
 
-  private createCurrencyFragment(amount: number | string, slug: string) {
+  private createCurrencyFragment(amount: number | string, slug: string, iconUrl: string) {
     const fragment = document.createDocumentFragment();
     fragment.appendChild(this.createTextSpan("bt-equivalent-amount", String(amount)));
 
     const icon = document.createElement("img");
     icon.className = "bt-equivalent-icon currency-icon";
     icon.alt = slug;
-    icon.src = getCurrencyIconUrl(slug === this.CHAOS_SLUG ? "chaos" : "divine");
+    icon.src = iconUrl || getCurrencyIconUrl(slug === this.CHAOS_SLUG ? "chaos" : "divine");
     fragment.appendChild(icon);
 
     return fragment;
@@ -429,7 +392,7 @@ export class ItemResultsService {
   private highlightStats(row: HTMLElement) {
     if (this.statNeedles.length === 0) return;
 
-    const mods = row.querySelectorAll(".explicitMod, .pseudoMod, .implicitMod");
+    const mods = row.querySelectorAll(".explicitMod, .pseudoMod, .implicitMod, .item-mod");
     mods.forEach((mod) => {
         const element = mod as HTMLElement;
         const text = element.textContent || "";
@@ -444,7 +407,7 @@ export class ItemResultsService {
   private checkMaximumSockets(row: HTMLElement) {
     if (tradeLocationService.current.version !== "1") return;
 
-    const ilvlEl = row.querySelector(".itemLevel");
+    const ilvlEl = row.querySelector('.item-property [data-field="ilvl"], [data-field="ilvl"], .itemLevel');
     const ilvlMatch = ilvlEl?.textContent?.match(/(\d+)/);
     if (!ilvlMatch) return;
     const ilvl = parseInt(ilvlMatch[0], 10);

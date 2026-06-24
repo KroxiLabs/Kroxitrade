@@ -1,82 +1,103 @@
-import { slugify } from "../utilities/slugify";
 import { dateDelta } from "../utilities/date-delta";
 import { hasValidExtensionContext, isExtensionContextInvalidatedError } from "../utilities/extension-context";
 import { emitPageDebug } from "../utilities/page-debug";
+import { slugify } from "../utilities/slugify";
 import { storageService } from "./storage";
 
-export interface PoeNinjaCurrenciesPayloadLine {
-  currencyTypeName: string;
-  chaosEquivalent: number;
+export interface PoeNinjaExchangeLine {
+  id: string;
+  primaryValue: number;
 }
 
-export interface PoeNinjaCurrenciesPayload {
-  lines: PoeNinjaCurrenciesPayloadLine[];
+export interface PoeNinjaExchangeItem {
+  id: string;
+  name: string;
+  image: string;
 }
 
-export interface PoeNinjaCurrenciesRatios {
-  [key: string]: number;
+export interface PoeNinjaExchangePayload {
+  lines: PoeNinjaExchangeLine[];
+  items: PoeNinjaExchangeItem[];
 }
 
-interface OfficialTradeExchangeOffer {
-  exchange?: {
-    currency?: string;
-    amount?: number;
-  };
-  item?: {
-    currency?: string;
-    amount?: number;
-  };
+export interface PoeNinjaCurrencyDatum {
+  value: number;
+  icon: string;
 }
 
-interface OfficialTradeExchangeResultEntry {
-  listing?: {
-    offers?: OfficialTradeExchangeOffer[];
-  };
+export interface PoeNinjaCurrencyData {
+  [slug: string]: PoeNinjaCurrencyDatum;
 }
 
-interface OfficialTradeExchangePayload {
-  result?: Record<string, OfficialTradeExchangeResultEntry>;
-}
+const EXCHANGE_RESOURCE = "/exchange/current/overview?type=Currency";
+const RATIOS_CACHE_DURATION = 900000; // 15 minutes
 
-const URIS = {
-  currencies: "/data/currencyoverview?type=Currency"
+const decodeLeague = (league: string) => {
+  const withoutRealm = league.replace(/^(?:poe2|xbox|sony)\//i, "");
+
+  try {
+    return decodeURIComponent(withoutRealm);
+  } catch {
+    return withoutRealm.replace(/%20/g, " ");
+  }
 };
 
-const RATIOS_CACHE_DURATION = 900000; // 15 minutes
-const RATIOS_CACHE_KEY = "poe-ninja-chaos-ratios-cache";
+const absoluteCurrencyIcon = (image: string) =>
+  image.startsWith("http") ? image : `https://web.poecdn.com${image}`;
+
+export const parseExchangeRatios = (payload: PoeNinjaExchangePayload): PoeNinjaCurrencyData => {
+  const itemsById = new Map(payload.items.map((item) => [item.id, item]));
+
+  return payload.lines.reduce((ratios, line) => {
+    const item = itemsById.get(line.id);
+    if (!item || !Number.isFinite(line.primaryValue) || line.primaryValue <= 0) {
+      return ratios;
+    }
+
+    ratios[slugify(item.name)] = {
+      value: line.primaryValue,
+      icon: absoluteCurrencyIcon(item.image)
+    };
+    return ratios;
+  }, {} as PoeNinjaCurrencyData);
+};
 
 export class PoeNinjaService {
-  async fetchChaosRatiosFor(league: string): Promise<PoeNinjaCurrenciesRatios> {
-    const cached = await storageService.getValue<PoeNinjaCurrenciesRatios>(RATIOS_CACHE_KEY, league);
+  async fetchCurrencyDataFor(league: string, version: "1" | "2"): Promise<PoeNinjaCurrencyData> {
+    const cacheKey = this.cacheKey(version);
+    const cached = await storageService.getValue<PoeNinjaCurrencyData>(cacheKey, league);
     if (cached && Object.keys(cached).length > 0) {
       emitPageDebug("poe-ninja-cache-hit", {
         league,
+        version,
         entries: Object.keys(cached).length
       });
       return cached;
     }
 
-    if (cached) {
-      emitPageDebug("poe-ninja-cache-empty", { league });
-    }
-
-    return this.fetchFreshChaosRatiosFor(league);
+    return this.fetchFreshCurrencyDataFor(league, version);
   }
 
-  async fetchFreshChaosRatiosFor(league: string): Promise<PoeNinjaCurrenciesRatios> {
-    // Stale-while-revalidate: keep the previous cache entry so we can fall
-    // back to it if the network request fails. Previously the cache was
-    // deleted up front, leaving no fallback when poe.ninja was unreachable.
-    const stale = await storageService.getStaleValue<PoeNinjaCurrenciesRatios>(RATIOS_CACHE_KEY, league);
+  async fetchFreshCurrencyDataFor(league: string, version: "1" | "2"): Promise<PoeNinjaCurrencyData> {
+    const cacheKey = this.cacheKey(version);
+    const stale = await storageService.getStaleValue<PoeNinjaCurrencyData>(cacheKey, league);
 
     try {
-      const ratios = await this.requestChaosRatiosFor(league);
-      await storageService.setEphemeralValue(RATIOS_CACHE_KEY, ratios, dateDelta(RATIOS_CACHE_DURATION), league);
+      const ratios = await this.requestCurrencyDataFor(league, version);
+      if (Object.keys(ratios).length > 0) {
+        await storageService.setEphemeralValue(
+          cacheKey,
+          ratios,
+          dateDelta(RATIOS_CACHE_DURATION),
+          league
+        );
+      }
       return ratios;
     } catch (error) {
       if (stale && Object.keys(stale).length > 0) {
         emitPageDebug("poe-ninja-stale-fallback", {
           league,
+          version,
           entries: Object.keys(stale).length
         });
         return stale;
@@ -85,190 +106,59 @@ export class PoeNinjaService {
     }
   }
 
-  private async requestChaosRatiosFor(league: string): Promise<PoeNinjaCurrenciesRatios> {
-    const { normalizedLeague, game } = this.normalizeLeagueRequest(league);
+  private async requestCurrencyDataFor(
+    league: string,
+    version: "1" | "2"
+  ): Promise<PoeNinjaCurrencyData> {
+    const normalizedLeague = decodeLeague(league);
+    const resource = `${EXCHANGE_RESOURCE}&league=${encodeURIComponent(normalizedLeague)}`;
 
-    if (game === "poe2") {
-      return this.requestOfficialPoe2ChaosRatiosFor(league, normalizedLeague);
-    }
-
-    const uri = `${URIS.currencies}&league=${encodeURIComponent(normalizedLeague)}${game ? `&game=${game}` : ""}`;
     emitPageDebug("poe-ninja-request", {
       league,
       normalizedLeague,
-      game,
-      uri
-    });
-    if (!hasValidExtensionContext()) {
-      throw new Error("Extension context invalidated");
-    }
-
-    let response: PoeNinjaCurrenciesPayload | null = null;
-
-    try {
-      response = await chrome.runtime.sendMessage({ query: "poe-ninja", resource: uri });
-    } catch (error) {
-      if (isExtensionContextInvalidatedError(error)) {
-        throw new Error("Extension context invalidated");
-      }
-
-      throw error;
-    }
-    
-    if (!response) throw new Error("Failed to fetch from poe.ninja via background");
-
-    const parsed = this.parseChaosRatios(response);
-    emitPageDebug("poe-ninja-response", {
-      league,
-      normalizedLeague,
-      game,
-      entries: Object.keys(parsed).length
-    });
-
-    if (Object.keys(parsed).length === 0) {
-      emitPageDebug("poe-ninja-empty-response", {
-        league,
-        normalizedLeague,
-        game,
-        uri
-      });
-    }
-
-    return parsed;
-  }
-
-  private async requestOfficialPoe2ChaosRatiosFor(
-    league: string,
-    normalizedLeague: string
-  ): Promise<PoeNinjaCurrenciesRatios> {
-    const url = `https://www.pathofexile.com/api/trade2/exchange/poe2/${encodeURIComponent(normalizedLeague)}`;
-    const body = {
-      exchange: {
-        status: { option: "online" },
-        have: ["chaos"],
-        want: ["divine"]
-      }
-    };
-
-    emitPageDebug("poe2-exchange-request", {
-      league,
-      normalizedLeague,
-      url,
-      body
+      version,
+      resource
     });
 
     if (!hasValidExtensionContext()) {
       throw new Error("Extension context invalidated");
     }
 
-    let response: OfficialTradeExchangePayload | null = null;
-
+    let response: PoeNinjaExchangePayload | null = null;
     try {
       response = await chrome.runtime.sendMessage({
-        query: "trade-exchange-rate",
-        url,
-        body
+        query: "poe-ninja-exchange",
+        game: version === "2" ? "poe2" : "poe1",
+        resource
       });
     } catch (error) {
       if (isExtensionContextInvalidatedError(error)) {
         throw new Error("Extension context invalidated");
       }
-
       throw error;
     }
 
     if (!response) {
-      throw new Error("Failed to fetch PoE2 trade exchange ratios via background");
+      throw new Error("Failed to fetch currency exchange data from poe.ninja");
     }
 
-    const parsed = this.parseOfficialPoe2ChaosRatios(response);
-    const entries = Object.keys(parsed).length;
-
-    emitPageDebug("poe2-exchange-response", {
+    const parsed = parseExchangeRatios(response);
+    emitPageDebug("poe-ninja-response", {
       league,
       normalizedLeague,
-      entries,
-      divineRatio: parsed["divine-orb"]
+      version,
+      entries: Object.keys(parsed).length
     });
 
-    if (entries === 0) {
-      emitPageDebug("poe2-exchange-empty-response", {
-        league,
-        normalizedLeague,
-        url
-      });
+    if (Object.keys(parsed).length === 0) {
+      throw new Error(`poe.ninja returned no currency data for ${normalizedLeague}`);
     }
 
     return parsed;
   }
 
-  private parseChaosRatios(payload: PoeNinjaCurrenciesPayload): PoeNinjaCurrenciesRatios {
-    return payload.lines.reduce((acc, { currencyTypeName, chaosEquivalent }) => {
-      acc[slugify(currencyTypeName)] = chaosEquivalent;
-      return acc;
-    }, {} as PoeNinjaCurrenciesRatios);
-  }
-
-  private parseOfficialPoe2ChaosRatios(payload: OfficialTradeExchangePayload): PoeNinjaCurrenciesRatios {
-    const ratios: PoeNinjaCurrenciesRatios = {
-      "chaos-orb": 1
-    };
-
-    const offers = Object.values(payload.result || {})
-      .flatMap((entry) => entry.listing?.offers || [])
-      .filter((offer) =>
-        offer.exchange?.currency === "chaos" &&
-        offer.item?.currency === "divine" &&
-        typeof offer.exchange.amount === "number" &&
-        typeof offer.item.amount === "number" &&
-        offer.exchange.amount > 0 &&
-        offer.item.amount > 0
-      );
-
-    if (offers.length === 0) {
-      return {};
-    }
-
-    const chaosPerDivine = offers
-      .map((offer) => offer.exchange!.amount! / offer.item!.amount!)
-      .sort((a, b) => a - b)[0];
-
-    if (!Number.isFinite(chaosPerDivine) || chaosPerDivine <= 0) {
-      return {};
-    }
-
-    ratios["divine-orb"] = chaosPerDivine;
-
-    return ratios;
-  }
-
-  private normalizeLeagueRequest(league: string) {
-    const decodeLeague = (value: string) => {
-      try {
-        return decodeURIComponent(value);
-      } catch {
-        return value.replace(/%20/g, " ");
-      }
-    };
-
-    if (/^poe2\//i.test(league)) {
-      return {
-        normalizedLeague: decodeLeague(league.replace(/^poe2\//i, "")),
-        game: "poe2"
-      } as const;
-    }
-
-    if (/^(xbox|sony)\//i.test(league)) {
-      return {
-        normalizedLeague: decodeLeague(league.replace(/^(xbox|sony)\//i, "")),
-        game: null
-      } as const;
-    }
-
-    return {
-      normalizedLeague: decodeLeague(league),
-      game: null
-    } as const;
+  private cacheKey(version: "1" | "2") {
+    return `poe-ninja-poe${version}-exchange-ratios-cache`;
   }
 }
 

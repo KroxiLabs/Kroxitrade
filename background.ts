@@ -1,25 +1,23 @@
 let registered = false
 
 type PoeNinjaRequest = {
-  query: "poe-ninja";
+  query: "poe-ninja-exchange";
+  game: "poe1" | "poe2";
   resource: string;
 };
 
-type TradeExchangeRateRequest = {
-  query: "trade-exchange-rate";
-  url: string;
-  body: unknown;
-};
-
-type BackgroundRequest = PoeNinjaRequest | TradeExchangeRateRequest;
+type BackgroundRequest = PoeNinjaRequest;
 
 const isBackgroundRequest = (request: unknown): request is BackgroundRequest => {
   if (!request || typeof request !== "object") {
     return false;
   }
 
-  const query = (request as { query?: unknown }).query;
-  return query === "poe-ninja" || query === "trade-exchange-rate";
+  const candidate = request as Partial<PoeNinjaRequest>;
+  return candidate.query === "poe-ninja-exchange"
+    && (candidate.game === "poe1" || candidate.game === "poe2")
+    && typeof candidate.resource === "string"
+    && candidate.resource.startsWith("/exchange/current/overview?");
 };
 
 export const registerBackgroundHandlers = () => {
@@ -34,8 +32,8 @@ export const registerBackgroundHandlers = () => {
       return false;
     }
 
-    if (request.query === "poe-ninja") {
-      const url = `https://poe.ninja/api${request.resource}`
+    if (request.query === "poe-ninja-exchange") {
+      const url = `https://poe.ninja/${request.game}/api/economy${request.resource}`
 
       fetch(url)
         .then(async (r) => {
@@ -48,41 +46,12 @@ export const registerBackgroundHandlers = () => {
           sendResponse(response)
         })
         .catch((err) => {
-          console.error("[Poe Trade Plus-BG] Poe-ninja fetch failed:", {
+          console.error("[Poe Trade Plus-BG] poe.ninja exchange fetch failed:", {
             url,
             error: err
           })
           sendResponse(null)
         })
-      return true
-    }
-
-    if (request.query === "trade-exchange-rate") {
-      const url = request.url
-
-      fetch(url, {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(request.body)
-      })
-        .then(async (response) => {
-          if (!response.ok) {
-            throw new Error(`trade exchange responded with status ${response.status}`)
-          }
-          const json = await response.json()
-          sendResponse(json)
-        })
-        .catch((err) => {
-          console.error("[Poe Trade Plus-BG] Official trade exchange fetch failed:", {
-            url,
-            error: err
-          })
-          sendResponse(null)
-        })
-
       return true
     }
 
