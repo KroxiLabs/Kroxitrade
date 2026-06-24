@@ -203,6 +203,7 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "settings.tradeActionsDescription":
       "Elegí qué acciones de cada búsqueda guardada quedan visibles fuera del menú tanto en el diseño clásico como en el compacto. Si no seleccionás ninguna, solo se ven los tres puntos.",
     "settings.compactTradeActionToggle": "Completar / Pendiente",
+    "settings.saveFailed": "No se pudieron guardar los ajustes. Probá de nuevo.",
     "about.eyebrow": "Acerca de",
     "about.description":
       "Poe Trade Plus es un complemento para Path of Exile Trade creado para guardar búsquedas, organizar carpetas, seguir el historial y hacer que los flujos de trade repetidos sean rápidos, visuales y fáciles de manejar dentro del sitio oficial.",

@@ -69,11 +69,15 @@
   let currentTradeVersion: "1" | "2" = $state(tradeLocationService.current.version);
 
   async function handleSideChange(side: SidebarSide) {
-    await settings.updateSide(side);
+    if (!(await settings.updateSide(side))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
   }
 
   async function handleEquivalentPricingChange(showEquivalentPricing: boolean) {
-    await settings.updateEquivalentPricingVisibility(showEquivalentPricing);
+    if (!(await settings.updateEquivalentPricingVisibility(showEquivalentPricing))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
   }
 
   async function handleEquivalentPricingRefresh() {
@@ -99,19 +103,27 @@
   }
 
   async function handleBulkSellersChange(showBulkSellers: boolean) {
-    await settings.updateBulkSellersVisibility(showBulkSellers);
+    if (!(await settings.updateBulkSellersVisibility(showBulkSellers))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
   }
 
   async function handleHistoryChange(showHistory: boolean) {
-    await settings.updateHistoryVisibility(showHistory);
+    if (!(await settings.updateHistoryVisibility(showHistory))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
   }
 
   async function handleFinerFiltersChange(showFinerFilters: boolean) {
-    await settings.updateFinerFiltersVisibility(showFinerFilters);
+    if (!(await settings.updateFinerFiltersVisibility(showFinerFilters))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
   }
 
   async function handleCompactActionsMenuChange(compactActionsMenu: boolean) {
-    await settings.updateCompactActionsMenu(compactActionsMenu);
+    if (!(await settings.updateCompactActionsMenu(compactActionsMenu))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
   }
 
   async function handleCompactTradeActionChange(actionId: BookmarkTradeActionId, checked: boolean) {
@@ -119,11 +131,15 @@
       ? [...$settings.compactBookmarkTradeActions, actionId]
       : $settings.compactBookmarkTradeActions.filter((id) => id !== actionId);
 
-    await settings.updateCompactBookmarkTradeActions(
+    const saved = await settings.updateCompactBookmarkTradeActions(
       compactTradeActionOptions
         .map((option) => option.id)
         .filter((id) => nextActions.includes(id))
     );
+
+    if (!saved) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
   }
 
   function handleCompactTradeActionInput(event: Event, actionId: BookmarkTradeActionId) {
@@ -131,11 +147,15 @@
   }
 
   async function handleSidebarWidthReset() {
-    await settings.updateSidebarWidth(DEFAULT_SIDEBAR_WIDTH);
+    if (!(await settings.updateSidebarWidth(DEFAULT_SIDEBAR_WIDTH))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
   }
 
   async function handleLanguageChange(language: AppLanguage) {
-    await settings.updateLanguage(language);
+    if (!(await settings.updateLanguage(language))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
   }
 
   async function exportBookmarksBackup() {

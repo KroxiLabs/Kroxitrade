@@ -203,6 +203,7 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "settings.tradeActionsDescription":
       "Choose which saved-search actions stay visible outside the menu in both classic and compact layouts. If none are selected, only the three-dot menu is shown.",
     "settings.compactTradeActionToggle": "Complete / Pending",
+    "settings.saveFailed": "Could not save settings. Please try again.",
     "about.eyebrow": "About",
     "about.description":
       "Poe Trade Plus is a companion for Path of Exile Trade built to save searches, organize folders, track history, and keep recurring trade workflows fast, visual, and easy to manage inside the official site.",
