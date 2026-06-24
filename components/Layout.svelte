@@ -226,6 +226,7 @@
 
     return () => {
       unsubscribeLocation();
+      tradeLocationService.stopPolling();
     };
   });
 
