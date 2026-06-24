@@ -198,6 +198,9 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "experimental.resultActionsTitle": "Mostrar siempre acciones del resultado",
     "experimental.resultActionsBody":
       "Mantiene visibles Actualizar, Copiar objeto y Filtrar por estadísticas sin hacer hover.",
+    "experimental.poe2CopyTitle": "Habilitar botón Copy de PoE2",
+    "experimental.poe2CopyBody":
+      "Muestra el botón Copy nativo de PoE2 y copia el objeto para Path of Building. Usa el mismo comportamiento hover que Refresh y Filter by Item Stats.",
     "settings.hidden": "Oculto",
     "settings.visible": "Visible",
     "settings.on": "On",

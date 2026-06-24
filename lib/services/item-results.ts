@@ -8,6 +8,7 @@ import { emitPageDebug } from "../utilities/page-debug";
 import { getCurrencyIconUrl } from "../data/currency-icons";
 import { copyItemForPob } from "../utilities/copy-item-for-pob";
 import { flashMessages } from "./flash";
+import { experimentalSettings } from "./experimental";
 
 
 
@@ -59,7 +60,11 @@ export class ItemResultsService {
     const target = event.target as Element | null;
     const copyButton = target?.closest<HTMLButtonElement>("button.copy");
 
-    if (copyButton && tradeLocationService.current.version === "2") {
+    if (
+      copyButton &&
+      tradeLocationService.current.version === "2" &&
+      experimentalSettings.isPoe2CopyVisible()
+    ) {
       event.preventDefault();
       event.stopImmediatePropagation();
 
@@ -420,11 +425,7 @@ export class ItemResultsService {
     const copyButton = row.querySelector<HTMLButtonElement>(".left > button.copy");
     if (!copyButton) return;
 
-    copyButton.hidden = false;
-    copyButton.removeAttribute("hidden");
-    copyButton.classList.remove("hidden");
-    copyButton.style.removeProperty("display");
-    copyButton.style.removeProperty("visibility");
+    experimentalSettings.applyPoe2CopyButton(copyButton);
   }
 
   private refreshEquivalentPricing() {

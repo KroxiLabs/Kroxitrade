@@ -1,6 +1,9 @@
 <script lang="ts">
   import { languageStore, translate } from "../../lib/services/i18n";
-  import { experimentalSettings } from "../../lib/services/experimental";
+  import {
+    experimentalSettings,
+    poe2CopyButtonSetting
+  } from "../../lib/services/experimental";
   import ToggleRow from "../ToggleRow.svelte";
 
   const toggleLabel = (value: boolean) =>
@@ -33,6 +36,19 @@
       label={translate($languageStore, "experimental.resultActionsTitle")}
       stateLabel={toggleLabel($experimentalSettings)}
       onToggle={() => experimentalSettings.setResultActionsVisible(!$experimentalSettings)}
+    />
+  </div>
+
+  <div class="panel panel--setting">
+    <div class="panel__copy">
+      <h2>{translate($languageStore, "experimental.poe2CopyTitle")}</h2>
+      <p>{translate($languageStore, "experimental.poe2CopyBody")}</p>
+    </div>
+    <ToggleRow
+      checked={$poe2CopyButtonSetting}
+      label={translate($languageStore, "experimental.poe2CopyTitle")}
+      stateLabel={toggleLabel($poe2CopyButtonSetting)}
+      onToggle={() => experimentalSettings.setPoe2CopyVisible(!$poe2CopyButtonSetting)}
     />
   </div>
 </section>

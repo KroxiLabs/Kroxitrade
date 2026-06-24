@@ -22,8 +22,28 @@ body.bt-has-kroxitrade-sidebar.bt-sidebar-minimized {
 }
 
 body.bt-dev-result-actions-visible .row > .left > button.refresh,
-body.bt-dev-result-actions-visible .row > .left > button.copy,
 body.bt-dev-result-actions-visible .row > .left > button.searchBy {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+body.bt-dev-result-actions-visible:not(.bt-trade-poe2) .row > .left > button.copy {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+body.bt-dev-result-actions-visible.bt-dev-poe2-copy-visible .row > .left > button.copy {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+}
+
+body.bt-dev-poe2-copy-visible .row:hover > .left > button.copy {
   display: block !important;
   visibility: visible !important;
   opacity: 1 !important;
