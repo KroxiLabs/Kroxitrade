@@ -1,14 +1,21 @@
 <script lang="ts">
-  import { onMount, createEventDispatcher } from "svelte";
+  import { onMount } from "svelte";
   import { fade } from "svelte/transition";
 
-  export let items: Array<{ label: string; onClick?: () => void; href?: string }> = [];
-  
-  const dispatch = createEventDispatcher();
-  let visible = false;
-  let x = 0;
-  let y = 0;
-  let menuEl: HTMLElement;
+  type ContextualMenuItem = {
+    label: string;
+    onClick?: () => void;
+    href?: string;
+  };
+
+  interface Props {
+    items?: ContextualMenuItem[];
+  }
+
+  let { items = [] }: Props = $props();
+  let visible = $state(false);
+  let x = $state(0);
+  let y = $state(0);
 
   const toggle = (e: MouseEvent) => {
     e.stopPropagation();
@@ -23,7 +30,7 @@
     visible = false;
   };
 
-  const onItemClick = (item: any) => {
+  const onItemClick = (item: ContextualMenuItem) => {
     if (item.onClick) item.onClick();
     close();
   };
@@ -34,7 +41,7 @@
   });
 </script>
 
-<div class="contextual-menu-trigger" on:click={toggle}>
+<div class="contextual-menu-trigger" onclick={toggle}>
   <span>⋮</span>
 </div>
 
@@ -44,15 +51,15 @@
     style:top="{y}px" 
     style:left="{x}px"
     transition:fade={{ duration: 200 }}
-    on:click|stopPropagation
+    onclick={(event) => event.stopPropagation()}
   >
     {#each items as item}
       {#if item.href}
-        <a href={item.href} class="menu-item" target="_blank" on:click={() => onItemClick(item)}>
+        <a href={item.href} class="menu-item" target="_blank" onclick={() => onItemClick(item)}>
           {item.label}
         </a>
       {:else}
-        <button class="menu-item" on:click={() => onItemClick(item)}>
+        <button class="menu-item" onclick={() => onItemClick(item)}>
           {item.label}
         </button>
       {/if}

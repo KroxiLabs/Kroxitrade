@@ -35,7 +35,7 @@
     }
   ];
 
-  let collapsed = true; // start collapsed
+  let collapsed = $state(true); // start collapsed
 
   function handleAction(action: 'global-plus' | 'global-minus', types: string[], prefix: string) {
     emitFinerFiltersAction({
@@ -52,7 +52,7 @@
     type="button"
     class="finer-header"
     aria-expanded={!collapsed}
-    on:click={() => collapsed = !collapsed}>
+    onclick={() => collapsed = !collapsed}>
     <span>{translate($languageStore, "finer.title")}</span>
     <span class="chevron" class:collapsed>▼</span>
   </button>
@@ -65,8 +65,8 @@
         {#each listModifiers as mod}
           <div class="finer-global-btn">
             <span class="mod-name">{translate($languageStore, mod.key)}</span>
-            <button class="action-btn minus" on:click={() => handleAction('global-minus', mod.types, mod.prefix)}>-</button>
-            <button class="action-btn plus" on:click={() => handleAction('global-plus', mod.types, mod.prefix)}>+</button>
+            <button class="action-btn minus" onclick={() => handleAction('global-minus', mod.types, mod.prefix)}>-</button>
+            <button class="action-btn plus" onclick={() => handleAction('global-plus', mod.types, mod.prefix)}>+</button>
           </div>
         {/each}
       </div>

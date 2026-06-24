@@ -1,12 +1,21 @@
 <script lang="ts">
   import Button from "./Button.svelte";
 
-  export let eyebrow = "";
-  export let title = "";
-  export let description = "";
-  export let iconHtml = "";
-  export let actionLabel = "";
-  export let onAction: (() => void) | null = null;
+  let {
+    eyebrow = "",
+    title = "",
+    description = "",
+    iconHtml = "",
+    actionLabel = "",
+    onAction = null
+  }: {
+    eyebrow?: string;
+    title?: string;
+    description?: string;
+    iconHtml?: string;
+    actionLabel?: string;
+    onAction?: (() => void) | null;
+  } = $props();
 </script>
 
 <section class="empty-state">

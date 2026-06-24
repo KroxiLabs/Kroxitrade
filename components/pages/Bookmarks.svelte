@@ -22,7 +22,8 @@
 
   const EXPANDED_FOLDERS_STORAGE_KEY = "bookmark-folders-expanded";
 
-  export let tutorialStep:
+  interface Props {
+    tutorialStep?: 
     | "create-folder"
     | "save-search"
     | "history"
@@ -34,60 +35,29 @@
     | "settings-history"
     | "settings-filters"
     | "settings-bookmarks"
-    | null = null;
-  export let tutorialFolderId: string | null = null;
+    | null;
+    tutorialFolderId?: string | null;
+  }
 
-  let expandedFolderIds: string[] = [];
+  let { tutorialStep = null, tutorialFolderId = null }: Props = $props();
+
+  let expandedFolderIds: string[] = $state([]);
   let isLoading = false;
-  let showArchived = false;
-  let loadedExpandedStateKey: string | null = null;
+  let showArchived = $state(false);
+  let loadedExpandedStateKey: string | null = $state(null);
   
-  let isImportingText = false;
-  let importText = "";
-  let draggedFolderId: string | null = null;
-  let dragOverFolderId: string | null = null;
-  let folderPendingDelete: BookmarksFolderStruct | null = null;
-  let pendingEditFolderId: string | null = null;
-  let toolbarStickyEl: HTMLDivElement | null = null;
-  let toolbarRenderKey = 0;
+  let isImportingText = $state(false);
+  let importText = $state("");
+  let draggedFolderId: string | null = $state(null);
+  let dragOverFolderId: string | null = $state(null);
+  let folderPendingDelete: BookmarksFolderStruct | null = $state(null);
+  let pendingEditFolderId: string | null = $state(null);
+  let toolbarStickyEl: HTMLDivElement | null = $state(null);
+  let toolbarRenderKey = $state(0);
   let toolbarRepairFrame = 0;
   let toolbarRepairTimeouts: number[] = [];
   let toolbarRepairAttempts = 0;
 
-  $: currentLocation = tradeLocationService.locationStore;
-  $: currentVersion = $currentLocation.version;
-  $: versionFolders = $bookmarksService.filter(
-    (folder) => folder.version === currentVersion
-  );
-  $: displayedFolders = versionFolders.filter(
-    (folder) => !!folder.archivedAt === showArchived
-  );
-  $: isEmptyState = !isLoading && displayedFolders.length === 0;
-  $: displayedFolderIndexById = new Map(
-    displayedFolders.map((folder, index) => [folder.id, index])
-  );
-  $: expandedFoldersStorageKey = `${EXPANDED_FOLDERS_STORAGE_KEY}-${currentVersion}`;
-  $: validFolderIds = new Set(
-    versionFolders.map((folder) => folder.id).filter(Boolean)
-  );
-  $: tutorialTargetFolderId = tutorialStep === "save-search"
-    ? tutorialFolderId || displayedFolders[0]?.id || null
-    : null;
-  $: {
-    const nextExpandedFolderIds = expandedFolderIds.filter((id) => validFolderIds.has(id));
-    if (nextExpandedFolderIds.length !== expandedFolderIds.length) {
-      expandedFolderIds = nextExpandedFolderIds;
-    }
-  }
-  $: if (tutorialTargetFolderId && !expandedFolderIds.includes(tutorialTargetFolderId)) {
-    expandedFolderIds = [...expandedFolderIds, tutorialTargetFolderId];
-  }
-  $: if (expandedFoldersStorageKey && loadedExpandedStateKey !== expandedFoldersStorageKey) {
-    loadExpandedState(expandedFoldersStorageKey);
-  }
-  $: if (loadedExpandedStateKey === expandedFoldersStorageKey) {
-    persistExpandedState(expandedFoldersStorageKey, expandedFolderIds);
-  }
 
   const loadExpandedState = (storageKey: string) => {
     const raw = storageService.getLocalValue(storageKey);
@@ -311,6 +281,46 @@
   onDestroy(() => {
     clearToolbarRepairTimers();
   });
+  const currentLocation = tradeLocationService.locationStore;
+  let currentVersion = $derived($currentLocation.version);
+  let versionFolders = $derived($bookmarksService.filter(
+    (folder) => folder.version === currentVersion
+  ));
+  let displayedFolders = $derived(versionFolders.filter(
+    (folder) => !!folder.archivedAt === showArchived
+  ));
+  let isEmptyState = $derived(!isLoading && displayedFolders.length === 0);
+  let displayedFolderIndexById = $derived(new Map(
+    displayedFolders.map((folder, index) => [folder.id, index])
+  ));
+  let expandedFoldersStorageKey = $derived(`${EXPANDED_FOLDERS_STORAGE_KEY}-${currentVersion}`);
+  let validFolderIds = $derived(new Set(
+    versionFolders.map((folder) => folder.id).filter(Boolean)
+  ));
+  let tutorialTargetFolderId = $derived(tutorialStep === "save-search"
+    ? tutorialFolderId || displayedFolders[0]?.id || null
+    : null);
+  $effect(() => {
+    const nextExpandedFolderIds = expandedFolderIds.filter((id) => validFolderIds.has(id));
+    if (nextExpandedFolderIds.length !== expandedFolderIds.length) {
+      expandedFolderIds = nextExpandedFolderIds;
+    }
+  });
+  $effect(() => {
+    if (tutorialTargetFolderId && !expandedFolderIds.includes(tutorialTargetFolderId)) {
+      expandedFolderIds = [...expandedFolderIds, tutorialTargetFolderId];
+    }
+  });
+  $effect(() => {
+    if (expandedFoldersStorageKey && loadedExpandedStateKey !== expandedFoldersStorageKey) {
+      loadExpandedState(expandedFoldersStorageKey);
+    }
+  });
+  $effect(() => {
+    if (loadedExpandedStateKey === expandedFoldersStorageKey) {
+      persistExpandedState(expandedFoldersStorageKey, expandedFolderIds);
+    }
+  });
 </script>
 
 <div class="bookmarks-page" data-tutorial="bookmarks-panel">
@@ -319,7 +329,7 @@
       <section class="toolbar-panel">
         <div class="toolbar-row">
           <div class="toolbar-actions toolbar-actions--primary">
-            <button class="toolbar-button" data-tutorial="new-folder" type="button" title={translate($languageStore, "bookmarks.toolbar.newFolderTitle")} aria-label={translate($languageStore, "bookmarks.toolbar.newFolderTitle")} on:click={createFolder}>
+            <button class="toolbar-button" data-tutorial="new-folder" type="button" title={translate($languageStore, "bookmarks.toolbar.newFolderTitle")} aria-label={translate($languageStore, "bookmarks.toolbar.newFolderTitle")} onclick={createFolder}>
               <span class="toolbar-icon" aria-hidden="true">{@html toolbarIcons.newFolder}</span>
               <span class="toolbar-label">{translate($languageStore, "bookmarks.toolbar.new")}</span>
             </button>
@@ -329,7 +339,7 @@
               type="button"
               title={isImportingText ? translate($languageStore, "bookmarks.toolbar.cancelImport") : translate($languageStore, "bookmarks.toolbar.importFolder")}
               aria-label={isImportingText ? translate($languageStore, "bookmarks.toolbar.cancelImport") : translate($languageStore, "bookmarks.toolbar.importFolder")}
-              on:click={() => isImportingText = !isImportingText}
+              onclick={() => isImportingText = !isImportingText}
             >
               <span class="toolbar-icon" aria-hidden="true">
                 {@html isImportingText ? toolbarIcons.cancel : toolbarIcons.import}
@@ -339,7 +349,7 @@
           </div>
 
           <div class="toolbar-actions toolbar-actions--secondary">
-            <button class="toolbar-button" type="button" title={translate($languageStore, "bookmarks.toolbar.collapseAll")} aria-label={translate($languageStore, "bookmarks.toolbar.collapseAll")} on:click={collapseAll}>
+            <button class="toolbar-button" type="button" title={translate($languageStore, "bookmarks.toolbar.collapseAll")} aria-label={translate($languageStore, "bookmarks.toolbar.collapseAll")} onclick={collapseAll}>
               <span class="toolbar-icon" aria-hidden="true">{@html toolbarIcons.collapse}</span>
               <span class="toolbar-label">{translate($languageStore, "bookmarks.toolbar.collapse")}</span>
             </button>
@@ -349,7 +359,7 @@
               type="button"
               title={showArchived ? translate($languageStore, "bookmarks.toolbar.showActive") : translate($languageStore, "bookmarks.toolbar.showArchived")}
               aria-label={showArchived ? translate($languageStore, "bookmarks.toolbar.showActive") : translate($languageStore, "bookmarks.toolbar.showArchived")}
-              on:click={() => showArchived = !showArchived}
+              onclick={() => showArchived = !showArchived}
             >
               <span class="toolbar-icon" aria-hidden="true">
                 {@html showArchived ? toolbarIcons.active : toolbarIcons.archive}

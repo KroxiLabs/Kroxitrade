@@ -2,13 +2,23 @@
   import { languageStore, translate } from "../lib/services/i18n"
   import Button from "./Button.svelte"
 
-  export let open = false
-  export let title = ""
-  export let message = ""
-  export let confirmLabel = translate($languageStore, "confirm.delete")
-  export let cancelLabel = translate($languageStore, "confirm.cancel")
-  export let onConfirm: () => void = () => {}
-  export let onCancel: () => void = () => {}
+  let {
+    open = false,
+    title = "",
+    message = "",
+    confirmLabel = translate($languageStore, "confirm.delete"),
+    cancelLabel = translate($languageStore, "confirm.cancel"),
+    onConfirm = () => {},
+    onCancel = () => {}
+  }: {
+    open?: boolean;
+    title?: string;
+    message?: string;
+    confirmLabel?: string;
+    cancelLabel?: string;
+    onConfirm?: () => void;
+    onCancel?: () => void;
+  } = $props()
 
   const handleBackdropClick = (event: MouseEvent) => {
     if (event.target === event.currentTarget) {
@@ -21,8 +31,8 @@
   <div
     class="confirm-dialog-backdrop"
     role="presentation"
-    on:click={handleBackdropClick}
-    on:keydown={(event) => {
+    onclick={handleBackdropClick}
+    onkeydown={(event) => {
       if (event.key === "Escape") {
         onCancel()
       }

@@ -4,28 +4,41 @@
 
   type ActionId = string;
 
-  export let actions: Array<{
-    id: ActionId;
-    icon: string;
-    labelKey?: string;
-    customLabel?: string;
-    handler: () => void;
-    danger?: boolean;
-    isToggle?: boolean;
-  }>;
-  export let primaryActionIds: ActionId[];
-  export let compactMode = false;
-  export let compactText = "";
-  export let compactVisibleActionIds: ActionId[] | undefined = undefined;
-  export let dropdownLabel = "More";
-  export let dropdownIcon: string;
-  export let translate: ((key: string) => string) | undefined = undefined;
+  interface Props {
+    actions: Array<{
+      id: ActionId;
+      icon: string;
+      labelKey?: string;
+      customLabel?: string;
+      handler: () => void;
+      danger?: boolean;
+      isToggle?: boolean;
+    }>;
+    primaryActionIds: ActionId[];
+    compactMode?: boolean;
+    compactText?: string;
+    compactVisibleActionIds?: ActionId[] | undefined;
+    dropdownLabel?: string;
+    dropdownIcon: string;
+    translate?: ((key: string) => string) | undefined;
+  }
 
-  let triggerRef: HTMLButtonElement;
-  let menuRef: HTMLDivElement;
-  let isOpen = false;
+  let {
+    actions,
+    primaryActionIds,
+    compactMode = false,
+    compactText = "",
+    compactVisibleActionIds = undefined,
+    dropdownLabel = "More",
+    dropdownIcon,
+    translate = undefined
+  }: Props = $props();
+
+  let triggerRef: HTMLButtonElement | null = $state(null);
+  let menuRef: HTMLDivElement | null = $state(null);
+  let isOpen = $state(false);
   let isMounted = false;
-  let menuStyle = "";
+  let menuStyle = $state("");
   const OPEN_EVENT_NAME = "poe-trade-plus:actions-menu-open";
 
   const closeMenu = () => {
@@ -123,23 +136,23 @@
     window.removeEventListener("scroll", handleViewportChange, true);
   });
 
-  $: hasConfiguredVisibility = compactVisibleActionIds !== undefined;
-  $: compactVisibleActions = actions.filter((action) =>
+  let hasConfiguredVisibility = $derived(compactVisibleActionIds !== undefined);
+  let compactVisibleActions = $derived(actions.filter((action) =>
     compactVisibleActionIds?.includes(action.id)
-  );
-  $: configuredInlineActions = actions.filter((action) =>
+  ));
+  let configuredInlineActions = $derived(actions.filter((action) =>
     compactVisibleActionIds?.includes(action.id)
-  );
-  $: primaryInlineActions = actions.filter((action) =>
+  ));
+  let primaryInlineActions = $derived(actions.filter((action) =>
     primaryActionIds.includes(action.id)
-  );
-  $: shouldShowAllCompactActions =
-    compactMode &&
+  ));
+  let shouldShowAllCompactActions =
+    $derived(compactMode &&
     !!compactVisibleActionIds &&
     compactVisibleActionIds.length > 0 &&
-    compactVisibleActions.length >= actions.length - 1;
-  $: showAsCompact = compactMode && actions.length > 0;
-  $: inlineActions = showAsCompact
+    compactVisibleActions.length >= actions.length - 1);
+  let showAsCompact = $derived(compactMode && actions.length > 0);
+  let inlineActions = $derived(showAsCompact
     ? shouldShowAllCompactActions
       ? actions
       : compactVisibleActions
@@ -147,8 +160,8 @@
       ? configuredInlineActions
       : primaryInlineActions.length > 0
       ? primaryInlineActions
-      : actions;
-  $: dropdownActions = showAsCompact
+      : actions);
+  let dropdownActions = $derived(showAsCompact
     ? shouldShowAllCompactActions
       ? []
       : actions.filter((action) => !compactVisibleActionIds?.includes(action.id))
@@ -156,11 +169,15 @@
       ? actions.filter((action) => !compactVisibleActionIds?.includes(action.id))
       : primaryInlineActions.length > 0
       ? actions.filter((action) => !primaryActionIds.includes(action.id))
-      : [];
+      : []);
   const getDisplayLabel = (action: typeof actions[0]) => {
     if (action.customLabel) return action.customLabel;
     if (translate && action.labelKey) return translate(action.labelKey);
     return action.labelKey || "";
+  };
+  const stopAndRun = (handler: () => void) => (event: MouseEvent) => {
+    event.stopPropagation();
+    handler();
   };
 </script>
 
@@ -178,7 +195,7 @@
           class:btn--danger={action.danger}
           title={getDisplayLabel(action)}
           aria-label={getDisplayLabel(action)}
-          on:click|stopPropagation={action.handler}
+          onclick={stopAndRun(action.handler)}
         >
           <span class="btn__icon" aria-hidden="true">{@html normalizeIcon(action.icon)}</span>
         </button>
@@ -191,7 +208,7 @@
           title={translate ? translate(dropdownLabel) : dropdownLabel}
           aria-label={translate ? translate(dropdownLabel) : dropdownLabel}
           aria-expanded={isOpen}
-          on:click|stopPropagation={toggleMenu}
+          onclick={stopAndRun(toggleMenu)}
           bind:this={triggerRef}
         >
           <span class="btn__icon" aria-hidden="true">{@html normalizeIcon(dropdownIcon || "")}</span>
@@ -208,7 +225,7 @@
           class:btn--danger={action.danger}
           title={getDisplayLabel(action)}
           aria-label={getDisplayLabel(action)}
-          on:click|stopPropagation={action.handler}
+          onclick={stopAndRun(action.handler)}
         >
           <span class="btn__icon" aria-hidden="true">{@html normalizeIcon(action.icon)}</span>
         </button>
@@ -221,7 +238,7 @@
           title={translate ? translate(dropdownLabel) : dropdownLabel}
           aria-label={translate ? translate(dropdownLabel) : dropdownLabel}
           aria-expanded={isOpen}
-          on:click|stopPropagation={toggleMenu}
+          onclick={stopAndRun(toggleMenu)}
           bind:this={triggerRef}
         >
           <span class="btn__icon" aria-hidden="true">{@html normalizeIcon(dropdownIcon || "")}</span>
@@ -242,7 +259,7 @@
           type="button"
           class="btn btn--menu"
           class:btn--danger={action.danger}
-          on:click|stopPropagation={() => handleAction(action.handler)}
+          onclick={stopAndRun(() => handleAction(action.handler))}
         >
           <span class="btn__icon" aria-hidden="true">{@html normalizeIcon(action.icon)}</span>
           <span class="btn__label">{getDisplayLabel(action)}</span>

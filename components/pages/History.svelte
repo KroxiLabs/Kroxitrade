@@ -20,9 +20,9 @@
 
   let historyEntries: TradeLocationHistoryStruct[] = [];
   let filteredEntries: TradeLocationHistoryStruct[] = [];
-  let groupedEntries: HistoryGroup[] = [];
-  let isLoading = false;
-  let currentVersion: TradeSiteVersion = "1";
+  let groupedEntries: HistoryGroup[] = $state([]);
+  let isLoading = $state(false);
+  let currentVersion: TradeSiteVersion = $state("1");
 
   onMount(() => {
     const unsubscribeLocation = tradeLocationService.locationStore.subscribe((loc) => {
@@ -165,7 +165,10 @@
                   <a
                     class="history-link"
                     href={getTradeUrl(entry.version, entry.type, entry.slug, entry.league || "Standard")}
-                    on:click|preventDefault={() => void openHistoryEntry(entry)}
+                    onclick={(event) => {
+                      event.preventDefault();
+                      void openHistoryEntry(entry);
+                    }}
                   >
                     <div class="history-link__topline">
                       <span class="history-league">{entry.league}</span>

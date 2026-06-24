@@ -30,16 +30,16 @@
   const ONBOARDING_FOLDER_ID_KEY = "layout-onboarding-folder-id";
   const VERSION_NOTICE_SEEN_KEY = "layout-version-notice-seen";
 
-  let currentPage: 'bookmarks' | 'bulk' | 'history' | 'about' | 'settings' = 'bookmarks';
-  let currentTradeVersion: "1" | "2" = tradeLocationService.current.version;
-  let isMinimized = false;
-  let isResizing = false;
+  let currentPage: 'bookmarks' | 'bulk' | 'history' | 'about' | 'settings' = $state('bookmarks');
+  let currentTradeVersion: "1" | "2" = $state(tradeLocationService.current.version);
+  let isMinimized = $state(false);
+  let isResizing = $state(false);
   let liveSidebarWidth: number | null = null;
-  let loadedMinimizedStateKey: string | null = null;
-  let showOnboarding = false;
-  let showWelcome = false;
-  let welcomeLanguage = "en" as typeof $settings.language;
-  let onboardingHighlightedPage: 'bookmarks' | 'bulk' | 'history' | 'about' | 'settings' | null = null;
+  let loadedMinimizedStateKey: string | null = $state(null);
+  let showOnboarding = $state(false);
+  let showWelcome = $state(false);
+  let welcomeLanguage = $state("en" as typeof $settings.language);
+  let onboardingHighlightedPage: 'bookmarks' | 'bulk' | 'history' | 'about' | 'settings' | null = $state(null);
   let onboardingCurrentStepId:
     | 'create-folder'
     | 'save-search'
@@ -52,13 +52,13 @@
     | 'settings-history'
     | 'settings-filters'
     | 'settings-bookmarks'
-    | null = null;
-  let onboardingTutorialFolderId: string | null = null;
-  let appVersion = hasValidExtensionContext()
+    | null = $state(null);
+  let onboardingTutorialFolderId: string | null = $state(null);
+  let appVersion = $state(hasValidExtensionContext()
     ? chrome.runtime.getManifest().version
-    : "dev";
-  let isDevBuild = import.meta.env.DEV;
-  let showVersionNotice = false;
+    : "dev");
+  let isDevBuild = $state(import.meta.env.DEV);
+  let showVersionNotice = $state(false);
 
   const MIN_SIDEBAR_WIDTH = 300;
   const MAX_SIDEBAR_WIDTH = 560;
@@ -296,24 +296,32 @@
     window.removeEventListener('mouseleave', stopResize);
   });
 
-  $: if (!$settings.showBulkSellers && currentPage === 'bulk') {
-    currentPage = 'bookmarks';
-  }
+  $effect(() => {
+    if (!$settings.showBulkSellers && currentPage === 'bulk') {
+      currentPage = 'bookmarks';
+    }
+  });
 
-  $: if (!$settings.showHistory && currentPage === 'history') {
-    currentPage = 'bookmarks';
-  }
+  $effect(() => {
+    if (!$settings.showHistory && currentPage === 'history') {
+      currentPage = 'bookmarks';
+    }
+  });
 
-  $: currentLocation = tradeLocationService.locationStore;
-  $: minimizedStorageKey = `${MINIMIZED_STORAGE_KEY}-${$currentLocation.version}`;
-  $: if (minimizedStorageKey && loadedMinimizedStateKey !== minimizedStorageKey) {
-    loadMinimizedState(minimizedStorageKey);
-  }
-  $: if (loadedMinimizedStateKey === minimizedStorageKey) {
-    persistMinimizedState(minimizedStorageKey, isMinimized);
-  }
+  const currentLocation = tradeLocationService.locationStore;
+  let minimizedStorageKey = $derived(`${MINIMIZED_STORAGE_KEY}-${$currentLocation.version}`);
+  $effect(() => {
+    if (minimizedStorageKey && loadedMinimizedStateKey !== minimizedStorageKey) {
+      loadMinimizedState(minimizedStorageKey);
+    }
+  });
+  $effect(() => {
+    if (loadedMinimizedStateKey === minimizedStorageKey) {
+      persistMinimizedState(minimizedStorageKey, isMinimized);
+    }
+  });
 
-  $: {
+  $effect(() => {
     if (typeof document !== 'undefined') {
       const isRight = $settings.sidebarSide === 'right';
       
@@ -328,7 +336,7 @@
       document.body.classList.toggle('bt-is-resizing-sidebar', isResizing);
 
       const hosts = document.querySelectorAll('#kroxitrade-root');
-      hosts.forEach((h: any) => {
+      hosts.forEach((h: HTMLElement) => {
         h.classList.toggle('is-side-right', isRight);
         h.classList.toggle('is-side-left', !isRight);
         
@@ -341,7 +349,7 @@
         }
       });
     }
-  }
+  });
 </script>
 
 <div
@@ -355,7 +363,7 @@
       class="resize-handle"
       class:side-right={$settings.sidebarSide === 'right'}
       aria-label={translate($languageStore, "layout.resizeSidebar")}
-      on:mousedown={startResize}
+      onmousedown={startResize}
     ></button>
   {/if}
 
@@ -383,7 +391,7 @@
         type="button"
         class="version-notice__close"
         aria-label={translate($languageStore, "layout.versionNoticeClose")}
-        on:click={dismissVersionNotice}
+        onclick={dismissVersionNotice}
       >
         ×
       </button>
@@ -394,7 +402,7 @@
     <button 
         class="nav-item {currentPage === 'bookmarks' ? 'is-active' : ''} {showOnboarding && onboardingHighlightedPage === 'bookmarks' ? 'is-onboarding-focus' : ''}" 
         data-tutorial="nav-bookmarks"
-        on:click={() => currentPage = 'bookmarks'}
+        onclick={() => currentPage = 'bookmarks'}
     >
         <span class="nav-item__icon" aria-hidden="true">{@html navIcons.bookmarks}</span>
         <span class="nav-item__label">{translate($languageStore, "layout.nav.bookmarks")}</span>
@@ -403,7 +411,7 @@
     {#if $settings.showBulkSellers}
       <button 
           class="nav-item {currentPage === 'bulk' ? 'is-active' : ''} {showOnboarding && onboardingHighlightedPage === 'bulk' ? 'is-onboarding-focus' : ''}" 
-          on:click={() => currentPage = 'bulk'}
+          onclick={() => currentPage = 'bulk'}
       >
           <span class="nav-item__icon" aria-hidden="true">{@html navIcons.bulk}</span>
           <span class="nav-item__label">{translate($languageStore, "layout.nav.bulk")}</span>
@@ -414,7 +422,7 @@
       <button 
           class="nav-item {currentPage === 'history' ? 'is-active' : ''} {showOnboarding && onboardingHighlightedPage === 'history' ? 'is-onboarding-focus' : ''}" 
           data-tutorial="nav-history"
-          on:click={() => currentPage = 'history'}
+          onclick={() => currentPage = 'history'}
       >
           <span class="nav-item__icon" aria-hidden="true">{@html navIcons.history}</span>
           <span class="nav-item__label">{translate($languageStore, "layout.nav.history")}</span>
@@ -425,7 +433,7 @@
         data-tutorial="nav-settings"
         title={translate($languageStore, "layout.nav.settings")}
         aria-label={translate($languageStore, "layout.nav.settings")}
-        on:click={() => currentPage = 'settings'}
+        onclick={() => currentPage = 'settings'}
     >
         <span class="nav-item__icon" aria-hidden="true">{@html navIcons.settings}</span>
         <span class="nav-item__label">{translate($languageStore, "layout.nav.settings")}</span>
@@ -434,7 +442,7 @@
         class="nav-item nav-item--icon-only {currentPage === 'about' ? 'is-active' : ''} {showOnboarding && onboardingHighlightedPage === 'about' ? 'is-onboarding-focus' : ''}" 
         title={translate($languageStore, "layout.nav.about")}
         aria-label={translate($languageStore, "layout.nav.about")}
-        on:click={() => currentPage = 'about'}
+        onclick={() => currentPage = 'about'}
     >
         <span class="nav-item__icon" aria-hidden="true">{@html navIcons.about}</span>
     </button>
@@ -444,7 +452,7 @@
     {#each $flashMessages as flash (flash.id)}
       <button 
         class="flash flash-{flash.type}" 
-        on:click={() => flashMessages.remove(flash.id)}
+        onclick={() => flashMessages.remove(flash.id)}
         aria-label={translate($languageStore, "layout.removeAlert")}
       >
         {flash.message}
@@ -492,7 +500,7 @@
   <button 
     class="floating-restore-btn" 
     class:side-right={$settings.sidebarSide === 'right'}
-    on:click={toggleMinimize} 
+    onclick={toggleMinimize} 
     aria-label={translate($languageStore, "layout.restorePanel")}
   >
     <img src={logoUrl} alt="Logo" class="floater-logo" />

@@ -13,12 +13,23 @@
   import archiveRestoreIcon from "lucide-static/icons/archive-restore.svg?raw";
   import moreIcon from "lucide-static/icons/more-horizontal.svg?raw";
 
-  export let folder: BookmarksFolderStruct;
-  export let onRename: () => void;
-  export let onArchive: () => void;
-  export let onExport: () => void;
-  export let onDuplicate: () => void;
-  export let onDelete: () => void;
+  interface Props {
+    folder: BookmarksFolderStruct;
+    onRename: () => void;
+    onArchive: () => void;
+    onExport: () => void;
+    onDuplicate: () => void;
+    onDelete: () => void;
+  }
+
+  let {
+    folder,
+    onRename,
+    onArchive,
+    onExport,
+    onDuplicate,
+    onDelete
+  }: Props = $props();
 
   type FolderAction = {
     id: string;
@@ -30,11 +41,11 @@
 
   const OPEN_EVENT_NAME = "poe-trade-plus:folder-actions-open";
 
-  let triggerRef: HTMLButtonElement | null = null;
-  let isOpen = false;
+  let triggerRef: HTMLButtonElement | null = $state(null);
+  let isOpen = $state(false);
   let menuRoot: HTMLDivElement | null = null;
 
-  $: actions = [
+  let actions = $derived([
     {
       id: "rename",
       icon: editIcon,
@@ -68,14 +79,18 @@
       handler: onDelete,
       danger: true
     }
-  ] satisfies FolderAction[];
+  ] satisfies FolderAction[]);
 
-  $: inlineActions = $settings.compactActionsMenu
+  let inlineActions = $derived($settings.compactActionsMenu
     ? []
     : actions.filter(
         (action) => action.id === "rename" || action.id === "delete"
-      );
-  $: dropdownActions = actions.filter((action) => !inlineActions.includes(action));
+      ));
+  let dropdownActions = $derived(actions.filter((action) => !inlineActions.includes(action)));
+  const stopAndRun = (handler: () => void) => (event: MouseEvent) => {
+    event.stopPropagation();
+    handler();
+  };
 
   const closeMenu = () => {
     isOpen = false;
@@ -218,7 +233,7 @@
         class:is-danger={action.danger}
         title={action.label}
         aria-label={action.label}
-        on:click|stopPropagation={() => runInlineAction(action.handler)}
+        onclick={stopAndRun(() => runInlineAction(action.handler))}
       >
         <span class="folder-action-btn__icon" aria-hidden="true">
           {@html normalizeIcon(action.icon)}
@@ -233,7 +248,7 @@
         title={translate($languageStore, "folder.actionsMenu")}
         aria-label={translate($languageStore, "folder.actionsMenu")}
         aria-expanded={isOpen}
-        on:click={toggleMenu}
+        onclick={toggleMenu}
         bind:this={triggerRef}
       >
         <span class="folder-action-btn__icon" aria-hidden="true">

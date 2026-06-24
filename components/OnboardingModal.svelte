@@ -29,27 +29,37 @@
     steps: string[]
   }
 
-  export let open = false
-  export let showHistoryStep = true
-  export let showEquivalentStep = true
-  export let onClose: () => void = () => {}
-  export let onStepChange: (
+  interface Props {
+    open?: boolean;
+    showHistoryStep?: boolean;
+    showEquivalentStep?: boolean;
+    onClose?: () => void;
+    onStepChange?: (
     page: OnboardingPage,
     stepId: OnboardingStepId
-  ) => void = () => {}
+  ) => void;
+  }
 
-  let currentStep = 0
-  let wasOpen = false
-  let coachmarkStyle = ""
-  let highlightStyle = ""
-  let targetFound = false
+  let {
+    open = false,
+    showHistoryStep = true,
+    showEquivalentStep = true,
+    onClose = () => {},
+    onStepChange = () => {}
+  }: Props = $props();
+
+  let currentStep = $state(0)
+  let wasOpen = $state(false)
+  let coachmarkStyle = $state("")
+  let highlightStyle = $state("")
+  let targetFound = $state(false)
   let syncInterval: ReturnType<typeof setInterval> | null = null
-  let lastScrolledStepId: OnboardingStepId | null = null
-  let layerElement: HTMLDivElement | null = null
-  let coachmarkElement: HTMLElement | null = null
-  let coachmarkPlacement: "above" | "below" = "below"
+  let lastScrolledStepId: OnboardingStepId | null = $state(null)
+  let layerElement: HTMLDivElement | null = $state(null)
+  let coachmarkElement: HTMLElement | null = $state(null)
+  let coachmarkPlacement: "above" | "below" = $state("below")
 
-  $: allSteps = [
+  let allSteps = $derived([
     {
       id: "create-folder" as OnboardingStepId,
       page: "bookmarks" as OnboardingPage,
@@ -204,15 +214,13 @@
         translate($languageStore, "onboarding.step11Highlight3")
       ]
     }
-  ]
+  ])
 
-  $: steps = showHistoryStep
-    ? allSteps
-    : allSteps.filter((step) => step.id !== "history")
-
-  $: if (!showEquivalentStep) {
-    steps = steps.filter((step) => step.id !== "settings-equivalent")
-  }
+  let steps = $derived(
+    (showHistoryStep ? allSteps : allSteps.filter((step) => step.id !== "history")).filter(
+      (step) => showEquivalentStep || step.id !== "settings-equivalent"
+    )
+  )
 
   const getQueryRoot = (): Document | ShadowRoot => {
     const root = layerElement?.getRootNode()
@@ -347,33 +355,37 @@
     updatePosition()
   }
 
-  $: if (open !== wasOpen) {
-    if (open) {
-      currentStep = 0
-      lastScrolledStepId = null
-      void startSync()
-    } else {
-      stopSync()
-      targetFound = false
-      coachmarkStyle = ""
-      highlightStyle = ""
-      lastScrolledStepId = null
+  $effect(() => {
+    if (open !== wasOpen) {
+      if (open) {
+        currentStep = 0
+        lastScrolledStepId = null
+        void startSync()
+      } else {
+        stopSync()
+        targetFound = false
+        coachmarkStyle = ""
+        highlightStyle = ""
+        lastScrolledStepId = null
+      }
+
+      wasOpen = open
     }
+  });
 
-    wasOpen = open
-  }
-
-  $: if (open && steps[currentStep]) {
-    onStepChange(steps[currentStep].page, steps[currentStep].id)
-    void startSync()
-  }
+  $effect(() => {
+    if (open && steps[currentStep]) {
+      onStepChange(steps[currentStep].page, steps[currentStep].id)
+      void startSync()
+    }
+  });
 
   onDestroy(() => {
     stopSync()
   })
 </script>
 
-<svelte:window on:resize={handleResize} on:scroll={handleResize} />
+<svelte:window onresize={handleResize} onscroll={handleResize} />
 
 {#if open && steps[currentStep]}
   <div class="onboarding-layer" bind:this={layerElement} role="presentation">
@@ -401,7 +413,7 @@
           type="button"
           class="onboarding-close"
           aria-label={translate($languageStore, "onboarding.skip")}
-          on:click={onClose}>×</button>
+          onclick={onClose}>×</button>
       </div>
 
       <p class="onboarding-coachmark__body">{steps[currentStep].body}</p>

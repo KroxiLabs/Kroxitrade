@@ -23,7 +23,11 @@
   import toggleIcon from "lucide-static/icons/check.svg?raw";
   import deleteIcon from "lucide-static/icons/trash-2.svg?raw";
 
-  export let onOpenTutorial: () => void = () => {};
+  interface Props {
+    onOpenTutorial?: () => void;
+  }
+
+  let { onOpenTutorial = () => {} }: Props = $props();
 
   const DEFAULT_SIDEBAR_WIDTH = 450;
   const normalizeSettingsIcon = (svg: string) =>
@@ -70,13 +74,10 @@
     ko: { en: "영어", es: "스페인어", pt: "포르투갈어", ru: "러시아어", th: "태국어", de: "독일어", fr: "프랑스어", ja: "일본어", ko: "한국어" }
   };
 
-  let isLanguageMenuOpen = false;
-  let isRefreshingEquivalentRatios = false;
-  let isFirefox = typeof navigator !== "undefined" && navigator.userAgent.includes("Firefox/");
-  let languageSelectorEl: HTMLDivElement | null = null;
-  let nativeLanguageValue: AppLanguage = "en";
-  let lastSyncedLanguageValue: AppLanguage = "en";
-  let currentTradeVersion: "1" | "2" = tradeLocationService.current.version;
+  let isLanguageMenuOpen = $state(false);
+  let isRefreshingEquivalentRatios = $state(false);
+  let languageSelectorEl: HTMLDivElement | null = $state(null);
+  let currentTradeVersion: "1" | "2" = $state(tradeLocationService.current.version);
 
   async function handleSideChange(side: SidebarSide) {
     await settings.updateSide(side);
@@ -146,14 +147,6 @@
 
   async function handleLanguageChange(language: AppLanguage) {
     await settings.updateLanguage(language);
-  }
-
-  function handleLanguageSelectChange() {
-    const nextLanguage = nativeLanguageValue;
-    if (nextLanguage === $settings.language) return;
-
-    lastSyncedLanguageValue = nextLanguage;
-    void handleLanguageChange(nextLanguage);
   }
 
   async function exportBookmarksBackup() {
@@ -237,13 +230,9 @@
     document.removeEventListener("keydown", handleDocumentKeydown);
   });
 
-  $: selectedLanguage =
-    languages.find((language) => language.code === $settings.language) ?? languages[0];
-  $: if ($settings.language !== lastSyncedLanguageValue) {
-    nativeLanguageValue = $settings.language;
-    lastSyncedLanguageValue = $settings.language;
-  }
-  $: showEquivalentPricingSetting = currentTradeVersion !== "2";
+  let selectedLanguage =
+    $derived(languages.find((language) => language.code === $settings.language) ?? languages[0]);
+  let showEquivalentPricingSetting = $derived(currentTradeVersion !== "2");
 </script>
 
 <div class="settings-page">
@@ -259,58 +248,43 @@
           <img class="language-flag" src={selectedLanguage.flag} alt={selectedLanguage.label} />
         </div>
 
-        <div class="language-select-wrap" class:language-select-wrap--custom={isFirefox}>
-          {#if isFirefox}
-            <button
-              type="button"
-              class="language-select"
-              aria-haspopup="listbox"
-              aria-expanded={isLanguageMenuOpen}
-              on:click={toggleLanguageMenu}
-            >
+        <div class="language-select-wrap language-select-wrap--custom">
+          <button
+            type="button"
+            class="language-select"
+            aria-haspopup="listbox"
+            aria-expanded={isLanguageMenuOpen}
+            onclick={toggleLanguageMenu}
+          >
+            <span class="language-select__flag-wrap">
+              <img class="language-flag" src={selectedLanguage.flag} alt="" aria-hidden="true" />
+            </span>
+            <span class="language-select__copy">
               <span class="language-option__native">{selectedLanguage.label}</span>
               <span class="language-option__translated">{getLocalizedLanguageName(selectedLanguage.code)}</span>
-            </button>
+            </span>
+            <span class="language-select__chevron" aria-hidden="true">▾</span>
+          </button>
 
-            {#if isLanguageMenuOpen}
-              <div class="language-menu" role="listbox" aria-label={translate($languageStore, "settings.languageTitle")}>
+          {#if isLanguageMenuOpen}
+            <div class="language-menu" role="listbox" aria-label={translate($languageStore, "settings.languageTitle")}>
               {#each languages as language (language.code)}
-                  <button
-                    type="button"
-                    class="language-menu__item"
-                    class:is-active={language.code === $settings.language}
-                    role="option"
-                    aria-selected={language.code === $settings.language}
-                    on:click={(event) => selectLanguage(event, language.code)}
-                  >
-                    <span class="language-menu__flag-wrap">
-                      <img class="language-flag" src={language.flag} alt={language.label} />
-                    </span>
-                    <span class="language-option__native">{language.label}</span>
-                    <span class="language-option__translated">{getLocalizedLanguageName(language.code)}</span>
-                  </button>
-              {/each}
-              </div>
-            {/if}
-          {:else}
-            <select
-              class="language-native-select"
-              bind:value={nativeLanguageValue}
-              aria-label={translate($languageStore, "settings.languageTitle")}
-              on:input={handleLanguageSelectChange}
-              on:change={handleLanguageSelectChange}
-            >
-              <button type="button" class="language-native-select__button">
-                <selectedcontent></selectedcontent>
-              </button>
-              {#each languages as language (language.code)}
-                <option value={language.code}>
-                  <img class="language-option-flag" src={language.flag} alt="" aria-hidden="true" />
+                <button
+                  type="button"
+                  class="language-menu__item"
+                  class:is-active={language.code === $settings.language}
+                  role="option"
+                  aria-selected={language.code === $settings.language}
+                  onclick={(event) => selectLanguage(event, language.code)}
+                >
+                  <span class="language-menu__flag-wrap">
+                    <img class="language-flag" src={language.flag} alt="" aria-hidden="true" />
+                  </span>
                   <span class="language-option__native">{language.label}</span>
                   <span class="language-option__translated">{getLocalizedLanguageName(language.code)}</span>
-                </option>
+                </button>
               {/each}
-            </select>
+            </div>
           {/if}
         </div>
       </div>
@@ -380,7 +354,7 @@
               <input
                 type="checkbox"
                 checked={$settings.compactBookmarkTradeActions.includes(option.id)}
-                on:change={(event) => handleCompactTradeActionInput(event, option.id)}
+                onchange={(event) => handleCompactTradeActionInput(event, option.id)}
                 aria-label={translate($languageStore, option.labelKey)}
               />
               <span class="compact-option__icon" aria-hidden="true">{@html option.icon}</span>
@@ -428,7 +402,7 @@
                 <button
                   type="button"
                   class="mini-action"
-                  on:click={handleEquivalentPricingRefresh}
+                  onclick={handleEquivalentPricingRefresh}
                   disabled={isRefreshingEquivalentRatios}
                 >
                   {translate(
@@ -447,7 +421,7 @@
               role="switch"
               aria-checked={$settings.showEquivalentPricing}
               aria-label={translate($languageStore, "settings.equivalentTitle")}
-              on:click={() => handleEquivalentPricingChange(!$settings.showEquivalentPricing)}
+              onclick={() => handleEquivalentPricingChange(!$settings.showEquivalentPricing)}
             >
               <span class="toggle-switch">
                 <span class="toggle-switch__thumb"></span>
@@ -469,7 +443,7 @@
             role="switch"
             aria-checked={$settings.showBulkSellers}
             aria-label={translate($languageStore, "settings.bulkTitle")}
-            on:click={() => handleBulkSellersChange(!$settings.showBulkSellers)}
+            onclick={() => handleBulkSellersChange(!$settings.showBulkSellers)}
           >
             <span class="toggle-switch">
               <span class="toggle-switch__thumb"></span>
@@ -490,7 +464,7 @@
             role="switch"
             aria-checked={$settings.showHistory}
             aria-label={translate($languageStore, "settings.historyTitle")}
-            on:click={() => handleHistoryChange(!$settings.showHistory)}
+            onclick={() => handleHistoryChange(!$settings.showHistory)}
           >
             <span class="toggle-switch">
               <span class="toggle-switch__thumb"></span>
@@ -511,7 +485,7 @@
             role="switch"
             aria-checked={$settings.showFinerFilters}
             aria-label={translate($languageStore, "settings.finerFiltersTitle")}
-            on:click={() => handleFinerFiltersChange(!$settings.showFinerFilters)}
+            onclick={() => handleFinerFiltersChange(!$settings.showFinerFilters)}
           >
             <span class="toggle-switch">
               <span class="toggle-switch__thumb"></span>
@@ -850,40 +824,11 @@
     position: relative;
   }
 
-  .language-native-select {
-    display: flex;
-    align-items: center;
-    width: 100%;
-    min-height: 34px;
-    padding: 0 34px 0 10px;
-    border: 1px solid rgba($gold, 0.18);
-    border-radius: 3px;
-    background:
-      linear-gradient(180deg, rgba($white, 0.045), rgba($white, 0.018)),
-      rgba($white, 0.03);
-    color: rgba($white, 0.86);
-    font-family: $primary-font;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: background 0.16s ease, border-color 0.16s ease, color 0.16s ease;
-  }
-
-  .language-native-select:hover,
-  .language-native-select:focus-visible {
-    border-color: rgba($gold, 0.38);
-    background: rgba($gold, 0.08);
-    color: $white;
-    outline: none;
-  }
-
   .language-select {
     min-width: 0;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 10px;
-    padding: 0 34px 0 10px;
+    padding: 0 10px;
     cursor: pointer;
     background-color: rgba($white, 0.03);
     font-family: $primary-font;
@@ -900,13 +845,25 @@
     }
   }
 
-  .language-select-wrap--custom::after {
-    content: "▾";
-    position: absolute;
-    right: 12px;
-    top: 50%;
-    transform: translateY(-50%);
-    pointer-events: none;
+  .language-select__flag-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+
+  .language-select__copy {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 auto;
+    align-items: baseline;
+    gap: 8px;
+    justify-content: space-between;
+  }
+
+  .language-select__chevron {
+    flex: 0 0 auto;
+    margin-left: auto;
     color: rgba($gold, 0.72);
     font-size: 11px;
   }
@@ -985,100 +942,6 @@
     border-radius: 999px;
     border: 1px solid rgba($white, 0.16);
     background: rgba($white, 0.04);
-  }
-
-  @supports (appearance: base-select) {
-    .language-native-select,
-    .language-native-select::picker(select) {
-      appearance: base-select;
-    }
-
-    .language-native-select::picker(select) {
-      margin-top: 6px;
-      padding: 6px;
-      border: 1px solid rgba($gold, 0.18);
-      border-radius: 4px;
-      background: #14110d;
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.32);
-    }
-
-    .language-native-select::picker-icon {
-      color: rgba($gold, 0.72);
-      transition: rotate 0.16s ease;
-    }
-
-    .language-native-select:open::picker-icon {
-      rotate: 180deg;
-    }
-
-    .language-native-select__button {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      width: 100%;
-      min-width: 0;
-      padding: 0;
-      border: 0;
-      background: transparent;
-      color: inherit;
-      font: inherit;
-      text-align: left;
-    }
-
-    .language-native-select selectedcontent {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-width: 0;
-      width: 100%;
-    }
-
-    .language-native-select option {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-height: 34px;
-      padding: 10px 8px;
-      border: 1px solid transparent;
-      border-radius: 3px;
-      background: rgba($white, 0.02);
-      color: rgba($white, 0.82);
-      font-family: $primary-font;
-      font-size: 11px;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .language-option-flag {
-      width: 18px;
-      height: 18px;
-      flex: 0 0 18px;
-      object-fit: cover;
-      border-radius: 999px;
-      border: 1px solid rgba($white, 0.16);
-      background: rgba($white, 0.04);
-    }
-
-    .language-native-select .language-option__native {
-      flex: 1 1 auto;
-      min-width: 0;
-      text-align: left;
-    }
-
-    .language-native-select .language-option__translated {
-      flex: 0 1 auto;
-      max-width: 46%;
-      margin-left: auto;
-      text-align: right;
-    }
-
-    .language-native-select option:hover,
-    .language-native-select option:focus,
-    .language-native-select option:checked {
-      border-color: rgba($gold, 0.28);
-      background: rgba($gold, 0.08);
-      color: $white;
-    }
   }
 
   .compact-options {

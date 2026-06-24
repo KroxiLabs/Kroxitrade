@@ -1,14 +1,25 @@
 <script lang="ts">
-  export let label: string = "";
-  export let icon: string = "";
-  export let iconHtml: string = "";
-  export let href: string = "";
-  export let theme: "blue" | "gold" | "red" = "blue";
-  export let onFileChange: ((event: Event) => void) | null = null;
-  export let onClick: (() => void) | null = null;
-  export let fileAccept: string = "*";
-  let className: string = "";
-  export { className as class };
+  let {
+    label = "",
+    icon = "",
+    iconHtml = "",
+    href = "",
+    theme = "blue",
+    onFileChange = null,
+    onClick = null,
+    fileAccept = "*",
+    class: className = ""
+  }: {
+    label?: string;
+    icon?: string;
+    iconHtml?: string;
+    href?: string;
+    theme?: "blue" | "gold" | "red";
+    onFileChange?: ((event: Event) => void) | null;
+    onClick?: (() => void) | null;
+    fileAccept?: string;
+    class?: string;
+  } = $props();
 
   const handleClick = () => {
     if (onClick) onClick();
@@ -22,12 +33,12 @@
   </a>
 {:else if onFileChange}
   <label class="button is-{theme} {className}">
-    <input type="file" class="file-input" accept={fileAccept} on:change={onFileChange} />
+    <input type="file" class="file-input" accept={fileAccept} onchange={onFileChange} />
     {#if iconHtml}<span class="icon icon-html">{@html iconHtml}</span>{:else if icon}<span class="icon">{icon}</span>{/if}
     {#if label}<span class="label">{label}</span>{/if}
   </label>
 {:else}
-  <button type="button" class="button is-{theme} {className}" on:click={handleClick}>
+  <button type="button" class="button is-{theme} {className}" onclick={handleClick}>
     {#if iconHtml}<span class="icon icon-html">{@html iconHtml}</span>{:else if icon}<span class="icon">{icon}</span>{/if}
     {#if label}<span class="label">{label}</span>{/if}
   </button>

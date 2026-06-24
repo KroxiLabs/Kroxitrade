@@ -1,8 +1,8 @@
 <script lang="ts">
-  export let type: "warning" | "alert" | "success" | "info" = "warning";
-  export let message: string;
+  let { type = "warning", message }: { type?: "warning" | "alert" | "success" | "info"; message: string } =
+    $props();
 
-  $: icon = type === "success" ? "✓" : "⚠";
+  const icon = $derived(type === "success" ? "✓" : "⚠");
 </script>
 
 <div class="alert-message is-{type}" role="status" aria-live="polite">

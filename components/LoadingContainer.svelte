@@ -1,6 +1,15 @@
 <script lang="ts">
-  export let isLoading: boolean = false;
-  export let size: "small" | "large" = "large";
+  import type { Snippet } from "svelte";
+
+  let {
+    isLoading = false,
+    size = "large",
+    children
+  }: {
+    isLoading?: boolean;
+    size?: "small" | "large";
+    children?: Snippet;
+  } = $props();
 </script>
 
 <div class="loading-container">
@@ -10,7 +19,7 @@
     </div>
   {:else}
     <div class="content">
-      <slot />
+      {@render children?.()}
     </div>
   {/if}
 </div>

@@ -1,5 +1,5 @@
 <script lang="ts">
-import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
+  import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw";
   import { flip } from "svelte/animate"
   import { onDestroy, tick } from "svelte"
   import { slide } from "svelte/transition"
@@ -32,49 +32,48 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
   import LoadingContainer from "./LoadingContainer.svelte"
   import TradeActionsMenu from "./TradeActionsMenu.svelte"
 
-  export let folder: BookmarksFolderStruct
-  export let isExpanded = false
-  export let onToggleExpansion: (id: string) => void
-  export let onArchiveEvent: () => void
-  export let onDeleteEvent: () => void
-  export let onFolderDragStart: (
-    event: DragEvent,
-    id: string
-  ) => void = () => {}
-  export let onFolderDragEnter: (
-    event: DragEvent,
-    id: string
-  ) => void = () => {}
-  export let onFolderDrop: (event: DragEvent, id: string) => void = () => {}
-  export let onFolderDragEnd: () => void = () => {}
-  export let isFolderDragging = false
-  export let isFolderDragOver = false
-  export let isTutorialSaveTarget = false
-  export let startInEditMode = false
-  export let onStartInEditModeHandled: () => void = () => {}
+  interface Props {
+    folder: BookmarksFolderStruct;
+    isExpanded?: boolean;
+    onToggleExpansion: (id: string) => void;
+    onArchiveEvent: () => void;
+    onDeleteEvent: () => void;
+    onFolderDragStart?: (event: DragEvent, id: string) => void;
+    onFolderDragEnter?: (event: DragEvent, id: string) => void;
+    onFolderDrop?: (event: DragEvent, id: string) => void;
+    onFolderDragEnd?: () => void;
+    isFolderDragging?: boolean;
+    isFolderDragOver?: boolean;
+    isTutorialSaveTarget?: boolean;
+    startInEditMode?: boolean;
+    onStartInEditModeHandled?: () => void;
+  }
 
-  let trades: BookmarksTradeStruct[] = []
-  let isLoading = false
-  let hasLoadedTrades = false
+  let {
+    folder = $bindable(),
+    isExpanded = false,
+    onToggleExpansion,
+    onArchiveEvent,
+    onDeleteEvent,
+    onFolderDragStart = () => {},
+    onFolderDragEnter = () => {},
+    onFolderDrop = () => {},
+    onFolderDragEnd = () => {},
+    isFolderDragging = false,
+    isFolderDragOver = false,
+    isTutorialSaveTarget = false,
+    startInEditMode = false,
+    onStartInEditModeHandled = () => {}
+  }: Props = $props();
+
+  let trades: BookmarksTradeStruct[] = $state([])
+  let isLoading = $state(false)
+  let hasLoadedTrades = $state(false)
   let isDuplicating = false
-  let tradePendingDelete: BookmarksTradeStruct | null = null
-  let currentFolderId: string | null = folder.id || null
+  let tradePendingDelete: BookmarksTradeStruct | null = $state(null)
+  let currentFolderId: string | null = $state(folder.id || null)
   let loadRequestId = 0
 
-  $: isArchived = !!folder.archivedAt
-  $: if (startInEditMode && !editingFolder) {
-    startEditingFolder()
-    onStartInEditModeHandled()
-  }
-  $: if ((folder.id || null) !== currentFolderId) {
-    currentFolderId = folder.id || null
-    trades = []
-    hasLoadedTrades = false
-    isLoading = false
-  }
-  $: if (isExpanded && !hasLoadedTrades && !isLoading) {
-    void loadTrades()
-  }
   const loadTrades = async (force = false) => {
     if (!folder.id) return
     if (!force && (isLoading || hasLoadedTrades)) return
@@ -226,8 +225,8 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
     }
   }
 
-  let draggedIndex: number | null = null
-  let dragOverIndex: number | null = null
+  let draggedIndex: number | null = $state(null)
+  let dragOverIndex: number | null = $state(null)
   let suppressNextTradeOpen = false
 
   const handleDragStart = (e: DragEvent, index: number) => {
@@ -344,16 +343,11 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
     }
   }
 
-  let editingFolder = false
-  let folderEditTitle = ""
-  let folderEditIcon: string | null = null
-  let folderEditInputEl: HTMLInputElement | null = null
+  let editingFolder = $state(false)
+  let folderEditTitle = $state("")
+  let folderEditIcon: string | null = $state(null)
+  let folderEditInputEl: HTMLInputElement | null = $state(null)
   let isSavingFolderTitle = false
-  $: visibleFolderIconOptions = bookmarkFolderIconOptions.filter(
-    (option) => option.version === folder.version
-  )
-  $: folderIconUrl = getBookmarkFolderIconUrl(folder.icon)
-  $: folderEditIconUrl = getBookmarkFolderIconUrl(folderEditIcon)
 
   const startEditingFolder = async () => {
     folderEditTitle = folder.title
@@ -398,9 +392,9 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
     folderEditIcon = folder.icon
   }
 
-  let editingTradeId: string | null = null
-  let tradeEditTitle = ""
-  let tradeEditInputEl: HTMLInputElement | null = null
+  let editingTradeId: string | null = $state(null)
+  let tradeEditTitle = $state("")
+  let tradeEditInputEl: HTMLInputElement | null = $state(null)
   let savingTradeId: string | null = null
 
   const startEditingTrade = async (trade: BookmarksTradeStruct) => {
@@ -474,6 +468,31 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
       })
     )
   }
+  let isArchived = $derived(!!folder.archivedAt)
+  $effect(() => {
+    if (startInEditMode && !editingFolder) {
+      startEditingFolder()
+      onStartInEditModeHandled()
+    }
+  });
+  $effect(() => {
+    if ((folder.id || null) !== currentFolderId) {
+      currentFolderId = folder.id || null
+      trades = []
+      hasLoadedTrades = false
+      isLoading = false
+    }
+  });
+  $effect(() => {
+    if (isExpanded && !hasLoadedTrades && !isLoading) {
+      void loadTrades()
+    }
+  });
+  let visibleFolderIconOptions = $derived(bookmarkFolderIconOptions.filter(
+    (option) => option.version === folder.version
+  ))
+  let folderIconUrl = $derived(getBookmarkFolderIconUrl(folder.icon))
+  let folderEditIconUrl = $derived(getBookmarkFolderIconUrl(folderEditIcon))
 </script>
 
 <div
@@ -484,11 +503,14 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
   class:is-folder-dragging={isFolderDragging}
   class:is-folder-drag-over={isFolderDragOver}
   draggable="true"
-  on:dragstart={(e) => onFolderDragStart(e, folder.id || "")}
-  on:dragenter={(e) => onFolderDragEnter(e, folder.id || "")}
-  on:dragover|preventDefault
-  on:drop|preventDefault={(e) => onFolderDrop(e, folder.id || "")}
-  on:dragend={onFolderDragEnd}>
+  ondragstart={(e) => onFolderDragStart(e, folder.id || "")}
+  ondragenter={(e) => onFolderDragEnter(e, folder.id || "")}
+  ondragover={(event) => event.preventDefault()}
+  ondrop={(event) => {
+    event.preventDefault()
+    onFolderDrop(event, folder.id || "")
+  }}
+  ondragend={onFolderDragEnd}>
   <div class="folder-header">
     <div
       class="folder-drag-handle"
@@ -500,7 +522,7 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
     <button
       type="button"
       class="expansion-wrapper"
-      on:click={(e) => {
+      onclick={(e) => {
         e.stopPropagation()
         if (!editingFolder) onToggleExpansion(folder.id || "")
       }}
@@ -512,12 +534,12 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
           class="inline-edit-input"
           bind:this={folderEditInputEl}
           bind:value={folderEditTitle}
-          on:keydown={(e) => {
+          onkeydown={(e) => {
             e.stopPropagation()
             if (e.key === "Enter") saveFolderTitle()
             if (e.key === "Escape") cancelFolderEdit()
           }}
-          on:click|stopPropagation />
+          onclick={(event) => event.stopPropagation()} />
       {:else}
         <div class="header-copy">
           <div class="header-main">
@@ -553,7 +575,7 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
           type="button"
           class="folder-icon-option folder-icon-option--clear"
           class:is-selected={!folderEditIcon}
-          on:click={() => (folderEditIcon = null)}
+          onclick={() => (folderEditIcon = null)}
         >
           <span class="folder-icon-option__empty">{translate($languageStore, "folder.noIcon")}</span>
         </button>
@@ -565,7 +587,7 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
             class:is-selected={folderEditIcon === option.id}
             title={option.label}
             aria-label={option.label}
-            on:click={() => (folderEditIcon = option.id)}
+            onclick={() => (folderEditIcon = option.id)}
           >
             <img src={option.url} alt="" />
           </button>
@@ -606,11 +628,14 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
             <li
               animate:flip={{ duration: 180 }}
               draggable="true"
-              on:dragstart={(e) => handleDragStart(e, i)}
-              on:dragenter={(e) => handleDragEnter(e, i)}
-              on:dragover|preventDefault
-              on:drop|preventDefault={(e) => handleDrop(e, i)}
-              on:dragend={handleDragEnd}>
+              ondragstart={(e) => handleDragStart(e, i)}
+              ondragenter={(e) => handleDragEnter(e, i)}
+              ondragover={(event) => event.preventDefault()}
+              ondrop={(event) => {
+                event.preventDefault()
+                void handleDrop(event, i)
+              }}
+              ondragend={handleDragEnd}>
               <div
                 class="trade-item"
                 class:is-completed={!!trade.completedAt}
@@ -619,8 +644,8 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
                 role="button"
                 tabindex="0"
                 aria-label={trade.title}
-                on:click={() => openTradeFromCard(trade)}
-                on:keydown={(e) => {
+                onclick={() => openTradeFromCard(trade)}
+                onkeydown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault()
                     openTradeFromCard(trade)
@@ -630,7 +655,7 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
                 type="button"
                 class="drag-handle"
                 title={translate($languageStore, "folder.dragTrade")}
-                on:click|stopPropagation>
+                onclick={(event) => event.stopPropagation()}>
                 ≡
               </button>
               <div class="trade-content">
@@ -641,13 +666,13 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
                       class="inline-edit-input trade-edit"
                       bind:this={tradeEditInputEl}
                       bind:value={tradeEditTitle}
-                      on:blur={() => saveTradeTitle(trade)}
-                      on:keydown={(e) => {
+                      onblur={() => saveTradeTitle(trade)}
+                      onkeydown={(e) => {
                         e.stopPropagation()
                         if (e.key === "Enter") saveTradeTitle(trade)
                         if (e.key === "Escape") cancelTradeEdit()
                       }}
-                      on:click|stopPropagation />
+                      onclick={(event) => event.stopPropagation()} />
                   {:else}
                     <div class="trade-copy">
                       <a
@@ -661,7 +686,11 @@ import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw"
                             "Standard"
                         )}
                         title={trade.title}
-                        on:click|preventDefault|stopPropagation={() => void openTrade(trade)}>
+                        onclick={(event) => {
+                          event.preventDefault()
+                          event.stopPropagation()
+                          void openTrade(trade)
+                        }}>
                         {trade.title}
                       </a>
                     </div>

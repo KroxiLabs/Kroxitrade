@@ -6,10 +6,17 @@
     type AppLanguage
   } from "../lib/services/i18n"
 
-  export let open = false
-  export let selectedLanguage: AppLanguage = "en"
-  export let onSelectLanguage: (language: AppLanguage) => void = () => {}
-  export let onConfirm: () => void = () => {}
+  let {
+    open = false,
+    selectedLanguage = "en",
+    onSelectLanguage = () => {},
+    onConfirm = () => {}
+  }: {
+    open?: boolean;
+    selectedLanguage?: AppLanguage;
+    onSelectLanguage?: (language: AppLanguage) => void;
+    onConfirm?: () => void;
+  } = $props()
 
   const languages: Array<{ code: AppLanguage; label: string }> = [
     { code: "en", label: "English" },
@@ -50,7 +57,7 @@
               type="button"
               class="welcome-language-button"
               class:is-selected={selectedLanguage === language.code}
-              on:click={() => onSelectLanguage(language.code)}>
+              onclick={() => onSelectLanguage(language.code)}>
               {language.label}
             </button>
           {/each}

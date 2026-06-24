@@ -1,10 +1,19 @@
 <script lang="ts">
   import { languageStore, translate } from "../lib/services/i18n";
-  export let logoUrl: string;
-  export let isMinimized: boolean = false;
-  export let isDevBuild: boolean = false;
-  export let onToggleMinimize: () => void = () => {};
-  export let sidebarSide: 'left' | 'right' = 'left';
+
+  let {
+    logoUrl,
+    isMinimized = false,
+    isDevBuild = false,
+    onToggleMinimize = () => {},
+    sidebarSide = 'left'
+  }: {
+    logoUrl: string;
+    isMinimized?: boolean;
+    isDevBuild?: boolean;
+    onToggleMinimize?: () => void;
+    sidebarSide?: 'left' | 'right';
+  } = $props();
 </script>
 
 <header class="sidebar-header">
@@ -22,7 +31,7 @@
   </div>
   
   <div class="toolbar">
-    <button class="minimize-toggle" on:click={onToggleMinimize} title={isMinimized ? translate($languageStore, "header.expandSidebar") : translate($languageStore, "header.minimizeSidebar")}>
+    <button class="minimize-toggle" onclick={onToggleMinimize} title={isMinimized ? translate($languageStore, "header.expandSidebar") : translate($languageStore, "header.minimizeSidebar")}>
       <span class="chev-icon">
         {#if sidebarSide === 'left'}
           {isMinimized ? "▶" : "◀"}

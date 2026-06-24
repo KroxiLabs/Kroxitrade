@@ -1,4 +1,4 @@
-﻿import iconPoe1Alchemy from "../../assets/images/bookmark-folder/poe1-alchemy.webp"
+import iconPoe1Alchemy from "../../assets/images/bookmark-folder/poe1-alchemy.webp"
 import iconPoe1Ascendant from "../../assets/images/bookmark-folder/poe1-ascendant.webp"
 import iconPoe1Assassin from "../../assets/images/bookmark-folder/poe1-assassin.webp"
 import iconPoe1Berserker from "../../assets/images/bookmark-folder/poe1-berserker.webp"

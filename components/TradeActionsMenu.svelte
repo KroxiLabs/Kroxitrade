@@ -13,14 +13,27 @@
   import trashIcon from "lucide-static/icons/trash-2.svg?raw";
   import moreIcon from "lucide-static/icons/more-horizontal.svg?raw";
 
-  export let trade: BookmarksTradeStruct;
-  export let onEdit: () => void;
-  export let onReplace: () => void;
-  export let onCopy: () => void;
-  export let onOpenLive: () => void;
-  export let onToggle: () => void;
-  export let onDelete: () => void;
-  export let compactText = "";
+  interface Props {
+    trade: BookmarksTradeStruct;
+    onEdit: () => void;
+    onReplace: () => void;
+    onCopy: () => void;
+    onOpenLive: () => void;
+    onToggle: () => void;
+    onDelete: () => void;
+    compactText?: string;
+  }
+
+  let {
+    trade,
+    onEdit,
+    onReplace,
+    onCopy,
+    onOpenLive,
+    onToggle,
+    onDelete,
+    compactText = ""
+  }: Props = $props();
 
   type TradeAction = {
     id: BookmarkTradeActionId;
@@ -40,11 +53,11 @@
     "delete"
   ];
 
-  let triggerRef: HTMLButtonElement | null = null;
-  let isOpen = false;
+  let triggerRef: HTMLButtonElement | null = $state(null);
+  let isOpen = $state(false);
   let menuRoot: HTMLDivElement | null = null;
 
-  $: actions = [
+  let actions = $derived([
     {
       id: "edit",
       icon: editIcon,
@@ -84,12 +97,12 @@
       handler: onDelete,
       danger: true
     }
-  ] satisfies TradeAction[];
+  ] satisfies TradeAction[]);
 
-  $: compactVisibleActionIds = ACTION_ORDER.filter((id) =>
+  let compactVisibleActionIds = $derived(ACTION_ORDER.filter((id) =>
     $settings.compactBookmarkTradeActions.includes(id)
-  );
-  $: inlineActions = $settings.compactActionsMenu
+  ));
+  let inlineActions = $derived($settings.compactActionsMenu
     ? actions.filter((action) => compactVisibleActionIds.includes(action.id))
     : compactVisibleActionIds.length > 0
       ? actions.filter((action) => compactVisibleActionIds.includes(action.id))
@@ -98,8 +111,12 @@
             action.id === "edit" ||
             action.id === "toggle" ||
             action.id === "delete"
-        );
-  $: dropdownActions = actions.filter((action) => !inlineActions.includes(action));
+        ));
+  let dropdownActions = $derived(actions.filter((action) => !inlineActions.includes(action)));
+  const stopAndRun = (handler: () => void) => (event: MouseEvent) => {
+    event.stopPropagation();
+    handler();
+  };
 
   const closeMenu = () => {
     isOpen = false;
@@ -243,7 +260,7 @@
         class:is-danger={action.danger}
         title={action.label}
         aria-label={action.label}
-        on:click|stopPropagation={() => runInlineAction(action.handler)}
+        onclick={stopAndRun(() => runInlineAction(action.handler))}
       >
         <span class="trade-action-btn__icon" aria-hidden="true">
           {@html normalizeIcon(action.icon)}
@@ -258,7 +275,7 @@
         title={translate($languageStore, "folder.actionsMenu")}
         aria-label={translate($languageStore, "folder.actionsMenu")}
         aria-expanded={isOpen}
-        on:click={toggleMenu}
+        onclick={toggleMenu}
         bind:this={triggerRef}
       >
         <span class="trade-action-btn__icon" aria-hidden="true">

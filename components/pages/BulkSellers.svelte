@@ -11,10 +11,16 @@
   const COLLAPSED_STORAGE_KEY = "bulk-sellers-collapsed";
   const VISITED_STORAGE_KEY = "bulk-sellers-visited";
   const bulkSellers = bulkSellersService;
-  let collapsedSellers: string[] = [];
-  let collapsedLookup = new Set<string>();
-  let visitedItems = new Set<string>();
-  let visitedSellerLookup = new Set<string>();
+  let collapsedSellers: string[] = $state([]);
+  let collapsedLookup = $derived(new Set(collapsedSellers));
+  let visitedItems = $state(new Set<string>());
+  let visitedSellerLookup = $derived(
+    new Set(
+      $bulkSellers
+        .filter((group) => group.items.some((item) => visitedItems.has(item.id)))
+        .map((group) => group.seller)
+    )
+  );
 
   const loadCollapsedState = () => {
     const raw = storageService.getLocalValue(COLLAPSED_STORAGE_KEY);
@@ -60,9 +66,7 @@
     loadVisitedState();
   });
 
-  $: collapsedLookup = new Set(collapsedSellers);
-
-  $: {
+  $effect(() => {
     const validSellers = new Set($bulkSellers.map((group) => group.seller));
     const nextCollapsed = collapsedSellers.filter((seller) => validSellers.has(seller));
 
@@ -70,11 +74,7 @@
       collapsedSellers = nextCollapsed;
       persistCollapsedState();
     }
-  }
-
-  $: visitedSellerLookup = new Set(
-    $bulkSellers.filter((group) => group.items.some((item) => visitedItems.has(item.id))).map((group) => group.seller)
-  );
+  });
 
   const findItem = (id: string) => {
     if (!bulkSellersService.find(id)) {
@@ -101,7 +101,7 @@
     <div class="groups">
       {#each $bulkSellers as group (group.seller)}
         <section class="seller-group">
-          <button class="seller-header" type="button" on:click={() => toggleSeller(group.seller)}>
+          <button class="seller-header" type="button" onclick={() => toggleSeller(group.seller)}>
             <div class="seller-header-main">
               <span class="seller-caret">{collapsedLookup.has(group.seller) ? "▶" : "▼"}</span>
               <div class="seller-name">{group.seller}</div>
