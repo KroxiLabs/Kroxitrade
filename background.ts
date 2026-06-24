@@ -1,5 +1,27 @@
 let registered = false
 
+type PoeNinjaRequest = {
+  query: "poe-ninja";
+  resource: string;
+};
+
+type TradeExchangeRateRequest = {
+  query: "trade-exchange-rate";
+  url: string;
+  body: unknown;
+};
+
+type BackgroundRequest = PoeNinjaRequest | TradeExchangeRateRequest;
+
+const isBackgroundRequest = (request: unknown): request is BackgroundRequest => {
+  if (!request || typeof request !== "object") {
+    return false;
+  }
+
+  const query = (request as { query?: unknown }).query;
+  return query === "poe-ninja" || query === "trade-exchange-rate";
+};
+
 export const registerBackgroundHandlers = () => {
   if (registered) {
     return
@@ -8,6 +30,10 @@ export const registerBackgroundHandlers = () => {
   registered = true
 
   chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
+    if (!isBackgroundRequest(request)) {
+      return false;
+    }
+
     if (request.query === "poe-ninja") {
       const url = `https://poe.ninja/api${request.resource}`
 
@@ -32,7 +58,7 @@ export const registerBackgroundHandlers = () => {
     }
 
     if (request.query === "trade-exchange-rate") {
-      const url = request.url as string
+      const url = request.url
 
       fetch(url, {
         method: "POST",

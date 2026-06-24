@@ -41,9 +41,12 @@
 
   const fetchHistory = async () => {
     isLoading = true;
-    historyEntries = await tradeLocationService.fetchHistory();
-    applyFilter();
-    isLoading = false;
+    try {
+      historyEntries = await tradeLocationService.fetchHistory();
+      applyFilter();
+    } finally {
+      isLoading = false;
+    }
   };
 
   const startOfDay = (date: Date) => new Date(date.getFullYear(), date.getMonth(), date.getDate());

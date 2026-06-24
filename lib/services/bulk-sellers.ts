@@ -12,6 +12,7 @@ export class BulkSellersService {
   private initialized = false;
   private readonly postSearchRefreshDelays = [80, 220, 500, 900];
   private searchRefreshTimers: number[] = [];
+  private readonly rowCache = new Map<string, { signature: string; item: BulkSellerItem | null }>();
   private readonly handleDocumentClick = (event: MouseEvent) => {
     const target = event.target as Element | null;
     if (!target?.closest(".btn.search-btn")) return;
@@ -39,6 +40,7 @@ export class BulkSellersService {
     this.searchRefreshTimers = [];
     this.observer?.disconnect();
     this.observer = null;
+    this.rowCache.clear();
     document.removeEventListener("click", this.handleDocumentClick, true);
     this.groupsStore.set([]);
   }
@@ -110,6 +112,24 @@ export class BulkSellersService {
   }
 
   private extractItem(row: HTMLElement, index: number): BulkSellerItem | null {
+    const rowId = row.dataset.id || row.getAttribute("data-id");
+    if (rowId) {
+      const signature = this.getRowSignature(row);
+      const cached = this.rowCache.get(rowId);
+
+      if (cached && cached.signature === signature) {
+        return cached.item;
+      }
+
+      const item = this.extractItemUncached(row, index);
+      this.rowCache.set(rowId, { signature, item });
+      return item;
+    }
+
+    return this.extractItemUncached(row, index);
+  }
+
+  private extractItemUncached(row: HTMLElement, index: number): BulkSellerItem | null {
     const seller = this.extractSeller(row);
     const itemName = this.extractItemName(row);
     const priceLabel = this.extractPriceLabel(row);
@@ -136,6 +156,14 @@ export class BulkSellersService {
       currencyIconAlt: currencyIcon?.alt || null,
       itemKey
     };
+  }
+
+  private getRowSignature(row: HTMLElement) {
+    return [
+      row.dataset.id || row.getAttribute("data-id") || "",
+      row.className,
+      row.textContent?.replace(/\s+/g, " ").trim() || ""
+    ].join("::");
   }
 
   private extractSeller(row: HTMLElement) {

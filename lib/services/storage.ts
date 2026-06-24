@@ -1,7 +1,7 @@
 import { hasValidExtensionContext, isExtensionContextInvalidatedError } from "../utilities/extension-context";
 
 interface StoragePayload {
-  value: any;
+  value: unknown;
   expiresAt: string | null;
 }
 
@@ -13,14 +13,14 @@ export class StorageService {
     return this.instance;
   }
 
-  async setValue(key: string, value: any, league: string | null = null): Promise<boolean> {
+  async setValue(key: string, value: unknown, league: string | null = null): Promise<boolean> {
     return this.write(this.formatKey(key, league), {
       expiresAt: null,
       value,
     });
   }
 
-  async setEphemeralValue(key: string, value: any, expirationDate: Date, league: string | null = null): Promise<boolean> {
+  async setEphemeralValue(key: string, value: unknown, expirationDate: Date, league: string | null = null): Promise<boolean> {
     return this.write(this.formatKey(key, league), {
       expiresAt: expirationDate.toUTCString(),
       value,
@@ -32,10 +32,10 @@ export class StorageService {
     if (!payload) return null;
 
     const { expiresAt, value } = payload;
-    if (!expiresAt) return value;
+    if (!expiresAt) return value as T;
 
     if (new Date().getTime() > new Date(expiresAt).getTime()) return null;
-    return value;
+    return value as T;
   }
 
   async getStaleValue<T>(key: string, league: string | null = null): Promise<T | null> {
