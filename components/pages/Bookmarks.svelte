@@ -12,6 +12,7 @@
   import { tradeLocationService } from "../../lib/services/trade-location";
   import { flashMessages } from "../../lib/services/flash";
   import { storageService } from "../../lib/services/storage";
+  import { normalizeIcon } from "../../lib/utilities/icons";
   import type { BookmarksFolderStruct } from "../../lib/types/bookmarks";
 
   import BookmarkFolder from "../BookmarkFolder.svelte";
@@ -188,26 +189,13 @@
       isImportingText = false;
   };
 
-  const normalizeToolbarIcon = (svg: string) =>
-    svg
-      .replace(/<svg\b([^>]*)>/, (_match, attrs) => {
-        const nextAttrs = attrs
-          .replace(/\sclass="[^"]*"/g, "")
-          .replace(/\swidth="[^"]*"/g, "")
-          .replace(/\sheight="[^"]*"/g, "")
-          .replace(/\sviewBox="[^"]*"/g, "")
-          .trim();
-
-        return `<svg ${nextAttrs} viewBox="-2 -2 28 28" class="toolbar-svg">`;
-      });
-
   const toolbarIcons = {
-    newFolder: normalizeToolbarIcon(folderPlusIcon),
-    import: normalizeToolbarIcon(downloadIcon),
-    cancel: normalizeToolbarIcon(xIcon),
-    collapse: normalizeToolbarIcon(chevronsUpIcon),
-    archive: normalizeToolbarIcon(archiveIcon),
-    active: normalizeToolbarIcon(archiveRestoreIcon)
+    newFolder: normalizeIcon(folderPlusIcon, { size: 13, className: "toolbar-svg" }),
+    import: normalizeIcon(downloadIcon, { size: 13, className: "toolbar-svg" }),
+    cancel: normalizeIcon(xIcon, { size: 13, className: "toolbar-svg" }),
+    collapse: normalizeIcon(chevronsUpIcon, { size: 13, className: "toolbar-svg" }),
+    archive: normalizeIcon(archiveIcon, { size: 13, className: "toolbar-svg" }),
+    active: normalizeIcon(archiveRestoreIcon, { size: 13, className: "toolbar-svg" })
   };
 
   const clearToolbarRepairTimers = () => {

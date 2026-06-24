@@ -5,6 +5,7 @@
   import { itemResultsService } from "../../lib/services/item-results";
   import { settings, type BookmarkTradeActionId, type SidebarSide } from "../../lib/services/settings";
   import { tradeLocationService } from "../../lib/services/trade-location";
+  import { normalizeIcon } from "../../lib/utilities/icons";
   import Button from "../Button.svelte";
   import { onDestroy, onMount } from "svelte";
   import flagBR from "../../assets/BR.png?inline";
@@ -30,25 +31,13 @@
   let { onOpenTutorial = () => {} }: Props = $props();
 
   const DEFAULT_SIDEBAR_WIDTH = 450;
-  const normalizeSettingsIcon = (svg: string) =>
-    svg.replace(/<svg\b([^>]*)>/, (_match, attrs) => {
-      const nextAttrs = attrs
-        .replace(/\sclass="[^"]*"/g, "")
-        .replace(/\swidth="[^"]*"/g, "")
-        .replace(/\sheight="[^"]*"/g, "")
-        .replace(/\sviewBox="[^"]*"/g, "")
-        .trim();
-
-      return `<svg ${nextAttrs} viewBox="-2 -2 28 28" class="settings-option-svg">`;
-    });
-
   const compactTradeActionOptions: Array<{ id: BookmarkTradeActionId; labelKey: string; icon: string }> = [
-    { id: "edit", labelKey: "folder.editSearchName", icon: normalizeSettingsIcon(editIcon) },
-    { id: "replace", labelKey: "folder.replaceCurrentSearch", icon: normalizeSettingsIcon(replaceIcon) },
-    { id: "copy", labelKey: "folder.copyUrl", icon: normalizeSettingsIcon(copyIcon) },
-    { id: "openLive", labelKey: "folder.openLiveSearch", icon: normalizeSettingsIcon(liveIcon) },
-    { id: "toggle", labelKey: "settings.compactTradeActionToggle", icon: normalizeSettingsIcon(toggleIcon) },
-    { id: "delete", labelKey: "folder.deleteTrade", icon: normalizeSettingsIcon(deleteIcon) }
+    { id: "edit", labelKey: "folder.editSearchName", icon: normalizeIcon(editIcon, { size: 15, className: "settings-option-svg" }) },
+    { id: "replace", labelKey: "folder.replaceCurrentSearch", icon: normalizeIcon(replaceIcon, { size: 15, className: "settings-option-svg" }) },
+    { id: "copy", labelKey: "folder.copyUrl", icon: normalizeIcon(copyIcon, { size: 15, className: "settings-option-svg" }) },
+    { id: "openLive", labelKey: "folder.openLiveSearch", icon: normalizeIcon(liveIcon, { size: 15, className: "settings-option-svg" }) },
+    { id: "toggle", labelKey: "settings.compactTradeActionToggle", icon: normalizeIcon(toggleIcon, { size: 15, className: "settings-option-svg" }) },
+    { id: "delete", labelKey: "folder.deleteTrade", icon: normalizeIcon(deleteIcon, { size: 15, className: "settings-option-svg" }) }
   ];
   const languages: Array<{ code: AppLanguage; label: string; flag: string; emoji: string }> = [
     { code: "en", label: "English", flag: flagGB, emoji: "🇬🇧" },

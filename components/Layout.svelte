@@ -21,6 +21,7 @@
   import { storageService } from "../lib/services/storage";
   import { tradeLocationService } from "../lib/services/trade-location";
   import { hasValidExtensionContext } from "../lib/utilities/extension-context";
+  import { normalizeIcon } from "../lib/utilities/icons";
   import type { BookmarksFolderStruct, BookmarksTradeStruct } from "../lib/types/bookmarks";
   import { onDestroy, onMount, tick } from "svelte";
   
@@ -69,23 +70,21 @@
 
   const getExpandedSidebarWidth = () => clampSidebarWidth($settings.sidebarWidth || 450);
   const getRenderedSidebarWidth = () => clampSidebarWidth(liveSidebarWidth ?? getExpandedSidebarWidth());
-  const normalizeNavIcon = (svg: string) =>
-    svg
-      .replace(/<svg\b([^>]*)>/, (_match, attrs) => {
-        const cleaned = attrs
-          .replace(/\s(width|height|stroke-width|class|aria-hidden)="[^"]*"/g, "")
-          .trim();
-        const nextAttrs = cleaned ? `${cleaned} ` : "";
-        return `<svg ${nextAttrs} viewBox="-2 -2 28 28" class="nav-svg" aria-hidden="true">`;
-      })
-      .replace(/stroke-width="[^"]*"/g, 'stroke-width="1.75"');
 
   const navIcons = {
-    bookmarks: normalizeNavIcon(bookmarkIcon),
-    bulk: normalizeNavIcon(layersIcon),
-    history: normalizeNavIcon(clockIcon),
-    settings: normalizeNavIcon(settingsIcon),
-    about: normalizeNavIcon(infoIcon)
+    bookmarks: normalizeIcon(bookmarkIcon, {
+      size: 14,
+      className: "nav-svg",
+      extraAttrs: 'aria-hidden="true"'
+    }),
+    bulk: normalizeIcon(layersIcon, { size: 14, className: "nav-svg", extraAttrs: 'aria-hidden="true"' }),
+    history: normalizeIcon(clockIcon, { size: 14, className: "nav-svg", extraAttrs: 'aria-hidden="true"' }),
+    settings: normalizeIcon(settingsIcon, {
+      size: 14,
+      className: "nav-svg",
+      extraAttrs: 'aria-hidden="true"'
+    }),
+    about: normalizeIcon(infoIcon, { size: 14, className: "nav-svg", extraAttrs: 'aria-hidden="true"' })
   };
 
   const getTutorialTradeStruct = (): BookmarksTradeStruct => {
