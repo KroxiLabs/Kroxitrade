@@ -1,7 +1,8 @@
 <script lang="ts">
   import bookmarkIcon from "lucide-static/icons/bookmark.svg?raw";
   import clockIcon from "lucide-static/icons/history.svg?raw";
-  import infoIcon from "lucide-static/icons/info.svg?raw";
+import infoIcon from "lucide-static/icons/info.svg?raw";
+import beakerIcon from "lucide-static/icons/beaker.svg?raw";
   import layersIcon from "lucide-static/icons/layers-3.svg?raw";
   import settingsIcon from "lucide-static/icons/settings-2.svg?raw";
   import Header from "./Header.svelte";
@@ -9,8 +10,9 @@
   import BulkSellers from "./pages/BulkSellers.svelte";
   import History from "./pages/History.svelte";
   import OnboardingModal from "./OnboardingModal.svelte";
-  import Settings from "./pages/Settings.svelte";
-  import About from "./pages/About.svelte";
+import Settings from "./pages/Settings.svelte";
+import About from "./pages/About.svelte";
+import Experimental from "./pages/Experimental.svelte";
   import FinerFilters from "./FinerFilters.svelte";
   import WelcomeDialog from "./WelcomeDialog.svelte";
   import logoUrl from "~assets/logo.webp?inline";
@@ -31,7 +33,7 @@
   const ONBOARDING_FOLDER_ID_KEY = "layout-onboarding-folder-id";
   const VERSION_NOTICE_SEEN_KEY = "layout-version-notice-seen";
 
-  let currentPage: 'bookmarks' | 'bulk' | 'history' | 'about' | 'settings' = $state('bookmarks');
+  let currentPage: 'bookmarks' | 'bulk' | 'history' | 'about' | 'settings' | 'experimental' = $state('bookmarks');
   let currentTradeVersion: "1" | "2" = $state(tradeLocationService.current.version);
   let isMinimized = $state(false);
   let isResizing = $state(false);
@@ -40,7 +42,7 @@
   let showOnboarding = $state(false);
   let showWelcome = $state(false);
   let welcomeLanguage = $state("en" as typeof $settings.language);
-  let onboardingHighlightedPage: 'bookmarks' | 'bulk' | 'history' | 'about' | 'settings' | null = $state(null);
+  let onboardingHighlightedPage: 'bookmarks' | 'bulk' | 'history' | 'about' | 'settings' | 'experimental' | null = $state(null);
   let onboardingCurrentStepId:
     | 'create-folder'
     | 'save-search'
@@ -84,7 +86,12 @@
       className: "nav-svg",
       extraAttrs: 'aria-hidden="true"'
     }),
-    about: normalizeIcon(infoIcon, { size: 14, className: "nav-svg", extraAttrs: 'aria-hidden="true"' })
+    about: normalizeIcon(infoIcon, { size: 14, className: "nav-svg", extraAttrs: 'aria-hidden="true"' }),
+    experimental: normalizeIcon(beakerIcon, {
+      size: 14,
+      className: "nav-svg",
+      extraAttrs: 'aria-hidden="true"'
+    })
   };
 
   const getTutorialTradeStruct = (): BookmarksTradeStruct => {
@@ -438,6 +445,17 @@
         <span class="nav-item__icon" aria-hidden="true">{@html navIcons.settings}</span>
         <span class="nav-item__label">{translate($languageStore, "layout.nav.settings")}</span>
     </button>
+    {#if isDevBuild}
+      <button
+          class="nav-item {currentPage === 'experimental' ? 'is-active' : ''}"
+          title={translate($languageStore, "layout.nav.experimental")}
+          aria-label={translate($languageStore, "layout.nav.experimental")}
+          onclick={() => currentPage = 'experimental'}
+      >
+          <span class="nav-item__icon" aria-hidden="true">{@html navIcons.experimental}</span>
+          <span class="nav-item__label">{translate($languageStore, "layout.nav.experimental")}</span>
+      </button>
+    {/if}
     <button 
         class="nav-item nav-item--icon-only {currentPage === 'about' ? 'is-active' : ''} {showOnboarding && onboardingHighlightedPage === 'about' ? 'is-onboarding-focus' : ''}" 
         title={translate($languageStore, "layout.nav.about")}
@@ -471,6 +489,8 @@
         <History />
     {:else if currentPage === 'settings'}
         <Settings onOpenTutorial={openOnboarding} />
+    {:else if currentPage === 'experimental' && isDevBuild}
+        <Experimental />
     {:else if currentPage === 'about'}
         <About />
     {/if}

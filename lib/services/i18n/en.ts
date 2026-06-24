@@ -9,6 +9,7 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "layout.nav.bulk": "Bulk",
     "layout.nav.history": "History",
     "layout.nav.settings": "Settings",
+    "layout.nav.experimental": "Experimental",
     "layout.nav.about": "About",
     "layout.removeAlert": "Remove alert",
     "layout.resizeSidebar": "Resize sidebar",
@@ -187,6 +188,13 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "settings.finerFiltersTitle": "Add To Filters",
     "settings.finerFiltersDescription":
       "Show or hide the Add to Filters panel at the bottom of the sidebar.",
+    "experimental.eyebrow": "Dev only",
+    "experimental.title": "Experimental",
+    "experimental.description":
+      "Temporary playground for features we are testing before they reach the main UI.",
+    "experimental.devOnlyTitle": "Development build only",
+    "experimental.devOnlyBody":
+      "This space only appears in development builds so we can try ideas without affecting production users.",
     "settings.hidden": "Hidden",
     "settings.visible": "Visible",
     "settings.on": "On",

@@ -9,6 +9,7 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "layout.nav.bulk": "Bulk",
     "layout.nav.history": "Historial",
     "layout.nav.settings": "Ajustes",
+    "layout.nav.experimental": "Experimental",
     "layout.nav.about": "Acerca de",
     "layout.removeAlert": "Quitar alerta",
     "layout.resizeSidebar": "Redimensionar panel",
@@ -187,6 +188,13 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "settings.finerFiltersTitle": "Agregar a filtros",
     "settings.finerFiltersDescription":
       "Mostrá u ocultá el panel Agregar a filtros al final de la barra lateral.",
+    "experimental.eyebrow": "Solo dev",
+    "experimental.title": "Experimental",
+    "experimental.description":
+      "Espacio temporal para probar ideas antes de que lleguen a la interfaz principal.",
+    "experimental.devOnlyTitle": "Solo en build de desarrollo",
+    "experimental.devOnlyBody":
+      "Este espacio aparece únicamente en builds de desarrollo para probar cosas sin afectar a usuarios de producción.",
     "settings.hidden": "Oculto",
     "settings.visible": "Visible",
     "settings.on": "On",
