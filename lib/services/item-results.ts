@@ -423,7 +423,6 @@ export class ItemResultsService {
     copyButton.hidden = false;
     copyButton.removeAttribute("hidden");
     copyButton.classList.remove("hidden");
-    copyButton.classList.add("bt-copy-pob-enabled");
     copyButton.style.removeProperty("display");
     copyButton.style.removeProperty("visibility");
   }
