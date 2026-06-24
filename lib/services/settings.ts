@@ -31,7 +31,7 @@ const DEFAULT_SETTINGS: AppSettings = {
 
 let currentSettings: AppSettings = DEFAULT_SETTINGS;
 
-const { subscribe, set, update } = writable<AppSettings>(DEFAULT_SETTINGS);
+const { subscribe, set } = writable<AppSettings>(DEFAULT_SETTINGS);
 
 subscribe((value) => {
   currentSettings = value;
@@ -47,7 +47,19 @@ async function load() {
 
 // Persist settings to storage
 async function save(newSettings: AppSettings) {
-  await storageService.setValue('app-settings', newSettings);
+  return storageService.setValue('app-settings', newSettings);
+}
+
+async function persistAndApply(next: AppSettings, onApplied?: () => void): Promise<boolean> {
+  const saved = await save(next);
+  if (!saved) {
+    console.warn("[Poe Trade Plus] Failed to persist settings");
+    return false;
+  }
+
+  set(next);
+  onApplied?.();
+  return true;
 }
 
 export const settings = {
@@ -57,67 +69,39 @@ export const settings = {
     return currentSettings;
   },
   async updateSide(side: SidebarSide) {
-    update(s => {
-      const next = { ...s, sidebarSide: side };
-      save(next);
-      return next;
-    });
+    const next = { ...currentSettings, sidebarSide: side };
+    return persistAndApply(next);
   },
   async updateEquivalentPricingVisibility(showEquivalentPricing: boolean) {
-    update(s => {
-      const next = { ...s, showEquivalentPricing };
-      save(next);
-      return next;
-    });
+    const next = { ...currentSettings, showEquivalentPricing };
+    return persistAndApply(next);
   },
   async updateBulkSellersVisibility(showBulkSellers: boolean) {
-    update(s => {
-      const next = { ...s, showBulkSellers };
-      save(next);
-      return next;
-    });
+    const next = { ...currentSettings, showBulkSellers };
+    return persistAndApply(next);
   },
   async updateHistoryVisibility(showHistory: boolean) {
-    update(s => {
-      const next = { ...s, showHistory };
-      save(next);
-      return next;
-    });
+    const next = { ...currentSettings, showHistory };
+    return persistAndApply(next);
   },
   async updateFinerFiltersVisibility(showFinerFilters: boolean) {
-    update(s => {
-      const next = { ...s, showFinerFilters };
-      save(next);
-      return next;
-    });
+    const next = { ...currentSettings, showFinerFilters };
+    return persistAndApply(next);
   },
   async updateSidebarWidth(sidebarWidth: number) {
-    update(s => {
-      const next = { ...s, sidebarWidth };
-      save(next);
-      return next;
-    });
+    const next = { ...currentSettings, sidebarWidth };
+    return persistAndApply(next);
   },
   async updateLanguage(language: AppLanguage) {
-    update(s => {
-      const next = { ...s, language };
-      save(next);
-      setLanguage(language);
-      return next;
-    });
+    const next = { ...currentSettings, language };
+    return persistAndApply(next, () => setLanguage(language));
   },
   async updateCompactActionsMenu(compactActionsMenu: boolean) {
-    update(s => {
-      const next = { ...s, compactActionsMenu };
-      save(next);
-      return next;
-    });
+    const next = { ...currentSettings, compactActionsMenu };
+    return persistAndApply(next);
   },
   async updateCompactBookmarkTradeActions(compactBookmarkTradeActions: BookmarkTradeActionId[]) {
-    update(s => {
-      const next = { ...s, compactBookmarkTradeActions };
-      save(next);
-      return next;
-    });
+    const next = { ...currentSettings, compactBookmarkTradeActions };
+    return persistAndApply(next);
   }
 };

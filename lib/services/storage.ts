@@ -13,14 +13,14 @@ export class StorageService {
     return this.instance;
   }
 
-  async setValue(key: string, value: any, league: string | null = null) {
+  async setValue(key: string, value: any, league: string | null = null): Promise<boolean> {
     return this.write(this.formatKey(key, league), {
       expiresAt: null,
       value,
     });
   }
 
-  async setEphemeralValue(key: string, value: any, expirationDate: Date, league: string | null = null) {
+  async setEphemeralValue(key: string, value: any, expirationDate: Date, league: string | null = null): Promise<boolean> {
     return this.write(this.formatKey(key, league), {
       expiresAt: expirationDate.toUTCString(),
       value,
@@ -63,7 +63,7 @@ export class StorageService {
     }
   }
 
-  async deleteValue(key: string, league: string | null = null) {
+  async deleteValue(key: string, league: string | null = null): Promise<boolean> {
     return this.remove(this.formatKey(key, league));
   }
 
@@ -79,25 +79,35 @@ export class StorageService {
     window.localStorage.removeItem(`bt-${this.formatKey(key, league)}`);
   }
 
-  private async write(key: string, value: StoragePayload): Promise<void> {
-    if (!hasValidExtensionContext() || !chrome.storage?.local) return;
+  private async write(key: string, value: StoragePayload): Promise<boolean> {
+    if (!hasValidExtensionContext() || !chrome.storage?.local) {
+      console.warn("Storage not available");
+      return false;
+    }
     try {
       await chrome.storage.local.set({ [key]: value });
+      return true;
     } catch (error) {
       if (!isExtensionContextInvalidatedError(error)) {
         console.warn("Storage write failed", error);
       }
+      return false;
     }
   }
 
-  private async remove(keys: string | string[]): Promise<void> {
-    if (!hasValidExtensionContext() || !chrome.storage?.local) return;
+  private async remove(keys: string | string[]): Promise<boolean> {
+    if (!hasValidExtensionContext() || !chrome.storage?.local) {
+      console.warn("Storage not available");
+      return false;
+    }
     try {
       await chrome.storage.local.remove(keys);
+      return true;
     } catch (error) {
       if (!isExtensionContextInvalidatedError(error)) {
         console.warn("Storage remove failed", error);
       }
+      return false;
     }
   }
 }
