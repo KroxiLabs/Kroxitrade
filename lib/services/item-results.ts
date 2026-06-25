@@ -6,7 +6,7 @@ import { slugify } from "../utilities/slugify";
 import { escapeRegex } from "../utilities/escape-regex";
 import { emitPageDebug } from "../utilities/page-debug";
 import { getCurrencyIconUrl } from "../data/currency-icons";
-import coeButtonImage from "../../assets/coe-button.png?inline";
+import coeButtonImage from "../../assets/coe-button.webp?inline";
 import { copyItemForPob } from "../utilities/copy-item-for-pob";
 import {
   buildCraftOfExileText,
@@ -519,25 +519,56 @@ export class ItemResultsService {
     const left = row.querySelector<HTMLElement>(".left");
     if (!left) return;
 
+    const searchByButton = left.querySelector<HTMLButtonElement>("button.searchBy");
     let button = left.querySelector<HTMLButtonElement>("button.bt-copy-coe");
     if (!experimentalSettings.isCoeVisible()) {
       button?.remove();
       return;
     }
 
-    if (button) return;
+    if (button) {
+      if (searchByButton) this.positionCoeButton(button, searchByButton);
+      return;
+    }
 
     button = document.createElement("button");
     button.type = "button";
     button.className = "bt-copy-coe";
     button.title = "Copy for Craft of Exile";
     button.setAttribute("aria-label", "Copy for Craft of Exile");
+    const copyMark = document.createElement("span");
+    copyMark.className = "bt-copy-coe-mark";
+    copyMark.setAttribute("aria-hidden", "true");
     const image = document.createElement("img");
     image.src = coeButtonImage;
     image.alt = "";
     image.setAttribute("aria-hidden", "true");
+    button.appendChild(copyMark);
     button.appendChild(image);
-    left.appendChild(button);
+    if (searchByButton) {
+      searchByButton.insertAdjacentElement("afterend", button);
+      this.positionCoeButton(button, searchByButton);
+    } else {
+      left.appendChild(button);
+    }
+  }
+
+  private positionCoeButton(button: HTMLButtonElement, searchByButton: HTMLButtonElement) {
+    const searchStyle = window.getComputedStyle(searchByButton);
+    const searchLeft = Number.parseFloat(searchStyle.left);
+    const searchWidth = Number.parseFloat(searchStyle.width);
+
+    if (Number.isFinite(searchLeft) && Number.isFinite(searchWidth)) {
+      button.style.left = `${searchLeft + searchWidth}px`;
+    }
+
+    if (searchStyle.bottom !== "auto") {
+      button.style.top = "auto";
+      button.style.bottom = searchStyle.bottom;
+    } else if (searchStyle.top !== "auto") {
+      button.style.top = searchStyle.top;
+      button.style.bottom = "auto";
+    }
   }
 
   private refreshEquivalentPricing() {
