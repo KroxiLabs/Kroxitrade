@@ -536,14 +536,11 @@ export class ItemResultsService {
     button.className = "bt-copy-coe";
     button.title = "Copy for Craft of Exile";
     button.setAttribute("aria-label", "Copy for Craft of Exile");
-    const copyMark = document.createElement("span");
-    copyMark.className = "bt-copy-coe-mark";
-    copyMark.setAttribute("aria-hidden", "true");
+    
     const image = document.createElement("img");
     image.src = coeButtonImage;
     image.alt = "";
     image.setAttribute("aria-hidden", "true");
-    button.appendChild(copyMark);
     button.appendChild(image);
     if (searchByButton) {
       searchByButton.insertAdjacentElement("afterend", button);

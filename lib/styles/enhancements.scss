@@ -53,8 +53,8 @@ body.bt-dev-poe2-copy-visible .row:hover > .left > button.copy {
 .row > .left > button.bt-copy-coe {
   display: none;
   position: absolute;
-  width: 38px;
-  height: 38px;
+  width: 30px;
+  height: 30px;
   padding: 0;
   border: 0;
   background: transparent;
@@ -62,45 +62,15 @@ body.bt-dev-poe2-copy-visible .row:hover > .left > button.copy {
 
   img {
     position: absolute;
-    right: 1px;
-    top: 7px;
+    right: 0px;
+    top: 0px;
     display: block;
-    width: 27px;
-    height: 24px;
+    width: 30px;
+    height: 30px;
     object-fit: contain;
   }
 
-  .bt-copy-coe-mark {
-    position: absolute;
-    left: 0;
-    top: 12px;
-    width: 9px;
-    height: 11px;
-    border: 1px solid #fff;
-    box-sizing: border-box;
 
-    &::before {
-      content: "";
-      position: absolute;
-      left: 2px;
-      top: 2px;
-      width: 9px;
-      height: 10px;
-      border: 1px solid #fff;
-      box-sizing: border-box;
-    }
-
-    &::after {
-      content: "+";
-      position: absolute;
-      left: 3px;
-      top: -3px;
-      z-index: 1;
-      color: #fff;
-      font: bold 10px/10px Arial, sans-serif;
-      text-shadow: 0 0 2px #000;
-    }
-  }
 }
 
 body.bt-dev-coe-visible .row:hover > .left > button.bt-copy-coe,
