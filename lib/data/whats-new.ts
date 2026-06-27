@@ -26,6 +26,10 @@ export const latestWhatsNew: WhatsNewEntry = {
           description: "Customization is grouped into Interface, Sidebar, Results, and Bookmarks so each option has a clearer home."
         },
         {
+          title: "Bookmark Layout now has a live preview",
+          description: "The Bookmarks settings tab shows a real-time saved-search preview using the same action menu as the actual bookmark list."
+        },
+        {
           title: "What’s New is now built into the sidebar",
           description: "New releases can show a compact update prompt, plus a full release notes modal from About."
         },

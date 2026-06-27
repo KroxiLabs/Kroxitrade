@@ -658,8 +658,7 @@
                       <div class="trade-copy">
                         <span
                           class="trade-link"
-                          title={trade.title}
-                          data-no-card-open="true">
+                          title={trade.title}>
                           {trade.title}
                         </span>
                       </div>
