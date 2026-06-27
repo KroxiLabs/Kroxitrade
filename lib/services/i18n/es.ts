@@ -254,6 +254,11 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "settings.tradeActionsDescription":
       "Elegí qué acciones de cada búsqueda guardada quedan visibles fuera del menú tanto en el diseño clásico como en el compacto. Si no seleccionás ninguna, solo se ven los tres puntos.",
     "settings.compactTradeActionToggle": "Completar / Pendiente",
+    "settings.bookmarkPreviewTitle": "Vista en vivo",
+    "settings.bookmarkPreviewDescription":
+      "Mirá cómo se va a ver una búsqueda guardada con el diseño actual de favoritos.",
+    "settings.bookmarkPreviewFolder": "Equipo favorito",
+    "settings.bookmarkPreviewTrade": "Botas con resistencias altas",
     "settings.saveFailed": "No se pudieron guardar los ajustes. Probá de nuevo.",
     "settings.tabs.label": "Categorías de ajustes",
     "settings.tabs.interface": "Interfaz",

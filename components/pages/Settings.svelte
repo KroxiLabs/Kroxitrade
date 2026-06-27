@@ -10,8 +10,10 @@
   import { itemResultsService } from "../../lib/services/item-results";
   import { settings, type BookmarkTradeActionId, type SidebarSide } from "../../lib/services/settings";
   import { tradeLocationService } from "../../lib/services/trade-location";
+  import type { BookmarksTradeStruct } from "../../lib/types/bookmarks";
   import { normalizeIcon } from "../../lib/utilities/icons";
   import Button from "../Button.svelte";
+  import TradeActionsMenu from "../TradeActionsMenu.svelte";
   import ToggleRow from "../ToggleRow.svelte";
   import { onDestroy, onMount } from "svelte";
   import flagBR from "../../assets/BR.png?inline";
@@ -66,6 +68,17 @@
     { id: "toggle", labelKey: "settings.compactTradeActionToggle", icon: normalizeIcon(toggleIcon, { size: 15, className: "settings-option-svg" }) },
     { id: "delete", labelKey: "folder.deleteTrade", icon: normalizeIcon(deleteIcon, { size: 15, className: "settings-option-svg" }) }
   ];
+  const previewTrade: BookmarksTradeStruct = {
+    id: "settings-preview-trade",
+    title: "High resistance boots",
+    completedAt: null,
+    location: {
+      version: "2",
+      type: "search",
+      slug: "settings-preview",
+      league: "Mercenaries"
+    }
+  };
   const languages: Array<{ code: AppLanguage; label: string; flag: string; emoji: string }> = [
     { code: "en", label: "English", flag: flagGB, emoji: "🇬🇧" },
     { code: "es", label: "Español", flag: flagES, emoji: "🇪🇸" },
@@ -171,6 +184,8 @@
   function handleCompactTradeActionInput(event: Event, actionId: BookmarkTradeActionId) {
     handleCompactTradeActionChange(actionId, (event.currentTarget as HTMLInputElement).checked);
   }
+
+  function noopPreviewAction() {}
 
   async function handleSidebarWidthReset() {
     if (!(await settings.updateSidebarWidth(DEFAULT_SIDEBAR_WIDTH))) {
@@ -486,6 +501,73 @@
               <span class="compact-option__icon" aria-hidden="true">{@html option.icon}</span>
             </label>
           {/each}
+        </div>
+      </div>
+
+      <div class="bookmark-layout-preview" aria-label={translate($languageStore, "settings.bookmarkPreviewTitle")}>
+        <div class="bookmark-layout-preview__heading">
+          <div>
+            <div class="compact-options__title">{translate($languageStore, "settings.bookmarkPreviewTitle")}</div>
+            <p class="section-description section-description--compact">
+              {translate($languageStore, "settings.bookmarkPreviewDescription")}
+            </p>
+          </div>
+          <span class="bookmark-layout-preview__mode">
+            {translate(
+              $languageStore,
+              $settings.compactActionsMenu
+                ? "settings.compactActionsCompact"
+                : "settings.compactActionsDefault"
+            )}
+          </span>
+        </div>
+
+        <div class="preview-folder">
+          <div class="preview-folder__header">
+            <span class="preview-folder__icon" aria-hidden="true"></span>
+            <span class="preview-folder__title">{translate($languageStore, "settings.bookmarkPreviewFolder")}</span>
+            <span class="preview-folder__chevron" aria-hidden="true">▼</span>
+          </div>
+
+          <div class="preview-trades-list">
+            <div class="preview-trade-item">
+              <span class="preview-trade__drag" aria-hidden="true">≡</span>
+              <div class="preview-trade__content">
+                <div class="preview-trade__top">
+                  <span class="preview-trade__title">{translate($languageStore, "settings.bookmarkPreviewTrade")}</span>
+                  {#if $settings.compactActionsMenu}
+                    <div class="preview-trade-actions preview-trade-actions--compact">
+                      <TradeActionsMenu
+                        trade={previewTrade}
+                        compactText="Mercenaries"
+                        onEdit={noopPreviewAction}
+                        onReplace={noopPreviewAction}
+                        onCopy={noopPreviewAction}
+                        onOpenLive={noopPreviewAction}
+                        onToggle={noopPreviewAction}
+                        onDelete={noopPreviewAction} />
+                    </div>
+                  {/if}
+                </div>
+
+                {#if !$settings.compactActionsMenu}
+                  <div class="preview-trade__bottom">
+                    <span class="preview-trade__meta">Mercenaries</span>
+                    <div class="preview-trade-actions">
+                      <TradeActionsMenu
+                        trade={previewTrade}
+                        onEdit={noopPreviewAction}
+                        onReplace={noopPreviewAction}
+                        onCopy={noopPreviewAction}
+                        onOpenLive={noopPreviewAction}
+                        onToggle={noopPreviewAction}
+                        onDelete={noopPreviewAction} />
+                    </div>
+                  </div>
+                {/if}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
       </section>
@@ -1086,6 +1168,172 @@
     stroke-width: 1.7;
   }
 
+  .bookmark-layout-preview {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid rgba($white, 0.08);
+  }
+
+  .bookmark-layout-preview__heading {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .bookmark-layout-preview__mode {
+    flex: 0 0 auto;
+    min-height: 22px;
+    padding: 0 8px;
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba($gold, 0.22);
+    border-radius: 999px;
+    background: rgba($gold, 0.07);
+    color: rgba($gold-alt, 0.92);
+    font-family: $primary-font;
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .preview-folder {
+    overflow: hidden;
+    border: 1px solid rgba($gold, 0.14);
+    border-radius: 8px;
+    background:
+      linear-gradient(180deg, rgba($gold, 0.035), rgba($gold, 0.012)),
+      rgba($black, 0.4);
+    box-shadow:
+      inset 0 1px 0 rgba($white, 0.02),
+      0 10px 22px rgba($black, 0.2);
+  }
+
+  .preview-folder__header {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 43px;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba($gold, 0.1);
+    background:
+      linear-gradient(180deg, rgba($blue-alt, 0.92), rgba($blue, 0.96)),
+      $blue;
+  }
+
+  .preview-folder__icon {
+    width: 26px;
+    height: 26px;
+    flex: 0 0 26px;
+    border-radius: 4px;
+    border: 1px solid rgba($gold, 0.18);
+    background:
+      radial-gradient(circle at 50% 42%, rgba($gold-alt, 0.72) 0 3px, transparent 4px),
+      linear-gradient(135deg, rgba($gold, 0.28), rgba($black, 0.18));
+  }
+
+  .preview-folder__title {
+    min-width: 0;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: rgba($white, 0.96);
+    font-family: $primary-font;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .preview-folder__chevron {
+    color: rgba($gold-alt, 0.78);
+    font-size: 11px;
+  }
+
+  .preview-trades-list {
+    padding: 10px;
+    background:
+      linear-gradient(180deg, rgba($white, 0.015), rgba($white, 0)),
+      rgba($black, 0.36);
+  }
+
+  .preview-trade-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border: 1px solid rgba($white, 0.06);
+    border-radius: 6px;
+    background: rgba($black, 0.34);
+  }
+
+  .preview-trade__drag {
+    width: 16px;
+    flex: 0 0 16px;
+    color: rgba($white, 0.3);
+    font-size: 15px;
+    text-align: center;
+  }
+
+  .preview-trade__content {
+    min-width: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .preview-trade__top,
+  .preview-trade__bottom {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+  }
+
+  .preview-trade__top {
+    justify-content: space-between;
+  }
+
+  .preview-trade__bottom {
+    justify-content: flex-start;
+  }
+
+  .preview-trade__title {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: $white;
+    font-size: 13px;
+    line-height: 1.2;
+  }
+
+  .preview-trade__meta {
+    min-width: 0;
+    flex: 1;
+    color: rgba($gold-alt, 0.52);
+    font-size: 10px;
+    line-height: 1.2;
+    letter-spacing: 0.03em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .preview-trade-actions {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+    flex-shrink: 0;
+  }
+
+  .preview-trade-actions--compact {
+    margin-left: auto;
+  }
+
   @media (max-width: 430px) {
     .settings-tabs {
       grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -1096,6 +1344,11 @@
     }
 
     .settings-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .bookmark-layout-preview__heading {
       flex-direction: column;
       align-items: stretch;
     }

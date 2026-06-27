@@ -254,6 +254,11 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "settings.tradeActionsDescription":
       "Choose which saved-search actions stay visible outside the menu in both classic and compact layouts. If none are selected, only the three-dot menu is shown.",
     "settings.compactTradeActionToggle": "Complete / Pending",
+    "settings.bookmarkPreviewTitle": "Live Preview",
+    "settings.bookmarkPreviewDescription":
+      "See how a saved search will look with the current bookmark layout settings.",
+    "settings.bookmarkPreviewFolder": "Favorite Gear",
+    "settings.bookmarkPreviewTrade": "High resistance boots",
     "settings.saveFailed": "Could not save settings. Please try again.",
     "settings.tabs.label": "Settings categories",
     "settings.tabs.interface": "Interface",

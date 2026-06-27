@@ -22,6 +22,10 @@ export const latestWhatsNew: WhatsNewEntry = {
       titleKey: "whatsNew.section.features",
       items: [
         {
+          title: "Settings are now easier to navigate",
+          description: "Customization is grouped into Interface, Sidebar, Results, and Bookmarks so each option has a clearer home."
+        },
+        {
           title: "What’s New is now built into the sidebar",
           description: "New releases can show a compact update prompt, plus a full release notes modal from About."
         },
@@ -67,6 +71,10 @@ export const latestWhatsNew: WhatsNewEntry = {
     {
       titleKey: "whatsNew.section.polish",
       items: [
+        {
+          title: "Sidebar and result options were separated",
+          description: "Visible sidebar modules now live under Sidebar, while injected trade-result tools stay under Results."
+        },
         {
           title: "Settings now respect the active trade version",
           description: "PoE1 and PoE2 can keep separate result-tool preferences where that matters."
