@@ -1,4 +1,6 @@
 const SEPARATOR = "--------";
+const UNSUPPORTED_CRAFT_OF_EXILE_MOD_PATTERN =
+  /[+\-]\s*\d+\s+(?:Prefix|Suffix)\s+Modifiers?\s+allowed/i;
 
 const readNumber = (popup: HTMLElement, selector: string) => {
   const text = popup.querySelector<HTMLElement>(selector)?.textContent || "";
@@ -63,6 +65,11 @@ export const buildCraftOfExileText = (row: HTMLElement): string | null => {
   if (corrupted) sections.push(["Corrupted"]);
 
   return sections.map((section) => section.join("\n")).join(`\n${SEPARATOR}\n`);
+};
+
+export const hasUnsupportedCraftOfExileMod = (row: HTMLElement): boolean => {
+  const content = row.querySelector<HTMLElement>(".item-popup__content") || row;
+  return UNSUPPORTED_CRAFT_OF_EXILE_MOD_PATTERN.test(content.textContent || "");
 };
 
 export const copyTextSynchronously = (text: string): boolean => {

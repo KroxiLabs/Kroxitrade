@@ -72,6 +72,12 @@ body.bt-dev-poe2-copy-visible .row:hover > .left > button.copy {
 
 }
 
+.row > .left > button.bt-copy-coe.bt-copy-coe--disabled {
+  cursor: not-allowed;
+  filter: grayscale(1);
+  opacity: 0.42;
+}
+
 body.bt-dev-coe-visible .row:hover > .left > button.bt-copy-coe,
 body.bt-dev-result-actions-visible.bt-dev-coe-visible .row > .left > button.bt-copy-coe {
   display: inline-flex;

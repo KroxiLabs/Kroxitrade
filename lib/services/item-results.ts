@@ -10,7 +10,8 @@ import coeButtonImage from "../../assets/coe-button.webp?inline";
 import { copyItemForPob } from "../utilities/copy-item-for-pob";
 import {
   buildCraftOfExileText,
-  copyTextSynchronously
+  copyTextSynchronously,
+  hasUnsupportedCraftOfExileMod
 } from "../utilities/copy-item-for-craft-of-exile";
 import { flashMessages } from "./flash";
 import { experimentalSettings } from "./experimental";
@@ -72,6 +73,7 @@ export class ItemResultsService {
     ) {
       event.preventDefault();
       event.stopImmediatePropagation();
+      if (coeButton.getAttribute("aria-disabled") === "true") return;
 
       const row = coeButton.closest<HTMLElement>(".row, .result-item");
       const text = row ? buildCraftOfExileText(row) : null;
@@ -527,6 +529,7 @@ export class ItemResultsService {
     }
 
     if (button) {
+      this.syncCoeButtonUnsupportedState(button, row);
       if (searchByButton) this.positionCoeButton(button, searchByButton);
       return;
     }
@@ -534,8 +537,8 @@ export class ItemResultsService {
     button = document.createElement("button");
     button.type = "button";
     button.className = "bt-copy-coe";
-    button.title = "Copy for Craft of Exile";
     button.setAttribute("aria-label", "Copy for Craft of Exile");
+    this.syncCoeButtonUnsupportedState(button, row);
     
     const image = document.createElement("img");
     image.src = coeButtonImage;
@@ -548,6 +551,15 @@ export class ItemResultsService {
     } else {
       left.appendChild(button);
     }
+  }
+
+  private syncCoeButtonUnsupportedState(button: HTMLButtonElement, row: HTMLElement) {
+    const unsupported = hasUnsupportedCraftOfExileMod(row);
+    button.classList.toggle("bt-copy-coe--disabled", unsupported);
+    button.setAttribute("aria-disabled", unsupported ? "true" : "false");
+    button.title = unsupported
+      ? "Craft of Exile can't import this item yet (Prefix/Suffix Modifier mods)."
+      : "Copy for Craft of Exile";
   }
 
   private positionCoeButton(button: HTMLButtonElement, searchByButton: HTMLButtonElement) {

@@ -43,6 +43,11 @@ const version111Items: WhatsNewItem[] = [
       "The CoE action button is now a centered 30px square so it aligns cleanly with the result row controls."
   },
   {
+    title: "Craft of Exile copy avoids unsupported modifier slots",
+    description:
+      "Items with Prefix/Suffix Modifier allowed affixes now show a greyed CoE button with an explanation, while Copy for PoB keeps working."
+  },
+  {
     title: "Version-specific settings are clearer",
     description:
       "PoE1 and PoE2 can keep separate result-tool preferences where that matters, and PoE2-only tools stay hidden on PoE1."
