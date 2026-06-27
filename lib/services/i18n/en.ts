@@ -23,9 +23,12 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "whatsNew.title": ({ version }) => `What's New in ${version}`,
     "whatsNew.intro":
       "A quick look at the newest improvements bundled with this release.",
+    "whatsNew.releaseBadge": "Generated from recent changes",
     "whatsNew.close": "Close what's new",
     "whatsNew.dismiss": "Got it",
     "whatsNew.section.bookmarks": "Bookmarks",
+    "whatsNew.section.features": "New features",
+    "whatsNew.section.fixes": "Fixes",
     "whatsNew.section.tradeTools": "Trade tools",
     "whatsNew.section.polish": "Polish",
     "whatsNew.item.versionFolders":

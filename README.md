@@ -130,6 +130,28 @@ npm run package
 
 This command creates browser-specific zip files in `build/`, such as `poe-trade-plus-1.0.70-chrome.zip` and `poe-trade-plus-1.0.70-firefox.zip`.
 
+### Release notes and What's New
+
+Poe Trade Plus shows a small "What's New" prompt after a user updates to a new extension version. The prompt is handled in `components/Layout.svelte`, stores the last seen version in local storage, and opens the release notes modal from `components/WhatsNewDialog.svelte`.
+
+Release note content is kept in `lib/data/whats-new.ts`. Generate it before publishing a release so the in-app modal matches the version being packaged.
+
+Recommended commit style for release notes:
+
+```text
+feat(bookmarks): add compact saved-search actions
+fix(history): keep PoE2 history separated
+docs(readme): document release notes workflow
+```
+
+To update the in-app release notes from Git commits, run:
+
+```bash
+npm run whats-new
+```
+
+The script reads commits since the latest `v*` tag, groups `feat:` commits as new features, `fix:` and `perf:` commits as fixes, and keeps `docs:`, `chore:`, and `build:` entries out of the user-facing What's New unless they affect users directly. It also has a fallback for existing non-conventional subjects such as `Add ...`, `Show ...`, and `Refine ...`.
+
 ## Permissions and Integrations
 
 - `storage`: persists folders, settings, history, and cache data

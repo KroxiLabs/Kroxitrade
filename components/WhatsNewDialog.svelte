@@ -46,13 +46,21 @@
           {translate($languageStore, "whatsNew.intro")}
         </p>
 
+        <div class="whats-new-meta">
+          <span>{entry.date}</span>
+          <span>{translate($languageStore, "whatsNew.releaseBadge")}</span>
+        </div>
+
         <div class="whats-new-sections">
           {#each entry.sections as section (section.titleKey)}
             <section class="whats-new-section">
               <h4>{translate($languageStore, section.titleKey)}</h4>
               <ul>
-                {#each section.itemKeys as itemKey (itemKey)}
-                  <li>{translate($languageStore, itemKey)}</li>
+                {#each section.items as item (item)}
+                  <li>
+                    <strong>{item.title}</strong>
+                    <span>{item.description}</span>
+                  </li>
                 {/each}
               </ul>
             </section>
@@ -162,6 +170,27 @@
     line-height: 1.5;
   }
 
+  .whats-new-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 14px;
+  }
+
+  .whats-new-meta span {
+    display: inline-flex;
+    align-items: center;
+    min-height: 20px;
+    padding: 0 8px;
+    border: 1px solid rgba($gold, 0.16);
+    border-radius: 999px;
+    background: rgba($gold, 0.06);
+    color: rgba($gold-alt, 0.86);
+    font-family: $primary-font;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+  }
+
   .whats-new-sections {
     display: grid;
     gap: 10px;
@@ -183,15 +212,33 @@
   }
 
   ul {
+    display: grid;
+    gap: 8px;
     margin: 0;
-    padding-left: 17px;
+    padding: 0;
+    list-style: none;
     color: rgba($white, 0.78);
     font-size: 11px;
     line-height: 1.5;
   }
 
-  li + li {
-    margin-top: 5px;
+  li {
+    padding-left: 10px;
+    border-left: 2px solid rgba($gold, 0.28);
+  }
+
+  li strong {
+    display: block;
+    margin-bottom: 2px;
+    color: rgba($white, 0.92);
+    font-size: 11px;
+    line-height: 1.35;
+  }
+
+  li span {
+    display: block;
+    color: rgba($white, 0.64);
+    line-height: 1.45;
   }
 
   .whats-new-dialog__actions {
