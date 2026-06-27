@@ -1,6 +1,6 @@
 <script lang="ts">
   import Button from "./Button.svelte";
-  import { latestWhatsNew } from "../lib/data/whats-new";
+  import { getWhatsNewEntry, latestWhatsNew } from "../lib/data/whats-new";
   import { languageStore, translate } from "../lib/services/i18n";
 
   let {
@@ -13,7 +13,7 @@
     onClose?: () => void;
   } = $props();
 
-  let entry = $derived({ ...latestWhatsNew, version });
+  let entry = $derived(getWhatsNewEntry(version));
 </script>
 
 {#if open}
@@ -52,17 +52,35 @@
         </div>
 
         <div class="whats-new-sections">
-          {#each entry.sections as section (section.titleKey)}
+          {#each entry.sections as section (section.titleKey || section.title)}
             <section class="whats-new-section">
-              <h4>{translate($languageStore, section.titleKey)}</h4>
-              <ul>
-                {#each section.items as item (item)}
-                  <li>
-                    <strong>{item.title}</strong>
-                    <span>{item.description}</span>
-                  </li>
-                {/each}
-              </ul>
+              <h4>{section.title || translate($languageStore, section.titleKey || "")}</h4>
+              {#if section.groups}
+                <div class="whats-new-groups">
+                  {#each section.groups as group (group.titleKey)}
+                    <div class="whats-new-group">
+                      <h5>{translate($languageStore, group.titleKey)}</h5>
+                      <ul>
+                        {#each group.items as item (item)}
+                          <li>
+                            <strong>{item.title}</strong>
+                            <span>{item.description}</span>
+                          </li>
+                        {/each}
+                      </ul>
+                    </div>
+                  {/each}
+                </div>
+              {:else}
+                <ul>
+                  {#each section.items || [] as item (item)}
+                    <li>
+                      <strong>{item.title}</strong>
+                      <span>{item.description}</span>
+                    </li>
+                  {/each}
+                </ul>
+              {/if}
             </section>
           {/each}
         </div>
@@ -94,8 +112,8 @@
   }
 
   .whats-new-dialog {
-    width: min(100%, 460px);
-    max-height: min(680px, calc(100vh - 32px));
+    width: min(100%, 720px);
+    max-height: min(760px, calc(100vh - 32px));
     display: flex;
     flex-direction: column;
     border: 1px solid rgba($gold, 0.24);
@@ -114,7 +132,7 @@
     align-items: flex-start;
     justify-content: space-between;
     gap: 12px;
-    padding: 15px 16px 12px;
+    padding: 18px 22px 14px;
     border-bottom: 1px solid rgba($gold, 0.12);
   }
 
@@ -160,7 +178,7 @@
   .whats-new-dialog__body {
     min-height: 0;
     overflow-y: auto;
-    padding: 14px 16px 4px;
+    padding: 16px 22px 6px;
   }
 
   .whats-new-dialog__intro {
@@ -197,22 +215,42 @@
   }
 
   .whats-new-section {
-    padding: 12px;
+    padding: 14px;
     border: 1px solid rgba($white, 0.08);
     border-radius: 6px;
     background: rgba($white, 0.025);
   }
 
   h4 {
-    margin: 0 0 8px;
+    margin: 0 0 10px;
     color: rgba($gold-alt, 0.96);
     font-family: $primary-font;
-    font-size: 12px;
-    letter-spacing: 0.04em;
+    font-size: 14px;
+    letter-spacing: 0.06em;
+  }
+
+  .whats-new-groups {
+    display: grid;
+    gap: 12px;
+  }
+
+  .whats-new-group {
+    display: grid;
+    gap: 8px;
+  }
+
+  h5 {
+    margin: 0;
+    color: rgba($gold-alt, 0.82);
+    font-family: $primary-font;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
   }
 
   ul {
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 8px;
     margin: 0;
     padding: 0;
@@ -244,7 +282,24 @@
   .whats-new-dialog__actions {
     display: flex;
     justify-content: flex-end;
-    padding: 12px 16px 16px;
+    padding: 12px 22px 18px;
+  }
+
+  @media (max-width: 640px) {
+    .whats-new-dialog {
+      width: min(100%, 500px);
+    }
+
+    .whats-new-dialog__header,
+    .whats-new-dialog__body,
+    .whats-new-dialog__actions {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+
+    ul {
+      grid-template-columns: 1fr;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
