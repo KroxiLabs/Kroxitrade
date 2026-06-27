@@ -1,6 +1,13 @@
 <script lang="ts">
+  import Button from "../Button.svelte";
   import { languageStore, translate } from "../../lib/services/i18n";
   import { hasValidExtensionContext } from "../../lib/utilities/extension-context";
+
+  let {
+    onOpenWhatsNew = () => {}
+  }: {
+    onOpenWhatsNew?: () => void;
+  } = $props();
 
   const version = hasValidExtensionContext() ? chrome.runtime.getManifest().version : "dev"
 </script>
@@ -13,6 +20,15 @@
       {translate($languageStore, "about.description")}
     </p>
   </header>
+
+  <section class="about-section">
+    <h2>{translate($languageStore, "about.whatsNewTitle")}</h2>
+    <p>{translate($languageStore, "about.whatsNewDescription")}</p>
+    <Button
+      label={translate($languageStore, "about.whatsNewButton")}
+      theme="gold"
+      onClick={onOpenWhatsNew} />
+  </section>
 
   <footer class="about-footer">
     <p class="about-footer__credit">
@@ -89,6 +105,22 @@
     font-size: 11px;
     line-height: 1.45;
     color: rgba(203, 182, 148, 0.58);
+  }
+
+  .about-section {
+    border: 1px solid rgba(168, 129, 73, 0.18);
+    background: rgba(255, 255, 255, 0.025);
+    padding: 14px;
+  }
+
+  h2 {
+    margin: 0;
+    color: #f1dfbe;
+    font-size: 15px;
+  }
+
+  .about-section :global(.button) {
+    margin-top: 12px;
   }
 
   .about-link {

@@ -17,7 +17,35 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "layout.versionNoticeEyebrow": "New Version",
     "layout.versionNoticeMessage": ({ version }) =>
       `Poe Trade Plus was updated to ${version}.`,
+    "layout.versionNoticeOpen": "What's New",
     "layout.versionNoticeClose": "Close new version message",
+    "whatsNew.eyebrow": "Release Notes",
+    "whatsNew.title": ({ version }) => `What's New in ${version}`,
+    "whatsNew.intro":
+      "A quick look at the newest improvements bundled with this release.",
+    "whatsNew.close": "Close what's new",
+    "whatsNew.dismiss": "Got it",
+    "whatsNew.section.bookmarks": "Bookmarks",
+    "whatsNew.section.tradeTools": "Trade tools",
+    "whatsNew.section.polish": "Polish",
+    "whatsNew.item.versionFolders":
+      "Bookmarks stay separated by Path of Exile trade version.",
+    "whatsNew.item.compactActions":
+      "Saved searches can use a compact action layout with a cleaner menu.",
+    "whatsNew.item.backupRestore":
+      "Folder backup and restore make it easier to move setups between browsers.",
+    "whatsNew.item.bulkSellers":
+      "Bulk Sellers groups repeated sellers from the current result list.",
+    "whatsNew.item.equivalentPricing":
+      "Equivalent Pricing shows chaos and divine conversions using poe.ninja ratios.",
+    "whatsNew.item.finerFilters":
+      "Add To Filters helps move item modifiers into trade filters faster.",
+    "whatsNew.item.onboarding":
+      "The guided tutorial points at the main actions and settings.",
+    "whatsNew.item.resizableSidebar":
+      "The sidebar can be resized and pinned to either side of the trade site.",
+    "whatsNew.item.languages":
+      "The interface now includes broader language coverage.",
     "welcome.title": "Welcome to Poe Trade Plus",
     "welcome.message":
       "Choose the language you want to use for the extension before you start.",
@@ -226,6 +254,10 @@ export const englishTranslations: Record<string, TranslationValue> = {
       "Poe Trade Plus is a companion for Path of Exile Trade built to save searches, organize folders, track history, and keep recurring trade workflows fast, visual, and easy to manage inside the official site.",
     "about.github": "GitHub",
     "about.patreon": "Patreon",
+    "about.whatsNewTitle": "What's New",
+    "about.whatsNewDescription":
+      "Review the latest release notes whenever you want.",
+    "about.whatsNewButton": "Open What's New",
     "about.version": ({ version }) =>
       `Version ${version} • Developed by KroxiLabs`,
     "bulk.empty":
