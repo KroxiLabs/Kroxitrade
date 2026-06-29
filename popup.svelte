@@ -1,7 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte"
+  import chartIcon from "lucide-static/icons/chart-line.svg?raw"
+  import hammerIcon from "lucide-static/icons/hammer.svg?raw"
+  import packageSearchIcon from "lucide-static/icons/package-search.svg?raw"
+  import searchIcon from "lucide-static/icons/search.svg?raw"
   import { languageStore, setLanguage, translate, type AppLanguage } from "./lib/services/i18n"
   import { settings } from "./lib/services/settings"
+  import { normalizeIcon } from "./lib/utilities/icons"
+
   const tradeLinks = [
     {
       href: "https://www.pathofexile.com/trade/search",
@@ -16,13 +22,83 @@
       labelKey: "popup.trade2"
     }
   ]
+
+  const shortcutLinks: Array<{
+    group: "poe1" | "poe2" | "shared"
+    href: string
+    icon: string
+    labelKey: string
+  }> = [
+    {
+      group: "poe1",
+      href: "https://poe.re/",
+      icon: searchIcon,
+      labelKey: "popup.shortcut.poeRegex"
+    },
+    {
+      group: "poe1",
+      href: "https://www.craftofexile.com/?game=poe1",
+      icon: hammerIcon,
+      labelKey: "popup.shortcut.craftPoe1"
+    },
+    {
+      group: "poe1",
+      href: "https://poedb.tw/us/",
+      icon: packageSearchIcon,
+      labelKey: "popup.shortcut.poedb"
+    },
+    {
+      group: "poe2",
+      href: "https://poe2.re/",
+      icon: searchIcon,
+      labelKey: "popup.shortcut.poe2Regex"
+    },
+    {
+      group: "poe2",
+      href: "https://www.craftofexile.com/?game=poe2",
+      icon: hammerIcon,
+      labelKey: "popup.shortcut.craftPoe2"
+    },
+    {
+      group: "poe2",
+      href: "https://poe2db.tw/us/",
+      icon: packageSearchIcon,
+      labelKey: "popup.shortcut.poe2db"
+    },
+    {
+      group: "shared",
+      href: "https://poe.ninja/",
+      icon: chartIcon,
+      labelKey: "popup.shortcut.ninja"
+    }
+  ]
+
+  const shortcutGroups: Array<{
+    id: "poe1" | "poe2" | "shared"
+    labelKey: string
+  }> = [
+    { id: "poe1", labelKey: "popup.shortcuts.poe1" },
+    { id: "poe2", labelKey: "popup.shortcuts.poe2" },
+    { id: "shared", labelKey: "popup.shortcuts.shared" }
+  ]
+
   import poe1Logo from "./assets/logo-trade.webp?inline"
   import poe2Logo from "./assets/logo-trade2.webp?inline"
+
+  const SHORTCUTS_VISIBLE_KEY = "popup-shortcuts-visible"
+  let showShortcuts = $state(false)
 
   onMount(async () => {
     await settings.load()
     setLanguage(($settings.language || "en") as AppLanguage)
+    const storedVisibility = await chrome.storage.local.get(SHORTCUTS_VISIBLE_KEY)
+    showShortcuts = storedVisibility[SHORTCUTS_VISIBLE_KEY] === true
   })
+
+  const toggleShortcuts = async () => {
+    showShortcuts = !showShortcuts
+    await chrome.storage.local.set({ [SHORTCUTS_VISIBLE_KEY]: showShortcuts })
+  }
 </script>
 
 <svelte:head>
@@ -43,6 +119,46 @@
         <span class="trade-link__label">{translate($languageStore, link.labelKey)}</span>
       </a>
     {/each}
+  </div>
+
+  <div class="shortcut-panel" aria-label={translate($languageStore, "popup.shortcuts")}>
+    <div class="section-header">
+      <div class="section-title">{translate($languageStore, "popup.shortcuts")}</div>
+      <button
+        type="button"
+        class="shortcut-toggle"
+        aria-expanded={showShortcuts}
+        onclick={toggleShortcuts}
+      >
+        {translate($languageStore, showShortcuts ? "popup.hideShortcuts" : "popup.showShortcuts")}
+      </button>
+    </div>
+
+    {#if showShortcuts}
+      <div class="shortcut-groups">
+        {#each shortcutGroups as group}
+          <section class="shortcut-group" aria-label={translate($languageStore, group.labelKey)}>
+            <div class="shortcut-group__title">{translate($languageStore, group.labelKey)}</div>
+            <div class="shortcut-grid">
+              {#each shortcutLinks.filter((shortcut) => shortcut.group === group.id) as shortcut}
+                <a
+                  class="shortcut-button"
+                  href={shortcut.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  title={translate($languageStore, shortcut.labelKey)}
+                >
+                  <span class="shortcut-button__icon" aria-hidden="true">
+                    {@html normalizeIcon(shortcut.icon, { size: 15, className: "shortcut-svg" })}
+                  </span>
+                  <span class="shortcut-button__label">{translate($languageStore, shortcut.labelKey)}</span>
+                </a>
+              {/each}
+            </div>
+          </section>
+        {/each}
+      </div>
+    {/if}
   </div>
 </div>
 
@@ -149,5 +265,130 @@
     letter-spacing: 0.04em;
     text-transform: uppercase;
     text-align: center;
+  }
+
+  .shortcut-panel {
+    margin-top: 10px;
+    padding: 10px;
+    border: 1px solid rgba(188, 145, 77, 0.14);
+    background: rgba(9, 8, 7, 0.62);
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .section-title {
+    color: #bca887;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .shortcut-toggle {
+    flex: 0 0 auto;
+    height: 24px;
+    padding: 0 8px;
+    border: 1px solid rgba(188, 145, 77, 0.18);
+    border-radius: 4px;
+    background: rgba(24, 21, 18, 0.72);
+    color: #d9c79f;
+    cursor: pointer;
+    font: inherit;
+    font-size: 10px;
+    line-height: 1;
+  }
+
+  .shortcut-toggle:hover,
+  .shortcut-toggle:focus-visible {
+    border-color: rgba(238, 199, 130, 0.36);
+    color: #f1e1bf;
+    outline: none;
+  }
+
+  .shortcut-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 8px;
+  }
+
+  .shortcut-group {
+    min-width: 0;
+  }
+
+  .shortcut-group__title {
+    margin-bottom: 5px;
+    color: #8f8067;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .shortcut-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 6px;
+  }
+
+  .shortcut-button {
+    display: flex;
+    min-width: 0;
+    height: 36px;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 8px;
+    border: 1px solid rgba(188, 145, 77, 0.14);
+    border-radius: 4px;
+    background: rgba(24, 21, 18, 0.84);
+    color: #d9c79f;
+    cursor: pointer;
+    font: inherit;
+    transition:
+      border-color 120ms ease,
+      background 120ms ease,
+      color 120ms ease;
+  }
+
+  .shortcut-button:hover,
+  .shortcut-button:focus-visible {
+    border-color: rgba(238, 199, 130, 0.36);
+    background: rgba(31, 27, 22, 0.96);
+    color: #f1e1bf;
+    outline: none;
+  }
+
+  .shortcut-button__icon {
+    display: inline-flex;
+    width: 15px;
+    height: 15px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .shortcut-button__icon :global(.shortcut-svg) {
+    display: block;
+    width: 15px;
+    height: 15px;
+    stroke: currentColor;
+    fill: none;
+  }
+
+  .shortcut-button__label {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    color: inherit;
+    font-size: 11px;
+    line-height: 1.2;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 </style>
