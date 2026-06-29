@@ -39,6 +39,7 @@ import iconPoe2Chance from "../../assets/images/bookmark-folder/poe2-chance.webp
 import iconPoe2Chaos from "../../assets/images/bookmark-folder/poe2-chaos.webp"
 import iconPoe2Chronomancer from "../../assets/images/bookmark-folder/poe2-chronomancer.webp"
 import iconPoe2Deadeye from "../../assets/images/bookmark-folder/poe2-deadeye.webp"
+import iconPoe2DiscipleOfVarashta from "../../assets/images/bookmark-folder/poe2-disciple-of-varashta.webp"
 import iconPoe2Divine from "../../assets/images/bookmark-folder/poe2-divine.webp"
 import iconPoe2Essence from "../../assets/images/bookmark-folder/poe2-essence.webp"
 import iconPoe2Exalt from "../../assets/images/bookmark-folder/poe2-exalt.webp"
@@ -48,12 +49,14 @@ import iconPoe2Glassblower from "../../assets/images/bookmark-folder/poe2-glassb
 import iconPoe2Infernalist from "../../assets/images/bookmark-folder/poe2-infernalist.webp"
 import iconPoe2Invoker from "../../assets/images/bookmark-folder/poe2-invoker.webp"
 import iconPoe2Lich from "../../assets/images/bookmark-folder/poe2-lich.webp"
+import iconPoe2MartialArtist from "../../assets/images/bookmark-folder/poe2-martial-artist.webp"
 import iconPoe2Mirror from "../../assets/images/bookmark-folder/poe2-mirror.webp"
 import iconPoe2Pathfinder from "../../assets/images/bookmark-folder/poe2-pathfinder.webp"
 import iconPoe2Regal from "../../assets/images/bookmark-folder/poe2-regal.webp"
 import iconPoe2Ritualist from "../../assets/images/bookmark-folder/poe2-ritualist.webp"
 import iconPoe2Rune from "../../assets/images/bookmark-folder/poe2-rune.webp"
 import iconPoe2SmithOfKitava from "../../assets/images/bookmark-folder/poe2-smith-of-kitava.webp"
+import iconPoe2SpiritWalker from "../../assets/images/bookmark-folder/poe2-spirit-walker.webp"
 import iconPoe2Stormweaver from "../../assets/images/bookmark-folder/poe2-stormweaver.webp"
 import iconPoe2Tactician from "../../assets/images/bookmark-folder/poe2-tactician.webp"
 import iconPoe2Titan from "../../assets/images/bookmark-folder/poe2-titan.webp"
@@ -114,6 +117,7 @@ export const bookmarkFolderIconMap = new Map<string, string>([
   ["poe2-chaos", iconPoe2Chaos],
   ["poe2-chronomancer", iconPoe2Chronomancer],
   ["poe2-deadeye", iconPoe2Deadeye],
+  ["poe2-disciple-of-varashta", iconPoe2DiscipleOfVarashta],
   ["poe2-divine", iconPoe2Divine],
   ["poe2-essence", iconPoe2Essence],
   ["poe2-exalt", iconPoe2Exalt],
@@ -123,12 +127,14 @@ export const bookmarkFolderIconMap = new Map<string, string>([
   ["poe2-infernalist", iconPoe2Infernalist],
   ["poe2-invoker", iconPoe2Invoker],
   ["poe2-lich", iconPoe2Lich],
+  ["poe2-martial-artist", iconPoe2MartialArtist],
   ["poe2-mirror", iconPoe2Mirror],
   ["poe2-pathfinder", iconPoe2Pathfinder],
   ["poe2-regal", iconPoe2Regal],
   ["poe2-ritualist", iconPoe2Ritualist],
   ["poe2-rune", iconPoe2Rune],
   ["poe2-smith-of-kitava", iconPoe2SmithOfKitava],
+  ["poe2-spirit-walker", iconPoe2SpiritWalker],
   ["poe2-stormweaver", iconPoe2Stormweaver],
   ["poe2-tactician", iconPoe2Tactician],
   ["poe2-titan", iconPoe2Titan],
@@ -313,6 +319,12 @@ export const bookmarkFolderIconOptions: BookmarkFolderIconOption[] = [
     url: iconPoe2Chronomancer
   },
   { id: "poe2-deadeye", label: "Deadeye", version: "2", url: iconPoe2Deadeye },
+  {
+    id: "poe2-disciple-of-varashta",
+    label: "Disciple Of Varashta",
+    version: "2",
+    url: iconPoe2DiscipleOfVarashta
+  },
 
   {
     id: "poe2-gemling-legionnaire",
@@ -330,6 +342,12 @@ export const bookmarkFolderIconOptions: BookmarkFolderIconOption[] = [
   { id: "poe2-invoker", label: "Invoker", version: "2", url: iconPoe2Invoker },
   { id: "poe2-lich", label: "Lich", version: "2", url: iconPoe2Lich },
   {
+    id: "poe2-martial-artist",
+    label: "Martial Artist",
+    version: "2",
+    url: iconPoe2MartialArtist
+  },
+  {
     id: "poe2-pathfinder",
     label: "Pathfinder",
     version: "2",
@@ -346,6 +364,12 @@ export const bookmarkFolderIconOptions: BookmarkFolderIconOption[] = [
     label: "Smith Of Kitava",
     version: "2",
     url: iconPoe2SmithOfKitava
+  },
+  {
+    id: "poe2-spirit-walker",
+    label: "Spirit Walker",
+    version: "2",
+    url: iconPoe2SpiritWalker
   },
   {
     id: "poe2-stormweaver",
