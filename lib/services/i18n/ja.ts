@@ -47,6 +47,9 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "等価価格",
   "settings.equivalentDescription":
     "検索結果に追加表示される chaos/divine 等価行を表示または非表示にします。",
+  "settings.magebloodLegacyTitle": "Mageblood Legacy の説明",
+  "settings.magebloodLegacyBody":
+    "PoE2 の Mageblood Legacy mod の隠れた効果を、ノータブル説明のようにアイテム下に表示します。",
   "settings.hidden": "非表示",
   "settings.visible": "表示",
   "settings.compactActionsTitle": "ブックマークレイアウト",

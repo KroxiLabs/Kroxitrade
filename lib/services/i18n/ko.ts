@@ -47,6 +47,9 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "환산 가격",
   "settings.equivalentDescription":
     "결과에 추가로 표시되는 chaos/divine 환산 줄을 표시하거나 숨깁니다.",
+  "settings.magebloodLegacyTitle": "Mageblood Legacy 설명",
+  "settings.magebloodLegacyBody":
+    "PoE2 Mageblood Legacy 모드의 숨겨진 효과를 노터블 설명처럼 아이템 아래에 표시합니다.",
   "settings.hidden": "숨김",
   "settings.visible": "표시",
   "settings.compactActionsTitle": "북마크 레이아웃",

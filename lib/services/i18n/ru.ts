@@ -42,6 +42,9 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "Эквивалентная цена",
   "settings.equivalentDescription":
     "Показывать или скрывать дополнительную строку с эквивалентом в chaos/divine в результатах.",
+  "settings.magebloodLegacyTitle": "Описания Legacy для Mageblood",
+  "settings.magebloodLegacyBody":
+    "Показывать скрытые эффекты PoE2 Legacy-модов Mageblood под предметом, как описания notable-пассивов.",
   "settings.hidden": "Скрыто",
   "settings.visible": "Показано",
   "settings.compactActionsTitle": "Макет закладок",

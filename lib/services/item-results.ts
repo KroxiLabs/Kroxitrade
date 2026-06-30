@@ -36,6 +36,12 @@ interface LegacyEffect {
   note?: string;
 }
 
+interface MagebloodLegacy {
+  mod: HTMLElement;
+  key: string;
+  title: string;
+}
+
 const MAGEBLOOD_LEGACY_EFFECTS: Record<string, LegacyEffect> = {
   amethyst: { stats: [[45, "% to Chaos Resistance"]] },
   basalt: { stats: [[150, "% increased Armour"]] },
@@ -53,11 +59,38 @@ const MAGEBLOOD_LEGACY_EFFECTS: Record<string, LegacyEffect> = {
   topaz: { stats: [[60, "% to Lightning Resistance"], [5, "% to Maximum Lightning Resistance"]] }
 };
 
-const MAGEBLOOD_LEGACY_PATTERN = /^Legacy of (.+)$/;
+const MAGEBLOOD_LEGACY_ALIASES: Record<string, string> = {
+  amatista: "amethyst",
+  basalto: "basalt",
+  bismuto: "bismuth",
+  diamante: "diamond",
+  oro: "gold",
+  granito: "granite",
+  jade: "jade",
+  celeridad: "quicksilver",
+  rubi: "ruby",
+  rubí: "ruby",
+  zafiro: "sapphire",
+  plata: "silver",
+  antimonio: "stibnite",
+  azufre: "sulphur",
+  topacio: "topaz"
+};
+
+const MAGEBLOOD_LEGACY_PATTERN = /^(?:Legacy of|Legado de) (.+)$/i;
 const MAGEBLOOD_DUPLICATE_PATTERN =
-  /Mage(?:'|\u2019)?s Legacies have (\d+)% increased effect per duplicate/i;
+  /(?:Mage(?:'|\u2019)?s Legacies have (\d+)% increased effect per duplicate|legados de mago.*efecto aumentado un (\d+)%.*legado de mago duplicado)/i;
 const MAGEBLOOD_LEGACY_CLASS = "bt-mb-legacy";
 const MAGEBLOOD_EXPLANATIONS_CLASS = "bt-mb-explanations";
+
+const normalizeMagebloodLegacyKey = (name: string) => {
+  const normalized = name
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
+  return MAGEBLOOD_LEGACY_ALIASES[normalized] || normalized;
+};
 
 const isAdditiveLegacyStat = (suffix: string) =>
   !/increased|reduced|more|less/i.test(suffix);
@@ -653,9 +686,9 @@ export class ItemResultsService {
       return;
     }
 
-    if (row.querySelector(`.${MAGEBLOOD_LEGACY_CLASS}`)) return;
+    this.removeMagebloodLegacyDescriptions(row);
 
-    const legacies: Array<{ mod: HTMLElement; name: string }> = [];
+    const legacies: MagebloodLegacy[] = [];
     const duplicateMods: HTMLElement[] = [];
     let duplicatePercent = 0;
 
@@ -666,7 +699,14 @@ export class ItemResultsService {
       const legacyMatch = text.match(MAGEBLOOD_LEGACY_PATTERN);
       if (legacyMatch) {
         const mod = valueSpan.closest<HTMLElement>(".item-mod");
-        if (mod) legacies.push({ mod, name: legacyMatch[1].trim() });
+        if (mod) {
+          const name = legacyMatch[1].trim();
+          legacies.push({
+            mod,
+            key: normalizeMagebloodLegacyKey(name),
+            title: text
+          });
+        }
         return;
       }
 
@@ -674,18 +714,17 @@ export class ItemResultsService {
       if (duplicateMatch) {
         const duplicateMod = valueSpan.closest<HTMLElement>(".item-mod");
         if (duplicateMod) duplicateMods.push(duplicateMod);
-        duplicatePercent = Number.parseInt(duplicateMatch[1], 10);
+        duplicatePercent = Number.parseInt(duplicateMatch[1] || duplicateMatch[2], 10);
       }
     });
 
     if (legacies.length === 0) return;
 
     const counts: Record<string, number> = {};
-    const displayNames: Record<string, string> = {};
-    legacies.forEach(({ name }) => {
-      const key = name.toLowerCase();
+    const displayTitles: Record<string, string> = {};
+    legacies.forEach(({ key, title }) => {
       counts[key] = (counts[key] || 0) + 1;
-      displayNames[key] = name;
+      displayTitles[key] = title;
     });
 
     const duplicates = legacies.length - Object.keys(counts).length;
@@ -701,7 +740,7 @@ export class ItemResultsService {
       const explanationAnchor = this.findMagebloodExplanationAnchor(row, legacies);
       const fragment = document.createDocumentFragment();
       fragment.appendChild(
-        this.buildMagebloodLegacyExplanations(counts, displayNames, multiplier, increasedEffect)
+        this.buildMagebloodLegacyExplanations(counts, displayTitles, multiplier, increasedEffect)
       );
 
       explanationAnchor?.after(fragment);
@@ -726,11 +765,11 @@ export class ItemResultsService {
 
   private findMagebloodExplanationAnchor(
     row: HTMLElement,
-    legacies: Array<{ mod: HTMLElement; name: string }>
+    legacies: MagebloodLegacy[]
   ) {
     const content = row.querySelector<HTMLElement>(".item-popup__content") || row;
     const corruptedLine = Array.from(content.children).find((child) =>
-      /\bcorrupted\b/i.test(child.textContent || "")
+      /\b(?:corrupted|corrupto)\b/i.test(child.textContent || "")
     );
     if (corruptedLine) {
       const next = corruptedLine.nextElementSibling;
@@ -739,23 +778,28 @@ export class ItemResultsService {
         : corruptedLine;
     }
 
+    const explicitSeparator = content.querySelector<HTMLHRElement>('hr[name="explicit"]');
+    if (explicitSeparator) {
+      return explicitSeparator;
+    }
+
     return legacies[legacies.length - 1]?.mod || content.lastElementChild;
   }
 
   private buildMagebloodLegacyExplanations(
     counts: Record<string, number>,
-    displayNames: Record<string, string>,
+    displayTitles: Record<string, string>,
     multiplier: number,
     increasedEffect: number
   ) {
     const container = this.createMagebloodDiv(MAGEBLOOD_EXPLANATIONS_CLASS);
     Object.keys(counts).forEach((key) => {
-      const name = displayNames[key] || titleCaseLegacyName(key);
+      const titleText = displayTitles[key] || `Legacy of ${titleCaseLegacyName(key)}`;
       const effect = MAGEBLOOD_LEGACY_EFFECTS[key];
       const block = document.createElement("div");
       const title = document.createElement("span");
       title.style.color = "var(--colour-augmented)";
-      title.textContent = `Legacy of ${name}`;
+      title.textContent = titleText;
       block.appendChild(title);
 
       if (!effect) {

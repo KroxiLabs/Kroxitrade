@@ -13,11 +13,30 @@ import type {
   TradeSiteVersion 
 } from "../types/trade-location";
 
-const BASE_URL = "https://www.pathofexile.com";
+const DEFAULT_BASE_URL = "https://www.pathofexile.com";
 const HISTORY_KEY = "trade-history";
 const MAX_HISTORY = 50;
 const TRADE_REALMS = ["xbox", "sony", "poe2"];
-const PATHOFEXILE_HOSTNAME_PATTERN = /(?:^|\.)pathofexile\.com$/i;
+const TRADE_HOSTNAME_PATTERN = /(?:^|\.)pathofexile\.com$|^poe2\.kakaogames\.com$/i;
+
+const safeDecodeURIComponent = (value: string | undefined) => {
+  if (!value) return value;
+
+  try {
+    return decodeURIComponent(value);
+  } catch {
+    return value;
+  }
+};
+
+const encodeTradePathPart = (value: string) =>
+  encodeURIComponent(safeDecodeURIComponent(value) || value);
+
+const encodeTradeLeague = (league: string) =>
+  league
+    .split("/")
+    .map(part => encodeTradePathPart(part))
+    .join("/");
 
 export class TradeLocationService {
   private lastLocation: ExactTradeLocationStruct | null = null;
@@ -263,7 +282,7 @@ export class TradeLocationService {
 
   getTradeUrl(version: TradeSiteVersion, type: string, slug: string, league: string) {
     const basePath = version === "2" ? "trade2" : "trade";
-    return `${BASE_URL}/${basePath}/${type}/${league}/${slug}`;
+    return `${this.getTradeBaseUrl()}/${basePath}/${encodeTradePathPart(type)}/${encodeTradeLeague(league)}/${encodeTradePathPart(slug)}`;
   }
 
   compareTradeLocations(a: TradeLocationStruct, b: TradeLocationStruct) {
@@ -280,6 +299,18 @@ export class TradeLocationService {
 
   private isExtensionUi() {
     return window.location.protocol === "chrome-extension:";
+  }
+
+  private getTradeBaseUrl() {
+    if (
+      typeof window !== "undefined" &&
+      TRADE_HOSTNAME_PATTERN.test(window.location.hostname) &&
+      window.location.pathname.startsWith("/trade")
+    ) {
+      return window.location.origin;
+    }
+
+    return DEFAULT_BASE_URL;
   }
 
   private parseCurrentLocation() {
@@ -321,7 +352,7 @@ export class TradeLocationService {
       return this.emptyLocation();
     }
 
-    if (!PATHOFEXILE_HOSTNAME_PATTERN.test(url.hostname) || !url.pathname.startsWith("/trade")) {
+    if (!TRADE_HOSTNAME_PATTERN.test(url.hostname) || !url.pathname.startsWith("/trade")) {
       return this.emptyLocation();
     }
 
@@ -332,9 +363,10 @@ export class TradeLocationService {
     if (pathParts.length > 2 && TRADE_REALMS.includes(pathParts[2])) {
       let realm: string, leagueInRealm: string;
       [versionPart, type, realm, leagueInRealm, slug, live] = pathParts;
-      league = `${realm}/${leagueInRealm}`;
+      league = `${safeDecodeURIComponent(realm)}/${safeDecodeURIComponent(leagueInRealm)}`;
     } else {
       [versionPart, type, league, slug, live] = pathParts;
+      league = safeDecodeURIComponent(league);
     }
 
     return {

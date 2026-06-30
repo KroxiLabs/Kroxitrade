@@ -45,6 +45,9 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "Preço equivalente",
   "settings.equivalentDescription":
     "Mostre ou oculte a linha extra com equivalência em chaos/divine nos resultados.",
+  "settings.magebloodLegacyTitle": "Descrições Legacy de Mageblood",
+  "settings.magebloodLegacyBody":
+    "Mostre os efeitos ocultos dos mods Legacy de Mageblood do PoE2 abaixo do item, como descrições de notáveis.",
   "settings.hidden": "Oculto",
   "settings.visible": "Visível",
   "settings.compactActionsTitle": "Layout de favoritos",

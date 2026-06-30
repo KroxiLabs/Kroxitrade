@@ -1,9 +1,10 @@
 import "~/lib/styles/enhancements.scss"
 
 import { initFilterPanel } from "~/contents/filter-panel"
+import { tradeHosts } from "~/lib/config/trade-hosts"
 
 export default defineContentScript({
-  matches: ["https://www.pathofexile.com/trade*"],
+  matches: tradeHosts,
   world: "MAIN",
 
   main() {

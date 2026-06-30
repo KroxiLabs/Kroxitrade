@@ -42,6 +42,9 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "ราคาเทียบเท่า",
   "settings.equivalentDescription":
     "แสดงหรือซ่อนบรรทัดเพิ่มเติมที่แสดงราคาเทียบเท่า chaos/divine ในผลลัพธ์",
+  "settings.magebloodLegacyTitle": "คำอธิบาย Mageblood Legacy",
+  "settings.magebloodLegacyBody":
+    "แสดงเอฟเฟกต์ที่ซ่อนอยู่ของม็อด PoE2 Mageblood Legacy ใต้ไอเทม เหมือนคำอธิบาย notable",
   "settings.hidden": "ซ่อน",
   "settings.visible": "แสดง",
   "settings.compactActionsTitle": "เลย์เอาต์บุ๊กมาร์ก",
