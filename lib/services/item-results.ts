@@ -39,6 +39,29 @@ interface LegacyEffect {
   stats: Array<[number, string]>;
 }
 
+interface MagebloodLegacy {
+  mod: HTMLElement;
+  key: string;
+  title: string;
+}
+
+const MAGEBLOOD_LEGACY_EFFECTS: Record<string, LegacyEffect> = {
+  amethyst: { stats: [[45, "% to Chaos Resistance"]] },
+  basalt: { stats: [[150, "% increased Armour"]] },
+  bismuth: { stats: [[45, "% to all Elemental Resistances"]] },
+  diamond: { stats: [[75, "% increased Critical Hit Chance"]] },
+  gold: { stats: [[45, "% increased Rarity of Items found"]] },
+  granite: { stats: [[2000, " to Armour"]] },
+  jade: { stats: [[2000, " to Evasion Rating"]] },
+  quicksilver: { stats: [[30, "% increased Movement Speed"]] },
+  ruby: { stats: [[60, "% to Fire Resistance"], [5, "% to Maximum Fire Resistance"]] },
+  sapphire: { stats: [[60, "% to Cold Resistance"], [5, "% to Maximum Cold Resistance"]] },
+  silver: { stats: [[30, "% increased Skill Speed"]] },
+  stibnite: { stats: [[150, "% increased Evasion Rating"]] },
+  sulphur: { stats: [[60, "% increased Damage"]] },
+  topaz: { stats: [[60, "% to Lightning Resistance"], [5, "% to Maximum Lightning Resistance"]] }
+};
+
 const MAGEBLOOD_LEGACY_VARIANTS: Record<string, string> = {
   "1": "amethyst",
   "2": "basalt",
