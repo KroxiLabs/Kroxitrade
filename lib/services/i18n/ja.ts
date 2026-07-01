@@ -27,6 +27,8 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "popup.showShortcuts": "表示",
   "popup.shortcut.poeRegex": "Path of Regex",
   "popup.shortcut.poe2Regex": "Path of Regex 2",
+  "popup.shortcut.poeWiki": "Path of Exile Wiki",
+  "popup.shortcut.poe2Wiki": "Path of Exile 2 Wiki",
   "popup.shortcut.craftPoe1": "Craft of Exile PoE 1",
   "popup.shortcut.craftPoe2": "Craft of Exile PoE 2",
   "popup.shortcut.poedb": "PoEDb",

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte"
   import chartIcon from "lucide-static/icons/chart-line.svg?raw"
+  import bookOpenIcon from "lucide-static/icons/book-open.svg?raw"
   import hammerIcon from "lucide-static/icons/hammer.svg?raw"
   import packageSearchIcon from "lucide-static/icons/package-search.svg?raw"
   import searchIcon from "lucide-static/icons/search.svg?raw"
@@ -31,6 +32,12 @@
   }> = [
     {
       group: "poe1",
+      href: "https://www.poewiki.net/wiki/Path_of_Exile_Wiki",
+      icon: bookOpenIcon,
+      labelKey: "popup.shortcut.poeWiki"
+    },
+    {
+      group: "poe1",
       href: "https://poe.re/",
       icon: searchIcon,
       labelKey: "popup.shortcut.poeRegex"
@@ -46,6 +53,12 @@
       href: "https://poedb.tw/us/",
       icon: packageSearchIcon,
       labelKey: "popup.shortcut.poedb"
+    },
+    {
+      group: "poe2",
+      href: "https://www.poe2wiki.net/wiki/Path_of_Exile_2_Wiki",
+      icon: bookOpenIcon,
+      labelKey: "popup.shortcut.poe2Wiki"
     },
     {
       group: "poe2",

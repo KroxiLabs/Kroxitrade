@@ -900,14 +900,13 @@ export class ItemResultsService {
 
         const final = multiplier > 1.0001 ? Math.floor(base * multiplier) : base;
         const value = formatMagebloodLegacyLine(template, final);
-        const baseValue = formatMagebloodLegacyLine(template, base);
         const line = document.createElement("span");
         line.className = "bt-mb-explanation-line";
         line.textContent = value;
         if (multiplier > 1.0001) {
           const detail = document.createElement("span");
           detail.className = "bt-mb-explanation-detail";
-          detail.textContent = ` (${baseLabel} ${baseValue}, +${increasedEffect}% ${effectLabel})`;
+          detail.textContent = ` (${baseLabel}: ${base}, +${increasedEffect}% ${effectLabel})`;
           line.appendChild(detail);
         }
         block.appendChild(document.createElement("br"));

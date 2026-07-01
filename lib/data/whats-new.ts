@@ -54,6 +54,50 @@ const version111Items: WhatsNewItem[] = [
   }
 ];
 
+const version112Features: WhatsNewItem[] = [
+  {
+    title: "External reference links in the popup",
+    description:
+      "The popup can now show grouped PoE1 and PoE2 shortcuts for the official trade-adjacent tools, including the Path of Exile Wiki, Path of Exile 2 Wiki, Path of Regex, Craft of Exile, PoEDb, PoE2Db, and poe.ninja."
+  },
+  {
+    title: "New PoE2 bookmark folder icons",
+    description:
+      "Disciple of Varashta, Martial Artist, and Spirit Walker icons are available for PoE2 bookmark folders."
+  },
+  {
+    title: "Mageblood Legacy descriptions for PoE2",
+    description:
+      "A new Results setting can show hidden Mageblood Legacy effects below PoE2 item results, including duplicate Legacy scaling."
+  }
+];
+
+const version112Fixes: WhatsNewItem[] = [
+  {
+    title: "Localized PoE2 trade links load correctly",
+    description:
+      "Bookmarks and helper panels now recognize localized trade2 hosts such as es.pathofexile.com and keep league URLs with spaces encoded correctly."
+  },
+  {
+    title: "Mageblood Legacy works across languages",
+    description:
+      "Legacy detection now uses stable trade stat ids, with localized effect descriptions for English, Spanish, Portuguese, Russian, Thai, German, French, Japanese, and Korean."
+  }
+];
+
+const version112Polish: WhatsNewItem[] = [
+  {
+    title: "Mageblood details stay quiet until hover",
+    description:
+      "Legacy descriptions show the final value by default, while base value and duplicate effect details appear inline on hover."
+  },
+  {
+    title: "Mageblood descriptions match item layout",
+    description:
+      "Legacy description blocks now sit below corrupt/explicit separators like native notable descriptions and stay out of copied item text."
+  }
+];
+
 const version110Features: WhatsNewItem[] = [
   {
     title: "Settings are now easier to navigate",
@@ -144,9 +188,39 @@ const version110Changes: WhatsNewItem[] = [
 ];
 
 export const latestWhatsNew: WhatsNewEntry = {
-  version: "1.1.1",
-  date: "2026-06-27",
+  version: "1.1.2",
+  date: "2026-06-30",
   sections: [
+    {
+      title: "1.1.2",
+      groups: [
+        {
+          titleKey: "whatsNew.section.features",
+          items: version112Features
+        },
+        {
+          titleKey: "whatsNew.section.fixes",
+          items: version112Fixes
+        },
+        {
+          titleKey: "whatsNew.section.polish",
+          items: version112Polish
+        }
+      ]
+    },
+    {
+      title: "1.1.1",
+      groups: [
+        {
+          titleKey: "whatsNew.section.fixes",
+          items: version111Items.slice(0, 4)
+        },
+        {
+          titleKey: "whatsNew.section.polish",
+          items: version111Items.slice(4)
+        }
+      ]
+    },
     {
       title: "1.1.0",
       groups: [
@@ -163,25 +237,30 @@ export const latestWhatsNew: WhatsNewEntry = {
           items: version110Fixes
         }
       ]
-    },
-    {
-      title: "1.1.1",
-      groups: [
-        {
-          titleKey: "whatsNew.section.fixes",
-          items: version111Items.slice(0, 4)
-        },
-        {
-          titleKey: "whatsNew.section.polish",
-          items: version111Items.slice(4)
-        }
-      ]
     }
   ]
 };
 
 export const whatsNewEntries: WhatsNewEntry[] = [
   latestWhatsNew,
+  {
+    version: "1.1.2",
+    date: "2026-06-30",
+    sections: [
+      {
+        titleKey: "whatsNew.section.features",
+        items: version112Features
+      },
+      {
+        titleKey: "whatsNew.section.fixes",
+        items: version112Fixes
+      },
+      {
+        titleKey: "whatsNew.section.polish",
+        items: version112Polish
+      }
+    ]
+  },
   {
     version: "1.1.1",
     date: "2026-06-27",
