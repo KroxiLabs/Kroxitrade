@@ -21,11 +21,12 @@ The project currently focuses on making recurring trade searches easier to save,
 
 ### Sidebar workflow
 
-- **Integrated trade sidebar:** Poe Trade Plus mounts directly inside `pathofexile.com/trade`.
+- **Integrated trade sidebar:** Poe Trade Plus mounts directly inside official Path of Exile trade pages, including PoE1, PoE2, and localized trade hosts.
 - **Resizable layout:** the sidebar width can be adjusted and persisted locally.
 - **Minimize and restore mode:** collapse the panel into a floating pill to recover screen space.
 - **Left or right docking:** choose which side of the trade site the panel should live on.
 - **Trade-site-aware layout shift:** the page adapts to the sidebar width so the official site remains usable.
+- **Popup shortcuts:** optional grouped links for Path of Exile Wiki, Path of Exile 2 Wiki, Path of Regex, Craft of Exile, PoEDb, PoE2Db, and poe.ninja.
 
 ### Bookmarks and folders
 
@@ -33,8 +34,10 @@ The project currently focuses on making recurring trade searches easier to save,
 - **Folder creation and inline organization:** create, rename, expand, collapse, archive, and delete folders in place.
 - **Drag and drop reordering:** reorder folders and searches without leaving the panel.
 - **Per-folder import:** paste a serialized folder string and restore it instantly.
-- **Backup and restore:** export all folders to a `.txt` backup file and restore them later.
+- **Full backup and restore:** export a portable `.json` file with folders, saved searches, settings, and extension preferences, then restore it in another browser.
+- **Legacy backup support:** older folder-only `.txt` backups can still be restored.
 - **Archived view:** switch between active and archived folders without losing saved searches.
+- **PoE2 folder icons:** includes PoE2 currency, class, ascendancy, and themed folder icons.
 
 ### Search history and navigation
 
@@ -48,6 +51,10 @@ The project currently focuses on making recurring trade searches easier to save,
 - **Search-stat highlighting:** active stat filters are highlighted in the result list.
 - **Socket breakpoint warnings:** armor results can display max-socket warnings based on item level.
 - **Scroll back to result:** pinned-result navigation can scroll the active result list to a specific item.
+- **Mageblood Legacy descriptions:** optionally show hidden PoE2 Mageblood Legacy effects below item results, including duplicate Legacy scaling.
+- **Localized Mageblood support:** Mageblood Legacy detection uses stable trade stat ids and localized descriptions for English, Spanish, Portuguese, Russian, Thai, German, French, Japanese, and Korean.
+- **Craft of Exile export:** copy supported PoE1 and PoE2 item results in Craft of Exile's advanced import format.
+- **PoE2 copy helper:** optionally expose PoE2's native copy action for Path of Building workflows.
 
 ### Filter helpers
 
@@ -59,8 +66,12 @@ The project currently focuses on making recurring trade searches easier to save,
 
 - **Sidebar position preference**
 - **Equivalent pricing visibility toggle**
+- **PoE1 and PoE2 result settings**
+- **Mageblood Legacy description toggle**
+- **History, bulk sellers, quick filters, Craft of Exile, and PoE2 copy toggles**
 - **Persistent sidebar width**
-- **Local browser storage for settings, folders, and history**
+- **Local browser storage for settings, folders, history, and extension preferences**
+- **Portable full-extension backup file for moving data between browsers**
 - **Ephemeral caching for `poe.ninja` currency ratios**
 
 ## Tech Stack
@@ -156,7 +167,8 @@ The script reads commits since the latest `v*` tag, groups `feat:` commits as ne
 
 - `storage`: persists folders, settings, history, and cache data
 - `tabs`: detects and updates the active Path of Exile trade tab
-- `https://www.pathofexile.com/*`: injects the sidebar and trade helpers
+- `https://www.pathofexile.com/*` and localized Path of Exile trade hosts: injects the sidebar and trade helpers
+- `https://poe2.kakaogames.com/*`: supports the Korean PoE2 trade host
 - `https://poe.ninja/*`: fetches currency ratios for equivalent pricing
 
 ## Credits
