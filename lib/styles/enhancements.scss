@@ -564,6 +564,108 @@ body.bt-dev-result-actions-visible.bt-dev-coe-visible .row > .left > button.bt-c
   outline: 1px solid rgba(168, 129, 73, 0.42);
 }
 
+.krox-tier-input {
+  position: relative;
+  display: inline-block;
+}
+
+.krox-tier-input > input {
+  padding-right: 30px !important;
+}
+
+.krox-tier-select {
+  position: absolute;
+  right: 2px;
+  top: 50%;
+  z-index: 5;
+  display: inline-flex;
+  transform: translateY(-50%);
+}
+
+.krox-tier-select--open {
+  z-index: 100;
+}
+
+.krox-tier-select__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 20px;
+  padding: 0 4px;
+  border: 1px solid rgba(168, 129, 73, 0.48);
+  border-radius: 2px;
+  background: rgba(12, 12, 14, 0.92);
+  color: #c8b68b;
+  font-family: Arial, sans-serif;
+  font-size: 11px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.krox-tier-select__button:hover,
+.krox-tier-select__button:focus-visible {
+  background: rgba(43, 37, 30, 0.98);
+  outline: 1px solid rgba(168, 129, 73, 0.36);
+}
+
+.krox-tier-select__menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 4px);
+  z-index: 2147483647;
+  display: none;
+  min-width: 180px;
+  overflow: hidden;
+  border: 1px solid rgba(168, 129, 73, 0.38);
+  border-radius: 3px;
+  background: #17130f;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.72);
+}
+
+.krox-tier-select--open .krox-tier-select__menu {
+  display: block;
+}
+
+.krox-tier-select__option {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 6px 8px;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+  background: transparent;
+  color: #c8b68b;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.krox-tier-select__option:last-child {
+  border-bottom: 0;
+}
+
+.krox-tier-select__option:hover,
+.krox-tier-select__option:focus-visible {
+  background: rgba(168, 129, 73, 0.13);
+  outline: none;
+}
+
+.krox-tier-select__name {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.krox-tier-select__value {
+  flex: 0 0 auto;
+  color: rgba(238, 238, 238, 0.62);
+}
+
 .hidden {
   display: none !important;
 }

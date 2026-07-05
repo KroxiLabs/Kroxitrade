@@ -1,3 +1,9 @@
+import {
+  findTierForValue,
+  getTiersForStat,
+  hasStatTiers,
+  type TierInfo
+} from "~/lib/services/tier-data"
 import { isFinerFiltersActionMessage } from "~/lib/utilities/finer-filters-bridge"
 
 export const initFilterPanel = () => {
@@ -201,6 +207,158 @@ export const initFilterPanel = () => {
     return row?.getAttribute("data-id") || row?.id || mod.dataset.rowid || ""
   }
 
+  const findStatFilters = () => {
+    return Array.from(
+      document.querySelectorAll(".filter.full-span")
+    ) as HTMLElement[]
+  }
+
+  const getStatIdFromFilter = (filter: HTMLElement) => {
+    const existing = filter.dataset.statId
+    if (existing) return existing
+
+    const vue = (filter as any).__vue__
+    const statId = vue?.$props?.filter?.id
+    if (statId) {
+      filter.dataset.statId = statId
+      return statId as string
+    }
+
+    return null
+  }
+
+  const getCurrentItemClass = () => {
+    const categoryFilter = document.querySelector(
+      '.filter-property[data-stat-id="category"]'
+    )
+    const categoryInput = categoryFilter?.querySelector(
+      ".multiselect__input"
+    ) as HTMLInputElement | null
+    const text = categoryInput?.placeholder?.trim()
+
+    if (text?.includes("Gloves")) return "Gloves"
+    if (text?.includes("Boots")) return "Boots"
+    if (text?.includes("Body Armour")) return "Body Armours"
+    if (text?.includes("Helmet")) return "Helmets"
+    if (text?.includes("Ring")) return "Rings"
+    if (text?.includes("Amulet")) return "Amulets"
+    if (text?.includes("Belt")) return "Belts"
+    if (text?.includes("Quiver")) return "Quivers"
+    if (text?.includes("Quarterstaff")) return "Quarterstaves"
+
+    return undefined
+  }
+
+  const setInputValue = (input: HTMLInputElement, value: string) => {
+    const descriptor = Object.getOwnPropertyDescriptor(
+      window.HTMLInputElement.prototype,
+      "value"
+    )
+    descriptor?.set?.call(input, value)
+  }
+
+  const updateTierMinInput = (input: HTMLInputElement, value: number) => {
+    setInputValue(input, String(value))
+    input.dispatchEvent(new Event("input", { bubbles: true }))
+    input.dispatchEvent(new Event("change", { bubbles: true }))
+  }
+
+  const renderTierDropdown = (
+    container: HTMLElement,
+    minInput: HTMLInputElement,
+    statId: string,
+    tiers: TierInfo[],
+    itemClass?: string
+  ) => {
+    const value = minInput.value ? Number.parseFloat(minInput.value) : undefined
+    const currentTier =
+      value !== undefined && !Number.isNaN(value)
+        ? findTierForValue(statId, value, itemClass)
+        : null
+
+    container.replaceChildren()
+
+    const button = document.createElement("button")
+    button.type = "button"
+    button.className = "krox-tier-select__button"
+    button.textContent = currentTier ? `T${currentTier}` : "T"
+    container.appendChild(button)
+
+    const menu = document.createElement("div")
+    menu.className = "krox-tier-select__menu"
+
+    tiers.forEach((tier) => {
+      const option = document.createElement("button")
+      option.type = "button"
+      option.className = "krox-tier-select__option"
+
+      const label = document.createElement("span")
+      label.className = "krox-tier-select__name"
+      label.textContent = `T${tier.tier} ${tier.name}`
+
+      const valueLabel = document.createElement("span")
+      valueLabel.className = "krox-tier-select__value"
+      valueLabel.textContent = `${tier.avgMin}+`
+
+      option.append(label, valueLabel)
+      option.addEventListener("click", (event) => {
+        event.preventDefault()
+        event.stopPropagation()
+        updateTierMinInput(minInput, tier.avgMin)
+        container.classList.remove("krox-tier-select--open")
+        renderTierDropdown(container, minInput, statId, tiers, itemClass)
+      })
+
+      menu.appendChild(option)
+    })
+
+    button.addEventListener("click", (event) => {
+      event.preventDefault()
+      event.stopPropagation()
+      container.classList.toggle("krox-tier-select--open")
+    })
+
+    container.appendChild(menu)
+  }
+
+  const injectTierDropdowns = () => {
+    const filters = findStatFilters()
+    if (!filters.length) return
+
+    const itemClass = getCurrentItemClass()
+
+    filters.forEach((filter) => {
+      if (filter.querySelector(".krox-tier-select")) return
+
+      const statId = getStatIdFromFilter(filter)
+      if (!statId || !hasStatTiers(statId)) return
+
+      const tiers = getTiersForStat(statId, itemClass)
+      if (!tiers?.length) return
+
+      const minInput = filter.querySelector(
+        'input[placeholder="min"]'
+      ) as HTMLInputElement | null
+      if (!minInput?.parentElement) return
+
+      const wrapper = document.createElement("span")
+      wrapper.className = "krox-tier-input"
+      minInput.parentElement.insertBefore(wrapper, minInput)
+      wrapper.appendChild(minInput)
+
+      const container = document.createElement("span")
+      container.className = "krox-tier-select"
+      wrapper.appendChild(container)
+
+      renderTierDropdown(container, minInput, statId, tiers, itemClass)
+
+      const rerender = () =>
+        renderTierDropdown(container, minInput, statId, tiers, itemClass)
+      minInput.addEventListener("input", rerender)
+      minInput.addEventListener("change", rerender)
+    })
+  }
+
   const getModHashFromDom = (mod: HTMLElement) => {
     const sEl = mod.querySelector(".lc.s") as HTMLElement | null
     const fieldVal =
@@ -372,6 +530,7 @@ export const initFilterPanel = () => {
 
   // step 2: make buttons visible on item mods
   scanVisibleMods()
+  injectTierDropdowns()
   const observer = new MutationObserver((mutations) => {
     for (const mutation of mutations) {
       mutation.addedNodes.forEach((node) => {
@@ -384,10 +543,24 @@ export const initFilterPanel = () => {
           decorateMod(node, ItemSearchGroupsVueItems())
         }
         scanVisibleMods(node)
+        injectTierDropdowns()
       })
     }
   })
   observer.observe(document.body, { childList: true, subtree: true })
+
+  document.addEventListener("click", (event) => {
+    if (
+      event.target instanceof Element &&
+      event.target.closest(".krox-tier-select")
+    ) {
+      return
+    }
+
+    document
+      .querySelectorAll(".krox-tier-select--open")
+      .forEach((select) => select.classList.remove("krox-tier-select--open"))
+  })
 
   on("click", ".layout-btn", () => {
     refreshButtonsForLayout()
@@ -442,7 +615,9 @@ export const initFilterPanel = () => {
   }
 
   const injectSearchPanelQuickFilters = () => {
-    const pane = document.querySelector<HTMLElement>(".search-advanced-pane.brown")
+    const pane = document.querySelector<HTMLElement>(
+      ".search-advanced-pane.brown"
+    )
     const existing = pane?.querySelector('[data-krox-filter-presets="true"]')
     const storageKey = window.location.pathname.startsWith("/trade2/")
       ? "bt-quick-filters-visible-poe2"
@@ -519,7 +694,10 @@ export const initFilterPanel = () => {
   const quickFiltersObserver = new MutationObserver(() => {
     injectSearchPanelQuickFilters()
   })
-  quickFiltersObserver.observe(document.body, { childList: true, subtree: true })
+  quickFiltersObserver.observe(document.body, {
+    childList: true,
+    subtree: true
+  })
   window.addEventListener("storage", (event) => {
     if (
       event.key?.startsWith("bt-quick-filters-visible-poe") ||
