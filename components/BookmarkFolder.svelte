@@ -862,7 +862,7 @@
   .header-label {
     flex: 1;
     font-family: $primary-font;
-    font-size: 14px;
+    font-size: calc(14px * var(--bt-text-scale, 1));
     font-weight: 700;
     letter-spacing: 0.02em;
     color: rgba($white, 0.96);
@@ -880,7 +880,7 @@
     border: 1px solid rgba($gold, 0.5);
     color: $white;
     font-family: $primary-font;
-    font-size: 14px;
+    font-size: calc(14px * var(--bt-text-scale, 1));
     text-transform: uppercase;
     padding: 2px 6px;
     border-radius: 2px;
@@ -893,7 +893,7 @@
   }
 
   .trade-edit {
-    font-size: 12px;
+    font-size: calc(12px * var(--bt-text-scale, 1));
     margin-right: 0;
   }
 
@@ -969,7 +969,7 @@
 
   .folder-icon-option__empty {
     font-family: $primary-font;
-    font-size: 9px;
+    font-size: calc(9px * var(--bt-text-scale, 1));
     color: rgba($white, 0.75);
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -991,7 +991,7 @@
 
   .folder-edit-panel__label {
     color: rgba($white, 0.72);
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     line-height: 1.4;
   }
 
@@ -1081,7 +1081,7 @@
     background: transparent;
     cursor: grab;
     color: rgba($white, 0.3);
-    font-size: 15px;
+    font-size: calc(15px * var(--bt-text-scale, 1));
     user-select: none;
     display: flex;
     align-items: center;
@@ -1131,7 +1131,7 @@
   .trade-link {
     color: $white;
     text-decoration: none;
-    font-size: 13px;
+    font-size: calc(13px * var(--bt-text-scale, 1));
     line-height: 1.2;
     cursor: inherit;
     min-width: 0;
@@ -1144,7 +1144,7 @@
   .trade-meta {
     min-width: 0;
     flex: 1;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     line-height: 1.2;
     color: rgba($gold-alt, 0.52);
     letter-spacing: 0.03em;
@@ -1170,7 +1170,7 @@
   .indicator {
     flex: 0 0 auto;
     color: rgba($gold-alt, 0.78);
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
   }
 
   .trades-content {

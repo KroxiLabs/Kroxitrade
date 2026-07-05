@@ -109,7 +109,7 @@
     h3 {
       margin: 0;
       font-family: $primary-font;
-      font-size: 15px;
+      font-size: calc(15px * var(--bt-text-scale, 1));
       letter-spacing: 0.04em;
       color: $gold;
     }
@@ -121,7 +121,7 @@
     p {
       margin: 0 0 14px;
       color: rgba($white, 0.82);
-      font-size: 12px;
+      font-size: calc(12px * var(--bt-text-scale, 1));
       line-height: 1.5;
     }
   }
@@ -130,7 +130,7 @@
     margin-bottom: 10px;
     color: rgba($gold-alt, 0.88);
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -149,7 +149,7 @@
     background: rgba($white, 0.03);
     color: rgba($white, 0.84);
     font-family: $primary-font;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     letter-spacing: 0.04em;
     cursor: pointer;
     transition:

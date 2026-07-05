@@ -43,12 +43,12 @@
     width: 100%;
     flex: 0 0 auto;
     margin: 10px 0;
-    font-size: 25px;
+    font-size: calc(25px * var(--bt-text-scale, 1));
     color: $white;
     @include delayed-fade-in;
 
-    &.is-small { margin: 5px 0; font-size: 15px; }
-    &.is-large { margin: 20px 0; font-size: 25px; }
+    &.is-small { margin: 5px 0; font-size: calc(15px * var(--bt-text-scale, 1)); }
+    &.is-large { margin: 20px 0; font-size: calc(25px * var(--bt-text-scale, 1)); }
   }
 
   .spinner {

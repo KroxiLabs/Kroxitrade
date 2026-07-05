@@ -140,7 +140,7 @@
     margin-bottom: 5px;
     color: rgba($gold-alt, 0.82);
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.16em;
     text-transform: uppercase;
   }
@@ -149,7 +149,7 @@
     margin: 0;
     color: $gold;
     font-family: $primary-font;
-    font-size: 17px;
+    font-size: calc(17px * var(--bt-text-scale, 1));
     letter-spacing: 0.04em;
   }
 
@@ -162,7 +162,7 @@
     border-radius: 6px;
     background: rgba($black, 0.24);
     color: rgba($gold-alt, 0.88);
-    font-size: 15px;
+    font-size: calc(15px * var(--bt-text-scale, 1));
     line-height: 1;
     cursor: pointer;
   }
@@ -184,7 +184,7 @@
   .whats-new-dialog__intro {
     margin: 0 0 14px;
     color: rgba($white, 0.82);
-    font-size: 12px;
+    font-size: calc(12px * var(--bt-text-scale, 1));
     line-height: 1.5;
   }
 
@@ -205,7 +205,7 @@
     background: rgba($gold, 0.06);
     color: rgba($gold-alt, 0.86);
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.04em;
   }
 
@@ -225,7 +225,7 @@
     margin: 0 0 10px;
     color: rgba($gold-alt, 0.96);
     font-family: $primary-font;
-    font-size: 14px;
+    font-size: calc(14px * var(--bt-text-scale, 1));
     letter-spacing: 0.06em;
   }
 
@@ -243,7 +243,7 @@
     margin: 0;
     color: rgba($gold-alt, 0.82);
     font-family: $primary-font;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -256,7 +256,7 @@
     padding: 0;
     list-style: none;
     color: rgba($white, 0.78);
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     line-height: 1.5;
   }
 
@@ -269,7 +269,7 @@
     display: block;
     margin-bottom: 2px;
     color: rgba($white, 0.92);
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     line-height: 1.35;
   }
 

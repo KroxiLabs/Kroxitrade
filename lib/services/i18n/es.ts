@@ -205,6 +205,11 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "settings.languageTitle": "Idioma",
     "settings.languageDescription":
       "Elegí el idioma usado por la interfaz de la extensión.",
+    "settings.textSizeTitle": "Tamaño de texto",
+    "settings.textSizeDescription": "Ajustá el tamaño del texto de la extensión para tu monitor y comodidad de lectura.",
+    "settings.textSizeSmall": "Chico",
+    "settings.textSizeMedium": "Mediano",
+    "settings.textSizeLarge": "Grande",
     "settings.languageEnglish": "Inglés",
     "settings.languageSpanish": "Español",
     "settings.onboardingTitle": "Tutorial",

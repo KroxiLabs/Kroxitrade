@@ -38,6 +38,11 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "settings.languageTitle": "Sprache",
   "settings.languageDescription":
     "Wähle die Sprache der Erweiterungsoberfläche.",
+  "settings.textSizeTitle": "Textgröße",
+  "settings.textSizeDescription": "Passe die Textgröße der Erweiterung an deinen Monitor und Lesekomfort an.",
+  "settings.textSizeSmall": "Klein",
+  "settings.textSizeMedium": "Mittel",
+  "settings.textSizeLarge": "Groß",
   "settings.languageEnglish": "Englisch",
   "settings.languageSpanish": "Spanisch",
   "settings.resultsTitle": "Ergebniswerkzeuge",

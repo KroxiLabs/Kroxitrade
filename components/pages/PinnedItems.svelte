@@ -78,7 +78,7 @@
     overflow: hidden;
     
     :global(.itemPopupContainer) { margin: 0; background-color: #000; }
-    :global(.itemPopupAdditional) { padding: 5px; background-color: #000; font-size: 12px; }
+    :global(.itemPopupAdditional) { padding: 5px; background-color: #000; font-size: calc(12px * var(--bt-text-scale, 1)); }
   }
 
   .rendered-wrapper {

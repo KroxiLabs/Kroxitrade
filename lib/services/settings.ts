@@ -6,6 +6,7 @@ import type { TradeSiteVersion } from '../types/trade-location';
 export type SidebarSide = 'left' | 'right';
 export type BookmarkTradeActionId = 'edit' | 'replace' | 'copy' | 'openLive' | 'toggle' | 'delete';
 export type QuickFiltersPlacement = 'page' | 'sidebar';
+export type TextSizePreference = 'small' | 'medium' | 'large';
 
 export interface VersionSettings {
   showEquivalentPricing: boolean;
@@ -24,6 +25,7 @@ export interface AppSettings extends VersionSettings {
   sidebarWidth: number;
   language: AppLanguage;
   showExperimentalTab: boolean;
+  textSize: TextSizePreference;
 }
 
 interface GlobalSettings {
@@ -31,6 +33,7 @@ interface GlobalSettings {
   sidebarWidth: number;
   language: AppLanguage;
   showExperimentalTab: boolean;
+  textSize: TextSizePreference;
 }
 
 const GLOBAL_SETTINGS_KEY = 'app-settings';
@@ -40,7 +43,8 @@ const DEFAULT_GLOBAL_SETTINGS: GlobalSettings = {
   sidebarSide: 'right',
   sidebarWidth: 360,
   language: 'en',
-  showExperimentalTab: true
+  showExperimentalTab: true,
+  textSize: 'medium'
 };
 
 const DEFAULT_VERSION_SETTINGS: VersionSettings = {
@@ -54,6 +58,10 @@ const DEFAULT_VERSION_SETTINGS: VersionSettings = {
   compactActionsMenu: false,
   compactBookmarkTradeActions: []
 };
+
+function normalizeTextSize(textSize: unknown): TextSizePreference {
+  return textSize === 'small' || textSize === 'large' ? textSize : 'medium';
+}
 
 let activeVersion: TradeSiteVersion = inferTradeVersion();
 let globalSettings: GlobalSettings = DEFAULT_GLOBAL_SETTINGS;
@@ -158,7 +166,8 @@ async function load() {
     sidebarSide: stored?.sidebarSide ?? DEFAULT_GLOBAL_SETTINGS.sidebarSide,
     sidebarWidth: stored?.sidebarWidth ?? DEFAULT_GLOBAL_SETTINGS.sidebarWidth,
     language: stored?.language ?? DEFAULT_GLOBAL_SETTINGS.language,
-    showExperimentalTab: stored?.showExperimentalTab ?? DEFAULT_GLOBAL_SETTINGS.showExperimentalTab
+    showExperimentalTab: stored?.showExperimentalTab ?? DEFAULT_GLOBAL_SETTINGS.showExperimentalTab,
+    textSize: normalizeTextSize(stored?.textSize)
   };
 
   const [poe1Settings, poe2Settings] = await Promise.all([
@@ -247,6 +256,9 @@ export const settings = {
   },
   async updateExperimentalTabVisibility(showExperimentalTab: boolean) {
     return saveGlobal({ ...globalSettings, showExperimentalTab });
+  },
+  async updateTextSize(textSize: TextSizePreference) {
+    return saveGlobal({ ...globalSettings, textSize: normalizeTextSize(textSize) });
   },
   async updateLanguage(language: AppLanguage) {
     const saved = await saveGlobal({ ...globalSettings, language });

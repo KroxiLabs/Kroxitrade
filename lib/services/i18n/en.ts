@@ -205,6 +205,11 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "settings.languageTitle": "Language",
     "settings.languageDescription":
       "Choose the language used by the extension interface.",
+    "settings.textSizeTitle": "Text Size",
+    "settings.textSizeDescription": "Adjust the extension text size for your monitor and reading comfort.",
+    "settings.textSizeSmall": "Small",
+    "settings.textSizeMedium": "Medium",
+    "settings.textSizeLarge": "Large",
     "settings.languageEnglish": "English",
     "settings.languageSpanish": "Spanish",
     "settings.onboardingTitle": "Tutorial",

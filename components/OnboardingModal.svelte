@@ -512,7 +512,7 @@
     h2 {
       margin: 6px 0 0;
       font-family: $primary-font;
-      font-size: 16px;
+      font-size: calc(16px * var(--bt-text-scale, 1));
       line-height: 1.2;
       color: rgba($white, 0.96);
     }
@@ -528,7 +528,7 @@
     background: rgba($gold, 0.09);
     color: rgba($gold-alt, 0.92);
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -541,7 +541,7 @@
     border-radius: 999px;
     background: rgba($black, 0.3);
     color: rgba($white, 0.76);
-    font-size: 15px;
+    font-size: calc(15px * var(--bt-text-scale, 1));
     line-height: 1;
     cursor: pointer;
   }
@@ -549,7 +549,7 @@
   .onboarding-coachmark__body {
     margin: 10px 0 0;
     color: rgba($white, 0.76);
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     line-height: 1.5;
   }
 
@@ -579,13 +579,13 @@
     background: rgba($gold, 0.11);
     color: $gold;
     font-family: $primary-font;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     font-weight: 700;
   }
 
   .onboarding-step-copy {
     color: rgba($white, 0.88);
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     line-height: 1.45;
   }
 
@@ -600,7 +600,7 @@
 
   .onboarding-progress {
     color: rgba($gold-alt, 0.86);
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }

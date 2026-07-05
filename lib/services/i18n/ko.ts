@@ -43,6 +43,11 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "settings.languageTitle": "언어",
   "settings.languageDescription":
     "확장 프로그램 인터페이스에 사용할 언어를 선택하세요.",
+  "settings.textSizeTitle": "텍스트 크기",
+  "settings.textSizeDescription": "모니터와 읽기 편의에 맞게 확장 프로그램의 텍스트 크기를 조정하세요.",
+  "settings.textSizeSmall": "작게",
+  "settings.textSizeMedium": "보통",
+  "settings.textSizeLarge": "크게",
   "settings.languageEnglish": "영어",
   "settings.languageSpanish": "스페인어",
   "settings.resultsTitle": "결과 도구",

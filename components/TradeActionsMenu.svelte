@@ -309,7 +309,7 @@
 
   .trade-actions-menu__text {
     min-width: 0;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     line-height: 1.2;
     color: rgba($gold-alt, 0.52);
     letter-spacing: 0.03em;
@@ -388,7 +388,7 @@
     color: rgba(255, 255, 255, 0.9);
     cursor: pointer;
     text-align: left;
-    font-size: 12px;
+    font-size: calc(12px * var(--bt-text-scale, 1));
     line-height: 1.35;
   }
 

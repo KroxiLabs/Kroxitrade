@@ -543,7 +543,7 @@
     background: rgba($black, 0.34);
     color: #d7a75f;
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.05em;
     text-transform: uppercase;
     cursor: pointer;
@@ -667,7 +667,7 @@
 
   .import-title {
       font-family: $primary-font;
-      font-size: 11px;
+      font-size: calc(11px * var(--bt-text-scale, 1));
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -677,7 +677,7 @@
   .import-description,
   .import-hint {
       margin: 0;
-      font-size: 11px;
+      font-size: calc(11px * var(--bt-text-scale, 1));
       line-height: 1.4;
   }
 
@@ -702,7 +702,7 @@
           border-radius: 6px;
           color: $white;
           font-family: monospace;
-          font-size: 11px;
+          font-size: calc(11px * var(--bt-text-scale, 1));
           line-height: 1.45;
           padding: 10px;
           resize: vertical;

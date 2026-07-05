@@ -39,6 +39,11 @@ export const frenchTranslations: Record<string, TranslationValue> = {
   "settings.languageTitle": "Langue",
   "settings.languageDescription":
     "Choisissez la langue utilisée par l'interface de l'extension.",
+  "settings.textSizeTitle": "Taille du texte",
+  "settings.textSizeDescription": "Ajustez la taille du texte de l'extension à votre écran et à votre confort de lecture.",
+  "settings.textSizeSmall": "Petit",
+  "settings.textSizeMedium": "Moyen",
+  "settings.textSizeLarge": "Grand",
   "settings.languageEnglish": "Anglais",
   "settings.languageSpanish": "Espagnol",
   "settings.resultsTitle": "Outils de résultats",

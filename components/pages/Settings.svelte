@@ -9,7 +9,7 @@
   } from "../../lib/services/experimental";
   import { flashMessages } from "../../lib/services/flash";
   import { itemResultsService } from "../../lib/services/item-results";
-  import { settings, type BookmarkTradeActionId, type QuickFiltersPlacement, type SidebarSide } from "../../lib/services/settings";
+  import { settings, type BookmarkTradeActionId, type QuickFiltersPlacement, type SidebarSide, type TextSizePreference } from "../../lib/services/settings";
   import { tradeLocationService } from "../../lib/services/trade-location";
   import type { BookmarksTradeStruct } from "../../lib/types/bookmarks";
   import { normalizeIcon } from "../../lib/utilities/icons";
@@ -90,6 +90,11 @@
     { code: "fr", label: "Français", flag: flagFR, emoji: "🇫🇷" },
     { code: "ja", label: "日本語", flag: flagJP, emoji: "🇯🇵" },
     { code: "ko", label: "한국어", flag: flagKR, emoji: "🇰🇷" }
+  ];
+  const textSizeOptions: Array<{ id: TextSizePreference; labelKey: string }> = [
+    { id: "small", labelKey: "settings.textSizeSmall" },
+    { id: "medium", labelKey: "settings.textSizeMedium" },
+    { id: "large", labelKey: "settings.textSizeLarge" }
   ];
 
   const localizedLanguageNames: Record<AppLanguage, Record<AppLanguage, string>> = {
@@ -214,6 +219,12 @@
 
   async function handleLanguageChange(language: AppLanguage) {
     if (!(await settings.updateLanguage(language))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
+  }
+
+  async function handleTextSizeChange(textSize: TextSizePreference) {
+    if (!(await settings.updateTextSize(textSize))) {
       flashMessages.alert(translate($languageStore, "settings.saveFailed"));
     }
   }
@@ -386,6 +397,24 @@
           {/if}
         </div>
       </div>
+      </section>
+
+      <section class="settings-section settings-section--wide">
+        <div class="section-heading">
+          <h3 class="section-title">{translate($languageStore, "settings.textSizeTitle")}</h3>
+        </div>
+        <p class="section-description">{translate($languageStore, "settings.textSizeDescription")}</p>
+
+        <div class="side-selector">
+          {#each textSizeOptions as option (option.id)}
+            <Button
+              label={translate($languageStore, option.labelKey)}
+              theme={$settings.textSize === option.id ? "gold" : "blue"}
+              class="side-btn"
+              onClick={() => handleTextSizeChange(option.id)}
+            />
+          {/each}
+        </div>
       </section>
 
       <section class="settings-section settings-section--feature settings-section--wide" data-tutorial="settings-tutorial">
@@ -793,7 +822,7 @@
     background: transparent;
     color: rgba($white, 0.62);
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.04em;
     text-transform: uppercase;
     cursor: pointer;
@@ -845,7 +874,7 @@
   .section-title {
     margin: 0;
     font-family: $primary-font;
-    font-size: 14px;
+    font-size: calc(14px * var(--bt-text-scale, 1));
     text-transform: uppercase;
     letter-spacing: 0.05em;
     color: $gold;
@@ -862,7 +891,7 @@
   .section-description {
     margin: 0;
     color: rgba($white, 0.72);
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     line-height: 1.55;
   }
 
@@ -913,7 +942,7 @@
   .settings-row__title {
     color: rgba($white, 0.94);
     font-family: $primary-font;
-    font-size: 12px;
+    font-size: calc(12px * var(--bt-text-scale, 1));
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
@@ -922,14 +951,14 @@
   .settings-row__description {
     margin-top: 4px;
     color: rgba($white, 0.66);
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     line-height: 1.5;
   }
 
   .settings-row__hint {
     margin-top: 6px;
     color: rgba($gold, 0.72);
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     line-height: 1.45;
   }
 
@@ -951,7 +980,7 @@
     background: rgba($gold, 0.07);
     color: rgba($gold-alt, 0.92);
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.05em;
     text-transform: uppercase;
     cursor: pointer;
@@ -1050,7 +1079,7 @@
     cursor: pointer;
     background-color: rgba($white, 0.03);
     font-family: $primary-font;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -1083,7 +1112,7 @@
     flex: 0 0 auto;
     margin-left: auto;
     color: rgba($gold, 0.72);
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
   }
 
   .language-menu {
@@ -1138,7 +1167,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     font-family: $primary-font;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     letter-spacing: 0.05em;
   }
 
@@ -1177,7 +1206,7 @@
 
   .compact-options__title {
     font-family: $primary-font;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -1259,7 +1288,7 @@
   .settings-placement__label {
     color: rgba($gold, 0.78);
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
@@ -1293,7 +1322,7 @@
     background: rgba($gold, 0.07);
     color: rgba($gold-alt, 0.92);
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.05em;
     text-transform: uppercase;
   }
@@ -1341,7 +1370,7 @@
     white-space: nowrap;
     color: rgba($white, 0.96);
     font-family: $primary-font;
-    font-size: 14px;
+    font-size: calc(14px * var(--bt-text-scale, 1));
     font-weight: 700;
     letter-spacing: 0.02em;
     text-transform: uppercase;
@@ -1349,7 +1378,7 @@
 
   .preview-folder__chevron {
     color: rgba($gold-alt, 0.78);
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
   }
 
   .preview-trades-list {
@@ -1373,7 +1402,7 @@
     width: 16px;
     flex: 0 0 16px;
     color: rgba($white, 0.3);
-    font-size: 15px;
+    font-size: calc(15px * var(--bt-text-scale, 1));
     text-align: center;
   }
 
@@ -1407,7 +1436,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     color: $white;
-    font-size: 13px;
+    font-size: calc(13px * var(--bt-text-scale, 1));
     line-height: 1.2;
   }
 
@@ -1415,7 +1444,7 @@
     min-width: 0;
     flex: 1;
     color: rgba($gold-alt, 0.52);
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     line-height: 1.2;
     letter-spacing: 0.03em;
     overflow: hidden;

@@ -101,14 +101,14 @@
 
     span {
       color: $gold;
-      font-size: 11px;
+      font-size: calc(11px * var(--bt-text-scale, 1));
       font-family: $primary-font;
       letter-spacing: 0.1em;
       font-weight: bold;
     }
 
     .chevron {
-      font-size: 10px;
+      font-size: calc(10px * var(--bt-text-scale, 1));
       transition: transform 0.2s;
       &.collapsed {
         transform: rotate(-90deg);
@@ -130,7 +130,7 @@
 
   .section-title {
     color: rgba($white, 0.6);
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     font-family: $primary-font;
     text-transform: uppercase;
     margin-bottom: 8px;
@@ -160,7 +160,7 @@
     display: flex;
     align-items: center;
     color: $white;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     font-family: $primary-font;
     padding-left: 2px;
   }
@@ -171,7 +171,7 @@
     justify-content: center;
     border: none;
     color: $white;
-    font-size: 14px;
+    font-size: calc(14px * var(--bt-text-scale, 1));
     border-radius: 2px;
     cursor: pointer;
     padding: 2px 0;

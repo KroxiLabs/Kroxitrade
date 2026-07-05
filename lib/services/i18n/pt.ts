@@ -41,6 +41,11 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
   "settings.languageTitle": "Idioma",
   "settings.languageDescription":
     "Escolha o idioma usado pela interface da extensão.",
+  "settings.textSizeTitle": "Tamanho do texto",
+  "settings.textSizeDescription": "Ajuste o tamanho do texto da extensão para seu monitor e conforto de leitura.",
+  "settings.textSizeSmall": "Pequeno",
+  "settings.textSizeMedium": "Médio",
+  "settings.textSizeLarge": "Grande",
   "settings.languageEnglish": "Inglês",
   "settings.languageSpanish": "Espanhol",
   "settings.resultsTitle": "Ferramentas de resultados",

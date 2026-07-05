@@ -344,7 +344,7 @@
     color: rgba(255, 255, 255, 0.9);
     cursor: pointer;
     text-align: left;
-    font-size: 12px;
+    font-size: calc(12px * var(--bt-text-scale, 1));
     line-height: 1.35;
   }
 

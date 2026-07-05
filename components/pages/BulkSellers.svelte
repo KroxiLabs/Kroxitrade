@@ -230,14 +230,14 @@
 
   .seller-caret {
     color: rgba($white, 0.66);
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     flex: 0 0 auto;
   }
 
   .seller-name {
     font-family: $primary-font;
     color: $gold-alt;
-    font-size: 13px;
+    font-size: calc(13px * var(--bt-text-scale, 1));
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -246,7 +246,7 @@
   .seller-count {
     color: rgba($white, 0.72);
     font-family: $primary-font;
-    font-size: 12px;
+    font-size: calc(12px * var(--bt-text-scale, 1));
     flex: 0 0 auto;
   }
 
@@ -274,7 +274,7 @@
     align-items: center;
     gap: 5px;
     min-width: 0;
-    font-size: 12px;
+    font-size: calc(12px * var(--bt-text-scale, 1));
     white-space: nowrap;
   }
 
@@ -314,7 +314,7 @@
     min-width: 58px;
     height: 24px;
     padding: 0 10px;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     white-space: nowrap;
   }
 
@@ -328,7 +328,7 @@
     border-radius: 2px;
     color: $green;
     font-family: $primary-font;
-    font-size: 9px;
+    font-size: calc(9px * var(--bt-text-scale, 1));
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;
@@ -345,7 +345,7 @@
     border-radius: 2px;
     color: $green;
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     font-weight: 600;
     letter-spacing: 0.05em;
     text-transform: uppercase;

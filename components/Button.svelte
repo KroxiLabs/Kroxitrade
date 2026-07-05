@@ -59,7 +59,7 @@
     border-radius: 2px;
     text-decoration: none;
     font-family: $primary-font;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     text-transform: uppercase;
     letter-spacing: 0.05em;
     font-weight: 600;
@@ -127,7 +127,7 @@
   }
 
   .file-input { display: none !important; }
-  .icon { margin-right: 8px; font-size: 14px; }
+  .icon { margin-right: 8px; font-size: calc(14px * var(--bt-text-scale, 1)); }
   .icon-html {
     display: inline-flex;
     align-items: center;

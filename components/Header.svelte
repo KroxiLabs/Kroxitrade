@@ -59,7 +59,7 @@
     h1 {
       margin: 0;
       font-family: $primary-font;
-      font-size: 18px;
+      font-size: calc(18px * var(--bt-text-scale, 1));
       line-height: 1;
       letter-spacing: 0.9px;
       color: $gold;
@@ -67,7 +67,7 @@
 
     .subtitle {
         margin-top: 3px;
-        font-size: 11px;
+        font-size: calc(11px * var(--bt-text-scale, 1));
         color: rgba($white, 0.58);
     }
   }
@@ -100,7 +100,7 @@
     background: rgba($red, 0.16);
     border: 1px solid rgba($red, 0.36);
     color: rgba($red, 0.92);
-    font-size: 9px;
+    font-size: calc(9px * var(--bt-text-scale, 1));
     font-weight: 700;
     line-height: 1;
     letter-spacing: 0.12em;
@@ -140,7 +140,7 @@
       transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
 
     .chev-icon {
-      font-size: 10px;
+      font-size: calc(10px * var(--bt-text-scale, 1));
       line-height: 1;
     }
 

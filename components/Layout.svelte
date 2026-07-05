@@ -731,7 +731,7 @@ import Experimental from "./pages/Experimental.svelte";
 
     .chev-icon {
       color: $gold;
-      font-size: 11px;
+      font-size: calc(11px * var(--bt-text-scale, 1));
     }
   }
 
@@ -767,7 +767,7 @@ import Experimental from "./pages/Experimental.svelte";
     margin-bottom: 2px;
     color: rgba($gold-alt, 0.92);
     font-family: $primary-font;
-    font-size: 9px;
+    font-size: calc(9px * var(--bt-text-scale, 1));
     letter-spacing: 0.18em;
     text-transform: uppercase;
   }
@@ -775,7 +775,7 @@ import Experimental from "./pages/Experimental.svelte";
   .version-notice__text {
     margin: 0;
     color: rgba($white, 0.84);
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     line-height: 1.35;
   }
 
@@ -788,7 +788,7 @@ import Experimental from "./pages/Experimental.svelte";
     border-radius: 6px;
     background: rgba($black, 0.22);
     color: rgba($gold-alt, 0.88);
-    font-size: 14px;
+    font-size: calc(14px * var(--bt-text-scale, 1));
     line-height: 1;
     cursor: pointer;
     transition:
@@ -814,7 +814,7 @@ import Experimental from "./pages/Experimental.svelte";
     background: rgba($gold, 0.08);
     color: rgba($gold-alt, 0.94);
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.04em;
     text-transform: uppercase;
     cursor: pointer;
@@ -845,7 +845,7 @@ import Experimental from "./pages/Experimental.svelte";
     border-radius: 0;
     color: rgba($white, 0.56);
     font-family: $primary-font;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     cursor: pointer;
     transition:
       color 0.2s ease,
@@ -951,7 +951,7 @@ import Experimental from "./pages/Experimental.svelte";
     padding: 10px;
     margin: 0;
     color: $white;
-    font-size: 13px;
+    font-size: calc(13px * var(--bt-text-scale, 1));
     border-radius: 4px;
     cursor: pointer;
     box-shadow: 0 2px 10px rgba(0,0,0,0.5);
@@ -1077,7 +1077,7 @@ import Experimental from "./pages/Experimental.svelte";
     }
 
     .chev-icon {
-      font-size: 12px;
+      font-size: calc(12px * var(--bt-text-scale, 1));
       color: rgba($white, 0.4);
       transition:
         color 0.2s ease,

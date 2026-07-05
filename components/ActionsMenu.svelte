@@ -301,7 +301,7 @@
 
   .actions-inline__text {
     min-width: 0;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     line-height: 1.2;
     color: rgba($gold-alt, 0.52);
     letter-spacing: 0.03em;
@@ -336,7 +336,7 @@
     &--icon {
       width: 24px;
       height: 24px;
-      font-size: 12px;
+      font-size: calc(12px * var(--bt-text-scale, 1));
       line-height: 1;
     }
 
@@ -349,7 +349,7 @@
       background: #0b0b0b;
       border-radius: 4px;
       text-align: left;
-      font-size: 12px;
+      font-size: calc(12px * var(--bt-text-scale, 1));
       line-height: 1.35;
 
       &:hover {

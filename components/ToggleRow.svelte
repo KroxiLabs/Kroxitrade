@@ -98,7 +98,7 @@
     min-width: 28px;
     color: rgba($white, 0.68);
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     font-weight: 600;
     letter-spacing: 0.08em;
     text-align: right;

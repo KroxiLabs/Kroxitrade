@@ -71,7 +71,7 @@
   .eyebrow {
     margin-bottom: 6px;
     color: #b88a47;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.22em;
     text-transform: uppercase;
   }
@@ -83,13 +83,13 @@
   }
 
   h1 {
-    font-size: 20px;
+    font-size: calc(20px * var(--bt-text-scale, 1));
   }
 
   p {
     margin: 8px 0 0;
     color: #cbb694;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     line-height: 1.55;
   }
 
@@ -102,7 +102,7 @@
   .about-footer__support,
   .about-footer__meta {
     margin-top: 0;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     line-height: 1.45;
     color: rgba(203, 182, 148, 0.58);
   }
@@ -116,7 +116,7 @@
   h2 {
     margin: 0;
     color: #f1dfbe;
-    font-size: 15px;
+    font-size: calc(15px * var(--bt-text-scale, 1));
   }
 
   .about-section :global(.button) {

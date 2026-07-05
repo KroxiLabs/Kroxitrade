@@ -74,7 +74,7 @@
   .contextual-menu-trigger {
     cursor: pointer;
     padding: 5px;
-    font-size: 20px;
+    font-size: calc(20px * var(--bt-text-scale, 1));
     color: $white;
     &:hover { color: rgba($white, 0.8); }
   }
@@ -98,7 +98,7 @@
     text-align: left;
     color: $white;
     font-family: $default-font;
-    font-size: 13px;
+    font-size: calc(13px * var(--bt-text-scale, 1));
     text-decoration: none;
     cursor: pointer;
 

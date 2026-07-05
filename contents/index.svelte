@@ -9,6 +9,15 @@
   import { onMount } from "svelte"
 
   const EXTENSION_WIDTH = "360px"
+  const TEXT_SIZE_SCALE = {
+    small: "0.92",
+    medium: "1",
+    large: "1.18"
+  } as const
+
+  function applyTextSize(textSize: keyof typeof TEXT_SIZE_SCALE) {
+    document.documentElement.style.setProperty("--bt-text-scale", TEXT_SIZE_SCALE[textSize])
+  }
 
   onMount(async () => {
     if (!document.body) {
@@ -17,6 +26,7 @@
 
     await settings.load()
     document.documentElement.style.setProperty("--bt-sidebar-width", EXTENSION_WIDTH)
+    applyTextSize(settings.getCurrent().textSize)
     document.documentElement.classList.add("bt-has-kroxitrade-sidebar")
     document.body.classList.add("bt-has-kroxitrade-sidebar")
 
@@ -27,6 +37,8 @@
     }
 
     const unsubscribeSettings = settings.subscribe((value) => {
+      applyTextSize(value.textSize)
+
       if (value.showBulkSellers) {
         bulkSellersService.initialize()
         return
@@ -73,6 +85,7 @@
         }
       }
       document.documentElement.style.removeProperty("--bt-sidebar-width")
+      document.documentElement.style.removeProperty("--bt-text-scale")
       document.documentElement.classList.remove("bt-has-kroxitrade-sidebar")
       document.body.classList.remove("bt-has-kroxitrade-sidebar")
     }

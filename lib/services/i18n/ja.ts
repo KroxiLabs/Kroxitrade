@@ -43,6 +43,11 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "settings.languageTitle": "言語",
   "settings.languageDescription":
     "拡張機能のインターフェースで使用する言語を選択してください。",
+  "settings.textSizeTitle": "文字サイズ",
+  "settings.textSizeDescription": "モニターや読みやすさに合わせて拡張機能の文字サイズを調整します。",
+  "settings.textSizeSmall": "小",
+  "settings.textSizeMedium": "中",
+  "settings.textSizeLarge": "大",
   "settings.languageEnglish": "英語",
   "settings.languageSpanish": "スペイン語",
   "settings.resultsTitle": "検索結果ツール",

@@ -251,7 +251,7 @@
     margin: 0;
     color: rgba($gold, 0.92);
     font-family: $primary-font;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -315,14 +315,14 @@
     background: rgba($gold, 0.08);
     color: rgba($gold-alt, 0.92);
     font-family: $primary-font;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
 
   .history-relative {
     color: rgba($white, 0.52);
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.06em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -338,7 +338,7 @@
 
   .history-title {
     flex: 1;
-    font-size: 13px;
+    font-size: calc(13px * var(--bt-text-scale, 1));
     font-weight: 700;
     line-height: 1.45;
     color: rgba($white, 0.94);
@@ -347,7 +347,7 @@
 
   .history-meta {
     flex: 0 0 auto;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     color: rgba($white, 0.62);
     overflow-wrap: anywhere;
     white-space: nowrap;

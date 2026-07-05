@@ -94,7 +94,7 @@
     h3 {
       margin: 0;
       font-family: $primary-font;
-      font-size: 15px;
+      font-size: calc(15px * var(--bt-text-scale, 1));
       letter-spacing: 0.04em;
       color: $gold;
     }
@@ -106,7 +106,7 @@
     p {
       margin: 0;
       color: rgba($white, 0.82);
-      font-size: 12px;
+      font-size: calc(12px * var(--bt-text-scale, 1));
       line-height: 1.5;
     }
   }

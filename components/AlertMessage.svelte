@@ -19,7 +19,7 @@
     align-items: center;
     padding: 8px;
     color: $white;
-    font-size: 13px;
+    font-size: calc(13px * var(--bt-text-scale, 1));
     margin-bottom: 10px;
 
     &.is-alert {

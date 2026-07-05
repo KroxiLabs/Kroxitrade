@@ -46,7 +46,7 @@
   .eyebrow {
     margin-bottom: 6px;
     color: #b88a47;
-    font-size: 10px;
+    font-size: calc(10px * var(--bt-text-scale, 1));
     letter-spacing: 0.22em;
     text-transform: uppercase;
   }
@@ -59,11 +59,11 @@
   }
 
   h1 {
-    font-size: 20px;
+    font-size: calc(20px * var(--bt-text-scale, 1));
   }
 
   h2 {
-    font-size: 14px;
+    font-size: calc(14px * var(--bt-text-scale, 1));
     text-transform: uppercase;
     letter-spacing: 0.08em;
   }
@@ -71,7 +71,7 @@
   p {
     margin: 8px 0 0;
     color: #cbb694;
-    font-size: 11px;
+    font-size: calc(11px * var(--bt-text-scale, 1));
     line-height: 1.55;
   }
 
