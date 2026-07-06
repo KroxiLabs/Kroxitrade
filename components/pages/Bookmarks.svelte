@@ -620,7 +620,7 @@
     min-height: 14px;
   }
 
-  @container (max-width: 359px) {
+  @container (max-width: 379px) {
     .toolbar-actions--secondary .toolbar-button {
       gap: 0;
       padding: 0 8px;

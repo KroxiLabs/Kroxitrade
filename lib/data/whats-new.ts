@@ -115,7 +115,7 @@ const version114Items: WhatsNewItem[] = [
   {
     title: "Adjustable text size",
     description:
-      "Interface settings now include Small, Medium, and Large text sizes, with Medium matching the previous default."
+      "Interface settings now include Small, Medium, Large, and Extra text sizes, with Medium matching the previous default."
   },
   {
     title: "Tutorial access moved to About",

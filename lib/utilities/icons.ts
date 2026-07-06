@@ -28,30 +28,17 @@ export const normalizeIcon = (
     return `<svg ${attrsPrefix}viewBox="${viewBox}" class="${className}"${extra} style="width:${size}px;height:${size}px;min-width:${size}px;min-height:${size}px;display:block;overflow:visible;stroke-width:${strokeWidth};">`
   })
 
-export const iconDataUri = (
-  svg: string,
-  options: NormalizeIconOptions = {}
-): string => {
-  const normalized = normalizeIcon(svg, options)
-  return `data:image/svg+xml,${encodeURIComponent(normalized)}`
-}
-
 export const appendIconElement = (
   parent: HTMLElement,
   svg: string,
   options: NormalizeIconOptions = {}
 ) => {
-  const img = document.createElement("img")
-  img.src = iconDataUri(svg, options)
-  img.alt = ""
-  img.setAttribute("aria-hidden", "true")
-  img.decoding = "async"
-  img.className = options.className || "action-svg"
-  img.style.width = `${options.size ?? 13}px`
-  img.style.height = `${options.size ?? 13}px`
-  img.style.minWidth = `${options.size ?? 13}px`
-  img.style.minHeight = `${options.size ?? 13}px`
-  img.style.display = "block"
-  parent.appendChild(img)
-  return img
+  const template = document.createElement("template")
+  template.innerHTML = normalizeIcon(svg, options).trim()
+  const icon = template.content.firstElementChild as SVGSVGElement | null
+  if (!icon) return null
+
+  icon.setAttribute("aria-hidden", "true")
+  parent.appendChild(icon)
+  return icon
 }
