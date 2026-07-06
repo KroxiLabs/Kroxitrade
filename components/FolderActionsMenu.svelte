@@ -3,7 +3,8 @@
   import { languageStore, translate } from "~lib/services/i18n";
   import { settings } from "~lib/services/settings";
   import type { BookmarksFolderStruct } from "~lib/types/bookmarks";
-  import { normalizeIcon } from "~lib/utilities/icons";
+  import { appendIconElement } from "~lib/utilities/icons";
+  import SvgIcon from "./SvgIcon.svelte";
 
   import editIcon from "lucide-static/icons/pencil.svg?raw";
   import copyIcon from "lucide-static/icons/copy.svg?raw";
@@ -133,10 +134,14 @@
       const button = document.createElement("button");
       button.type = "button";
       button.className = `folder-action-menu-portal__item${action.danger ? " is-danger" : ""}`;
-      button.innerHTML = `
-        <span class="folder-action-menu-portal__icon" aria-hidden="true">${normalizeIcon(action.icon)}</span>
-        <span class="folder-action-menu-portal__label">${action.label}</span>
-      `;
+      const icon = document.createElement("span");
+      icon.className = "folder-action-menu-portal__icon";
+      icon.setAttribute("aria-hidden", "true");
+      appendIconElement(icon, action.icon);
+      const label = document.createElement("span");
+      label.className = "folder-action-menu-portal__label";
+      label.textContent = action.label;
+      button.append(icon, label);
       button.addEventListener("click", (event) => {
         event.stopPropagation();
         action.handler();
@@ -236,7 +241,7 @@
         onclick={stopAndRun(() => runInlineAction(action.handler))}
       >
         <span class="folder-action-btn__icon" aria-hidden="true">
-          {@html normalizeIcon(action.icon)}
+          <SvgIcon svg={action.icon} />
         </span>
       </button>
     {/each}
@@ -252,7 +257,7 @@
         bind:this={triggerRef}
       >
         <span class="folder-action-btn__icon" aria-hidden="true">
-          {@html normalizeIcon(moreIcon)}
+          <SvgIcon svg={moreIcon} />
         </span>
       </button>
     {/if}

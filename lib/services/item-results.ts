@@ -418,7 +418,8 @@ export class ItemResultsService {
       emitPageDebug("equivalent-missing-details", {
         currency: currencyText,
         amount,
-        html: priceContainer.innerHTML
+        text: priceContainer.textContent?.trim() || "",
+        className: priceContainer.className
       });
       return;
     }

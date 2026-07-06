@@ -7,7 +7,7 @@
   import searchIcon from "lucide-static/icons/search.svg?raw"
   import { languageStore, setLanguage, translate, type AppLanguage } from "./lib/services/i18n"
   import { settings } from "./lib/services/settings"
-  import { normalizeIcon } from "./lib/utilities/icons"
+  import SvgIcon from "./components/SvgIcon.svelte"
 
   const tradeLinks = [
     {
@@ -172,7 +172,7 @@
                   title={translate($languageStore, shortcut.labelKey)}
                 >
                   <span class="shortcut-button__icon" aria-hidden="true">
-                    {@html normalizeIcon(shortcut.icon, { size: 15, className: "shortcut-svg" })}
+                    <SvgIcon svg={shortcut.icon} size={15} className="shortcut-svg" />
                   </span>
                   <span class="shortcut-button__label">{translate($languageStore, shortcut.labelKey)}</span>
                 </a>

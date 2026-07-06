@@ -7,7 +7,7 @@
 
 <div class="alert-message is-{type}" role="status" aria-live="polite">
   <span class="icon">{icon}</span>
-  <span class="text">{@html message}</span>
+  <span class="text">{message}</span>
 </div>
 
 <style lang="scss">

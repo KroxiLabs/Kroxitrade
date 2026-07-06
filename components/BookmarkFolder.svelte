@@ -24,12 +24,12 @@
   } from "../lib/types/bookmarks"
   import { copyToClipboard } from "../lib/utilities/copy-to-clipboard"
   import { resolveTradeLeague, resolveTradeUrl } from "../lib/utilities/trade-url"
-  import { normalizeIcon } from "../lib/utilities/icons"
   import { formatLeagueLabel } from "../lib/utilities/league"
   import Button from "./Button.svelte"
   import ConfirmDialog from "./ConfirmDialog.svelte"
   import FolderActionsMenu from "./FolderActionsMenu.svelte"
   import LoadingContainer from "./LoadingContainer.svelte"
+  import SvgIcon from "./SvgIcon.svelte"
   import TradeActionsMenu from "./TradeActionsMenu.svelte"
 
   interface Props {
@@ -420,10 +420,6 @@
     openTradeFromCard(trade)
   }
 
-  const icons = {
-    grip: normalizeIcon(gripVerticalIcon)
-  }
-
   const replaceSearchWithCurrent = async (trade: BookmarksTradeStruct) => {
     if (!folder.id || !trade.id) return
 
@@ -503,7 +499,7 @@
       class="folder-drag-handle"
       title={translate($languageStore, "folder.dragReorder")}
       aria-hidden="true">
-      <span class="action-icon">{@html icons.grip}</span>
+      <span class="action-icon"><SvgIcon svg={gripVerticalIcon} /></span>
     </div>
     <button
       type="button"

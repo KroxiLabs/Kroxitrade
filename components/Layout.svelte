@@ -12,6 +12,7 @@ import infoIcon from "lucide-static/icons/info.svg?raw";
 import Settings from "./pages/Settings.svelte";
 import About from "./pages/About.svelte";
   import FinerFilters from "./FinerFilters.svelte";
+  import SvgIcon from "./SvgIcon.svelte";
   import WhatsNewDialog from "./WhatsNewDialog.svelte";
   import WelcomeDialog from "./WelcomeDialog.svelte";
   import logoUrl from "~assets/logo.webp?inline";
@@ -23,7 +24,6 @@ import About from "./pages/About.svelte";
   import { storageService } from "../lib/services/storage";
   import { tradeLocationService } from "../lib/services/trade-location";
   import { hasValidExtensionContext } from "../lib/utilities/extension-context";
-  import { normalizeIcon } from "../lib/utilities/icons";
   import type { BookmarksFolderStruct, BookmarksTradeStruct } from "../lib/types/bookmarks";
   import { onDestroy, onMount, tick } from "svelte";
   
@@ -74,19 +74,11 @@ import About from "./pages/About.svelte";
   const getRenderedSidebarWidth = () => clampSidebarWidth(liveSidebarWidth ?? getExpandedSidebarWidth());
 
   const navIcons = {
-    bookmarks: normalizeIcon(bookmarkIcon, {
-      size: 14,
-      className: "nav-svg",
-      extraAttrs: 'aria-hidden="true"'
-    }),
-    bulk: normalizeIcon(layersIcon, { size: 14, className: "nav-svg", extraAttrs: 'aria-hidden="true"' }),
-    history: normalizeIcon(clockIcon, { size: 14, className: "nav-svg", extraAttrs: 'aria-hidden="true"' }),
-    settings: normalizeIcon(settingsIcon, {
-      size: 14,
-      className: "nav-svg",
-      extraAttrs: 'aria-hidden="true"'
-    }),
-    about: normalizeIcon(infoIcon, { size: 14, className: "nav-svg", extraAttrs: 'aria-hidden="true"' })
+    bookmarks: bookmarkIcon,
+    bulk: layersIcon,
+    history: clockIcon,
+    settings: settingsIcon,
+    about: infoIcon
   };
 
   const getTutorialTradeStruct = (): BookmarksTradeStruct => {
@@ -424,7 +416,7 @@ import About from "./pages/About.svelte";
         data-tutorial="nav-bookmarks"
         onclick={() => currentPage = 'bookmarks'}
     >
-        <span class="nav-item__icon" aria-hidden="true">{@html navIcons.bookmarks}</span>
+        <span class="nav-item__icon" aria-hidden="true"><SvgIcon svg={navIcons.bookmarks} size={14} className="nav-svg" /></span>
         <span class="nav-item__label">{translate($languageStore, "layout.nav.bookmarks")}</span>
     </button>
 
@@ -433,7 +425,7 @@ import About from "./pages/About.svelte";
           class="nav-item {currentPage === 'bulk' ? 'is-active' : ''} {showOnboarding && onboardingHighlightedPage === 'bulk' ? 'is-onboarding-focus' : ''}" 
           onclick={() => currentPage = 'bulk'}
       >
-          <span class="nav-item__icon" aria-hidden="true">{@html navIcons.bulk}</span>
+          <span class="nav-item__icon" aria-hidden="true"><SvgIcon svg={navIcons.bulk} size={14} className="nav-svg" /></span>
           <span class="nav-item__label">{translate($languageStore, "layout.nav.bulk")}</span>
       </button>
     {/if}
@@ -444,7 +436,7 @@ import About from "./pages/About.svelte";
           data-tutorial="nav-history"
           onclick={() => currentPage = 'history'}
       >
-          <span class="nav-item__icon" aria-hidden="true">{@html navIcons.history}</span>
+          <span class="nav-item__icon" aria-hidden="true"><SvgIcon svg={navIcons.history} size={14} className="nav-svg" /></span>
           <span class="nav-item__label">{translate($languageStore, "layout.nav.history")}</span>
       </button>
     {/if}
@@ -455,7 +447,7 @@ import About from "./pages/About.svelte";
         aria-label={translate($languageStore, "layout.nav.settings")}
         onclick={() => currentPage = 'settings'}
     >
-        <span class="nav-item__icon" aria-hidden="true">{@html navIcons.settings}</span>
+        <span class="nav-item__icon" aria-hidden="true"><SvgIcon svg={navIcons.settings} size={14} className="nav-svg" /></span>
         <span class="nav-item__label">{translate($languageStore, "layout.nav.settings")}</span>
     </button>
     <button 
@@ -464,7 +456,7 @@ import About from "./pages/About.svelte";
         aria-label={translate($languageStore, "layout.nav.about")}
         onclick={() => currentPage = 'about'}
     >
-        <span class="nav-item__icon" aria-hidden="true">{@html navIcons.about}</span>
+        <span class="nav-item__icon" aria-hidden="true"><SvgIcon svg={navIcons.about} size={14} className="nav-svg" /></span>
     </button>
   </nav>
 

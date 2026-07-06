@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy, tick } from "svelte";
-  import { normalizeIcon } from "~lib/utilities/icons";
+  import SvgIcon from "./SvgIcon.svelte";
 
   type ActionId = string;
 
@@ -197,7 +197,7 @@
           aria-label={getDisplayLabel(action)}
           onclick={stopAndRun(action.handler)}
         >
-          <span class="btn__icon" aria-hidden="true">{@html normalizeIcon(action.icon)}</span>
+          <span class="btn__icon" aria-hidden="true"><SvgIcon svg={action.icon} /></span>
         </button>
       {/each}
 
@@ -211,7 +211,7 @@
           onclick={stopAndRun(toggleMenu)}
           bind:this={triggerRef}
         >
-          <span class="btn__icon" aria-hidden="true">{@html normalizeIcon(dropdownIcon || "")}</span>
+          <span class="btn__icon" aria-hidden="true"><SvgIcon svg={dropdownIcon || ""} /></span>
         </button>
       {/if}
     </div>
@@ -227,7 +227,7 @@
           aria-label={getDisplayLabel(action)}
           onclick={stopAndRun(action.handler)}
         >
-          <span class="btn__icon" aria-hidden="true">{@html normalizeIcon(action.icon)}</span>
+          <span class="btn__icon" aria-hidden="true"><SvgIcon svg={action.icon} /></span>
         </button>
       {/each}
 
@@ -241,7 +241,7 @@
           onclick={stopAndRun(toggleMenu)}
           bind:this={triggerRef}
         >
-          <span class="btn__icon" aria-hidden="true">{@html normalizeIcon(dropdownIcon || "")}</span>
+          <span class="btn__icon" aria-hidden="true"><SvgIcon svg={dropdownIcon || ""} /></span>
         </button>
       {/if}
     </div>
@@ -261,7 +261,7 @@
           class:btn--danger={action.danger}
           onclick={stopAndRun(() => handleAction(action.handler))}
         >
-          <span class="btn__icon" aria-hidden="true">{@html normalizeIcon(action.icon)}</span>
+          <span class="btn__icon" aria-hidden="true"><SvgIcon svg={action.icon} /></span>
           <span class="btn__label">{getDisplayLabel(action)}</span>
         </button>
       {/each}

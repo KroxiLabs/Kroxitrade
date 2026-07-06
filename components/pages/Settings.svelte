@@ -12,8 +12,8 @@
   import { settings, type BookmarkTradeActionId, type QuickFiltersPlacement, type SidebarSide, type TextSizePreference } from "../../lib/services/settings";
   import { tradeLocationService } from "../../lib/services/trade-location";
   import type { BookmarksTradeStruct } from "../../lib/types/bookmarks";
-  import { normalizeIcon } from "../../lib/utilities/icons";
   import Button from "../Button.svelte";
+  import SvgIcon from "../SvgIcon.svelte";
   import TradeActionsMenu from "../TradeActionsMenu.svelte";
   import ToggleRow from "../ToggleRow.svelte";
   import { onDestroy, onMount } from "svelte";
@@ -59,12 +59,12 @@
     "settings-bookmarks": "bookmarks"
   };
   const compactTradeActionOptions: Array<{ id: BookmarkTradeActionId; labelKey: string; icon: string }> = [
-    { id: "edit", labelKey: "folder.editSearchName", icon: normalizeIcon(editIcon, { size: 15, className: "settings-option-svg" }) },
-    { id: "replace", labelKey: "folder.replaceCurrentSearch", icon: normalizeIcon(replaceIcon, { size: 15, className: "settings-option-svg" }) },
-    { id: "copy", labelKey: "folder.copyUrl", icon: normalizeIcon(copyIcon, { size: 15, className: "settings-option-svg" }) },
-    { id: "openLive", labelKey: "folder.openLiveSearch", icon: normalizeIcon(liveIcon, { size: 15, className: "settings-option-svg" }) },
-    { id: "toggle", labelKey: "settings.compactTradeActionToggle", icon: normalizeIcon(toggleIcon, { size: 15, className: "settings-option-svg" }) },
-    { id: "delete", labelKey: "folder.deleteTrade", icon: normalizeIcon(deleteIcon, { size: 15, className: "settings-option-svg" }) }
+    { id: "edit", labelKey: "folder.editSearchName", icon: editIcon },
+    { id: "replace", labelKey: "folder.replaceCurrentSearch", icon: replaceIcon },
+    { id: "copy", labelKey: "folder.copyUrl", icon: copyIcon },
+    { id: "openLive", labelKey: "folder.openLiveSearch", icon: liveIcon },
+    { id: "toggle", labelKey: "settings.compactTradeActionToggle", icon: toggleIcon },
+    { id: "delete", labelKey: "folder.deleteTrade", icon: deleteIcon }
   ];
   const previewTrade: BookmarksTradeStruct = {
     id: "settings-preview-trade",
@@ -554,7 +554,9 @@
                 onchange={(event) => handleCompactTradeActionInput(event, option.id)}
                 aria-label={translate($languageStore, option.labelKey)}
               />
-              <span class="compact-option__icon" aria-hidden="true">{@html option.icon}</span>
+              <span class="compact-option__icon" aria-hidden="true">
+                <SvgIcon svg={option.icon} size={15} className="settings-option-svg" />
+              </span>
             </label>
           {/each}
         </div>

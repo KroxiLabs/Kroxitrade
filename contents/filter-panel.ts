@@ -45,12 +45,6 @@ export const initFilterPanel = () => {
       handler.call(el, e, el)
     })
   }
-  const h = (html: string) => {
-    const t = document.createElement("template")
-    t.innerHTML = html.trim()
-    return t.content.firstElementChild
-  }
-
   const listModifiers: Array<{
     name: string
     types: string[]
@@ -113,19 +107,45 @@ export const initFilterPanel = () => {
   })
 
   // ---------- overlay/button templates ----------
-  const filteredOverlay = () => h(`<div class="finer-filtered-overlay"></div>`)
-  const buttonsTemplate = () =>
-    h(`
-    <span id="btns-finer">
-      <span class="btn-finer rm"  data-action="rmv-filter"  title="remove this mod from your search results">-</span>
-      <span class="btn-finer add" data-action="add-filter"  title="add this mod to your search filters">+</span>
-    </span>`)
-  const globalPresetsTemplate = () =>
-    h(`
-    <div class="krox-filter-presets" data-krox-filter-presets="true">
-      <div class="krox-filter-presets__title">Quick filter presets</div>
-      <div class="krox-filter-presets__list"></div>
-    </div>`)
+  const filteredOverlay = () => {
+    const overlay = document.createElement("div")
+    overlay.className = "finer-filtered-overlay"
+    return overlay
+  }
+  const buttonsTemplate = () => {
+    const buttons = document.createElement("span")
+    buttons.id = "btns-finer"
+
+    const remove = document.createElement("span")
+    remove.className = "btn-finer rm"
+    remove.dataset.action = "rmv-filter"
+    remove.title = "remove this mod from your search results"
+    remove.textContent = "-"
+
+    const add = document.createElement("span")
+    add.className = "btn-finer add"
+    add.dataset.action = "add-filter"
+    add.title = "add this mod to your search filters"
+    add.textContent = "+"
+
+    buttons.append(remove, add)
+    return buttons
+  }
+  const globalPresetsTemplate = () => {
+    const panel = document.createElement("div")
+    panel.className = "krox-filter-presets"
+    panel.dataset.kroxFilterPresets = "true"
+
+    const title = document.createElement("div")
+    title.className = "krox-filter-presets__title"
+    title.textContent = "Quick filter presets"
+
+    const list = document.createElement("div")
+    list.className = "krox-filter-presets__list"
+
+    panel.append(title, list)
+    return panel
+  }
 
   // ---------- map ----------
   const modMap: Record<string, string> = {

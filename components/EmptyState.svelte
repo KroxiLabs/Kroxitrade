@@ -1,4 +1,6 @@
 <script lang="ts">
+  import SvgIcon from "./SvgIcon.svelte";
+
   import Button from "./Button.svelte";
 
   let {
@@ -20,7 +22,7 @@
 
 <section class="empty-state">
   {#if iconHtml}
-    <div class="empty-state__icon" aria-hidden="true">{@html iconHtml}</div>
+    <div class="empty-state__icon" aria-hidden="true"><SvgIcon svg={iconHtml} size={19} /></div>
   {/if}
 
   <div class="empty-state__copy">
