@@ -26,6 +26,14 @@ export default defineConfig({
         }
       : undefined
   },
+  svelte: {
+    vite: {
+      compilerOptions: {
+        css: "injected",
+        fragments: "tree"
+      }
+    }
+  },
   manifest: ({ browser }) => ({
     name: "Poe Trade Plus",
     description:

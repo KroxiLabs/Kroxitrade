@@ -6,7 +6,8 @@ import preprocess from "svelte-preprocess"
 const config = {
   preprocess: preprocess(),
   compilerOptions: {
-    css: "injected"
+    css: "injected",
+    fragments: "tree"
   }
 }
 
