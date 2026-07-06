@@ -525,6 +525,11 @@ body.bt-dev-result-actions-visible.bt-dev-coe-visible .row > .left > button.bt-c
   background: rgba(255, 255, 255, 0.025);
 }
 
+.krox-filter-preset--currency {
+  grid-column: 1 / -1;
+  grid-template-columns: minmax(0, 1fr) repeat(3, minmax(54px, auto));
+}
+
 .krox-filter-preset__name {
   min-width: 0;
   overflow: hidden;
@@ -556,6 +561,14 @@ body.bt-dev-result-actions-visible.bt-dev-coe-visible .row > .left > button.bt-c
 
 .krox-filter-preset__btn--minus {
   background: rgba(220, 53, 69, 0.34);
+}
+
+.krox-filter-preset__btn--currency {
+  width: auto;
+  min-width: 54px;
+  padding: 0 6px;
+  background: rgba(168, 129, 73, 0.34);
+  font-size: calc(11px * var(--bt-text-scale, 1));
 }
 
 .krox-filter-preset__btn:hover,

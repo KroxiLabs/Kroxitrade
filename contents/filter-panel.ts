@@ -422,6 +422,14 @@ export const initFilterPanel = () => {
     addOrRemoveFilter(e, false, el)
   })
 
+  const setNativeInputValue = (input: HTMLInputElement, value: string) => {
+    const descriptor = Object.getOwnPropertyDescriptor(
+      window.HTMLInputElement.prototype,
+      "value"
+    )
+    descriptor?.set?.call(input, value)
+  }
+
   const applyFinerFiltersAction = (detail: {
     action: "global-plus" | "global-minus"
     types: string
@@ -459,6 +467,53 @@ export const initFilterPanel = () => {
     if (reload && getGlobalApp()?.save) {
       getGlobalApp().save(true)
     }
+  }
+
+  const findBuyoutCurrencySelect = () => {
+    const filters = Array.from(
+      document.querySelectorAll<HTMLElement>(".filter.filter-property")
+    )
+    const buyoutFilter = filters.find((filter) => {
+      const title = filter
+        .querySelector(".filter-title")
+        ?.textContent?.replace(/\s+/g, " ")
+        .trim()
+      return title === "Buyout Price"
+    })
+
+    return buyoutFilter?.querySelector<HTMLElement>(".multiselect") || null
+  }
+
+  const setBuyoutCurrencyPreset = (currency: string) => {
+    const multiselect = findBuyoutCurrencySelect()
+    const input =
+      multiselect?.querySelector<HTMLInputElement>("input.multiselect__input")
+
+    if (!multiselect || !input) return
+
+    input.focus()
+    input.click()
+    setNativeInputValue(input, currency)
+    input.setSelectionRange(currency.length, currency.length)
+    input.dispatchEvent(new Event("input", { bubbles: true }))
+
+    queueMicrotask(() => {
+      const option = Array.from(
+        multiselect.querySelectorAll<HTMLElement>(".multiselect__option")
+      ).find(
+        (candidate) =>
+          candidate.textContent?.replace(/\s+/g, " ").trim() === currency
+      )
+
+      option?.dispatchEvent(
+        new MouseEvent("click", {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        })
+      )
+      input.dispatchEvent(new Event("change", { bubbles: true }))
+    })
   }
 
   const injectSearchPanelQuickFilters = () => {
@@ -517,6 +572,32 @@ export const initFilterPanel = () => {
       list.appendChild(row)
     })
 
+    const currencyRow = document.createElement("div")
+    currencyRow.className =
+      "krox-filter-preset krox-filter-preset--currency"
+
+    const currencyLabel = document.createElement("span")
+    currencyLabel.className = "krox-filter-preset__name"
+    currencyLabel.textContent = "Buyout Price"
+
+    currencyRow.append(currencyLabel)
+    ;[
+      ["Chaos", "Chaos Orb"],
+      ["Exalted", "Exalted Orb"],
+      ["Divine", "Divine Orb"]
+    ].forEach(([label, currency]) => {
+      const currencyButton = document.createElement("button")
+      currencyButton.type = "button"
+      currencyButton.className =
+        "krox-filter-preset__btn krox-filter-preset__btn--currency"
+      currencyButton.textContent = label
+      currencyButton.title = currency
+      currencyButton.dataset.action = "krox-currency-preset"
+      currencyButton.dataset.currency = currency
+      currencyRow.append(currencyButton)
+    })
+    list.appendChild(currencyRow)
+
     const firstExpandedGroup = pane.querySelector(".filter-group.expanded")
     pane.insertBefore(panel, firstExpandedGroup || pane.firstChild)
   }
@@ -524,6 +605,11 @@ export const initFilterPanel = () => {
   on("click", ".krox-filter-preset__btn", (e: any, el: HTMLElement) => {
     e.preventDefault()
     e.stopPropagation()
+
+    if (el.dataset.action === "krox-currency-preset") {
+      setBuyoutCurrencyPreset(el.dataset.currency || "Chaos Orb")
+      return
+    }
 
     applyFinerFiltersAction({
       action:
@@ -573,14 +659,6 @@ export const initFilterPanel = () => {
 
     const input = target.closest("input.multiselect__input")
     return input instanceof HTMLInputElement ? input : null
-  }
-
-  const setNativeInputValue = (input: HTMLInputElement, value: string) => {
-    const descriptor = Object.getOwnPropertyDescriptor(
-      window.HTMLInputElement.prototype,
-      "value"
-    )
-    descriptor?.set?.call(input, value)
   }
 
   const prefixingInputs = new WeakSet<HTMLInputElement>()
