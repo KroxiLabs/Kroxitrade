@@ -1,6 +1,5 @@
 <script lang="ts">
   import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw";
-  import folderPlusIcon from "lucide-static/icons/folder-plus.svg?raw";
   import pencilIcon from "lucide-static/icons/pencil.svg?raw";
   import trashIcon from "lucide-static/icons/trash-2.svg?raw";
   import { onDestroy, tick } from "svelte"
@@ -266,19 +265,19 @@
     return normalizeCategoryTitle(title)
   }
 
-  const createCategoryFromPrompt = async () => {
+  const createCategoryFromTitle = async (title: string) => {
     if (!folder.id) return null
-    const title = promptForCategoryTitle()
-    if (!title) {
+    const safeTitle = normalizeCategoryTitle(title)
+    if (!safeTitle) {
       flashMessages.alert(translate($languageStore, "folder.categoryNameRequired"))
       return null
     }
 
-    const category = await bookmarksService.createCategory(folder, title)
+    const category = await bookmarksService.createCategory(folder, safeTitle)
     if (!category) return null
     folder.categories = [...(folder.categories || []), category]
     flashMessages.success(
-      translate($languageStore, "folder.categoryCreated", { title })
+      translate($languageStore, "folder.categoryCreated", { title: safeTitle })
     )
     return category
   }
@@ -328,8 +327,8 @@
     await assignTradeCategory(trade, categoryId)
   }
 
-  const createCategoryForTrade = async (trade: BookmarksTradeStruct) => {
-    const category = await createCategoryFromPrompt()
+  const createCategoryForTrade = async (trade: BookmarksTradeStruct, title: string) => {
+    const category = await createCategoryFromTitle(title)
     if (category) {
       await assignTradeCategory(trade, category.id)
     }
@@ -907,7 +906,7 @@
                             {categoryOptions}
                             selectedCategoryId={categoryIdForTrade(trade)}
                             onCategorySelect={(categoryId) => void selectTradeCategory(trade, categoryId)}
-                            onCategoryCreate={() => void createCategoryForTrade(trade)} />
+                            onCategoryCreate={(title) => void createCategoryForTrade(trade, title)} />
                         </div>
                       {/if}
                     </div>
@@ -927,7 +926,7 @@
                             {categoryOptions}
                             selectedCategoryId={categoryIdForTrade(trade)}
                             onCategorySelect={(categoryId) => void selectTradeCategory(trade, categoryId)}
-                            onCategoryCreate={() => void createCategoryForTrade(trade)} />
+                            onCategoryCreate={(title) => void createCategoryForTrade(trade, title)} />
                         </div>
                       </div>
                     {/if}
@@ -938,14 +937,6 @@
           {/each}
         </ul>
         <div class="footer-actions">
-          {#if $settings.bookmarkCategoriesEnabled && !isArchived}
-            <Button
-              label={translate($languageStore, "folder.addCategory")}
-              iconHtml={folderPlusIcon}
-              theme="blue"
-              class="folder-action-footer-btn"
-              onClick={() => void createCategoryFromPrompt()} />
-          {/if}
           <div
             class="save-search-anchor"
             data-tutorial={isTutorialSaveTarget ? "save-search" : undefined}>

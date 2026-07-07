@@ -30,7 +30,7 @@
     categoryOptions?: BookmarksCategoryStruct[];
     selectedCategoryId?: string | null;
     onCategorySelect?: (categoryId: string | null) => void;
-    onCategoryCreate?: () => void;
+    onCategoryCreate?: (title: string) => void | Promise<void>;
   }
 
   let {
@@ -160,6 +160,53 @@
     menuRoot.dataset.ready = "true";
   };
 
+  const positionMenuFrame = () => {
+    window.requestAnimationFrame(() => {
+      positionMenu();
+      window.requestAnimationFrame(() => {
+        positionMenu();
+      });
+    });
+  };
+
+  const buildCategoryCreateForm = (root: HTMLDivElement) => {
+    const form = document.createElement("form");
+    form.className = "trade-action-menu-portal__category-form";
+
+    const input = document.createElement("input");
+    input.type = "text";
+    input.className = "trade-action-menu-portal__category-input";
+    input.placeholder = translate($languageStore, "folder.categoryPrompt");
+    input.setAttribute("aria-label", translate($languageStore, "folder.categoryPrompt"));
+
+    const submit = document.createElement("button");
+    submit.type = "submit";
+    submit.className = "trade-action-menu-portal__category-submit";
+    submit.textContent = translate($languageStore, "folder.addCategory");
+
+    form.append(input, submit);
+    form.addEventListener("click", (event) => {
+      event.stopPropagation();
+    });
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const title = input.value.trim();
+      if (!title) {
+        input.focus();
+        return;
+      }
+      closeMenu();
+      void onCategoryCreate(title);
+    });
+
+    root.querySelector(".trade-action-menu-portal__category.is-new")?.replaceWith(form);
+    positionMenuFrame();
+    window.requestAnimationFrame(() => {
+      input.focus();
+    });
+  };
+
   const buildMenu = () => {
     menuRoot?.remove();
 
@@ -203,7 +250,8 @@
         labelText: string,
         selected: boolean,
         handler: () => void,
-        extraClass = ""
+        extraClass = "",
+        closeOnClick = true
       ) => {
         const button = document.createElement("button");
         button.type = "button";
@@ -220,7 +268,9 @@
         button.append(marker, label);
         button.addEventListener("click", (event) => {
           event.stopPropagation();
-          closeMenu();
+          if (closeOnClick) {
+            closeMenu();
+          }
           handler();
         });
         root.appendChild(button);
@@ -243,19 +293,15 @@
       appendCategoryButton(
         translate($languageStore, "folder.newCategoryOption"),
         false,
-        onCategoryCreate,
-        "is-new"
+        () => buildCategoryCreateForm(root),
+        "is-new",
+        false
       );
     }
 
     document.body.appendChild(root);
     menuRoot = root;
-    window.requestAnimationFrame(() => {
-      positionMenu();
-      window.requestAnimationFrame(() => {
-        positionMenu();
-      });
-    });
+    positionMenuFrame();
   };
 
   const toggleMenu = (event: MouseEvent) => {
@@ -560,5 +606,54 @@
     display: block;
     overflow: visible;
     stroke-width: 1.7;
+  }
+
+  :global(.trade-action-menu-portal__category-form) {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 6px 8px 8px;
+  }
+
+  :global(.trade-action-menu-portal__category-input) {
+    width: 100%;
+    min-height: 30px;
+    padding: 0 8px;
+    border: 1px solid rgba(168, 129, 73, 0.3);
+    border-radius: 4px;
+    background: rgba(0, 0, 0, 0.34);
+    color: rgba(255, 255, 255, 0.9);
+    font-family: $primary-font;
+    font-size: calc(11px * var(--bt-text-scale, 1));
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  :global(.trade-action-menu-portal__category-input:focus) {
+    border-color: rgba(224, 176, 102, 0.62);
+    box-shadow: 0 0 0 2px rgba(168, 129, 73, 0.12);
+    outline: none;
+  }
+
+  :global(.trade-action-menu-portal__category-submit) {
+    min-height: 28px;
+    border: 1px solid rgba(168, 129, 73, 0.34);
+    border-radius: 4px;
+    background: rgba(168, 129, 73, 0.08);
+    color: rgba(224, 176, 102, 0.94);
+    font-family: $primary-font;
+    font-size: calc(10px * var(--bt-text-scale, 1));
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+
+  :global(.trade-action-menu-portal__category-submit:hover),
+  :global(.trade-action-menu-portal__category-submit:focus-visible) {
+    border-color: rgba(224, 176, 102, 0.62);
+    background: rgba(168, 129, 73, 0.16);
+    color: #fff;
+    outline: none;
   }
 </style>
