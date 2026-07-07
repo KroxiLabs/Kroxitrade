@@ -2,7 +2,10 @@
   import { onDestroy, onMount } from "svelte";
   import { languageStore, translate } from "~lib/services/i18n";
   import { settings, type BookmarkTradeActionId } from "~lib/services/settings";
-  import type { BookmarksTradeStruct } from "~lib/types/bookmarks";
+  import type {
+    BookmarksCategoryStruct,
+    BookmarksTradeStruct
+  } from "~lib/types/bookmarks";
   import { appendIconElement } from "~lib/utilities/icons";
   import SvgIcon from "./SvgIcon.svelte";
 
@@ -23,6 +26,11 @@
     onToggle: () => void;
     onDelete: () => void;
     compactText?: string;
+    categoriesEnabled?: boolean;
+    categoryOptions?: BookmarksCategoryStruct[];
+    selectedCategoryId?: string | null;
+    onCategorySelect?: (categoryId: string | null) => void;
+    onCategoryCreate?: () => void;
   }
 
   let {
@@ -33,7 +41,12 @@
     onOpenLive,
     onToggle,
     onDelete,
-    compactText = ""
+    compactText = "",
+    categoriesEnabled = false,
+    categoryOptions = [],
+    selectedCategoryId = null,
+    onCategorySelect = () => {},
+    onCategoryCreate = () => {}
   }: Props = $props();
 
   type TradeAction = {
@@ -114,6 +127,7 @@
             action.id === "delete"
         ));
   let dropdownActions = $derived(actions.filter((action) => !inlineActions.includes(action)));
+  let hasCategoryMenu = $derived(categoriesEnabled);
   const stopAndRun = (handler: () => void) => (event: MouseEvent) => {
     event.stopPropagation();
     handler();
@@ -171,6 +185,67 @@
         closeMenu();
       });
       root.appendChild(button);
+    }
+
+    if (hasCategoryMenu) {
+      if (dropdownActions.length > 0) {
+        const divider = document.createElement("div");
+        divider.className = "trade-action-menu-portal__divider";
+        root.appendChild(divider);
+      }
+
+      const heading = document.createElement("div");
+      heading.className = "trade-action-menu-portal__heading";
+      heading.textContent = translate($languageStore, "folder.categorySelect");
+      root.appendChild(heading);
+
+      const appendCategoryButton = (
+        labelText: string,
+        selected: boolean,
+        handler: () => void,
+        extraClass = ""
+      ) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = `trade-action-menu-portal__category${selected ? " is-selected" : ""}${extraClass ? ` ${extraClass}` : ""}`;
+        const marker = document.createElement("span");
+        marker.className = "trade-action-menu-portal__category-marker";
+        marker.setAttribute("aria-hidden", "true");
+        if (selected) {
+          appendIconElement(marker, checkIcon);
+        }
+        const label = document.createElement("span");
+        label.className = "trade-action-menu-portal__label";
+        label.textContent = labelText;
+        button.append(marker, label);
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          closeMenu();
+          handler();
+        });
+        root.appendChild(button);
+      };
+
+      appendCategoryButton(
+        translate($languageStore, "folder.noCategory"),
+        !selectedCategoryId,
+        () => onCategorySelect(null)
+      );
+
+      for (const category of categoryOptions) {
+        appendCategoryButton(
+          category.title,
+          selectedCategoryId === category.id,
+          () => onCategorySelect(category.id)
+        );
+      }
+
+      appendCategoryButton(
+        translate($languageStore, "folder.newCategoryOption"),
+        false,
+        onCategoryCreate,
+        "is-new"
+      );
     }
 
     document.body.appendChild(root);
@@ -273,7 +348,7 @@
       </button>
     {/each}
 
-    {#if dropdownActions.length > 0}
+    {#if dropdownActions.length > 0 || hasCategoryMenu}
       <button
         type="button"
         class="trade-action-btn"
@@ -418,5 +493,72 @@
 
   :global(.trade-action-menu-portal__label) {
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  :global(.trade-action-menu-portal__divider) {
+    height: 1px;
+    margin: 5px 4px;
+    background: rgba(168, 129, 73, 0.18);
+  }
+
+  :global(.trade-action-menu-portal__heading) {
+    padding: 6px 8px 4px;
+    color: rgba(224, 176, 102, 0.78);
+    font-family: $primary-font;
+    font-size: calc(10px * var(--bt-text-scale, 1));
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+
+  :global(.trade-action-menu-portal__category) {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    width: 100%;
+    min-height: 30px;
+    padding: 7px 10px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    background: #0b0b0b;
+    color: rgba(255, 255, 255, 0.78);
+    cursor: pointer;
+    text-align: left;
+    font-size: calc(11px * var(--bt-text-scale, 1));
+    line-height: 1.3;
+  }
+
+  :global(.trade-action-menu-portal__category:hover),
+  :global(.trade-action-menu-portal__category.is-selected) {
+    border-color: rgba(168, 129, 73, 0.22);
+    background: #171717;
+    color: rgba(255, 255, 255, 0.94);
+  }
+
+  :global(.trade-action-menu-portal__category.is-new) {
+    color: rgba(224, 176, 102, 0.86);
+  }
+
+  :global(.trade-action-menu-portal__category-marker) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 13px;
+    height: 13px;
+    flex: 0 0 13px;
+    color: rgba(224, 176, 102, 0.9);
+    font-size: 0;
+  }
+
+  :global(.trade-action-menu-portal__category-marker .action-svg) {
+    width: 13px;
+    height: 13px;
+    min-width: 13px;
+    min-height: 13px;
+    display: block;
+    overflow: visible;
+    stroke-width: 1.7;
   }
 </style>

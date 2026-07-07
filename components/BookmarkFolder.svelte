@@ -3,7 +3,7 @@
   import folderPlusIcon from "lucide-static/icons/folder-plus.svg?raw";
   import pencilIcon from "lucide-static/icons/pencil.svg?raw";
   import trashIcon from "lucide-static/icons/trash-2.svg?raw";
-  import { onDestroy, onMount, tick } from "svelte"
+  import { onDestroy, tick } from "svelte"
   import { slide } from "svelte/transition"
 
   import {
@@ -75,7 +75,6 @@
   let isDuplicating = false
   let tradePendingDelete: BookmarksTradeStruct | null = $state(null)
   let currentFolderId: string | null = $state(folder.id || null)
-  let openCategoryTradeId: string | null = $state(null)
   let loadRequestId = 0
   type TradeListEntry =
     | {
@@ -151,32 +150,8 @@
     }
   })
 
-  const closeCategoryMenu = () => {
-    openCategoryTradeId = null
-  }
-
-  const handleDocumentClick = (event: MouseEvent) => {
-    const target = event.target instanceof Element ? event.target : null
-    if (!target?.closest("[data-category-menu]")) {
-      closeCategoryMenu()
-    }
-  }
-
-  const handleDocumentKeydown = (event: KeyboardEvent) => {
-    if (event.key === "Escape") {
-      closeCategoryMenu()
-    }
-  }
-
-  onMount(() => {
-    document.addEventListener("click", handleDocumentClick, true)
-    document.addEventListener("keydown", handleDocumentKeydown)
-  })
-
   onDestroy(() => {
     unsubscribeBookmarksChange()
-    document.removeEventListener("click", handleDocumentClick, true)
-    document.removeEventListener("keydown", handleDocumentKeydown)
   })
 
   const formatTradeMeta = (trade: BookmarksTradeStruct) => {
@@ -193,13 +168,6 @@
   const categoryIdForTrade = (trade: BookmarksTradeStruct) => {
     if (!trade.categoryId) return null
     return categoryById.has(trade.categoryId) ? trade.categoryId : null
-  }
-
-  const categoryLabelForTrade = (trade: BookmarksTradeStruct) => {
-    const categoryId = categoryIdForTrade(trade)
-    return categoryId
-      ? categoryById.get(categoryId)?.title || translate($languageStore, "folder.noCategory")
-      : translate($languageStore, "folder.noCategory")
   }
 
   const getDisplayedTrades = () => {
@@ -353,21 +321,14 @@
     hasLoadedTrades = true
   }
 
-  const toggleCategoryMenu = (event: MouseEvent, trade: BookmarksTradeStruct) => {
-    event.stopPropagation()
-    openCategoryTradeId = openCategoryTradeId === trade.id ? null : trade.id || null
-  }
-
   const selectTradeCategory = async (
     trade: BookmarksTradeStruct,
     categoryId: string | null
   ) => {
-    closeCategoryMenu()
     await assignTradeCategory(trade, categoryId)
   }
 
   const createCategoryForTrade = async (trade: BookmarksTradeStruct) => {
-    closeCategoryMenu()
     const category = await createCategoryFromPrompt()
     if (category) {
       await assignTradeCategory(trade, category.id)
@@ -941,69 +902,15 @@
                             onCopy={() => copyTrade(trade)}
                             onOpenLive={() => void openTradeLive(trade)}
                             onToggle={() => void toggleTrade(trade)}
-                            onDelete={() => requestTradeDelete(trade)} />
+                            onDelete={() => requestTradeDelete(trade)}
+                            categoriesEnabled={$settings.bookmarkCategoriesEnabled}
+                            {categoryOptions}
+                            selectedCategoryId={categoryIdForTrade(trade)}
+                            onCategorySelect={(categoryId) => void selectTradeCategory(trade, categoryId)}
+                            onCategoryCreate={() => void createCategoryForTrade(trade)} />
                         </div>
                       {/if}
                     </div>
-                    {#if $settings.bookmarkCategoriesEnabled}
-                      <div class="trade-category-row" data-no-card-open="true">
-                        <div class="category-picker" data-category-menu>
-                          <button
-                            type="button"
-                            class="category-picker__trigger"
-                            aria-haspopup="listbox"
-                            aria-expanded={openCategoryTradeId === trade.id}
-                            aria-label={translate($languageStore, "folder.categorySelect")}
-                            onclick={(event) => toggleCategoryMenu(event, trade)}
-                          >
-                            <span class="category-picker__label">{categoryLabelForTrade(trade)}</span>
-                            <span class="category-picker__chevron" aria-hidden="true">▾</span>
-                          </button>
-
-                          {#if openCategoryTradeId === trade.id}
-                            <div
-                              class="category-picker__menu"
-                              role="listbox"
-                              aria-label={translate($languageStore, "folder.categorySelect")}
-                            >
-                              <button
-                                type="button"
-                                class="category-picker__option"
-                                class:is-selected={!categoryIdForTrade(trade)}
-                                role="option"
-                                aria-selected={!categoryIdForTrade(trade)}
-                                onclick={() => void selectTradeCategory(trade, null)}
-                              >
-                                {translate($languageStore, "folder.noCategory")}
-                              </button>
-
-                              {#each categoryOptions as category (category.id)}
-                                <button
-                                  type="button"
-                                  class="category-picker__option"
-                                  class:is-selected={categoryIdForTrade(trade) === category.id}
-                                  role="option"
-                                  aria-selected={categoryIdForTrade(trade) === category.id}
-                                  onclick={() => void selectTradeCategory(trade, category.id)}
-                                >
-                                  {category.title}
-                                </button>
-                              {/each}
-
-                              <button
-                                type="button"
-                                class="category-picker__option category-picker__option--new"
-                                role="option"
-                                aria-selected="false"
-                                onclick={() => void createCategoryForTrade(trade)}
-                              >
-                                {translate($languageStore, "folder.newCategoryOption")}
-                              </button>
-                            </div>
-                          {/if}
-                        </div>
-                      </div>
-                    {/if}
                     {#if !$settings.compactActionsMenu}
                       <div class="trade-bottom">
                         <div class="trade-meta">{formatTradeMeta(trade)}</div>
@@ -1015,7 +922,12 @@
                             onCopy={() => copyTrade(trade)}
                             onOpenLive={() => void openTradeLive(trade)}
                             onToggle={() => void toggleTrade(trade)}
-                            onDelete={() => requestTradeDelete(trade)} />
+                            onDelete={() => requestTradeDelete(trade)}
+                            categoriesEnabled={$settings.bookmarkCategoriesEnabled}
+                            {categoryOptions}
+                            selectedCategoryId={categoryIdForTrade(trade)}
+                            onCategorySelect={(categoryId) => void selectTradeCategory(trade, categoryId)}
+                            onCategoryCreate={() => void createCategoryForTrade(trade)} />
                         </div>
                       </div>
                     {/if}
@@ -1518,106 +1430,6 @@
     justify-content: flex-start;
     gap: 8px;
     width: 100%;
-  }
-
-  .trade-category-row {
-    display: flex;
-    min-width: 0;
-    position: relative;
-  }
-
-  .category-picker {
-    position: relative;
-    width: 100%;
-    min-width: 0;
-  }
-
-  .category-picker__trigger {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    width: 100%;
-    min-height: 26px;
-    padding: 0 8px;
-    border: 1px solid rgba($gold, 0.14);
-    border-radius: 4px;
-    background: rgba($black, 0.3);
-    color: rgba($gold-alt, 0.82);
-    font-family: $primary-font;
-    font-size: calc(10px * var(--bt-text-scale, 1));
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    cursor: pointer;
-
-    &:focus-visible {
-      border-color: rgba($gold, 0.45);
-      box-shadow: 0 0 0 2px rgba($gold, 0.12);
-      outline: none;
-    }
-  }
-
-  .category-picker__label {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .category-picker__chevron {
-    flex: 0 0 auto;
-    color: rgba($gold, 0.72);
-    font-size: calc(10px * var(--bt-text-scale, 1));
-  }
-
-  .category-picker__menu {
-    position: absolute;
-    top: calc(100% + 4px);
-    left: 0;
-    right: 0;
-    z-index: 4;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-    max-height: 168px;
-    overflow-y: auto;
-    padding: 5px;
-    border: 1px solid rgba($gold, 0.18);
-    border-radius: 4px;
-    background: #14110d;
-    box-shadow: 0 10px 24px rgba($black, 0.34);
-  }
-
-  .category-picker__option {
-    min-height: 28px;
-    padding: 0 8px;
-    border: 1px solid transparent;
-    border-radius: 3px;
-    background: rgba($white, 0.02);
-    color: rgba($white, 0.78);
-    font-family: $primary-font;
-    font-size: calc(10px * var(--bt-text-scale, 1));
-    letter-spacing: 0.05em;
-    line-height: 1.2;
-    text-align: left;
-    text-transform: uppercase;
-    cursor: pointer;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    &:hover,
-    &:focus-visible,
-    &.is-selected {
-      border-color: rgba($gold, 0.28);
-      background: rgba($gold, 0.07);
-      color: $white;
-      outline: none;
-    }
-  }
-
-  .category-picker__option--new {
-    color: rgba($gold-alt, 0.82);
   }
 
   .trade-copy {
