@@ -34,6 +34,7 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "popup.shortcut.poedb": "PoEDb",
   "popup.shortcut.poe2db": "PoE2Db",
   "popup.shortcut.ninja": "poe.ninja",
+  "settings.tabs.interface": "一般",
   "settings.sidebarTitle": "パネル位置",
   "settings.sidebarDescription":
     "Poe Trade Plus パネルを画面のどちら側に表示するか選択してください。",

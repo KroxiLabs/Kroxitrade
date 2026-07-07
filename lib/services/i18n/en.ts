@@ -260,7 +260,7 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "settings.bookmarkPreviewTrade": "High resistance boots",
   "settings.saveFailed": "Could not save settings. Please try again.",
   "settings.tabs.label": "Settings categories",
-  "settings.tabs.interface": "Interface",
+  "settings.tabs.interface": "General",
   "settings.tabs.sidebar": "Sidebar",
   "settings.tabs.results": "Results",
   "settings.tabs.bookmarks": "Bookmarks",

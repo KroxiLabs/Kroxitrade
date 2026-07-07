@@ -30,6 +30,7 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "popup.shortcut.poedb": "PoEDb",
   "popup.shortcut.poe2db": "PoE2Db",
   "popup.shortcut.ninja": "poe.ninja",
+  "settings.tabs.interface": "Общие",
   "settings.sidebarTitle": "Положение панели",
   "settings.sidebarDescription":
     "Выберите сторону экрана, где будет отображаться панель Poe Trade Plus.",

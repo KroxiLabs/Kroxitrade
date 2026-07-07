@@ -30,6 +30,7 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "popup.shortcut.poedb": "PoEDb",
   "popup.shortcut.poe2db": "PoE2Db",
   "popup.shortcut.ninja": "poe.ninja",
+  "settings.tabs.interface": "ทั่วไป",
   "settings.sidebarTitle": "ตำแหน่งแผง",
   "settings.sidebarDescription":
     "เลือกด้านของหน้าจอที่ต้องการให้แผง Poe Trade Plus แสดงผล",

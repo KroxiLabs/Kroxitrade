@@ -266,7 +266,7 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "settings.bookmarkPreviewTrade": "Botas con resistencias altas",
   "settings.saveFailed": "No se pudieron guardar los ajustes. Probá de nuevo.",
   "settings.tabs.label": "Categorías de ajustes",
-  "settings.tabs.interface": "Interfaz",
+  "settings.tabs.interface": "General",
   "settings.tabs.sidebar": "Panel",
   "settings.tabs.results": "Resultados",
   "settings.tabs.bookmarks": "Favoritos",

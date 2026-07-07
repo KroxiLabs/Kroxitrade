@@ -481,6 +481,29 @@
         </div>
       </section>
 
+      <section class="settings-section settings-section--wide">
+      <div class="section-heading">
+        <h3 class="section-title">{translate($languageStore, "bookmarks.backupTitle")}</h3>
+      </div>
+      <p class="section-description">{translate($languageStore, "bookmarks.backupDescription")}</p>
+
+      <div class="side-selector settings-actions-row">
+        <Button
+          label={translate($languageStore, "bookmarks.saveFile")}
+          theme="gold"
+          class="side-btn"
+          onClick={exportBookmarksBackup}
+        />
+        <Button
+          label={translate($languageStore, "bookmarks.restoreFile")}
+          theme="gold"
+          class="side-btn"
+          onFileChange={restoreBookmarksBackup}
+          fileAccept=".json,.txt"
+        />
+      </div>
+      </section>
+
     {:else if activeTab === "sidebar"}
       <section class="settings-section settings-section--wide">
         <div class="section-heading">
@@ -646,29 +669,6 @@
             </div>
           </div>
         </div>
-      </div>
-      </section>
-
-      <section class="settings-section settings-section--wide">
-      <div class="section-heading">
-        <h3 class="section-title">{translate($languageStore, "bookmarks.backupTitle")}</h3>
-      </div>
-      <p class="section-description">{translate($languageStore, "bookmarks.backupDescription")}</p>
-
-      <div class="side-selector settings-actions-row">
-        <Button
-          label={translate($languageStore, "bookmarks.saveFile")}
-          theme="gold"
-          class="side-btn"
-          onClick={exportBookmarksBackup}
-        />
-        <Button
-          label={translate($languageStore, "bookmarks.restoreFile")}
-          theme="gold"
-          class="side-btn"
-          onFileChange={restoreBookmarksBackup}
-          fileAccept=".json,.txt"
-        />
       </div>
       </section>
 
@@ -897,7 +897,7 @@
     width: 16px;
     height: 16px;
     flex: 0 0 16px;
-    margin-left: 4px;
+    margin-left: 8px;
     border: 1px solid rgba($gold, 0.22);
     border-radius: 999px;
     background: rgba($gold, 0.06);
@@ -1021,6 +1021,7 @@
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+    white-space: nowrap;
   }
 
   .settings-row__description {

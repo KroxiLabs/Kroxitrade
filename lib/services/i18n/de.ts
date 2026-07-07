@@ -29,6 +29,7 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "popup.shortcut.poedb": "PoEDb",
   "popup.shortcut.poe2db": "PoE2Db",
   "popup.shortcut.ninja": "poe.ninja",
+  "settings.tabs.interface": "Allgemein",
   "settings.sidebarTitle": "Position der Seitenleiste",
   "settings.sidebarDescription":
     "Wähle, auf welcher Seite des Bildschirms das Poe Trade Plus-Panel erscheinen soll.",

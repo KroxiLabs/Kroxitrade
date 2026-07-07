@@ -34,6 +34,7 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "popup.shortcut.poedb": "PoEDb",
   "popup.shortcut.poe2db": "PoE2Db",
   "popup.shortcut.ninja": "poe.ninja",
+  "settings.tabs.interface": "일반",
   "settings.sidebarTitle": "패널 위치",
   "settings.sidebarDescription":
     "Poe Trade Plus 패널을 화면 어느 쪽에 표시할지 선택하세요.",
