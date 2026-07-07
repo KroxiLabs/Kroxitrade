@@ -73,6 +73,7 @@
   let hasLoadedTrades = $state(false)
   let isDuplicating = false
   let tradePendingDelete: BookmarksTradeStruct | null = $state(null)
+  let categoryPendingDelete: BookmarksCategoryStruct | null = $state(null)
   let currentFolderId: string | null = $state(folder.id || null)
   let loadRequestId = 0
   type TradeListEntry =
@@ -296,19 +297,21 @@
 
   const deleteCategory = async (category: BookmarksCategoryStruct) => {
     if (!folder.id) return
-    const confirmed = typeof window === "undefined" || window.confirm(
-      translate($languageStore, "folder.deleteCategoryConfirm", {
-        title: category.title
-      })
-    )
-    if (!confirmed) return
-
     trades = await bookmarksService.deleteCategory(folder, category.id)
     folder.categories = (folder.categories || []).filter((entry) => entry.id !== category.id)
+    categoryPendingDelete = null
     hasLoadedTrades = true
     flashMessages.success(
       translate($languageStore, "folder.categoryDeleted", { title: category.title })
     )
+  }
+
+  const requestCategoryDelete = (category: BookmarksCategoryStruct) => {
+    categoryPendingDelete = category
+  }
+
+  const cancelCategoryDelete = () => {
+    categoryPendingDelete = null
   }
 
   const assignTradeCategory = async (
@@ -828,7 +831,7 @@
                         class="category-action is-danger"
                         title={translate($languageStore, "folder.deleteCategory")}
                         aria-label={translate($languageStore, "folder.deleteCategory")}
-                        onclick={() => void deleteCategory(entry.category!)}
+                        onclick={() => requestCategoryDelete(entry.category!)}
                       >
                         <span class="action-icon"><SvgIcon svg={trashIcon} /></span>
                       </button>
@@ -963,6 +966,21 @@
   onConfirm={() => {
     if (tradePendingDelete) {
       void deleteTrade(tradePendingDelete)
+    }
+  }} />
+
+<ConfirmDialog
+  open={!!categoryPendingDelete}
+  title={translate($languageStore, "folder.deleteCategory")}
+  message={translate($languageStore, "folder.deleteCategoryConfirm", {
+    title: categoryPendingDelete?.title || ""
+  })}
+  confirmLabel={translate($languageStore, "confirm.delete")}
+  cancelLabel={translate($languageStore, "confirm.cancel")}
+  onCancel={cancelCategoryDelete}
+  onConfirm={() => {
+    if (categoryPendingDelete) {
+      void deleteCategory(categoryPendingDelete)
     }
   }} />
 
