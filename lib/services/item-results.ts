@@ -201,6 +201,18 @@ export class ItemResultsService {
     const target = event.target as Element | null;
     const copyButton = target?.closest<HTMLButtonElement>("button.copy");
     const coeButton = target?.closest<HTMLButtonElement>("button.bt-copy-coe");
+    const wikiButton = target?.closest<HTMLButtonElement>("button.bt-open-wiki");
+
+    if (wikiButton && experimentalSettings.isWikiVisible()) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      const url = wikiButton.dataset.wikiUrl;
+      if (url) {
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+      return;
+    }
 
     if (
       coeButton &&
@@ -639,6 +651,7 @@ export class ItemResultsService {
       const typedRow = row as HTMLElement;
       this.enablePoe2CopyButton(typedRow);
       this.syncCoeButton(typedRow);
+      this.syncWikiButton(typedRow);
       this.injectEquivalentPricing(typedRow);
       this.enhanceMagebloodLegacy(typedRow);
 
@@ -697,6 +710,60 @@ export class ItemResultsService {
     }
   }
 
+  private syncWikiButton(row: HTMLElement) {
+    const left = row.querySelector<HTMLElement>(".left");
+    if (!left) return;
+
+    const existingButton = left.querySelector<HTMLButtonElement>("button.bt-open-wiki");
+    const searchByButton = left.querySelector<HTMLButtonElement>("button.searchBy");
+    const wikiUrl = experimentalSettings.isWikiVisible()
+      ? this.getUniqueItemWikiUrl(row)
+      : null;
+
+    if (!wikiUrl) {
+      existingButton?.remove();
+      return;
+    }
+
+    let button = existingButton;
+    if (!button) {
+      button = document.createElement("button");
+      button.type = "button";
+      button.className = "bt-open-wiki";
+      button.setAttribute("aria-label", "Open item wiki");
+      button.textContent = "W";
+    }
+
+    button.dataset.wikiUrl = wikiUrl;
+    button.title = "Open item wiki";
+
+    if (searchByButton) {
+      const coeButton = left.querySelector<HTMLButtonElement>("button.bt-copy-coe");
+      if (!button.isConnected) {
+        (coeButton || searchByButton).insertAdjacentElement("afterend", button);
+      }
+      this.positionResultActionButton(button, searchByButton, coeButton ? 1 : 0);
+    } else if (!button.isConnected) {
+      left.appendChild(button);
+    }
+  }
+
+  private getUniqueItemWikiUrl(row: HTMLElement) {
+    const header = row.querySelector<HTMLElement>(".item-popup__header--unique");
+    const name = header
+      ?.querySelector<HTMLElement>(".item-popup__header-line")
+      ?.textContent
+      ?.trim();
+
+    if (!name) return null;
+
+    const baseUrl = tradeLocationService.current.version === "2"
+      ? "https://www.poe2wiki.net/wiki/"
+      : "https://www.poewiki.net/wiki/";
+    const pageName = encodeURIComponent(name.replace(/\s+/g, "_")).replace(/'/g, "%27");
+    return `${baseUrl}${pageName}`;
+  }
+
   private syncCoeButtonUnsupportedState(button: HTMLButtonElement, row: HTMLElement) {
     const unsupported = hasUnsupportedCraftOfExileMod(row);
     button.classList.toggle("bt-copy-coe--disabled", unsupported);
@@ -707,12 +774,16 @@ export class ItemResultsService {
   }
 
   private positionCoeButton(button: HTMLButtonElement, searchByButton: HTMLButtonElement) {
+    this.positionResultActionButton(button, searchByButton, 0);
+  }
+
+  private positionResultActionButton(button: HTMLButtonElement, searchByButton: HTMLButtonElement, index: number) {
     const searchStyle = window.getComputedStyle(searchByButton);
     const searchLeft = Number.parseFloat(searchStyle.left);
     const searchWidth = Number.parseFloat(searchStyle.width);
 
     if (Number.isFinite(searchLeft) && Number.isFinite(searchWidth)) {
-      button.style.left = `${searchLeft + searchWidth}px`;
+      button.style.left = `${searchLeft + searchWidth + (index * 30)}px`;
     }
 
     if (searchStyle.bottom !== "auto") {

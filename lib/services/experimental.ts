@@ -6,10 +6,12 @@ const BODY_CLASS = "bt-dev-result-actions-visible";
 const POE2_COPY_BODY_CLASS = "bt-dev-poe2-copy-visible";
 const POE2_BODY_CLASS = "bt-trade-poe2";
 const COE_BODY_CLASS = "bt-dev-coe-visible";
+const WIKI_BODY_CLASS = "bt-dev-wiki-visible";
 const storageKey = (version: TradeSiteVersion) =>
   `experimental-result-actions-visible-poe${version}`;
 const POE2_COPY_STORAGE_KEY = "experimental-poe2-copy-visible";
 const COE_STORAGE_KEY = "experimental-coe-visible";
+const WIKI_STORAGE_KEY = "experimental-wiki-visible";
 
 let activeVersion: TradeSiteVersion = "1";
 const { subscribe, set } = writable(false);
@@ -23,6 +25,11 @@ const {
   set: setCoe
 } = writable(false);
 let isCoeVisible = false;
+const {
+  subscribe: subscribeWiki,
+  set: setWiki
+} = writable(false);
+let isWikiVisible = false;
 
 function apply(value: boolean) {
   set(value);
@@ -48,10 +55,18 @@ function applyCoeVisibility(value: boolean) {
   document.dispatchEvent(new CustomEvent("poe-trade-plus:experimental-change"));
 }
 
+function applyWikiVisibility(value: boolean) {
+  isWikiVisible = value;
+  setWiki(isWikiVisible);
+  document.body?.classList.toggle(WIKI_BODY_CLASS, isWikiVisible);
+  document.dispatchEvent(new CustomEvent("poe-trade-plus:experimental-change"));
+}
+
 export const experimentalSettings = {
   subscribe,
   subscribePoe2Copy,
   subscribeCoe,
+  subscribeWiki,
   useVersion(version: TradeSiteVersion) {
     activeVersion = version;
     document.body?.classList.toggle(POE2_BODY_CLASS, version === "2");
@@ -61,6 +76,9 @@ export const experimentalSettings = {
     );
     applyCoeVisibility(
       storageService.getLocalValue(COE_STORAGE_KEY) === "true"
+    );
+    applyWikiVisibility(
+      storageService.getLocalValue(WIKI_STORAGE_KEY) === "true"
     );
   },
   setResultActionsVisible(value: boolean) {
@@ -75,8 +93,15 @@ export const experimentalSettings = {
     storageService.setLocalValue(COE_STORAGE_KEY, String(value));
     applyCoeVisibility(value);
   },
+  setWikiVisible(value: boolean) {
+    storageService.setLocalValue(WIKI_STORAGE_KEY, String(value));
+    applyWikiVisibility(value);
+  },
   isCoeVisible() {
     return isCoeVisible;
+  },
+  isWikiVisible() {
+    return isWikiVisible;
   },
   isPoe2CopyVisible() {
     return isPoe2CopyVisible;
@@ -106,6 +131,7 @@ export const experimentalSettings = {
     document.body?.classList.remove(POE2_COPY_BODY_CLASS);
     document.body?.classList.remove(POE2_BODY_CLASS);
     document.body?.classList.remove(COE_BODY_CLASS);
+    document.body?.classList.remove(WIKI_BODY_CLASS);
   }
 };
 
@@ -115,4 +141,8 @@ export const poe2CopyButtonSetting = {
 
 export const coeButtonSetting = {
   subscribe: subscribeCoe
+};
+
+export const wikiButtonSetting = {
+  subscribe: subscribeWiki
 };

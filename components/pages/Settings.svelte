@@ -5,7 +5,8 @@
   import {
     coeButtonSetting,
     experimentalSettings,
-    poe2CopyButtonSetting
+    poe2CopyButtonSetting,
+    wikiButtonSetting
   } from "../../lib/services/experimental";
   import { flashMessages } from "../../lib/services/flash";
   import { itemResultsService } from "../../lib/services/item-results";
@@ -274,6 +275,10 @@
 
   function handleCoeVisibleChange(value: boolean) {
     experimentalSettings.setCoeVisible(value);
+  }
+
+  function handleWikiVisibleChange(value: boolean) {
+    experimentalSettings.setWikiVisible(value);
   }
 
   function toggleLanguageMenu(event: MouseEvent) {
@@ -758,6 +763,19 @@
             label={translate($languageStore, "settings.coeTitle")}
             stateLabel={toggleSwitchLabel($coeButtonSetting)}
             onToggle={() => handleCoeVisibleChange(!$coeButtonSetting)}
+          />
+        </div>
+
+        <div class="settings-row">
+          <div class="settings-row__copy">
+            <div class="settings-row__title">{translate($languageStore, "settings.wikiTitle")}</div>
+            <div class="settings-row__description">{translate($languageStore, "settings.wikiBody")}</div>
+          </div>
+          <ToggleRow
+            checked={$wikiButtonSetting}
+            label={translate($languageStore, "settings.wikiTitle")}
+            stateLabel={toggleSwitchLabel($wikiButtonSetting)}
+            onToggle={() => handleWikiVisibleChange(!$wikiButtonSetting)}
           />
         </div>
       </div>

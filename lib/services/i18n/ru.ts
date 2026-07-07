@@ -52,6 +52,9 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "Эквивалентная цена",
   "settings.equivalentDescription":
     "Показывать или скрывать дополнительную строку с эквивалентом в chaos/divine в результатах.",
+  "settings.wikiTitle": "Кнопка wiki",
+  "settings.wikiBody":
+    "Добавляет кнопку W к уникальным предметам, чтобы открыть соответствующую страницу на wiki PoE.",
   "settings.magebloodLegacyTitle": "Описания Legacy для Mageblood",
   "settings.magebloodLegacyBody":
     "Показывать скрытые эффекты PoE2 Legacy-модов Mageblood под предметом, как описания notable-пассивов.",

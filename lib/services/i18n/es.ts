@@ -282,6 +282,9 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "settings.coeTitle": "Botón Craft of Exile",
   "settings.coeBody":
     "Agrega un botón CoE a resultados de PoE1 y PoE2 que copia el objeto en formato avanzado de Craft of Exile.",
+  "settings.wikiTitle": "Botón de wiki",
+  "settings.wikiBody":
+    "Agrega un botón W a los resultados de objetos únicos para abrir su página correspondiente en la wiki de PoE.",
   "settings.magebloodLegacyTitle": "Descripciones Legacy de Mageblood",
   "settings.magebloodLegacyBody":
     "Muestra los efectos ocultos de los mods Legacy de Mageblood de PoE2 debajo del objeto, como las descripciones de notables.",

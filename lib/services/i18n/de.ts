@@ -52,6 +52,9 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "Äquivalenzpreis",
   "settings.equivalentDescription":
     "Zeige oder verberge die zusätzliche Zeile mit Chaos/Divine-Äquivalenten in den Ergebnissen.",
+  "settings.wikiTitle": "Wiki-Schaltfläche",
+  "settings.wikiBody":
+    "Fügt einzigartigen Gegenständen eine W-Schaltfläche hinzu, die die passende Seite im PoE-Wiki öffnet.",
   "settings.magebloodLegacyTitle": "Mageblood-Legacy-Beschreibungen",
   "settings.magebloodLegacyBody":
     "Zeige die versteckten Effekte von PoE2-Mageblood-Legacy-Mods unter dem Gegenstand, wie Notable-Beschreibungen.",

@@ -50,7 +50,8 @@ body.bt-dev-poe2-copy-visible .row:hover > .left > button.copy {
   pointer-events: auto !important;
 }
 
-.row > .left > button.bt-copy-coe {
+.row > .left > button.bt-copy-coe,
+.row > .left > button.bt-open-wiki {
   display: none;
   position: absolute;
   align-items: center;
@@ -61,7 +62,9 @@ body.bt-dev-poe2-copy-visible .row:hover > .left > button.copy {
   border: 0;
   background: transparent;
   cursor: pointer;
+}
 
+.row > .left > button.bt-copy-coe {
   img {
     display: block;
     width: 30px;
@@ -72,6 +75,30 @@ body.bt-dev-poe2-copy-visible .row:hover > .left > button.copy {
 
 }
 
+.row > .left > button.bt-open-wiki {
+  border: 1px solid rgba($gold, 0.28);
+  border-radius: 2px;
+  background: rgba($black, 0.76);
+  color: $white;
+  font-family: $primary-font;
+  font-size: calc(16px * var(--bt-text-scale, 1));
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    color 0.15s ease;
+
+  &:hover,
+  &:focus-visible {
+    border-color: rgba($gold, 0.5);
+    background: rgba($gold, 0.12);
+    color: $white;
+    outline: none;
+  }
+}
+
 .row > .left > button.bt-copy-coe.bt-copy-coe--disabled {
   cursor: not-allowed;
   filter: grayscale(1);
@@ -79,7 +106,9 @@ body.bt-dev-poe2-copy-visible .row:hover > .left > button.copy {
 }
 
 body.bt-dev-coe-visible .row:hover > .left > button.bt-copy-coe,
-body.bt-dev-result-actions-visible.bt-dev-coe-visible .row > .left > button.bt-copy-coe {
+body.bt-dev-result-actions-visible.bt-dev-coe-visible .row > .left > button.bt-copy-coe,
+body.bt-dev-wiki-visible .row:hover > .left > button.bt-open-wiki,
+body.bt-dev-result-actions-visible.bt-dev-wiki-visible .row > .left > button.bt-open-wiki {
   display: inline-flex;
 }
 
