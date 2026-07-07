@@ -444,22 +444,19 @@
       </section>
 
       <section class="settings-section settings-section--wide">
-        <div class="section-heading">
-          <h3 class="section-title">{translate($languageStore, "settings.quickFiltersTitle")}</h3>
-        </div>
-        <div class="settings-row-list">
-          <div class="settings-row">
-            <div class="settings-row__copy">
-              <div class="settings-row__title">{translate($languageStore, "settings.quickFiltersTitle")}</div>
-              <div class="settings-row__description">{translate($languageStore, "settings.quickFiltersDescription")}</div>
-            </div>
-            <ToggleRow
-              checked={$settings.showQuickFilters}
-              label={translate($languageStore, "settings.quickFiltersTitle")}
-              stateLabel={toggleSwitchLabel($settings.showQuickFilters)}
-              onToggle={() => handleQuickFiltersChange(!$settings.showQuickFilters)}
-            />
+        <div class="settings-section__header-row">
+          <div class="section-heading">
+            <h3 class="section-title">{translate($languageStore, "settings.quickFiltersTitle")}</h3>
           </div>
+          <ToggleRow
+            checked={$settings.showQuickFilters}
+            label={translate($languageStore, "settings.quickFiltersTitle")}
+            stateLabel={toggleSwitchLabel($settings.showQuickFilters)}
+            onToggle={() => handleQuickFiltersChange(!$settings.showQuickFilters)}
+          />
+        </div>
+        <p class="section-description">{translate($languageStore, "settings.quickFiltersDescription")}</p>
+        <div class="settings-row-list">
           {#if $settings.showQuickFilters}
             <div class="settings-placement">
               <div class="settings-placement__label">
@@ -523,23 +520,18 @@
 
     {:else if activeTab === "bookmarks"}
       <section class="settings-section settings-section--wide">
-        <div class="section-heading">
-          <h3 class="section-title">{translate($languageStore, "settings.bookmarkCategoriesTitle")}</h3>
-        </div>
-        <div class="settings-row-list">
-          <div class="settings-row">
-            <div class="settings-row__copy">
-              <div class="settings-row__title">{translate($languageStore, "settings.bookmarkCategoriesTitle")}</div>
-              <div class="settings-row__description">{translate($languageStore, "settings.bookmarkCategoriesDescription")}</div>
-            </div>
-            <ToggleRow
-              checked={$settings.bookmarkCategoriesEnabled}
-              label={translate($languageStore, "settings.bookmarkCategoriesTitle")}
-              stateLabel={toggleSwitchLabel($settings.bookmarkCategoriesEnabled)}
-              onToggle={() => handleBookmarkCategoriesChange(!$settings.bookmarkCategoriesEnabled)}
-            />
+        <div class="settings-section__header-row">
+          <div class="section-heading">
+            <h3 class="section-title">{translate($languageStore, "settings.bookmarkCategoriesTitle")}</h3>
           </div>
+          <ToggleRow
+            checked={$settings.bookmarkCategoriesEnabled}
+            label={translate($languageStore, "settings.bookmarkCategoriesTitle")}
+            stateLabel={toggleSwitchLabel($settings.bookmarkCategoriesEnabled)}
+            onToggle={() => handleBookmarkCategoriesChange(!$settings.bookmarkCategoriesEnabled)}
+          />
         </div>
+        <p class="section-description">{translate($languageStore, "settings.bookmarkCategoriesDescription")}</p>
       </section>
 
       <section class="settings-section settings-section--wide settings-section--bookmarks-layout" data-tutorial="settings-bookmarks">
@@ -844,6 +836,7 @@
   }
 
   .settings-section {
+    position: relative;
     background:
       linear-gradient(180deg, rgba($white, 0.03), rgba($white, 0.015)),
       rgba($white, 0.02);
@@ -869,23 +862,104 @@
     color: $gold;
   }
 
+  .settings-section__header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+  }
+
   .section-heading {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
     display: flex;
     align-items: center;
     gap: 8px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     min-width: 0;
   }
 
-  .section-description {
+  .settings-section__header-row .section-heading {
+    margin-bottom: 0;
+  }
+
+  .section-heading:has(+ .section-description)::after,
+  .settings-section__header-row:has(+ .section-description) .section-heading::after,
+  .compact-options__heading:has(+ .section-description)::after,
+  .bookmark-layout-preview__heading > div:has(.section-description)::after,
+  .settings-row__copy:has(.settings-row__description)::after {
+    content: "?";
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    flex: 0 0 16px;
+    margin-left: 4px;
+    border: 1px solid rgba($gold, 0.22);
+    border-radius: 999px;
+    background: rgba($gold, 0.06);
+    color: rgba($gold-alt, 0.86);
+    font-family: $primary-font;
+    font-size: calc(10px * var(--bt-text-scale, 1));
+    line-height: 1;
+  }
+
+  .section-description,
+  .settings-row__description {
+    position: absolute;
+    z-index: 8;
+    width: min(320px, calc(100vw - 44px));
     margin: 0;
-    color: rgba($white, 0.72);
+    padding: 10px 12px;
+    border: 1px solid rgba($gold, 0.22);
+    border-radius: 6px;
+    background: #11100d;
+    color: rgba($white, 0.82);
+    box-shadow: 0 12px 26px rgba($black, 0.44);
     font-size: calc(11px * var(--bt-text-scale, 1));
-    line-height: 1.55;
+    line-height: 1.45;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-4px);
+    transition:
+      opacity 0.14s ease,
+      transform 0.14s ease;
+  }
+
+  .section-description {
+    top: 40px;
+    left: 16px;
   }
 
   .section-description--compact {
-    margin-top: 8px;
+    margin: 0;
+  }
+
+  .compact-options,
+  .bookmark-layout-preview__heading > div {
+    position: relative;
+  }
+
+  .compact-options .section-description,
+  .bookmark-layout-preview__heading .section-description {
+    top: calc(100% + 8px);
+    left: 0;
+  }
+
+  .section-heading:hover + .section-description,
+  .section-heading:focus-within + .section-description,
+  .settings-section__header-row:hover + .section-description,
+  .settings-section__header-row:focus-within + .section-description,
+  .compact-options__heading:hover + .section-description,
+  .compact-options__heading:focus-within + .section-description,
+  .bookmark-layout-preview__heading > div:hover .section-description,
+  .bookmark-layout-preview__heading > div:focus-within .section-description {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
   }
 
   .settings-section--bookmarks-layout {
@@ -921,10 +995,15 @@
   }
 
   .settings-row__copy {
+    position: relative;
     min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
   }
 
   .settings-row__title {
+    min-width: 0;
     color: rgba($white, 0.94);
     font-family: $primary-font;
     font-size: calc(12px * var(--bt-text-scale, 1));
@@ -934,10 +1013,15 @@
   }
 
   .settings-row__description {
-    margin-top: 4px;
-    color: rgba($white, 0.66);
-    font-size: calc(11px * var(--bt-text-scale, 1));
-    line-height: 1.5;
+    top: calc(100% + 8px);
+    left: 0;
+  }
+
+  .settings-row__copy:hover .settings-row__description,
+  .settings-row__copy:focus-within .settings-row__description {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
   }
 
   .settings-row__hint {
