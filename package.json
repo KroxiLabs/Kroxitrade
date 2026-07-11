@@ -23,6 +23,9 @@
     "package:chrome": "npm run zip:chrome",
     "package:firefox": "npm run zip:firefox",
     "package": "npm run package:chrome && npm run package:firefox",
+    "release:check": "node scripts/release.cjs check",
+    "release:prepare": "node scripts/release.cjs prepare",
+    "release:publish": "node scripts/release.cjs publish",
     "postinstall": "wxt prepare"
   },
   "dependencies": {
