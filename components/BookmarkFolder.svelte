@@ -1530,7 +1530,7 @@
       min-height: 29px;
       padding: 4px 7px;
       border-color: rgba($white, 0.075);
-      border-radius: 2px;
+      border-radius: 3px;
 
       &:hover {
         transform: none;
