@@ -68,6 +68,7 @@ export const russianTranslations: Record<string, TranslationValue> = {
     "Группируйте сохраненные поиски в необязательные категории внутри каждой папки. При отключении все закладки снова отображаются прямо в основной папке.",
   "settings.compactActionsDefault": "Классический",
   "settings.compactActionsCompact": "Компактный",
+  "settings.compactActionsUltra": "Ультракомпактный",
   "settings.compactTradeActionsTitle": "Видимые действия вне меню",
   "settings.compactTradeActionsDescription":
     "Выберите, какие действия сохраненного поиска будут видны в компактном режиме. Если ничего не выбрано, отображается только меню из трех точек. Если выбраны все или все кроме одного, показываются все действия.",

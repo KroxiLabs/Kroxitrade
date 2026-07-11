@@ -68,6 +68,7 @@ export const germanTranslations: Record<string, TranslationValue> = {
     "Gruppiere gespeicherte Suchen in optionalen Kategorien innerhalb jedes Ordners. Wenn dies deaktiviert ist, erscheinen alle Lesezeichen wieder direkt im Hauptordner.",
   "settings.compactActionsDefault": "Klassisch",
   "settings.compactActionsCompact": "Kompakt",
+  "settings.compactActionsUltra": "Ultrakompakt",
   "settings.compactTradeActionsTitle": "Sichtbare Aktionen außerhalb des Menüs",
   "settings.compactTradeActionsDescription":
     "Wähle aus, welche Aktionen gespeicherter Suchen im kompakten Modus sichtbar bleiben. Wenn nichts ausgewählt ist, wird nur das Drei-Punkte-Menü angezeigt. Wenn alle oder alle bis auf eine ausgewählt sind, bleiben alle sichtbar.",

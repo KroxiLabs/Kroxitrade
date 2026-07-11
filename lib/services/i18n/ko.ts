@@ -73,6 +73,7 @@ export const koreanTranslations: Record<string, TranslationValue> = {
     "각 폴더 안에서 저장된 검색을 선택적 카테고리로 묶습니다. 끄면 모든 북마크가 다시 상위 폴더 바로 아래에 표시됩니다.",
   "settings.compactActionsDefault": "기본형",
   "settings.compactActionsCompact": "컴팩트",
+  "settings.compactActionsUltra": "초소형",
   "settings.compactTradeActionsTitle": "메뉴 밖에 보일 작업",
   "settings.compactTradeActionsDescription":
     "컴팩트 모드에서 계속 보일 저장된 검색 작업을 선택하세요. 아무것도 선택하지 않으면 점 세 개 메뉴만 보입니다. 모두 선택하거나 하나만 제외하고 선택하면 모든 작업이 보입니다.",

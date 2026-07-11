@@ -69,6 +69,7 @@ export const frenchTranslations: Record<string, TranslationValue> = {
     "Regroupez les recherches sauvegardées dans des catégories optionnelles à l'intérieur de chaque dossier. En désactivant cette option, tous les favoris réapparaissent directement dans leur dossier principal.",
   "settings.compactActionsDefault": "Classique",
   "settings.compactActionsCompact": "Compact",
+  "settings.compactActionsUltra": "Ultra-compact",
   "settings.compactTradeActionsTitle": "Actions visibles hors du menu",
   "settings.compactTradeActionsDescription":
     "Choisissez quelles actions de chaque recherche sauvegardée restent visibles en mode compact. Si aucune n'est sélectionnée, seuls les trois points apparaissent. Si toutes ou toutes sauf une sont sélectionnées, toutes restent visibles.",

@@ -252,6 +252,7 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "Agrupá búsquedas guardadas en categorías opcionales dentro de cada carpeta. Si lo desactivás, todos los favoritos vuelven a verse directamente en su carpeta principal.",
   "settings.compactActionsDefault": "Clasico",
   "settings.compactActionsCompact": "Compacto",
+  "settings.compactActionsUltra": "Ultracompacto",
   "settings.compactTradeActionsTitle": "Acciones visibles fuera del menú",
   "settings.compactTradeActionsDescription":
     "Elegí qué acciones de cada búsqueda guardada quedan visibles en modo compacto. Si no seleccionás ninguna, solo se ven los tres puntos. Si seleccionás todas o todas menos una, se muestran todas.",

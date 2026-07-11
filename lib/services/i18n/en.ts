@@ -246,6 +246,7 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "Group saved searches into optional categories inside each folder. Turning this off shows every bookmark directly in its parent folder again.",
   "settings.compactActionsDefault": "Classic",
   "settings.compactActionsCompact": "Compact",
+  "settings.compactActionsUltra": "Ultra compact",
   "settings.compactTradeActionsTitle": "Trade Actions Outside Menu",
   "settings.compactTradeActionsDescription":
     "Choose which saved-search actions stay visible in compact mode. If none are selected, only the three-dot menu is shown. If all or all but one are selected, every action stays visible.",

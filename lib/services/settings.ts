@@ -24,6 +24,7 @@ export interface VersionSettings {
   showQuickFilters: boolean
   quickFiltersPlacement: QuickFiltersPlacement
   compactActionsMenu: boolean
+  ultraCompactBookmarks: boolean
   compactBookmarkTradeActions: BookmarkTradeActionId[]
   bookmarkCategoriesEnabled: boolean
 }
@@ -62,6 +63,7 @@ const DEFAULT_VERSION_SETTINGS: VersionSettings = {
   showQuickFilters: true,
   quickFiltersPlacement: "page",
   compactActionsMenu: false,
+  ultraCompactBookmarks: false,
   compactBookmarkTradeActions: [],
   bookmarkCategoriesEnabled: false
 }
@@ -130,6 +132,7 @@ function legacyVersionSettings(
     showQuickFilters: value?.showQuickFilters,
     quickFiltersPlacement: value?.quickFiltersPlacement,
     compactActionsMenu: value?.compactActionsMenu,
+    ultraCompactBookmarks: value?.ultraCompactBookmarks,
     compactBookmarkTradeActions: value?.compactBookmarkTradeActions,
     bookmarkCategoriesEnabled: value?.bookmarkCategoriesEnabled
   })
@@ -305,6 +308,16 @@ export const settings = {
   },
   async updateCompactActionsMenu(compactActionsMenu: boolean) {
     return saveVersion({ ...activeVersionSettings, compactActionsMenu })
+  },
+  async updateBookmarkLayout(
+    compactActionsMenu: boolean,
+    ultraCompactBookmarks: boolean
+  ) {
+    return saveVersion({
+      ...activeVersionSettings,
+      compactActionsMenu,
+      ultraCompactBookmarks: compactActionsMenu && ultraCompactBookmarks
+    })
   },
   async updateCompactBookmarkTradeActions(
     compactBookmarkTradeActions: BookmarkTradeActionId[]

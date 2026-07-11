@@ -176,8 +176,11 @@
     }
   }
 
-  async function handleCompactActionsMenuChange(compactActionsMenu: boolean) {
-    if (!(await settings.updateCompactActionsMenu(compactActionsMenu))) {
+  async function handleBookmarkLayoutChange(
+    compactActionsMenu: boolean,
+    ultraCompactBookmarks = false
+  ) {
+    if (!(await settings.updateBookmarkLayout(compactActionsMenu, ultraCompactBookmarks))) {
       flashMessages.alert(translate($languageStore, "settings.saveFailed"));
     }
   }
@@ -573,13 +576,19 @@
           label={translate($languageStore, "settings.compactActionsDefault")}
           theme={$settings.compactActionsMenu ? 'blue' : 'gold'}
           class="side-btn side-btn--bookmark-layout"
-          onClick={() => handleCompactActionsMenuChange(false)}
+          onClick={() => handleBookmarkLayoutChange(false)}
         />
         <Button
           label={translate($languageStore, "settings.compactActionsCompact")}
-          theme={$settings.compactActionsMenu ? 'gold' : 'blue'}
+          theme={$settings.compactActionsMenu && !$settings.ultraCompactBookmarks ? 'gold' : 'blue'}
           class="side-btn side-btn--bookmark-layout"
-          onClick={() => handleCompactActionsMenuChange(true)}
+          onClick={() => handleBookmarkLayoutChange(true)}
+        />
+        <Button
+          label={translate($languageStore, "settings.compactActionsUltra")}
+          theme={$settings.ultraCompactBookmarks ? 'gold' : 'blue'}
+          class="side-btn side-btn--bookmark-layout"
+          onClick={() => handleBookmarkLayoutChange(true, true)}
         />
       </div>
 
@@ -620,8 +629,10 @@
           <span class="bookmark-layout-preview__mode">
             {translate(
               $languageStore,
-              $settings.compactActionsMenu
-                ? "settings.compactActionsCompact"
+              $settings.ultraCompactBookmarks
+                ? "settings.compactActionsUltra"
+                : $settings.compactActionsMenu
+                  ? "settings.compactActionsCompact"
                 : "settings.compactActionsDefault"
             )}
           </span>
@@ -634,7 +645,7 @@
             <span class="preview-folder__chevron" aria-hidden="true">▼</span>
           </div>
 
-          <div class="preview-trades-list">
+          <div class="preview-trades-list" class:is-ultra-compact={$settings.ultraCompactBookmarks}>
             <div class="preview-trade-item">
               <span class="preview-trade__drag" aria-hidden="true">≡</span>
               <div class="preview-trade__content">
@@ -1569,6 +1580,36 @@
 
   .preview-trade-actions--compact {
     margin-left: auto;
+  }
+
+  .preview-trades-list.is-ultra-compact {
+    padding: 4px;
+
+    .preview-trade-item {
+      gap: 6px;
+      min-height: 29px;
+      padding: 4px 7px;
+      border-radius: 2px;
+    }
+
+    .preview-trade__drag {
+      width: 12px;
+      flex-basis: 12px;
+      font-size: calc(12px * var(--bt-text-scale, 1));
+    }
+
+    .preview-trade__content {
+      gap: 0;
+    }
+
+    .preview-trade__top {
+      gap: 4px;
+    }
+
+    .preview-trade__title {
+      font-size: calc(12px * var(--bt-text-scale, 1));
+      line-height: 1.1;
+    }
   }
 
   @media (max-width: 430px) {

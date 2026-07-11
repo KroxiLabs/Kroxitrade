@@ -71,6 +71,7 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
     "Agrupe buscas salvas em categorias opcionais dentro de cada pasta. Ao desativar, todos os favoritos voltam a aparecer diretamente na pasta principal.",
   "settings.compactActionsDefault": "Classico",
   "settings.compactActionsCompact": "Compacto",
+  "settings.compactActionsUltra": "Ultracompacto",
   "settings.compactTradeActionsTitle": "Ações visíveis fora do menu",
   "settings.compactTradeActionsDescription":
     "Escolha quais ações de cada busca salva continuam visíveis no modo compacto. Se nenhuma for selecionada, apenas o menu de três pontos aparece. Se todas ou todas menos uma forem selecionadas, todas ficam visíveis.",

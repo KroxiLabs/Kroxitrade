@@ -68,6 +68,7 @@ export const thaiTranslations: Record<string, TranslationValue> = {
     "จัดกลุ่มการค้นหาที่บันทึกไว้เป็นหมวดหมู่เสริมภายในแต่ละโฟลเดอร์ เมื่อปิด ตัวบุ๊กมาร์กทั้งหมดจะแสดงในโฟลเดอร์หลักเหมือนเดิม",
   "settings.compactActionsDefault": "คลาสสิก",
   "settings.compactActionsCompact": "กะทัดรัด",
+  "settings.compactActionsUltra": "กะทัดรัดพิเศษ",
   "settings.compactTradeActionsTitle": "การทำงานที่แสดงนอกเมนู",
   "settings.compactTradeActionsDescription":
     "เลือกว่าการทำงานใดของการค้นหาที่บันทึกไว้จะยังแสดงอยู่ในโหมดกะทัดรัด หากไม่เลือกเลยจะเห็นเฉพาะเมนูสามจุด หากเลือกทั้งหมดหรือทั้งหมดยกเว้นหนึ่งรายการ จะเห็นทั้งหมด",
