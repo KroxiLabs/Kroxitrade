@@ -160,18 +160,10 @@ const prepare = () => {
   const existingPr = run(
     "gh",
     [
-      "pr",
-      "list",
-      "--repo",
-      upstreamRepository,
-      "--head",
-      head,
-      "--state",
-      "open",
-      "--json",
-      "url",
+      "api",
+      `repos/${upstreamRepository}/pulls?head=${head}&state=open`,
       "--jq",
-      ".[0].url"
+      ".[0].html_url"
     ],
     { capture: true }
   )
@@ -210,18 +202,10 @@ const publish = () => {
   const mergedAt = run(
     "gh",
     [
-      "pr",
-      "list",
-      "--repo",
-      upstreamRepository,
-      "--head",
-      head,
-      "--state",
-      "merged",
-      "--json",
-      "mergedAt",
+      "api",
+      `repos/${upstreamRepository}/pulls?head=${head}&state=closed`,
       "--jq",
-      ".[0].mergedAt"
+      ".[] | select(.merged_at != null) | .merged_at"
     ],
     { capture: true }
   )
