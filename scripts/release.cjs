@@ -19,12 +19,14 @@ const run = (command, args, options = {}) => {
   const result = childProcess.spawnSync(command, args, {
     cwd: root,
     encoding: "utf8",
-    stdio: options.capture ? ["ignore", "pipe", "pipe"] : "inherit"
+    stdio: options.capture ? ["ignore", "pipe", "pipe"] : "inherit",
+    shell: process.platform === "win32" && command === "npm"
   })
   if (result.status !== 0) {
+    const spawnError = result.error ? `\n${result.error.message}` : ""
     const details = options.capture
-      ? `\n${result.stderr || result.stdout || ""}`
-      : ""
+      ? `${spawnError}\n${result.stderr || result.stdout || ""}`
+      : spawnError
     throw new Error(`${command} ${args.join(" ")} failed.${details}`)
   }
   return (result.stdout || "").trim()
