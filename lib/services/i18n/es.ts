@@ -34,6 +34,12 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "Los favoritos quedan separados por versión de Path of Exile Trade.",
   "whatsNew.item.compactActions":
     "Las búsquedas guardadas pueden usar acciones compactas con menú más limpio.",
+  "whatsNew.item.minimalBookmarksTitle": "Diseño Minimal para favoritos",
+  "whatsNew.item.minimalBookmarksDescription":
+    "Los favoritos ahora ofrecen diseños Clásico, Compacto y Minimal. Minimal mantiene filas densas sin cambiar la estética de Path of Exile.",
+  "whatsNew.item.bookmarkActionsByLayoutTitle": "Acciones guardadas por diseño",
+  "whatsNew.item.bookmarkActionsByLayoutDescription":
+    "Elegí acciones visibles de favoritos por separado para Clásico, Compacto y Minimal. Ajustes y preview se actualizan juntos.",
   "whatsNew.item.backupRestore":
     "El respaldo y restauración de carpetas facilita mover configuraciones entre navegadores.",
   "whatsNew.item.bulkSellers":
@@ -252,6 +258,7 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "Agrupá búsquedas guardadas en categorías opcionales dentro de cada carpeta. Si lo desactivás, todos los favoritos vuelven a verse directamente en su carpeta principal.",
   "settings.compactActionsDefault": "Clasico",
   "settings.compactActionsCompact": "Compacto",
+  "settings.compactActionsUltra": "Minimal",
   "settings.compactTradeActionsTitle": "Acciones visibles fuera del menú",
   "settings.compactTradeActionsDescription":
     "Elegí qué acciones de cada búsqueda guardada quedan visibles en modo compacto. Si no seleccionás ninguna, solo se ven los tres puntos. Si seleccionás todas o todas menos una, se muestran todas.",

@@ -3,6 +3,12 @@ import type { TranslationValue } from "./types"
 
 export const frenchTranslations: Record<string, TranslationValue> = {
   ...englishTranslations,
+  "whatsNew.item.minimalBookmarksTitle": "Disposition Minimal des favoris",
+  "whatsNew.item.minimalBookmarksDescription":
+    "Les favoris proposent maintenant les dispositions Classique, Compact et Minimal. Minimal resserre les lignes sans changer le style de Path of Exile.",
+  "whatsNew.item.bookmarkActionsByLayoutTitle": "Actions enregistrées par disposition",
+  "whatsNew.item.bookmarkActionsByLayoutDescription":
+    "Choisissez les actions visibles des favoris séparément pour Classique, Compact et Minimal. Réglages et aperçu se mettent à jour ensemble.",
   "header.subtitle": "Compagnon de trade",
   "header.expandSidebar": "Développer le panneau",
   "header.minimizeSidebar": "Réduire le panneau",
@@ -69,6 +75,7 @@ export const frenchTranslations: Record<string, TranslationValue> = {
     "Regroupez les recherches sauvegardées dans des catégories optionnelles à l'intérieur de chaque dossier. En désactivant cette option, tous les favoris réapparaissent directement dans leur dossier principal.",
   "settings.compactActionsDefault": "Classique",
   "settings.compactActionsCompact": "Compact",
+  "settings.compactActionsUltra": "Minimal",
   "settings.compactTradeActionsTitle": "Actions visibles hors du menu",
   "settings.compactTradeActionsDescription":
     "Choisissez quelles actions de chaque recherche sauvegardée restent visibles en mode compact. Si aucune n'est sélectionnée, seuls les trois points apparaissent. Si toutes ou toutes sauf une sont sélectionnées, toutes restent visibles.",

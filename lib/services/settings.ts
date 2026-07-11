@@ -14,6 +14,13 @@ export type BookmarkTradeActionId =
   | "delete"
 export type QuickFiltersPlacement = "page" | "sidebar"
 export type TextSizePreference = "small" | "medium" | "large" | "extraLarge"
+export type BookmarkLayout = "classic" | "compact" | "ultra"
+
+const DEFAULT_CLASSIC_BOOKMARK_TRADE_ACTIONS: BookmarkTradeActionId[] = [
+  "edit",
+  "toggle",
+  "delete"
+]
 
 export interface VersionSettings {
   showEquivalentPricing: boolean
@@ -24,7 +31,10 @@ export interface VersionSettings {
   showQuickFilters: boolean
   quickFiltersPlacement: QuickFiltersPlacement
   compactActionsMenu: boolean
+  ultraCompactBookmarks: boolean
+  classicBookmarkTradeActions: BookmarkTradeActionId[]
   compactBookmarkTradeActions: BookmarkTradeActionId[]
+  ultraCompactBookmarkTradeActions: BookmarkTradeActionId[]
   bookmarkCategoriesEnabled: boolean
 }
 
@@ -62,7 +72,10 @@ const DEFAULT_VERSION_SETTINGS: VersionSettings = {
   showQuickFilters: true,
   quickFiltersPlacement: "page",
   compactActionsMenu: false,
+  ultraCompactBookmarks: false,
+  classicBookmarkTradeActions: DEFAULT_CLASSIC_BOOKMARK_TRADE_ACTIONS,
   compactBookmarkTradeActions: [],
+  ultraCompactBookmarkTradeActions: [],
   bookmarkCategoriesEnabled: false
 }
 
@@ -98,7 +111,11 @@ function combineSettings(
   return {
     ...global,
     ...version,
-    compactBookmarkTradeActions: [...version.compactBookmarkTradeActions]
+    classicBookmarkTradeActions: [...version.classicBookmarkTradeActions],
+    compactBookmarkTradeActions: [...version.compactBookmarkTradeActions],
+    ultraCompactBookmarkTradeActions: [
+      ...version.ultraCompactBookmarkTradeActions
+    ]
   }
 }
 
@@ -112,8 +129,15 @@ function normalizeVersionSettings(
   return {
     ...DEFAULT_VERSION_SETTINGS,
     ...defined,
+    classicBookmarkTradeActions: [
+      ...(defined.classicBookmarkTradeActions ??
+        DEFAULT_CLASSIC_BOOKMARK_TRADE_ACTIONS)
+    ],
     compactBookmarkTradeActions: [
       ...(defined.compactBookmarkTradeActions ?? [])
+    ],
+    ultraCompactBookmarkTradeActions: [
+      ...(defined.ultraCompactBookmarkTradeActions ?? [])
     ]
   }
 }
@@ -130,7 +154,10 @@ function legacyVersionSettings(
     showQuickFilters: value?.showQuickFilters,
     quickFiltersPlacement: value?.quickFiltersPlacement,
     compactActionsMenu: value?.compactActionsMenu,
+    ultraCompactBookmarks: value?.ultraCompactBookmarks,
+    classicBookmarkTradeActions: value?.classicBookmarkTradeActions,
     compactBookmarkTradeActions: value?.compactBookmarkTradeActions,
+    ultraCompactBookmarkTradeActions: value?.ultraCompactBookmarkTradeActions,
     bookmarkCategoriesEnabled: value?.bookmarkCategoriesEnabled
   })
 }
@@ -306,6 +333,16 @@ export const settings = {
   async updateCompactActionsMenu(compactActionsMenu: boolean) {
     return saveVersion({ ...activeVersionSettings, compactActionsMenu })
   },
+  async updateBookmarkLayout(
+    compactActionsMenu: boolean,
+    ultraCompactBookmarks: boolean
+  ) {
+    return saveVersion({
+      ...activeVersionSettings,
+      compactActionsMenu,
+      ultraCompactBookmarks: compactActionsMenu && ultraCompactBookmarks
+    })
+  },
   async updateCompactBookmarkTradeActions(
     compactBookmarkTradeActions: BookmarkTradeActionId[]
   ) {
@@ -313,6 +350,20 @@ export const settings = {
       ...activeVersionSettings,
       compactBookmarkTradeActions: [...compactBookmarkTradeActions]
     })
+  },
+  async updateBookmarkTradeActions(
+    layout: BookmarkLayout,
+    actionIds: BookmarkTradeActionId[]
+  ) {
+    const orderedActions = [...actionIds]
+    const key =
+      layout === "classic"
+        ? "classicBookmarkTradeActions"
+        : layout === "compact"
+          ? "compactBookmarkTradeActions"
+          : "ultraCompactBookmarkTradeActions"
+
+    return saveVersion({ ...activeVersionSettings, [key]: orderedActions })
   },
   async updateBookmarkCategoriesVisibility(bookmarkCategoriesEnabled: boolean) {
     return saveVersion({ ...activeVersionSettings, bookmarkCategoriesEnabled })

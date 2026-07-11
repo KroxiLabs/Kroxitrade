@@ -3,6 +3,12 @@ import type { TranslationValue } from "./types"
 
 export const russianTranslations: Record<string, TranslationValue> = {
   ...englishTranslations,
+  "whatsNew.item.minimalBookmarksTitle": "Минимальный вид закладок",
+  "whatsNew.item.minimalBookmarksDescription":
+    "Для закладок доступны Классический, Компактный и Минимальный виды. Минимальный делает строки плотнее, сохраняя стиль Path of Exile.",
+  "whatsNew.item.bookmarkActionsByLayoutTitle": "Действия сохранены для каждого вида",
+  "whatsNew.item.bookmarkActionsByLayoutDescription":
+    "Выбирайте видимые действия закладок отдельно для Классического, Компактного и Минимального видов. Настройки и предпросмотр обновляются вместе.",
   "header.subtitle": "Помощник для трейда",
   "header.expandSidebar": "Развернуть панель",
   "header.minimizeSidebar": "Свернуть панель",
@@ -68,6 +74,7 @@ export const russianTranslations: Record<string, TranslationValue> = {
     "Группируйте сохраненные поиски в необязательные категории внутри каждой папки. При отключении все закладки снова отображаются прямо в основной папке.",
   "settings.compactActionsDefault": "Классический",
   "settings.compactActionsCompact": "Компактный",
+  "settings.compactActionsUltra": "Минимал",
   "settings.compactTradeActionsTitle": "Видимые действия вне меню",
   "settings.compactTradeActionsDescription":
     "Выберите, какие действия сохраненного поиска будут видны в компактном режиме. Если ничего не выбрано, отображается только меню из трех точек. Если выбраны все или все кроме одного, показываются все действия.",

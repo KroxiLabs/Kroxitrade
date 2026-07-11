@@ -113,19 +113,16 @@
     }
   ] satisfies TradeAction[]);
 
-  let compactVisibleActionIds = $derived(ACTION_ORDER.filter((id) =>
-    $settings.compactBookmarkTradeActions.includes(id)
-  ));
-  let inlineActions = $derived($settings.compactActionsMenu
-    ? actions.filter((action) => compactVisibleActionIds.includes(action.id))
-    : compactVisibleActionIds.length > 0
-      ? actions.filter((action) => compactVisibleActionIds.includes(action.id))
-      : actions.filter(
-          (action) =>
-            action.id === "edit" ||
-            action.id === "toggle" ||
-            action.id === "delete"
-        ));
+  let visibleActionIds = $derived(
+    $settings.ultraCompactBookmarks
+      ? $settings.ultraCompactBookmarkTradeActions
+      : $settings.compactActionsMenu
+        ? $settings.compactBookmarkTradeActions
+        : $settings.classicBookmarkTradeActions
+  );
+  let inlineActions = $derived(
+    actions.filter((action) => visibleActionIds.includes(action.id))
+  );
   let dropdownActions = $derived(actions.filter((action) => !inlineActions.includes(action)));
   let hasCategoryMenu = $derived(categoriesEnabled);
   const stopAndRun = (handler: () => void) => (event: MouseEvent) => {
@@ -452,6 +449,7 @@
     height: 24px;
     padding: 0;
     border: 1px solid rgba($white, 0.12);
+    border-radius: 3px;
     background: rgba($black, 0.45);
     color: rgba($white, 0.82);
     cursor: pointer;

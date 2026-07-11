@@ -3,6 +3,12 @@ import type { TranslationValue } from "./types"
 
 export const koreanTranslations: Record<string, TranslationValue> = {
   ...englishTranslations,
+  "whatsNew.item.minimalBookmarksTitle": "Minimal 북마크 레이아웃",
+  "whatsNew.item.minimalBookmarksDescription":
+    "북마크에 클래식, 컴팩트, Minimal 레이아웃을 추가했습니다. Minimal은 Path of Exile 분위기를 유지하면서 행을 조밀하게 만듭니다.",
+  "whatsNew.item.bookmarkActionsByLayoutTitle": "레이아웃별 작업 저장",
+  "whatsNew.item.bookmarkActionsByLayoutDescription":
+    "클래식, 컴팩트, Minimal별로 보이는 북마크 작업을 따로 선택할 수 있습니다. 설정과 미리보기가 함께 갱신됩니다.",
   "header.subtitle": "거래 도우미",
   "header.expandSidebar": "패널 펼치기",
   "header.minimizeSidebar": "패널 최소화",
@@ -73,6 +79,7 @@ export const koreanTranslations: Record<string, TranslationValue> = {
     "각 폴더 안에서 저장된 검색을 선택적 카테고리로 묶습니다. 끄면 모든 북마크가 다시 상위 폴더 바로 아래에 표시됩니다.",
   "settings.compactActionsDefault": "기본형",
   "settings.compactActionsCompact": "컴팩트",
+  "settings.compactActionsUltra": "미니멀",
   "settings.compactTradeActionsTitle": "메뉴 밖에 보일 작업",
   "settings.compactTradeActionsDescription":
     "컴팩트 모드에서 계속 보일 저장된 검색 작업을 선택하세요. 아무것도 선택하지 않으면 점 세 개 메뉴만 보입니다. 모두 선택하거나 하나만 제외하고 선택하면 모든 작업이 보입니다.",

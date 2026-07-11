@@ -165,6 +165,11 @@ const getMagebloodLegacyEffectLabel = (locale: MagebloodLegacyLocale) =>
 const formatMagebloodLegacyLine = (template: string, value: number) =>
   template.replace("{value}", `${value}`);
 
+const isEnglishTradeHost = () => {
+  const host = window.location.hostname.toLowerCase();
+  return host === "www.pathofexile.com" || host === "pathofexile.com";
+};
+
 
 
 export class ItemResultsService {
@@ -203,7 +208,7 @@ export class ItemResultsService {
     const coeButton = target?.closest<HTMLButtonElement>("button.bt-copy-coe");
     const wikiButton = target?.closest<HTMLButtonElement>("button.bt-open-wiki");
 
-    if (wikiButton && experimentalSettings.isWikiVisible()) {
+    if (wikiButton && experimentalSettings.isWikiVisible() && isEnglishTradeHost()) {
       event.preventDefault();
       event.stopImmediatePropagation();
 
@@ -716,7 +721,7 @@ export class ItemResultsService {
 
     const existingButton = left.querySelector<HTMLButtonElement>("button.bt-open-wiki");
     const searchByButton = left.querySelector<HTMLButtonElement>("button.searchBy");
-    const wikiUrl = experimentalSettings.isWikiVisible()
+    const wikiUrl = experimentalSettings.isWikiVisible() && isEnglishTradeHost()
       ? this.getUniqueItemWikiUrl(row)
       : null;
 

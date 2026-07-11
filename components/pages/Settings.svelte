@@ -10,7 +10,7 @@
   } from "../../lib/services/experimental";
   import { flashMessages } from "../../lib/services/flash";
   import { itemResultsService } from "../../lib/services/item-results";
-  import { settings, type BookmarkTradeActionId, type QuickFiltersPlacement, type SidebarSide, type TextSizePreference } from "../../lib/services/settings";
+  import { settings, type BookmarkLayout, type BookmarkTradeActionId, type QuickFiltersPlacement, type SidebarSide, type TextSizePreference } from "../../lib/services/settings";
   import { tradeLocationService } from "../../lib/services/trade-location";
   import type { BookmarksTradeStruct } from "../../lib/types/bookmarks";
   import Button from "../Button.svelte";
@@ -176,8 +176,11 @@
     }
   }
 
-  async function handleCompactActionsMenuChange(compactActionsMenu: boolean) {
-    if (!(await settings.updateCompactActionsMenu(compactActionsMenu))) {
+  async function handleBookmarkLayoutChange(
+    compactActionsMenu: boolean,
+    ultraCompactBookmarks = false
+  ) {
+    if (!(await settings.updateBookmarkLayout(compactActionsMenu, ultraCompactBookmarks))) {
       flashMessages.alert(translate($languageStore, "settings.saveFailed"));
     }
   }
@@ -188,12 +191,29 @@
     }
   }
 
-  async function handleCompactTradeActionChange(actionId: BookmarkTradeActionId, checked: boolean) {
-    const nextActions = checked
-      ? [...$settings.compactBookmarkTradeActions, actionId]
-      : $settings.compactBookmarkTradeActions.filter((id) => id !== actionId);
+  function getActiveBookmarkLayout(): BookmarkLayout {
+    if ($settings.ultraCompactBookmarks) return "ultra";
+    return $settings.compactActionsMenu ? "compact" : "classic";
+  }
 
-    const saved = await settings.updateCompactBookmarkTradeActions(
+  function getVisibleBookmarkTradeActions(): BookmarkTradeActionId[] {
+    const layout = getActiveBookmarkLayout();
+    return layout === "classic"
+      ? $settings.classicBookmarkTradeActions
+      : layout === "compact"
+        ? $settings.compactBookmarkTradeActions
+        : $settings.ultraCompactBookmarkTradeActions;
+  }
+
+  async function handleCompactTradeActionChange(actionId: BookmarkTradeActionId, checked: boolean) {
+    const layout = getActiveBookmarkLayout();
+    const visibleActions = getVisibleBookmarkTradeActions();
+    const nextActions = checked
+      ? [...visibleActions, actionId]
+      : visibleActions.filter((id) => id !== actionId);
+
+    const saved = await settings.updateBookmarkTradeActions(
+      layout,
       compactTradeActionOptions
         .map((option) => option.id)
         .filter((id) => nextActions.includes(id))
@@ -573,13 +593,19 @@
           label={translate($languageStore, "settings.compactActionsDefault")}
           theme={$settings.compactActionsMenu ? 'blue' : 'gold'}
           class="side-btn side-btn--bookmark-layout"
-          onClick={() => handleCompactActionsMenuChange(false)}
+          onClick={() => handleBookmarkLayoutChange(false)}
         />
         <Button
           label={translate($languageStore, "settings.compactActionsCompact")}
-          theme={$settings.compactActionsMenu ? 'gold' : 'blue'}
+          theme={$settings.compactActionsMenu && !$settings.ultraCompactBookmarks ? 'gold' : 'blue'}
           class="side-btn side-btn--bookmark-layout"
-          onClick={() => handleCompactActionsMenuChange(true)}
+          onClick={() => handleBookmarkLayoutChange(true)}
+        />
+        <Button
+          label={translate($languageStore, "settings.compactActionsUltra")}
+          theme={$settings.ultraCompactBookmarks ? 'gold' : 'blue'}
+          class="side-btn side-btn--bookmark-layout"
+          onClick={() => handleBookmarkLayoutChange(true, true)}
         />
       </div>
 
@@ -592,12 +618,12 @@
           {#each compactTradeActionOptions as option (option.id)}
             <label
               class="compact-option"
-              class:is-selected={$settings.compactBookmarkTradeActions.includes(option.id)}
+              class:is-selected={getVisibleBookmarkTradeActions().includes(option.id)}
               title={translate($languageStore, option.labelKey)}
             >
               <input
                 type="checkbox"
-                checked={$settings.compactBookmarkTradeActions.includes(option.id)}
+                checked={getVisibleBookmarkTradeActions().includes(option.id)}
                 onchange={(event) => handleCompactTradeActionInput(event, option.id)}
                 aria-label={translate($languageStore, option.labelKey)}
               />
@@ -620,8 +646,10 @@
           <span class="bookmark-layout-preview__mode">
             {translate(
               $languageStore,
-              $settings.compactActionsMenu
-                ? "settings.compactActionsCompact"
+              $settings.ultraCompactBookmarks
+                ? "settings.compactActionsUltra"
+                : $settings.compactActionsMenu
+                  ? "settings.compactActionsCompact"
                 : "settings.compactActionsDefault"
             )}
           </span>
@@ -634,7 +662,7 @@
             <span class="preview-folder__chevron" aria-hidden="true">▼</span>
           </div>
 
-          <div class="preview-trades-list">
+          <div class="preview-trades-list" class:is-ultra-compact={$settings.ultraCompactBookmarks}>
             <div class="preview-trade-item">
               <span class="preview-trade__drag" aria-hidden="true">≡</span>
               <div class="preview-trade__content">
@@ -1569,6 +1597,36 @@
 
   .preview-trade-actions--compact {
     margin-left: auto;
+  }
+
+  .preview-trades-list.is-ultra-compact {
+    padding: 4px;
+
+    .preview-trade-item {
+      gap: 6px;
+      min-height: 29px;
+      padding: 4px 7px;
+      border-radius: 2px;
+    }
+
+    .preview-trade__drag {
+      width: 12px;
+      flex-basis: 12px;
+      font-size: calc(12px * var(--bt-text-scale, 1));
+    }
+
+    .preview-trade__content {
+      gap: 0;
+    }
+
+    .preview-trade__top {
+      gap: 4px;
+    }
+
+    .preview-trade__title {
+      font-size: calc(12px * var(--bt-text-scale, 1));
+      line-height: 1.1;
+    }
   }
 
   @media (max-width: 430px) {

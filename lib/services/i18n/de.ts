@@ -3,6 +3,12 @@ import type { TranslationValue } from "./types"
 
 export const germanTranslations: Record<string, TranslationValue> = {
   ...englishTranslations,
+  "whatsNew.item.minimalBookmarksTitle": "Minimales Lesezeichenlayout",
+  "whatsNew.item.minimalBookmarksDescription":
+    "Lesezeichen bieten jetzt klassische, kompakte und minimale Layouts. Minimal hält Zeilen dicht, ohne den Path-of-Exile-Stil zu verändern.",
+  "whatsNew.item.bookmarkActionsByLayoutTitle": "Aktionen pro Layout gespeichert",
+  "whatsNew.item.bookmarkActionsByLayoutDescription":
+    "Wähle sichtbare Lesezeichenaktionen getrennt für Klassisch, Kompakt und Minimal. Einstellungen und Vorschau aktualisieren sich zusammen.",
   "header.subtitle": "Trade-Begleiter",
   "header.expandSidebar": "Seitenleiste erweitern",
   "header.minimizeSidebar": "Seitenleiste minimieren",
@@ -68,6 +74,7 @@ export const germanTranslations: Record<string, TranslationValue> = {
     "Gruppiere gespeicherte Suchen in optionalen Kategorien innerhalb jedes Ordners. Wenn dies deaktiviert ist, erscheinen alle Lesezeichen wieder direkt im Hauptordner.",
   "settings.compactActionsDefault": "Klassisch",
   "settings.compactActionsCompact": "Kompakt",
+  "settings.compactActionsUltra": "Minimal",
   "settings.compactTradeActionsTitle": "Sichtbare Aktionen außerhalb des Menüs",
   "settings.compactTradeActionsDescription":
     "Wähle aus, welche Aktionen gespeicherter Suchen im kompakten Modus sichtbar bleiben. Wenn nichts ausgewählt ist, wird nur das Drei-Punkte-Menü angezeigt. Wenn alle oder alle bis auf eine ausgewählt sind, bleiben alle sichtbar.",

@@ -34,6 +34,12 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "Bookmarks stay separated by Path of Exile trade version.",
   "whatsNew.item.compactActions":
     "Saved searches can use a compact action layout with a cleaner menu.",
+  "whatsNew.item.minimalBookmarksTitle": "Minimal bookmark layout",
+  "whatsNew.item.minimalBookmarksDescription":
+    "Bookmarks now offer Classic, Compact, and Minimal layouts. Minimal keeps rows dense without changing the Path of Exile look.",
+  "whatsNew.item.bookmarkActionsByLayoutTitle": "Actions saved per layout",
+  "whatsNew.item.bookmarkActionsByLayoutDescription":
+    "Choose visible bookmark actions independently for Classic, Compact, and Minimal. Settings and preview update together.",
   "whatsNew.item.backupRestore":
     "Folder backup and restore make it easier to move setups between browsers.",
   "whatsNew.item.bulkSellers":
@@ -246,6 +252,7 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "Group saved searches into optional categories inside each folder. Turning this off shows every bookmark directly in its parent folder again.",
   "settings.compactActionsDefault": "Classic",
   "settings.compactActionsCompact": "Compact",
+  "settings.compactActionsUltra": "Minimal",
   "settings.compactTradeActionsTitle": "Trade Actions Outside Menu",
   "settings.compactTradeActionsDescription":
     "Choose which saved-search actions stay visible in compact mode. If none are selected, only the three-dot menu is shown. If all or all but one are selected, every action stays visible.",

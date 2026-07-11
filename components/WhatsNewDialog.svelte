@@ -1,6 +1,7 @@
 <script lang="ts">
   import Button from "./Button.svelte";
   import { getWhatsNewEntry, latestWhatsNew } from "../lib/data/whats-new";
+  import { localizeWhatsNewText } from "../lib/data/whats-new-translations";
   import { languageStore, translate } from "../lib/services/i18n";
 
   let {
@@ -14,6 +15,15 @@
   } = $props();
 
   let entry = $derived(getWhatsNewEntry(version));
+
+  const itemTitle = (item: import("../lib/data/whats-new").WhatsNewItem) =>
+    item.titleKey
+      ? translate($languageStore, item.titleKey)
+      : localizeWhatsNewText($languageStore, item.title || "");
+  const itemDescription = (item: import("../lib/data/whats-new").WhatsNewItem) =>
+    item.descriptionKey
+      ? translate($languageStore, item.descriptionKey)
+      : localizeWhatsNewText($languageStore, item.description || "");
 </script>
 
 {#if open}
@@ -63,8 +73,8 @@
                       <ul>
                         {#each group.items as item (item)}
                           <li>
-                            <strong>{item.title}</strong>
-                            <span>{item.description}</span>
+                            <strong>{itemTitle(item)}</strong>
+                            <span>{itemDescription(item)}</span>
                           </li>
                         {/each}
                       </ul>
@@ -75,8 +85,8 @@
                 <ul>
                   {#each section.items || [] as item (item)}
                     <li>
-                      <strong>{item.title}</strong>
-                      <span>{item.description}</span>
+                      <strong>{itemTitle(item)}</strong>
+                      <span>{itemDescription(item)}</span>
                     </li>
                   {/each}
                 </ul>

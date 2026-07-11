@@ -3,6 +3,12 @@ import type { TranslationValue } from "./types"
 
 export const portugueseTranslations: Record<string, TranslationValue> = {
   ...englishTranslations,
+  "whatsNew.item.minimalBookmarksTitle": "Layout Minimal de favoritos",
+  "whatsNew.item.minimalBookmarksDescription":
+    "Os favoritos agora oferecem layouts Clássico, Compacto e Minimal. Minimal mantém linhas densas sem mudar o visual de Path of Exile.",
+  "whatsNew.item.bookmarkActionsByLayoutTitle": "Ações salvas por layout",
+  "whatsNew.item.bookmarkActionsByLayoutDescription":
+    "Escolha ações visíveis dos favoritos separadamente para Clássico, Compacto e Minimal. Ajustes e preview atualizam juntos.",
   "app.name": "Poe Trade Plus",
   "header.subtitle": "Companheiro de Trade",
   "header.expandSidebar": "Expandir painel",
@@ -71,6 +77,7 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
     "Agrupe buscas salvas em categorias opcionais dentro de cada pasta. Ao desativar, todos os favoritos voltam a aparecer diretamente na pasta principal.",
   "settings.compactActionsDefault": "Classico",
   "settings.compactActionsCompact": "Compacto",
+  "settings.compactActionsUltra": "Minimal",
   "settings.compactTradeActionsTitle": "Ações visíveis fora do menu",
   "settings.compactTradeActionsDescription":
     "Escolha quais ações de cada busca salva continuam visíveis no modo compacto. Se nenhuma for selecionada, apenas o menu de três pontos aparece. Se todas ou todas menos uma forem selecionadas, todas ficam visíveis.",

@@ -1,6 +1,8 @@
 export interface WhatsNewItem {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
+  titleKey?: string;
+  descriptionKey?: string;
 }
 
 export interface WhatsNewGroup {
@@ -155,6 +157,14 @@ const version116Features: WhatsNewItem[] = [
     title: "Wiki button for unique items",
     description:
       "Results can now show an optional W action on unique items that opens the matching PoE Wiki or PoE2 Wiki page."
+  },
+  {
+    titleKey: "whatsNew.item.minimalBookmarksTitle",
+    descriptionKey: "whatsNew.item.minimalBookmarksDescription"
+  },
+  {
+    titleKey: "whatsNew.item.bookmarkActionsByLayoutTitle",
+    descriptionKey: "whatsNew.item.bookmarkActionsByLayoutDescription"
   }
 ];
 

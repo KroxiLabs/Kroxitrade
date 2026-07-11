@@ -3,6 +3,12 @@ import type { TranslationValue } from "./types"
 
 export const japaneseTranslations: Record<string, TranslationValue> = {
   ...englishTranslations,
+  "whatsNew.item.minimalBookmarksTitle": "Minimal ブックマークレイアウト",
+  "whatsNew.item.minimalBookmarksDescription":
+    "ブックマークにクラシック、コンパクト、Minimal レイアウトを追加しました。Minimal は Path of Exile の見た目を保ったまま行を密にします。",
+  "whatsNew.item.bookmarkActionsByLayoutTitle": "レイアウトごとのアクション保存",
+  "whatsNew.item.bookmarkActionsByLayoutDescription":
+    "クラシック、コンパクト、Minimal ごとに表示するブックマークアクションを選べます。設定とプレビューは同時に更新されます。",
   "header.subtitle": "トレード companion",
   "header.expandSidebar": "パネルを展開",
   "header.minimizeSidebar": "パネルを最小化",
@@ -73,6 +79,7 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
     "各フォルダー内で保存済み検索を任意のカテゴリに分けます。オフにすると、すべてのブックマークは親フォルダー直下に表示されます。",
   "settings.compactActionsDefault": "クラシック",
   "settings.compactActionsCompact": "コンパクト",
+  "settings.compactActionsUltra": "ミニマル",
   "settings.compactTradeActionsTitle": "メニュー外に表示する操作",
   "settings.compactTradeActionsDescription":
     "コンパクトモードで表示したままにする保存済み検索の操作を選択します。何も選ばない場合は3点メニューのみ表示されます。すべて、または1つを除いて選択した場合は、すべての操作が表示されます。",

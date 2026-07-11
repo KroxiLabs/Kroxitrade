@@ -685,6 +685,8 @@
   class="folder {isExpanded ? 'is-expanded' : ''} {isArchived
     ? 'is-archived'
     : ''}"
+  class:is-ultra-compact={$settings.ultraCompactBookmarks}
+  class:is-editing={editingFolder}
   class:is-folder-dragging={isFolderDragging}
   class:is-folder-drag-over={isFolderDragOver}
   draggable="true"
@@ -1039,6 +1041,10 @@
     border-radius: 8px 8px 0 0;
   }
 
+  .folder:not(.is-expanded):not(.is-editing) .folder-header {
+    border-radius: 8px;
+  }
+
   .folder-drag-handle {
     display: inline-flex;
     align-items: center;
@@ -1334,6 +1340,7 @@
     height: 22px;
     padding: 0;
     border: 1px solid rgba($white, 0.1);
+    border-radius: 3px;
     background: rgba($black, 0.35);
     color: rgba($white, 0.72);
     cursor: pointer;
@@ -1505,6 +1512,56 @@
     flex-wrap: wrap;
     border-top: 1px solid rgba($gold, 0.08);
     background: linear-gradient(180deg, rgba($gold, 0.04), rgba($gold, 0));
+  }
+
+  .folder.is-ultra-compact {
+    .trades-list {
+      gap: 1px;
+      padding: 4px;
+    }
+
+    .category-heading {
+      min-height: 22px;
+      padding: 0 4px;
+      font-size: calc(10px * var(--bt-text-scale, 1));
+    }
+
+    .category-row {
+      padding-top: 4px;
+      padding-bottom: 4px;
+    }
+
+    .trade-item {
+      gap: 6px;
+      min-height: 29px;
+      padding: 4px 7px;
+      border-color: rgba($white, 0.075);
+      border-radius: 3px;
+
+      &:hover {
+        transform: none;
+      }
+    }
+
+    .drag-handle {
+      width: 12px;
+      flex-basis: 12px;
+      font-size: calc(12px * var(--bt-text-scale, 1));
+    }
+
+    .trade-content,
+    .trade-copy {
+      gap: 0;
+    }
+
+    .trade-top {
+      gap: 4px;
+    }
+
+    .trade-link {
+      font-size: calc(12px * var(--bt-text-scale, 1));
+      line-height: 1.1;
+    }
   }
 
   .save-search-anchor {

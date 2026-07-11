@@ -3,6 +3,12 @@ import type { TranslationValue } from "./types"
 
 export const thaiTranslations: Record<string, TranslationValue> = {
   ...englishTranslations,
+  "whatsNew.item.minimalBookmarksTitle": "เลย์เอาต์บุ๊กมาร์ก Minimal",
+  "whatsNew.item.minimalBookmarksDescription":
+    "บุ๊กมาร์กมีเลย์เอาต์ Classic, Compact และ Minimal แล้ว Minimal ทำให้แถวแน่นขึ้นโดยยังคงรูปลักษณ์ Path of Exile.",
+  "whatsNew.item.bookmarkActionsByLayoutTitle": "บันทึกการทำงานแยกตามเลย์เอาต์",
+  "whatsNew.item.bookmarkActionsByLayoutDescription":
+    "เลือกการทำงานบุ๊กมาร์กที่มองเห็นแยกกันสำหรับ Classic, Compact และ Minimal การตั้งค่าและตัวอย่างอัปเดตพร้อมกัน.",
   "header.subtitle": "ผู้ช่วยการเทรด",
   "header.expandSidebar": "ขยายแผง",
   "header.minimizeSidebar": "ย่อแผง",
@@ -68,6 +74,7 @@ export const thaiTranslations: Record<string, TranslationValue> = {
     "จัดกลุ่มการค้นหาที่บันทึกไว้เป็นหมวดหมู่เสริมภายในแต่ละโฟลเดอร์ เมื่อปิด ตัวบุ๊กมาร์กทั้งหมดจะแสดงในโฟลเดอร์หลักเหมือนเดิม",
   "settings.compactActionsDefault": "คลาสสิก",
   "settings.compactActionsCompact": "กะทัดรัด",
+  "settings.compactActionsUltra": "มินิมอล",
   "settings.compactTradeActionsTitle": "การทำงานที่แสดงนอกเมนู",
   "settings.compactTradeActionsDescription":
     "เลือกว่าการทำงานใดของการค้นหาที่บันทึกไว้จะยังแสดงอยู่ในโหมดกะทัดรัด หากไม่เลือกเลยจะเห็นเฉพาะเมนูสามจุด หากเลือกทั้งหมดหรือทั้งหมดยกเว้นหนึ่งรายการ จะเห็นทั้งหมด",
