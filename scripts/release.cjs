@@ -16,11 +16,15 @@ const upstreamRepository = "KroxiLabs/Kroxitrade"
 const languages = ["en", "es", "pt", "ru", "th", "de", "fr", "ja", "ko"]
 
 const run = (command, args, options = {}) => {
-  const result = childProcess.spawnSync(command, args, {
+  const isWindowsNpm = process.platform === "win32" && command === "npm"
+  const executable = isWindowsNpm ? process.env.ComSpec || "cmd.exe" : command
+  const commandArgs = isWindowsNpm
+    ? ["/d", "/s", "/c", [command, ...args].join(" ")]
+    : args
+  const result = childProcess.spawnSync(executable, commandArgs, {
     cwd: root,
     encoding: "utf8",
-    stdio: options.capture ? ["ignore", "pipe", "pipe"] : "inherit",
-    shell: process.platform === "win32" && command === "npm"
+    stdio: options.capture ? ["ignore", "pipe", "pipe"] : "inherit"
   })
   if (result.status !== 0) {
     const spawnError = result.error ? `\n${result.error.message}` : ""
