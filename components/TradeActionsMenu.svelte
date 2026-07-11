@@ -449,6 +449,7 @@
     height: 24px;
     padding: 0;
     border: 1px solid rgba($white, 0.12);
+    border-radius: 3px;
     background: rgba($black, 0.45);
     color: rgba($white, 0.82);
     cursor: pointer;

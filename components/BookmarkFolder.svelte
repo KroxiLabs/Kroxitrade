@@ -1335,6 +1335,7 @@
     height: 22px;
     padding: 0;
     border: 1px solid rgba($white, 0.1);
+    border-radius: 3px;
     background: rgba($black, 0.35);
     color: rgba($white, 0.72);
     cursor: pointer;
