@@ -16,7 +16,22 @@ const upstreamRepository = "KroxiLabs/Kroxitrade"
 const languages = ["en", "es", "pt", "ru", "th", "de", "fr", "ja", "ko"]
 
 const run = (command, args, options = {}) => {
-  const result = childProcess.spawnSync(command, args, {
+  const useNpmCli = command === "npm" && !!process.env.npm_execpath
+  const useWindowsNpmShell =
+    command === "npm" && !useNpmCli && process.platform === "win32"
+  const quoteCommandArg = (value) =>
+    /[\s"]/u.test(value) ? `"${value.replace(/"/g, '\\"')}"` : value
+  const executable = useNpmCli
+    ? process.execPath
+    : useWindowsNpmShell
+      ? process.env.ComSpec || "cmd.exe"
+      : command
+  const commandArgs = useNpmCli
+    ? [process.env.npm_execpath, ...args]
+    : useWindowsNpmShell
+      ? ["/d", "/s", "/c", [command, ...args].map(quoteCommandArg).join(" ")]
+      : args
+  const result = childProcess.spawnSync(executable, commandArgs, {
     cwd: root,
     encoding: "utf8",
     stdio: options.capture ? ["ignore", "pipe", "pipe"] : "inherit"
