@@ -590,7 +590,10 @@ export const initFilterPanel = () => {
     e.stopPropagation()
 
     if (el.dataset.action === "krox-currency-preset") {
-      setBuyoutCurrencyPreset(el.dataset.currency || "Chaos Orb")
+      const preset = BUYOUT_CURRENCY_PRESETS.find(
+        ({ currency }) => currency === el.dataset.currency
+      )
+      setBuyoutCurrencyPreset(preset?.currency || "Chaos Orb")
       return
     }
 

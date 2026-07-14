@@ -203,6 +203,12 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "finer.spellWeapon": "Zauberwaffe",
   "finer.buyoutPrice": "Kaufpreis",
   "finer.clearBuyoutPrice": "Leeren",
+  "whatsNew.item.activeRealmBookmarksTitle": "Lesezeichen folgen dem aktiven Trade-Realm",
+  "whatsNew.item.activeRealmBookmarksDescription":
+    "Gespeicherte Suchen öffnen sich jetzt in Liga und Realm des aktiven Trade-Tabs; die gespeicherte Liga bleibt als Fallback erhalten.",
+  "whatsNew.item.buyoutClearTitle": "Schnellaktion zum Leeren des Kaufpreises",
+  "whatsNew.item.buyoutClearDescription":
+    "Schnellfilter-Voreinstellungen enthalten jetzt eine Schaltfläche zum Leeren, die den Kaufpreis auf Wert in Chaossphären setzt und mit unterstützten Trade-Website-Sprachen funktioniert.",
   "settings.onboardingTitle": "Tutorial",
   "settings.onboardingDescription":
     "Öffne das Schnell-Tutorial erneut, um die wichtigsten Aktionen und Tabs zu prüfen.",

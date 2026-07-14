@@ -436,5 +436,11 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "finer.attackWeapon": "Attack Weapon",
   "finer.spellWeapon": "Spell Weapon",
   "finer.buyoutPrice": "Buyout Price",
-  "finer.clearBuyoutPrice": "Clear"
+  "finer.clearBuyoutPrice": "Clear",
+  "whatsNew.item.activeRealmBookmarksTitle": "Bookmarks follow active trade realm",
+  "whatsNew.item.activeRealmBookmarksDescription":
+    "Saved searches now open in the active trade tab's current league and realm, while keeping their saved league as a fallback.",
+  "whatsNew.item.buyoutClearTitle": "Clear Buyout Price shortcut",
+  "whatsNew.item.buyoutClearDescription":
+    "Quick Filter Presets now include a Clear button that resets Buyout Price to Chaos Orb Equivalent and works with supported trade-site languages."
 } as Record<string, TranslationValue>

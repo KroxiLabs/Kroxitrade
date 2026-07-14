@@ -1,6 +1,12 @@
+export type BuyoutCurrency =
+  | "Chaos Orb"
+  | "Exalted Orb"
+  | "Divine Orb"
+  | "Chaos Orb Equivalent"
+
 export type BuyoutCurrencyPreset = {
   label: string
-  currency: string
+  currency: BuyoutCurrency
 }
 
 export const BUYOUT_CURRENCY_PRESETS: BuyoutCurrencyPreset[] = [
@@ -17,9 +23,67 @@ const setNativeInputValue = (input: HTMLInputElement, value: string) => {
   descriptor?.set?.call(input, value)
 }
 
-const findBuyoutCurrencySelect = () => {
-  return findBuyoutFilter()?.querySelector<HTMLElement>(".multiselect") || null
+const buyoutFilterTitles = [
+  "Buyout Price",
+  "Preço de Compra",
+  "Цена выкупа",
+  "ราคาขายทันที",
+  "Preis",
+  "Directe",
+  "Precio de compra",
+  "バイアウト価格",
+  "즉시 구매 가격"
+]
+
+const buyoutCurrencyLabels: Record<BuyoutCurrency, string[]> = {
+  "Chaos Orb Equivalent": [
+    "Chaos Orb Equivalent",
+    "Equivalente a Orbe do Caos",
+    "Эквивалент сферы хаоса",
+    "เทียบเป็น Chaos Orb",
+    "Wert in Chaossphären",
+    "Équivalent en orbes du chaos",
+    "Equivalente a Orbe de caos",
+    "カオスオーブ同等物",
+    "카오스 오브 등가물"
+  ],
+  "Chaos Orb": [
+    "Chaos Orb",
+    "Orbe do Caos",
+    "Сфера хаоса",
+    "Chaos Orb",
+    "Chaossphäre",
+    "Orbe du chaos",
+    "Orbe de caos",
+    "カオスオーブ",
+    "카오스 오브"
+  ],
+  "Exalted Orb": [
+    "Exalted Orb",
+    "Orbe Exaltado",
+    "Сфера возвышения",
+    "Exalted Orb",
+    "Erhabene Sphäre",
+    "Orbe exalté",
+    "Orbe exaltado",
+    "高貴なオーブ",
+    "엑잘티드 오브"
+  ],
+  "Divine Orb": [
+    "Divine Orb",
+    "Orbe Divino",
+    "Божественная сфера",
+    "Divine Orb",
+    "Göttliche Sphäre",
+    "Orbe divin",
+    "Orbe divino",
+    "神のオーブ",
+    "신성한 오브"
+  ]
 }
+
+const normalizeLabel = (value: string | null | undefined) =>
+  value?.replace(/\s+/g, " ").trim() || ""
 
 const findBuyoutFilter = () => {
   const filters = Array.from(
@@ -28,26 +92,37 @@ const findBuyoutFilter = () => {
 
   return (
     filters.find((filter) => {
-      const title = filter
-        .querySelector(".filter-title")
-        ?.textContent?.replace(/\s+/g, " ")
-        .trim()
-      return title === "Buyout Price"
+      const title = normalizeLabel(filter.querySelector(".filter-title")?.textContent)
+      return buyoutFilterTitles.includes(title)
     }) || null
   )
 }
 
-export const setBuyoutCurrencyPreset = (currency: string) => {
-  const multiselect = findBuyoutCurrencySelect()
+const getLocalizedCurrencyLabel = (
+  buyoutFilter: HTMLElement,
+  currency: BuyoutCurrency
+) => {
+  const title = normalizeLabel(
+    buyoutFilter.querySelector(".filter-title")?.textContent
+  )
+  const languageIndex = buyoutFilterTitles.indexOf(title)
+  return buyoutCurrencyLabels[currency][languageIndex] || currency
+}
+
+export const setBuyoutCurrencyPreset = (currency: BuyoutCurrency) => {
+  const buyoutFilter = findBuyoutFilter()
+  const multiselect = buyoutFilter?.querySelector<HTMLElement>(".multiselect")
   const input =
     multiselect?.querySelector<HTMLInputElement>("input.multiselect__input")
 
-  if (!multiselect || !input) return
+  if (!buyoutFilter || !multiselect || !input) return
 
   input.focus()
   input.click()
-  setNativeInputValue(input, currency)
-  input.setSelectionRange(currency.length, currency.length)
+  const localizedCurrency = getLocalizedCurrencyLabel(buyoutFilter, currency)
+
+  setNativeInputValue(input, localizedCurrency)
+  input.setSelectionRange(localizedCurrency.length, localizedCurrency.length)
   input.dispatchEvent(new Event("input", { bubbles: true }))
 
   queueMicrotask(() => {
@@ -55,7 +130,7 @@ export const setBuyoutCurrencyPreset = (currency: string) => {
       multiselect.querySelectorAll<HTMLElement>(".multiselect__option")
     ).find(
       (candidate) =>
-        candidate.textContent?.replace(/\s+/g, " ").trim() === currency
+        normalizeLabel(candidate.textContent) === localizedCurrency
     )
 
     option?.dispatchEvent(

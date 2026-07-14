@@ -208,6 +208,12 @@ export const frenchTranslations: Record<string, TranslationValue> = {
   "finer.spellWeapon": "Arme de sort",
   "finer.buyoutPrice": "Prix de rachat",
   "finer.clearBuyoutPrice": "Effacer",
+  "whatsNew.item.activeRealmBookmarksTitle": "Les favoris suivent le royaume trade actif",
+  "whatsNew.item.activeRealmBookmarksDescription":
+    "Les recherches enregistrées s’ouvrent maintenant dans la ligue et le royaume de l’onglet Trade actif, tout en conservant la ligue enregistrée comme solution de repli.",
+  "whatsNew.item.buyoutClearTitle": "Raccourci pour effacer le prix de rachat",
+  "whatsNew.item.buyoutClearDescription":
+    "Les préréglages de filtre rapide incluent désormais un bouton Effacer qui règle le prix de rachat sur Équivalent en orbes du chaos et fonctionne avec les langues prises en charge du site trade.",
   "settings.onboardingTitle": "Tutoriel",
   "settings.onboardingDescription":
     "Rouvrez le guide rapide pour revoir les actions et onglets principaux.",

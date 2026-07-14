@@ -211,6 +211,12 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "finer.spellWeapon": "スペル武器",
   "finer.buyoutPrice": "買い取り価格",
   "finer.clearBuyoutPrice": "クリア",
+  "whatsNew.item.activeRealmBookmarksTitle": "ブックマークがアクティブなTradeリーグとRealmに追従",
+  "whatsNew.item.activeRealmBookmarksDescription":
+    "保存した検索はアクティブなTradeタブの現在のリーグとRealmで開き、保存済みリーグはフォールバックとして保持されます。",
+  "whatsNew.item.buyoutClearTitle": "バイアウト価格をクリアするショートカット",
+  "whatsNew.item.buyoutClearDescription":
+    "クイックフィルタープリセットに、バイアウト価格をカオスオーブ同等物へ戻すクリアボタンが追加され、対応するTradeサイトの言語で動作します。",
   "settings.onboardingTitle": "チュートリアル",
   "settings.onboardingDescription":
     "主要な操作とタブを見直すために、クイックガイドをもう一度開きます。",

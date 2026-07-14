@@ -208,6 +208,12 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "finer.spellWeapon": "주문 무기",
   "finer.buyoutPrice": "매입 가격",
   "finer.clearBuyoutPrice": "지우기",
+  "whatsNew.item.activeRealmBookmarksTitle": "북마크가 활성 Trade 리그와 Realm을 따름",
+  "whatsNew.item.activeRealmBookmarksDescription":
+    "저장된 검색은 이제 활성 Trade 탭의 현재 리그와 Realm에서 열리며, 저장된 리그는 대체 값으로 유지됩니다.",
+  "whatsNew.item.buyoutClearTitle": "즉시 구매 가격 지우기 단축키",
+  "whatsNew.item.buyoutClearDescription":
+    "빠른 필터 프리셋에 즉시 구매 가격을 카오스 오브 등가물로 설정하는 지우기 버튼이 추가되었으며, 지원되는 Trade 사이트 언어에서 작동합니다.",
   "settings.onboardingTitle": "튜토리얼",
   "settings.onboardingDescription":
     "주요 작업과 탭을 다시 보려면 빠른 가이드를 다시 엽니다.",

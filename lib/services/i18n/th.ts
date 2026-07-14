@@ -200,6 +200,12 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "finer.spellWeapon": "อาวุธเวท",
   "finer.buyoutPrice": "ราคาซื้อคืน",
   "finer.clearBuyoutPrice": "ล้าง",
+  "whatsNew.item.activeRealmBookmarksTitle": "บุ๊กมาร์กใช้ realm ของ trade ที่กำลังใช้งาน",
+  "whatsNew.item.activeRealmBookmarksDescription":
+    "การค้นหาที่บันทึกไว้จะเปิดด้วยลีกและ realm ปัจจุบันของแท็บ Trade ที่ใช้งานอยู่ โดยเก็บลีกที่บันทึกไว้เป็นทางเลือกสำรอง.",
+  "whatsNew.item.buyoutClearTitle": "ปุ่มล้างราคาซื้อทันที",
+  "whatsNew.item.buyoutClearDescription":
+    "พรีเซ็ตตัวกรองด่วนมีปุ่มล้างที่ตั้งราคาซื้อทันทีเป็นเทียบเป็น Chaos Orb และใช้ได้กับภาษาของเว็บไซต์ trade ที่รองรับ.",
   "settings.onboardingTitle": "บทช่วยสอน",
   "settings.onboardingDescription":
     "เปิดคู่มือเริ่มต้นอย่างรวดเร็วอีกครั้งเพื่อทบทวนการทำงานและแท็บหลัก",

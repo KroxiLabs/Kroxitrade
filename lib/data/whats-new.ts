@@ -168,6 +168,17 @@ const version116Features: WhatsNewItem[] = [
   }
 ];
 
+const version117Features: WhatsNewItem[] = [
+  {
+    titleKey: "whatsNew.item.activeRealmBookmarksTitle",
+    descriptionKey: "whatsNew.item.activeRealmBookmarksDescription"
+  },
+  {
+    titleKey: "whatsNew.item.buyoutClearTitle",
+    descriptionKey: "whatsNew.item.buyoutClearDescription"
+  }
+];
+
 const version110Features: WhatsNewItem[] = [
   {
     title: "Settings are now easier to navigate",
@@ -258,9 +269,18 @@ const version110Changes: WhatsNewItem[] = [
 ];
 
 export const latestWhatsNew: WhatsNewEntry = {
-  version: "1.1.6",
-  date: "2026-07-07",
+  version: "1.1.7",
+  date: "2026-07-14",
   sections: [
+    {
+      title: "1.1.7",
+      groups: [
+        {
+          titleKey: "whatsNew.section.features",
+          items: version117Features
+        }
+      ]
+    },
     {
       title: "1.1.6",
       groups: [

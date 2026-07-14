@@ -214,6 +214,12 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
   "finer.spellWeapon": "Arma de feitiços",
   "finer.buyoutPrice": "Preço de compra",
   "finer.clearBuyoutPrice": "Limpar",
+  "whatsNew.item.activeRealmBookmarksTitle": "Favoritos seguem o reino de trade ativo",
+  "whatsNew.item.activeRealmBookmarksDescription":
+    "Pesquisas salvas agora abrem na liga e no reino atuais da aba Trade ativa, mantendo a liga salva como alternativa.",
+  "whatsNew.item.buyoutClearTitle": "Atalho para limpar o preço de compra",
+  "whatsNew.item.buyoutClearDescription":
+    "Os presets de filtro rápido agora incluem um botão Limpar que redefine Preço de Compra para Equivalente a Orbe do Caos e funciona nos idiomas compatíveis do site de trade.",
   "settings.onboardingTitle": "Tutorial",
   "settings.onboardingDescription":
     "Abra o onboarding rápido de novo para rever as ações e abas principais.",
