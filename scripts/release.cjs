@@ -37,9 +37,10 @@ const run = (command, args, options = {}) => {
     stdio: options.capture ? ["ignore", "pipe", "pipe"] : "inherit"
   })
   if (result.status !== 0) {
+    const spawnError = result.error ? `\n${result.error.message}` : ""
     const details = options.capture
-      ? `\n${result.stderr || result.stdout || ""}`
-      : ""
+      ? `${spawnError}\n${result.stderr || result.stdout || ""}`
+      : spawnError
     throw new Error(`${command} ${args.join(" ")} failed.${details}`)
   }
   return (result.stdout || "").trim()
@@ -161,8 +162,8 @@ const prepare = () => {
 
   ensureCleanOrCommit()
   writeReleaseNotes(releaseData)
-  run("npm", ["run", "package"])
-  run("git", ["archive", "--format=zip", `--output=${sourceArchivePath()}`, "HEAD"])
+  const packageOutput = run("npm", ["run", "package"], { capture: true })
+  process.stdout.write(`${packageOutput}\n`)
 
   for (const assetPath of assetPaths()) {
     if (!fs.existsSync(assetPath)) throw new Error(`Missing release asset: ${assetPath}`)
@@ -175,18 +176,10 @@ const prepare = () => {
   const existingPr = run(
     "gh",
     [
-      "pr",
-      "list",
-      "--repo",
-      upstreamRepository,
-      "--head",
-      head,
-      "--state",
-      "open",
-      "--json",
-      "url",
+      "api",
+      `repos/${upstreamRepository}/pulls?head=${head}&state=open`,
       "--jq",
-      ".[0].url"
+      ".[0].html_url"
     ],
     { capture: true }
   )
@@ -225,18 +218,10 @@ const publish = () => {
   const mergedAt = run(
     "gh",
     [
-      "pr",
-      "list",
-      "--repo",
-      upstreamRepository,
-      "--head",
-      head,
-      "--state",
-      "merged",
-      "--json",
-      "mergedAt",
+      "api",
+      `repos/${upstreamRepository}/pulls?head=${head}&state=closed`,
       "--jq",
-      ".[0].mergedAt"
+      ".[] | select(.merged_at != null) | .merged_at"
     ],
     { capture: true }
   )
