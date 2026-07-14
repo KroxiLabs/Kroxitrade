@@ -1,8 +1,10 @@
 import { isFinerFiltersActionMessage } from "~/lib/utilities/finer-filters-bridge"
 import {
   BUYOUT_CURRENCY_PRESETS,
+  clearBuyoutPrice,
   setBuyoutCurrencyPreset
 } from "~/lib/utilities/buyout-currency"
+import { translate, type AppLanguage } from "~/lib/services/i18n"
 
 export const initFilterPanel = () => {
   if ((window as any).__KROX_STARTED__) {
@@ -10,6 +12,22 @@ export const initFilterPanel = () => {
   }
 
   ;(window as any).__KROX_STARTED__ = true
+
+  const pageTranslation = (key: string) =>
+    translate(
+      (window.localStorage.getItem("bt-language") || "en") as AppLanguage,
+      key
+    )
+
+  const createBuyoutClearButton = () => {
+    const button = document.createElement("button")
+    button.type = "button"
+    button.className =
+      "krox-filter-preset__btn krox-filter-preset__btn--currency krox-filter-preset__btn--clear"
+    button.textContent = pageTranslation("finer.clearBuyoutPrice")
+    button.dataset.action = "krox-clear-buyout-price"
+    return button
+  }
 
   // ---------- helpers ----------
   const $ = (sel: string, root = document) => root.querySelector(sel)
@@ -491,7 +509,17 @@ export const initFilterPanel = () => {
       return
     }
 
-    if (!pane || existing) {
+    if (!pane) {
+      return
+    }
+
+    if (existing) {
+      const currencyRow = existing.querySelector<HTMLElement>(
+        ".krox-filter-preset--currency"
+      )
+      if (!currencyRow?.querySelector('[data-action="krox-clear-buyout-price"]')) {
+        currencyRow?.append(createBuyoutClearButton())
+      }
       return
     }
 
@@ -549,6 +577,8 @@ export const initFilterPanel = () => {
       currencyButton.dataset.currency = currency
       currencyRow.append(currencyButton)
     })
+
+    currencyRow.append(createBuyoutClearButton())
     list.appendChild(currencyRow)
 
     const firstExpandedGroup = pane.querySelector(".filter-group.expanded")
@@ -561,6 +591,11 @@ export const initFilterPanel = () => {
 
     if (el.dataset.action === "krox-currency-preset") {
       setBuyoutCurrencyPreset(el.dataset.currency || "Chaos Orb")
+      return
+    }
+
+    if (el.dataset.action === "krox-clear-buyout-price") {
+      clearBuyoutPrice()
       return
     }
 

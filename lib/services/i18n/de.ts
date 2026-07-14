@@ -202,6 +202,7 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "finer.attackWeapon": "Angriffswaffe",
   "finer.spellWeapon": "Zauberwaffe",
   "finer.buyoutPrice": "Kaufpreis",
+  "finer.clearBuyoutPrice": "Leeren",
   "settings.onboardingTitle": "Tutorial",
   "settings.onboardingDescription":
     "Öffne das Schnell-Tutorial erneut, um die wichtigsten Aktionen und Tabs zu prüfen.",

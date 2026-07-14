@@ -445,5 +445,6 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "finer.explicitResLife": "Res/Vida explícita",
   "finer.attackWeapon": "Arma de ataque",
   "finer.spellWeapon": "Arma de hechizos",
-  "finer.buyoutPrice": "Precio de compra"
+  "finer.buyoutPrice": "Precio de compra",
+  "finer.clearBuyoutPrice": "Limpiar"
 } as Record<string, TranslationValue>

@@ -213,6 +213,7 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
   "finer.attackWeapon": "Arma de ataque",
   "finer.spellWeapon": "Arma de feitiços",
   "finer.buyoutPrice": "Preço de compra",
+  "finer.clearBuyoutPrice": "Limpar",
   "settings.onboardingTitle": "Tutorial",
   "settings.onboardingDescription":
     "Abra o onboarding rápido de novo para rever as ações e abas principais.",

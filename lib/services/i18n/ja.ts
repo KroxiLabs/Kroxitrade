@@ -210,6 +210,7 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "finer.attackWeapon": "攻撃武器",
   "finer.spellWeapon": "スペル武器",
   "finer.buyoutPrice": "買い取り価格",
+  "finer.clearBuyoutPrice": "クリア",
   "settings.onboardingTitle": "チュートリアル",
   "settings.onboardingDescription":
     "主要な操作とタブを見直すために、クイックガイドをもう一度開きます。",

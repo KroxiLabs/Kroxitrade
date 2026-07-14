@@ -18,18 +18,23 @@ const setNativeInputValue = (input: HTMLInputElement, value: string) => {
 }
 
 const findBuyoutCurrencySelect = () => {
+  return findBuyoutFilter()?.querySelector<HTMLElement>(".multiselect") || null
+}
+
+const findBuyoutFilter = () => {
   const filters = Array.from(
     document.querySelectorAll<HTMLElement>(".filter.filter-property")
   )
-  const buyoutFilter = filters.find((filter) => {
-    const title = filter
-      .querySelector(".filter-title")
-      ?.textContent?.replace(/\s+/g, " ")
-      .trim()
-    return title === "Buyout Price"
-  })
 
-  return buyoutFilter?.querySelector<HTMLElement>(".multiselect") || null
+  return (
+    filters.find((filter) => {
+      const title = filter
+        .querySelector(".filter-title")
+        ?.textContent?.replace(/\s+/g, " ")
+        .trim()
+      return title === "Buyout Price"
+    }) || null
+  )
 }
 
 export const setBuyoutCurrencyPreset = (currency: string) => {
@@ -62,4 +67,8 @@ export const setBuyoutCurrencyPreset = (currency: string) => {
     )
     input.dispatchEvent(new Event("change", { bubbles: true }))
   })
+}
+
+export const clearBuyoutPrice = () => {
+  setBuyoutCurrencyPreset("Chaos Orb Equivalent")
 }

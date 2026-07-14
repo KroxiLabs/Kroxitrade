@@ -174,12 +174,14 @@ function publish() {
       `bt-quick-filters-placement-poe${activeVersion}`,
       currentSettings.quickFiltersPlacement
     )
+    window.localStorage.setItem("bt-language", currentSettings.language)
     window.dispatchEvent(
       new CustomEvent("poe-trade-plus:quick-filters-change", {
         detail: {
           key: quickFiltersStorageKey,
           value: currentSettings.showQuickFilters,
-          placement: currentSettings.quickFiltersPlacement
+          placement: currentSettings.quickFiltersPlacement,
+          language: currentSettings.language
         }
       })
     )

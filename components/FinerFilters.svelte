@@ -3,6 +3,7 @@
   import { emitFinerFiltersAction } from "../lib/utilities/finer-filters-bridge";
   import {
     BUYOUT_CURRENCY_PRESETS,
+    clearBuyoutPrice,
     setBuyoutCurrencyPreset
   } from "../lib/utilities/buyout-currency";
   const listModifiers = [
@@ -52,6 +53,10 @@
   function handleBuyoutCurrency(currency: string) {
     setBuyoutCurrencyPreset(currency);
   }
+
+  function handleClearBuyoutPrice() {
+    clearBuyoutPrice();
+  }
 </script>
 
 <div class="finer-filters-container">
@@ -90,6 +95,12 @@
             {preset.label}
           </button>
         {/each}
+        <button
+          type="button"
+          class="action-btn buyout-clear"
+          onclick={handleClearBuyoutPrice}>
+          {translate($languageStore, "finer.clearBuyoutPrice")}
+        </button>
       </div>
     </div>
   {/if}
@@ -178,7 +189,7 @@
 
   .buyout-controls {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 4px;
     margin-top: 2px;
   }
@@ -219,6 +230,11 @@
     &.buyout {
       background: rgba($gold, 0.18);
       &:hover { background: rgba($gold, 0.28); }
+    }
+
+    &.buyout-clear {
+      background: rgba(220, 53, 69, 0.3);
+      &:hover { background: rgba(220, 53, 69, 0.5); }
     }
   }
 </style>
