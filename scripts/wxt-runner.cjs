@@ -1,6 +1,7 @@
 const { spawn, spawnSync } = require("child_process")
 
 const args = process.argv.slice(2)
+const successGracePeriod = args[0] === "zip" ? 8000 : 1200
 
 if (args.length === 0) {
   console.error("Usage: node scripts/wxt-runner.cjs <wxt-args...>")
@@ -58,7 +59,7 @@ const scheduleSuccessExit = () => {
   successTimer = setTimeout(() => {
     killTree()
     finish(0)
-  }, 1200)
+  }, successGracePeriod)
 }
 
 const handleChunk = (stream, chunk) => {

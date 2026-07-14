@@ -102,10 +102,10 @@ const assertReleaseNotes = () => {
 
 const releaseNotesPath = () => path.join(buildDir, `release-notes-${tag}.md`)
 const sourceArchivePath = () =>
-  path.join(buildDir, `${packageJson.displayName}-${version}-source.zip`)
+  path.join(buildDir, `${packageJson.name}-${version}-sources.zip`)
 const assetPaths = () => [
-  path.join(buildDir, `${packageJson.displayName}-${version}.zip`),
-  path.join(buildDir, `${packageJson.displayName}-${version}-firefox.zip`),
+  path.join(buildDir, `${packageJson.name}-${version}-chrome.zip`),
+  path.join(buildDir, `${packageJson.name}-${version}-firefox.zip`),
   sourceArchivePath()
 ]
 
