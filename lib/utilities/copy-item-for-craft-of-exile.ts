@@ -27,11 +27,19 @@ const readAnnotatedMods = (
         type = tierLabel.charAt(0).toUpperCase() === "S" ? "Suffix" : "Prefix";
       }
 
-      return `{ ${type} Modifier }\n${value}`;
+      const annotations = [
+        row.classList.contains("item-mod--fractured") && "Fractured",
+        row.classList.contains("item-mod--crafted") && "Crafted"
+      ].filter(Boolean);
+
+      return `{ ${[...annotations, type, "Modifier"].join(" ")} }\n${value}`;
     })
     .filter(Boolean);
 
-export const buildCraftOfExileText = (row: HTMLElement): string | null => {
+export const buildCraftOfExileText = (
+  row: HTMLElement,
+  includeDesecratedMods = false
+): string | null => {
   const popup = row.querySelector<HTMLElement>(".item-popup");
   if (!popup) return null;
 
@@ -43,7 +51,10 @@ export const buildCraftOfExileText = (row: HTMLElement): string | null => {
   if (headerLines.length === 0) return null;
 
   const implicits = readAnnotatedMods(popup, ".item-mod--implicit", "Implicit");
-  const explicits = readAnnotatedMods(popup, ".item-mod--explicit", null);
+  const explicitSelector = includeDesecratedMods
+    ? ".item-mod:is(.item-mod--explicit, .item-mod--fractured, .item-mod--desecrated, .item-mod--crafted)"
+    : ".item-mod:is(.item-mod--explicit, .item-mod--fractured, .item-mod--crafted)";
+  const explicits = readAnnotatedMods(popup, explicitSelector, null);
   const rarity = headerLines.length >= 2
     ? "Rare"
     : explicits.length > 0
@@ -53,6 +64,7 @@ export const buildCraftOfExileText = (row: HTMLElement): string | null => {
   const base = headerLines.length >= 2 ? headerLines[1] : headerLines[0];
   const quality = readNumber(popup, '[data-field="quality"]');
   const itemLevel = readNumber(popup, '[data-field="ilvl"]');
+  const fractured = popup.querySelector(".item-mod--fractured") !== null;
   const corrupted = /\bcorrupted\b/i.test(popup.textContent || "");
 
   const sections: string[][] = [
@@ -62,6 +74,7 @@ export const buildCraftOfExileText = (row: HTMLElement): string | null => {
   if (itemLevel) sections.push([`Item Level: ${itemLevel}`]);
   if (implicits.length) sections.push(implicits);
   if (explicits.length) sections.push(explicits);
+  if (fractured) sections.push(["Fractured Item"]);
   if (corrupted) sections.push(["Corrupted"]);
 
   return sections.map((section) => section.join("\n")).join(`\n${SEPARATOR}\n`);

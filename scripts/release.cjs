@@ -219,9 +219,17 @@ const publish = () => {
     "gh",
     [
       "api",
-      `repos/${upstreamRepository}/pulls?head=${head}&state=closed`,
+      "--method",
+      "GET",
+      `repos/${upstreamRepository}/pulls`,
+      "-f",
+      "state=closed",
+      "-f",
+      `head=${head}`,
+      "-f",
+      "per_page=100",
       "--jq",
-      ".[] | select(.merged_at != null) | .merged_at"
+      "map(select(.merged_at != null)) | .[0].merged_at"
     ],
     { capture: true }
   )

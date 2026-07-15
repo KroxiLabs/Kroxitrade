@@ -58,6 +58,9 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "Эквивалентная цена",
   "settings.equivalentDescription":
     "Показывать или скрывать дополнительную строку с эквивалентом в chaos/divine в результатах.",
+  "settings.coeDesecratedModsTitle": "Включать осквернённые модификаторы",
+  "settings.coeDesecratedModsBody":
+    "Добавляет осквернённые модификаторы как обычные. Craft of Exile пока не поддерживает их импорт.",
   "settings.wikiTitle": "Кнопка wiki",
   "settings.wikiBody":
     "Добавляет кнопку W к уникальным предметам, чтобы открыть соответствующую страницу на wiki PoE.",

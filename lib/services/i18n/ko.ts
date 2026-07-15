@@ -63,6 +63,9 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "환산 가격",
   "settings.equivalentDescription":
     "결과에 추가로 표시되는 chaos/divine 환산 줄을 표시하거나 숨깁니다.",
+  "settings.coeDesecratedModsTitle": "Desecrated 모드 포함",
+  "settings.coeDesecratedModsBody":
+    "Desecrated 모드를 일반 모드로 포함합니다. Craft of Exile은 현재 Desecrated 모드 가져오기를 지원하지 않습니다.",
   "settings.wikiTitle": "위키 버튼",
   "settings.wikiBody":
     "고유 아이템 결과에 W 버튼을 추가해 해당 PoE 위키 페이지를 엽니다.",

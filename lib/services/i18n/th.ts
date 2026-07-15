@@ -58,6 +58,9 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "ราคาเทียบเท่า",
   "settings.equivalentDescription":
     "แสดงหรือซ่อนบรรทัดเพิ่มเติมที่แสดงราคาเทียบเท่า chaos/divine ในผลลัพธ์",
+  "settings.coeDesecratedModsTitle": "รวมม็อด Desecrated",
+  "settings.coeDesecratedModsBody":
+    "รวมม็อด Desecrated เป็นม็อดปกติ ขณะนี้ Craft of Exile ยังไม่รองรับการนำเข้าม็อด Desecrated",
   "settings.wikiTitle": "ปุ่มวิกิ",
   "settings.wikiBody":
     "เพิ่มปุ่ม W ให้ผลลัพธ์ไอเทม unique เพื่อเปิดหน้าที่ตรงกันในวิกิ PoE",

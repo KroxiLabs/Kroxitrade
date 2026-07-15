@@ -63,6 +63,9 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "等価価格",
   "settings.equivalentDescription":
     "検索結果に追加表示される chaos/divine 等価行を表示または非表示にします。",
+  "settings.coeDesecratedModsTitle": "Desecrated モッドを含める",
+  "settings.coeDesecratedModsBody":
+    "Desecrated モッドを通常のモッドとして含めます。Craft of Exile は現在 Desecrated モッドのインポートに対応していません。",
   "settings.wikiTitle": "Wiki ボタン",
   "settings.wikiBody":
     "ユニークアイテムの結果に W ボタンを追加し、対応する PoE Wiki ページを開きます。",

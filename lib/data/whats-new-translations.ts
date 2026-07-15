@@ -5,6 +5,8 @@ type LocalizedWhatsNewTexts = Partial<Record<AppLanguage, Record<string, string>
 export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
   en: {},
   es: {
+    "Optional desecrated mods in Craft of Exile exports": "Mods desecrated opcionales en las exportaciones de Craft of Exile",
+    "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "Las exportaciones de Craft of Exile ahora excluyen los mods desecrated por defecto. Puedes activarlos desde Ajustes de resultados para incluirlos como modificadores normales, con un aviso de que Craft of Exile todavía no permite importarlos.",
     "Foulborn items add the correct modifier": "Los objetos repugnantes añaden el modificador correcto",
     "Quick filter buttons now compensate for mutated Foulborn item rows where the trade site shifts modifier stat ids out of visual order.": "Los botones de filtro rápido ahora compensan las filas de elementos mutados de Foulborn donde el sitio de comercio cambia los identificadores de estadísticas de modificador fuera del orden visual.",
     "Bookmark action buttons no longer open searches": "Los botones de acción de marcador ya no abren búsquedas",
@@ -83,6 +85,8 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "El manejo de clics en tarjetas y la accesibilidad al panel del vendedor se reforzaron para flujos de trabajo comerciales repetidos.",
   },
   pt: {
+    "Optional desecrated mods in Craft of Exile exports": "Mods desecrated opcionais nas exportações do Craft of Exile",
+    "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "As exportações do Craft of Exile agora excluem mods desecrated por padrão. Você pode ativá-los nas configurações de Resultados para incluí-los como modificadores normais, com um aviso de que o Craft of Exile ainda não permite importá-los.",
     "Foulborn items add the correct modifier": "Itens Foulborn adicionam o modificador correto",
     "Quick filter buttons now compensate for mutated Foulborn item rows where the trade site shifts modifier stat ids out of visual order.": "Os botões de filtro rápido agora compensam as linhas de itens mutantes de Foulborn, onde o site de comércio muda os IDs de estatísticas do modificador fora da ordem visual.",
     "Bookmark action buttons no longer open searches": "Os botões de ação dos favoritos não abrem mais pesquisas",
@@ -161,6 +165,8 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "O manuseio de cliques no cartão e a acessibilidade ao painel do vendedor foram aprimorados para fluxos de trabalho comerciais repetidos.",
   },
   ru: {
+    "Optional desecrated mods in Craft of Exile exports": "Необязательные осквернённые модификаторы в экспорте Craft of Exile",
+    "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "Экспорт Craft of Exile теперь по умолчанию исключает осквернённые модификаторы. Их можно включить в настройках результатов как обычные модификаторы; там же будет предупреждение, что Craft of Exile пока не поддерживает их импорт.",
     "Foulborn items add the correct modifier": "Грязнорожденные предметы имеют правильный модификатор.",
     "Quick filter buttons now compensate for mutated Foulborn item rows where the trade site shifts modifier stat ids out of visual order.": "Кнопки быстрого фильтра теперь компенсируют мутировавшие строки предметов Foulborn, где торговый сайт смещает идентификаторы характеристик модификаторов не в визуальном порядке.",
     "Bookmark action buttons no longer open searches": "Кнопки действий с закладками больше не открывают поиск",
@@ -239,6 +245,8 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "Обработка кликов по картам и доступность панели продавца были ужесточены для повторяющихся торговых процессов.",
   },
   th: {
+    "Optional desecrated mods in Craft of Exile exports": "ม็อด Desecrated แบบเลือกได้ในการส่งออก Craft of Exile",
+    "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "การส่งออก Craft of Exile จะไม่รวมม็อด Desecrated โดยค่าเริ่มต้น คุณสามารถเปิดใช้ได้จากการตั้งค่าผลลัพธ์เพื่อรวมเป็นม็อดปกติ พร้อมคำเตือนว่า Craft of Exile ยังไม่รองรับการนำเข้าม็อดเหล่านี้",
     "Foulborn items add the correct modifier": "ไอเทมที่ผิดกติกาจะเพิ่มตัวแก้ไขที่ถูกต้อง",
     "Quick filter buttons now compensate for mutated Foulborn item rows where the trade site shifts modifier stat ids out of visual order.": "ปุ่มตัวกรองด่วนจะชดเชยแถวรายการ Foulborn ที่กลายพันธุ์ โดยที่ไซต์การค้าเปลี่ยนรหัสสถิติตัวแก้ไขไม่อยู่ในลำดับภาพ",
     "Bookmark action buttons no longer open searches": "ปุ่มการทำงานของบุ๊กมาร์กไม่เปิดการค้นหาอีกต่อไป",
@@ -317,6 +325,8 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "การจัดการการคลิกการ์ดและการเข้าถึงแผงผู้ขายได้รับการปรับปรุงให้เข้มงวดขึ้นสำหรับขั้นตอนการซื้อขายซ้ำๆ",
   },
   de: {
+    "Optional desecrated mods in Craft of Exile exports": "Optionale entweihte Mods in Craft-of-Exile-Exporten",
+    "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "Craft-of-Exile-Exporte schließen entweihte Mods jetzt standardmäßig aus. Du kannst sie in den Ergebnis-Einstellungen als normale Modifikatoren einschließen; dort wird darauf hingewiesen, dass Craft of Exile ihren Import noch nicht unterstützt.",
     "Foulborn items add the correct modifier": "Foulborn-Gegenstände fügen den richtigen Modifikator hinzu",
     "Quick filter buttons now compensate for mutated Foulborn item rows where the trade site shifts modifier stat ids out of visual order.": "Schnellfilterschaltflächen kompensieren jetzt mutierte Foulborn-Gegenstandszeilen, bei denen die Handelsseite die Modifikator-Statistik-IDs aus der visuellen Reihenfolge verschiebt.",
     "Bookmark action buttons no longer open searches": "Lesezeichen-Aktionsschaltflächen öffnen keine Suchanfragen mehr",
@@ -395,6 +405,8 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "Die Handhabung von Kartenklicks und die Zugänglichkeit des Verkäuferpanels wurden für wiederholte Handelsabläufe verbessert.",
   },
   fr: {
+    "Optional desecrated mods in Craft of Exile exports": "Mods profanés facultatifs dans les exports Craft of Exile",
+    "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "Les exports Craft of Exile excluent désormais les mods profanés par défaut. Vous pouvez les activer dans les paramètres des résultats pour les inclure comme modificateurs normaux, avec un avertissement indiquant que Craft of Exile ne permet pas encore de les importer.",
     "Foulborn items add the correct modifier": "Les objets ignobles ajoutent le bon modificateur",
     "Quick filter buttons now compensate for mutated Foulborn item rows where the trade site shifts modifier stat ids out of visual order.": "Les boutons de filtre rapide compensent désormais les lignes d'objets Foulborn mutés où le site d'échange déplace les identifiants de statistiques des modificateurs dans le désordre.",
     "Bookmark action buttons no longer open searches": "Les boutons d’action des favoris n’ouvrent plus les recherches",
@@ -473,6 +485,8 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "La gestion des clics sur les cartes et l'accessibilité du panneau des vendeurs ont été renforcées pour les flux de travail commerciaux répétés.",
   },
   ja: {
+    "Optional desecrated mods in Craft of Exile exports": "Craft of Exile エクスポートでの任意の Desecrated モッド",
+    "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "Craft of Exile のエクスポートでは、Desecrated モッドがデフォルトで除外されるようになりました。結果設定で有効にすると通常のモッドとして含められますが、Craft of Exile はまだこれらのインポートに対応していないという警告が表示されます。",
     "Foulborn items add the correct modifier": "Foulborn アイテムは正しい修飾子を追加します",
     "Quick filter buttons now compensate for mutated Foulborn item rows where the trade site shifts modifier stat ids out of visual order.": "クイックフィルターボタンは、トレードサイトがモディファイア統計IDを視覚的な順序からずらす変異したFoulbornアイテム行を補正するようになりました。",
     "Bookmark action buttons no longer open searches": "ブックマークのアクション ボタンで検索が開かれなくなりました",
@@ -551,6 +565,8 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "繰り返される取引ワークフローのために、カードのクリック処理と販売者パネルへのアクセシビリティが強化されました。",
   },
   ko: {
+    "Optional desecrated mods in Craft of Exile exports": "Craft of Exile 내보내기의 선택적 Desecrated 모드",
+    "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "Craft of Exile 내보내기에서는 이제 Desecrated 모드가 기본적으로 제외됩니다. 결과 설정에서 이를 켜면 일반 모드로 포함할 수 있으며, Craft of Exile이 아직 가져오기를 지원하지 않는다는 경고가 표시됩니다.",
     "Foulborn items add the correct modifier": "Foulborn 아이템에 올바른 수정자가 추가되었습니다.",
     "Quick filter buttons now compensate for mutated Foulborn item rows where the trade site shifts modifier stat ids out of visual order.": "빠른 필터 버튼은 이제 거래 사이트에서 수정자 통계 ID를 시각적 순서에서 벗어나 변경하는 변형된 Foulborn 항목 행을 보완합니다.",
     "Bookmark action buttons no longer open searches": "북마크 작업 버튼이 더 이상 검색을 열지 않습니다.",

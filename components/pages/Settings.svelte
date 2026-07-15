@@ -4,6 +4,7 @@
   import { extensionBackupService } from "../../lib/services/extension-backup";
   import {
     coeButtonSetting,
+    coeDesecratedModsSetting,
     experimentalSettings,
     poe2CopyButtonSetting,
     wikiButtonSetting
@@ -295,6 +296,10 @@
 
   function handleCoeVisibleChange(value: boolean) {
     experimentalSettings.setCoeVisible(value);
+  }
+
+  function handleCoeDesecratedModsChange(value: boolean) {
+    experimentalSettings.setCoeDesecratedModsEnabled(value);
   }
 
   function handleWikiVisibleChange(value: boolean) {
@@ -793,6 +798,21 @@
             onToggle={() => handleCoeVisibleChange(!$coeButtonSetting)}
           />
         </div>
+
+        {#if $coeButtonSetting}
+          <div class="settings-row">
+            <div class="settings-row__copy">
+              <div class="settings-row__title">{translate($languageStore, "settings.coeDesecratedModsTitle")}</div>
+              <div class="settings-row__description">{translate($languageStore, "settings.coeDesecratedModsBody")}</div>
+            </div>
+            <ToggleRow
+              checked={$coeDesecratedModsSetting}
+              label={translate($languageStore, "settings.coeDesecratedModsTitle")}
+              stateLabel={toggleSwitchLabel($coeDesecratedModsSetting)}
+              onToggle={() => handleCoeDesecratedModsChange(!$coeDesecratedModsSetting)}
+            />
+          </div>
+        {/if}
 
         <div class="settings-row">
           <div class="settings-row__copy">

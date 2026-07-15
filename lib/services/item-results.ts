@@ -228,7 +228,9 @@ export class ItemResultsService {
       if (coeButton.getAttribute("aria-disabled") === "true") return;
 
       const row = coeButton.closest<HTMLElement>(".row, .result-item");
-      const text = row ? buildCraftOfExileText(row) : null;
+      const text = row
+        ? buildCraftOfExileText(row, experimentalSettings.isCoeDesecratedModsEnabled())
+        : null;
       if (text && copyTextSynchronously(text)) {
         this.showCopyFeedback("Item copied for Craft of Exile.");
       } else {

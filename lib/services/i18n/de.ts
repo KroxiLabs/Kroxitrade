@@ -58,6 +58,9 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "Äquivalenzpreis",
   "settings.equivalentDescription":
     "Zeige oder verberge die zusätzliche Zeile mit Chaos/Divine-Äquivalenten in den Ergebnissen.",
+  "settings.coeDesecratedModsTitle": "Entweihte Mods einschließen",
+  "settings.coeDesecratedModsBody":
+    "Fügt entweihte Mods als normale Modifikatoren ein. Craft of Exile unterstützt deren Import derzeit nicht.",
   "settings.wikiTitle": "Wiki-Schaltfläche",
   "settings.wikiBody":
     "Fügt einzigartigen Gegenständen eine W-Schaltfläche hinzu, die die passende Seite im PoE-Wiki öffnet.",

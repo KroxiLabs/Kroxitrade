@@ -289,6 +289,9 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "settings.coeTitle": "Botón Craft of Exile",
   "settings.coeBody":
     "Agrega un botón CoE a resultados de PoE1 y PoE2 que copia el objeto en formato avanzado de Craft of Exile.",
+  "settings.coeDesecratedModsTitle": "Incluir mods desecrated",
+  "settings.coeDesecratedModsBody":
+    "Incluye los mods desecrated como modificadores normales. Craft of Exile actualmente no permite importarlos.",
   "settings.wikiTitle": "Botón de wiki",
   "settings.wikiBody":
     "Agrega un botón W a los resultados de objetos únicos para abrir su página correspondiente en la wiki de PoE.",

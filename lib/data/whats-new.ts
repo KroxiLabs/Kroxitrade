@@ -168,6 +168,14 @@ const version116Features: WhatsNewItem[] = [
   }
 ];
 
+const version118Features: WhatsNewItem[] = [
+  {
+    title: "Optional desecrated mods in Craft of Exile exports",
+    description:
+      "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them."
+  }
+];
+
 const version117Features: WhatsNewItem[] = [
   {
     titleKey: "whatsNew.item.activeRealmBookmarksTitle",
@@ -269,9 +277,18 @@ const version110Changes: WhatsNewItem[] = [
 ];
 
 export const latestWhatsNew: WhatsNewEntry = {
-  version: "1.1.7",
-  date: "2026-07-14",
+  version: "1.1.8",
+  date: "2026-07-15",
   sections: [
+    {
+      title: "1.1.8",
+      groups: [
+        {
+          titleKey: "whatsNew.section.features",
+          items: version118Features
+        }
+      ]
+    },
     {
       title: "1.1.7",
       groups: [

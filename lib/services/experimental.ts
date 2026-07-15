@@ -11,6 +11,7 @@ const storageKey = (version: TradeSiteVersion) =>
   `experimental-result-actions-visible-poe${version}`;
 const POE2_COPY_STORAGE_KEY = "experimental-poe2-copy-visible";
 const COE_STORAGE_KEY = "experimental-coe-visible";
+const COE_DESECRATED_MODS_STORAGE_KEY = "experimental-coe-desecrated-mods-enabled";
 const WIKI_STORAGE_KEY = "experimental-wiki-visible";
 
 let activeVersion: TradeSiteVersion = "1";
@@ -25,6 +26,11 @@ const {
   set: setCoe
 } = writable(false);
 let isCoeVisible = false;
+const {
+  subscribe: subscribeCoeDesecratedMods,
+  set: setCoeDesecratedMods
+} = writable(false);
+let isCoeDesecratedModsEnabled = false;
 const {
   subscribe: subscribeWiki,
   set: setWiki
@@ -55,6 +61,11 @@ function applyCoeVisibility(value: boolean) {
   document.dispatchEvent(new CustomEvent("poe-trade-plus:experimental-change"));
 }
 
+function applyCoeDesecratedModsEnabled(value: boolean) {
+  isCoeDesecratedModsEnabled = value;
+  setCoeDesecratedMods(isCoeDesecratedModsEnabled);
+}
+
 function applyWikiVisibility(value: boolean) {
   isWikiVisible = value;
   setWiki(isWikiVisible);
@@ -66,6 +77,7 @@ export const experimentalSettings = {
   subscribe,
   subscribePoe2Copy,
   subscribeCoe,
+  subscribeCoeDesecratedMods,
   subscribeWiki,
   useVersion(version: TradeSiteVersion) {
     activeVersion = version;
@@ -76,6 +88,9 @@ export const experimentalSettings = {
     );
     applyCoeVisibility(
       storageService.getLocalValue(COE_STORAGE_KEY) === "true"
+    );
+    applyCoeDesecratedModsEnabled(
+      storageService.getLocalValue(COE_DESECRATED_MODS_STORAGE_KEY) === "true"
     );
     applyWikiVisibility(
       storageService.getLocalValue(WIKI_STORAGE_KEY) === "true"
@@ -93,12 +108,19 @@ export const experimentalSettings = {
     storageService.setLocalValue(COE_STORAGE_KEY, String(value));
     applyCoeVisibility(value);
   },
+  setCoeDesecratedModsEnabled(value: boolean) {
+    storageService.setLocalValue(COE_DESECRATED_MODS_STORAGE_KEY, String(value));
+    applyCoeDesecratedModsEnabled(value);
+  },
   setWikiVisible(value: boolean) {
     storageService.setLocalValue(WIKI_STORAGE_KEY, String(value));
     applyWikiVisibility(value);
   },
   isCoeVisible() {
     return isCoeVisible;
+  },
+  isCoeDesecratedModsEnabled() {
+    return isCoeDesecratedModsEnabled;
   },
   isWikiVisible() {
     return isWikiVisible;
@@ -141,6 +163,10 @@ export const poe2CopyButtonSetting = {
 
 export const coeButtonSetting = {
   subscribe: subscribeCoe
+};
+
+export const coeDesecratedModsSetting = {
+  subscribe: subscribeCoeDesecratedMods
 };
 
 export const wikiButtonSetting = {

@@ -59,6 +59,9 @@ export const frenchTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "Prix équivalent",
   "settings.equivalentDescription":
     "Afficher ou masquer la ligne supplémentaire avec l’équivalent chaos/divine dans les résultats.",
+  "settings.coeDesecratedModsTitle": "Inclure les mods profanés",
+  "settings.coeDesecratedModsBody":
+    "Inclut les mods profanés comme modificateurs normaux. Craft of Exile ne permet pas encore de les importer.",
   "settings.wikiTitle": "Bouton wiki",
   "settings.wikiBody":
     "Ajoute un bouton W aux objets uniques pour ouvrir la page correspondante sur le wiki PoE.",
