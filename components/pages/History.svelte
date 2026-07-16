@@ -231,6 +231,7 @@
   flex-direction: column;
   gap: 12px;
   min-height: 100%;
+  font-family: "FontinSmallcaps", serif;
 }
 
 .history-groups {

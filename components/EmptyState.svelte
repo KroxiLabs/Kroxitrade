@@ -55,6 +55,7 @@
   background: linear-gradient(180deg, rgba(238, 238, 238, 0.035), rgba(238, 238, 238, 0.012)), radial-gradient(circle at top left, rgba(163, 141, 109, 0.1), transparent 48%), rgba(5, 5, 5, 0.34);
   box-shadow: inset 0 1px 0 rgba(238, 238, 238, 0.04), 0 10px 28px rgba(0, 0, 0, 0.18);
   overflow: hidden;
+  font-family: "FontinSmallcaps", serif;
 }
 
 .empty-state::after {
@@ -102,7 +103,7 @@
 .empty-state__title {
   margin: 0;
   color: rgba(238, 238, 238, 0.96);
-  font-family: "Fontin", serif;
+  font-family: "FontinSmallcaps", serif;
   font-size: calc(19px * var(--bt-text-scale, 1));
   line-height: 1.15;
 }
