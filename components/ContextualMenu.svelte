@@ -67,43 +67,41 @@
   </div>
 {/if}
 
-<style lang="scss">
-  @use "sass:color";
-  @use "../lib/styles/variables" as *;
+<style>
+.contextual-menu-trigger {
+  cursor: pointer;
+  padding: 5px;
+  font-size: calc(20px * var(--bt-text-scale, 1));
+  color: #eeeeee;
+}
+.contextual-menu-trigger:hover {
+  color: rgba(238, 238, 238, 0.8);
+}
 
-  .contextual-menu-trigger {
-    cursor: pointer;
-    padding: 5px;
-    font-size: calc(20px * var(--bt-text-scale, 1));
-    color: $white;
-    &:hover { color: rgba($white, 0.8); }
-  }
+.contextual-menu-items {
+  position: fixed;
+  z-index: 10000;
+  min-width: 180px;
+  background-color: #1a1a1a;
+  border: 1px solid rgb(51.5, 51.5, 51.5);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+  transform: translate(-100%, 0);
+}
 
-  .contextual-menu-items {
-    position: fixed;
-    z-index: 10000;
-    min-width: 180px;
-    background-color: $gray;
-    border: 1px solid color.adjust($gray, $lightness: 10%);
-    box-shadow: 0 2px 10px rgba(0,0,0,0.5);
-    transform: translate(-100%, 0);
-  }
-
-  .menu-item {
-    display: block;
-    width: 100%;
-    padding: 8px 12px;
-    background: transparent;
-    border: 0;
-    text-align: left;
-    color: $white;
-    font-family: $default-font;
-    font-size: calc(13px * var(--bt-text-scale, 1));
-    text-decoration: none;
-    cursor: pointer;
-
-    &:hover {
-      background-color: color.adjust($gray, $lightness: 10%);
-    }
-  }
+.menu-item {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  background: transparent;
+  border: 0;
+  text-align: left;
+  color: #eeeeee;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
+  font-size: calc(13px * var(--bt-text-scale, 1));
+  text-decoration: none;
+  cursor: pointer;
+}
+.menu-item:hover {
+  background-color: rgb(51.5, 51.5, 51.5);
+}
 </style>

@@ -463,255 +463,242 @@
     }
   }} />
 
-<style lang="scss">
-  @use "../../lib/styles/variables" as *;
+<style>
+.bookmarks-page {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 100%;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  container-type: inline-size;
+}
 
-  .bookmarks-page {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-height: 100%;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    container-type: inline-size;
-  }
+.toolbar-panel {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  padding: 12px;
+  background: #120f0d;
+  border: 1px solid rgba(163, 141, 109, 0.1);
+  border-radius: 4px;
+  margin: 0 4px;
+}
 
-  .toolbar-panel {
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    padding: 12px;
-    background: #120f0d;
-    border: 1px solid rgba($gold, 0.1);
-    border-radius: 4px;
-    margin: 0 4px;
-  }
+.toolbar-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  flex: 0 0 auto;
+  min-width: 0;
+  isolation: isolate;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
 
-  .toolbar-sticky {
-    position: sticky;
-    top: 0;
-    z-index: 3;
-    flex: 0 0 auto;
-    min-width: 0;
-    isolation: isolate;
-    transform: translateZ(0);
-    backface-visibility: hidden;
-  }
+.toolbar-panel {
+  gap: 10px;
+  padding: 10px 12px;
+  background: #15110e;
+  border-color: rgba(163, 141, 109, 0.14);
+  min-width: 0;
+  box-shadow: inset 0 1px 0 rgba(238, 238, 238, 0.03);
+}
 
-  .toolbar-panel {
-    gap: 10px;
-    padding: 10px 12px;
-    background: #15110e;
-    border-color: rgba($gold, 0.14);
-    min-width: 0;
-    box-shadow: inset 0 1px 0 rgba($white, 0.03);
-  }
+.toolbar-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  align-items: start;
+  min-width: 0;
+}
 
-  .toolbar-row {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 6px;
-    align-items: start;
-    min-width: 0;
-  }
+.bookmarks-page :global(.loading-container) {
+  flex: 1 1 auto;
+  min-height: 0;
+}
 
-  .bookmarks-page :global(.loading-container) {
-    flex: 1 1 auto;
-    min-height: 0;
-  }
+.toolbar-actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
+  flex: 1 1 0;
+  min-width: 0;
+}
 
-  .toolbar-actions {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 6px;
-    flex: 1 1 0;
-    min-width: 0;
-  }
+.toolbar-actions--secondary {
+  grid-template-columns: repeat(2, 34px);
+  flex: 0 0 auto;
+  opacity: 0.88;
+}
 
-  .toolbar-actions--secondary {
-    grid-template-columns: repeat(2, 34px);
-    flex: 0 0 auto;
-    opacity: 0.88;
-  }
+.toolbar-button {
+  min-height: 36px;
+  padding: 0 10px;
+  border: 1px solid rgba(163, 141, 109, 0.22);
+  border-radius: 4px;
+  background: rgba(5, 5, 5, 0.34);
+  color: #d7a75f;
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(10px * var(--bt-text-scale, 1));
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.toolbar-button:hover {
+  border-color: rgba(163, 141, 109, 0.34);
+  background: rgba(42, 34, 24, 0.9);
+  transform: translateY(-1px);
+  box-shadow: inset 0 1px 0 rgba(255, 232, 187, 0.04);
+}
+.toolbar-button.active {
+  border-color: rgba(163, 141, 109, 0.38);
+  background: rgba(54, 42, 28, 0.96);
+  color: #e2b56e;
+}
 
-  .toolbar-button {
-    min-height: 36px;
-    padding: 0 10px;
-    border: 1px solid rgba($gold, 0.22);
-    border-radius: 4px;
-    background: rgba($black, 0.34);
-    color: #d7a75f;
-    font-family: $primary-font;
-    font-size: calc(10px * var(--bt-text-scale, 1));
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    transition:
-      border-color 0.15s ease,
-      background 0.15s ease,
-      transform 0.15s ease,
-      box-shadow 0.15s ease;
+.toolbar-actions--secondary .toolbar-button {
+  width: 34px;
+  padding: 0;
+  min-height: 34px;
+  border-color: rgba(163, 141, 109, 0.14);
+  background: rgba(5, 5, 5, 0.22);
+  color: rgba(215, 167, 95, 0.84);
+}
+.toolbar-actions--secondary .toolbar-button:hover {
+  border-color: rgba(163, 141, 109, 0.24);
+  background: rgba(33, 27, 20, 0.82);
+  box-shadow: inset 0 1px 0 rgba(255, 232, 187, 0.02);
+}
+.toolbar-actions--secondary .toolbar-button.active {
+  border-color: rgba(163, 141, 109, 0.26);
+  background: rgba(47, 38, 28, 0.88);
+  color: #ddb26b;
+}
 
-    &:hover {
-      border-color: rgba($gold, 0.34);
-      background: rgba(42, 34, 24, 0.9);
-      transform: translateY(-1px);
-      box-shadow: inset 0 1px 0 rgba(255, 232, 187, 0.04);
-    }
+.toolbar-icon {
+  line-height: 1;
+  opacity: 0.82;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  overflow: visible;
+}
 
-    &.active {
-      border-color: rgba($gold, 0.38);
-      background: rgba(54, 42, 28, 0.96);
-      color: #e2b56e;
-    }
-  }
+.toolbar-icon :global(.toolbar-svg) {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  stroke-width: 1.65;
+  display: block;
+  overflow: visible;
+}
 
+.toolbar-label {
+  line-height: 1;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  min-height: 14px;
+}
+
+@container (max-width: 400px) {
   .toolbar-actions--secondary .toolbar-button {
-    width: 34px;
-    padding: 0;
-    min-height: 34px;
-    border-color: rgba($gold, 0.14);
-    background: rgba($black, 0.22);
-    color: rgba(215, 167, 95, 0.84);
-
-    &:hover {
-      border-color: rgba($gold, 0.24);
-      background: rgba(33, 27, 20, 0.82);
-      box-shadow: inset 0 1px 0 rgba(255, 232, 187, 0.02);
-    }
-
-    &.active {
-      border-color: rgba($gold, 0.26);
-      background: rgba(47, 38, 28, 0.88);
-      color: #ddb26b;
-    }
+    gap: 0;
   }
-
-  .toolbar-icon {
-    line-height: 1;
-    opacity: 0.82;
-    flex: 0 0 auto;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 14px;
-    height: 14px;
-    overflow: visible;
+}
+@media (min-width: 520px) {
+  .toolbar-actions--primary {
+    flex: 1 1 0;
   }
+}
+.folders-list {
+  flex: 1;
+  margin: 2px 0;
+  width: 100%;
+  min-width: 0;
+}
 
-  .toolbar-icon :global(.toolbar-svg) {
-    width: 14px;
-    height: 14px;
-    min-width: 14px;
-    min-height: 14px;
-    stroke-width: 1.65;
-    display: block;
-    overflow: visible;
-  }
+.import-text-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(163, 141, 109, 0.1);
+  background: linear-gradient(180deg, rgba(163, 141, 109, 0.04), rgba(163, 141, 109, 0.01));
+  border-radius: 6px;
+}
 
-  .toolbar-label {
-    line-height: 1;
-    white-space: nowrap;
-    display: inline-flex;
-    align-items: center;
-    min-height: 14px;
-  }
+.import-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-  @container (max-width: 400px) {
-    .toolbar-actions--secondary .toolbar-button {
-      gap: 0;
-    }
-  }
+.import-title {
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #a38d6d;
+}
 
-  @media (min-width: 520px) {
-    .toolbar-actions--primary {
-      flex: 1 1 0;
-    }
-  }
+.import-description,
+.import-hint {
+  margin: 0;
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  line-height: 1.4;
+}
 
-  .folders-list {
-    flex: 1;
-    margin: 2px 0;
-    width: 100%;
-    min-width: 0;
-  }
+.import-description {
+  color: rgba(238, 238, 238, 0.76);
+}
 
-  .import-text-area {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin-top: 10px;
-      padding-top: 12px;
-      border-top: 1px solid rgba($gold, 0.1);
-      background: linear-gradient(180deg, rgba($gold, 0.04), rgba($gold, 0.01));
-      border-radius: 6px;
-  }
+.import-hint {
+  color: rgba(196, 177, 140, 0.62);
+}
 
-  .import-copy {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-  }
+.import-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.import-field textarea {
+  width: 100%;
+  min-height: 112px;
+  background: rgba(5, 5, 5, 0.38);
+  border: 1px solid rgba(163, 141, 109, 0.18);
+  border-radius: 6px;
+  color: #eeeeee;
+  font-family: monospace;
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  line-height: 1.45;
+  padding: 10px;
+  resize: vertical;
+}
+.import-field textarea:focus-visible {
+  border-color: #a38d6d;
+  box-shadow: 0 0 0 1px rgba(163, 141, 109, 0.24), 0 0 0 3px rgba(163, 141, 109, 0.1);
+}
 
-  .import-title {
-      font-family: $primary-font;
-      font-size: calc(11px * var(--bt-text-scale, 1));
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: $gold;
-  }
+.import-actions {
+  display: flex;
+  justify-content: flex-end;
+}
 
-  .import-description,
-  .import-hint {
-      margin: 0;
-      font-size: calc(11px * var(--bt-text-scale, 1));
-      line-height: 1.4;
-  }
-
-  .import-description {
-      color: rgba($white, 0.76);
-  }
-
-  .import-hint {
-      color: rgba($gold-alt, 0.62);
-  }
-
-  .import-field {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-
-      textarea {
-          width: 100%;
-          min-height: 112px;
-          background: rgba($black, 0.38);
-          border: 1px solid rgba($gold, 0.18);
-          border-radius: 6px;
-          color: $white;
-          font-family: monospace;
-          font-size: calc(11px * var(--bt-text-scale, 1));
-          line-height: 1.45;
-          padding: 10px;
-          resize: vertical;
-          &:focus-visible {
-              border-color: $gold;
-              box-shadow:
-                0 0 0 1px rgba($gold, 0.24),
-                0 0 0 3px rgba($gold, 0.1);
-           }
-       }
-   }
-
-  .import-actions {
-      display: flex;
-      justify-content: flex-end;
-  }
-
-  :global(.flex-1) { flex: 1; }
+:global(.flex-1) {
+  flex: 1;
+}
 </style>

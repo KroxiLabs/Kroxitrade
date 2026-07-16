@@ -225,136 +225,128 @@
   </LoadingContainer>
 </div>
 
-<style lang="scss">
-  @use "../../lib/styles/variables" as *;
+<style>
+.history-page {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 100%;
+}
 
-  .history-page {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    min-height: 100%;
-  }
+.history-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
 
-  .history-groups {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-  }
+.history-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-  .history-group {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+.history-group__header h3 {
+  margin: 0;
+  color: rgba(163, 141, 109, 0.92);
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
 
-  .history-group__header h3 {
-    margin: 0;
-    color: rgba($gold, 0.92);
-    font-family: $primary-font;
-    font-size: calc(11px * var(--bt-text-scale, 1));
-    font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-  }
+.history-list {
+  width: 100%;
+  min-width: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
 
-  .history-list {
-    width: 100%;
-    min-width: 0;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
+.history-item {
+  border: 1px solid rgba(238, 238, 238, 0.07);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(238, 238, 238, 0.03), rgba(238, 238, 238, 0.015)), rgba(238, 238, 238, 0.02);
+  overflow: hidden;
+}
+.history-item:hover {
+  border-color: rgba(163, 141, 109, 0.18);
+  background: linear-gradient(180deg, rgba(163, 141, 109, 0.06), rgba(163, 141, 109, 0.02)), rgba(238, 238, 238, 0.03);
+}
 
-  .history-item {
-    border: 1px solid rgba($white, 0.07);
-    border-radius: 8px;
-    background:
-      linear-gradient(180deg, rgba($white, 0.03), rgba($white, 0.015)),
-      rgba($white, 0.02);
-    overflow: hidden;
+.history-link {
+  display: block;
+  padding: 12px;
+  color: #eeeeee;
+  text-decoration: none;
+  overflow: hidden;
+}
+.history-link:focus-visible {
+  background: rgba(163, 141, 109, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(163, 141, 109, 0.24);
+}
 
-    &:hover {
-      border-color: rgba($gold, 0.18);
-      background:
-        linear-gradient(180deg, rgba($gold, 0.06), rgba($gold, 0.02)),
-        rgba($white, 0.03);
-    }
-  }
+.history-link__topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+}
 
-  .history-link {
-    display: block;
-    padding: 12px;
-    color: $white;
-    text-decoration: none;
-    overflow: hidden;
+.history-league {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 0 8px;
+  border: 1px solid rgba(163, 141, 109, 0.18);
+  border-radius: 999px;
+  background: rgba(163, 141, 109, 0.08);
+  color: rgba(196, 177, 140, 0.92);
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(10px * var(--bt-text-scale, 1));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
-    &:focus-visible {
-      background: rgba($gold, 0.08);
-      box-shadow: inset 0 0 0 1px rgba($gold, 0.24);
-    }
-  }
+.history-relative {
+  color: rgba(238, 238, 238, 0.52);
+  font-size: calc(10px * var(--bt-text-scale, 1));
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
 
-  .history-link__topline {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 8px;
-  }
+.history-link__headline {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+}
 
-  .history-league {
-    display: inline-flex;
-    align-items: center;
-    min-height: 20px;
-    padding: 0 8px;
-    border: 1px solid rgba($gold, 0.18);
-    border-radius: 999px;
-    background: rgba($gold, 0.08);
-    color: rgba($gold-alt, 0.92);
-    font-family: $primary-font;
-    font-size: calc(10px * var(--bt-text-scale, 1));
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+.history-title {
+  flex: 1;
+  font-size: calc(13px * var(--bt-text-scale, 1));
+  font-weight: 700;
+  line-height: 1.45;
+  color: rgba(238, 238, 238, 0.94);
+  overflow-wrap: anywhere;
+}
 
-  .history-relative {
-    color: rgba($white, 0.52);
-    font-size: calc(10px * var(--bt-text-scale, 1));
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
+.history-meta {
+  flex: 0 0 auto;
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  color: rgba(238, 238, 238, 0.62);
+  overflow-wrap: anywhere;
+  white-space: nowrap;
+}
 
-  .history-link__headline {
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    gap: 12px;
-    min-width: 0;
-  }
-
-  .history-title {
-    flex: 1;
-    font-size: calc(13px * var(--bt-text-scale, 1));
-    font-weight: 700;
-    line-height: 1.45;
-    color: rgba($white, 0.94);
-    overflow-wrap: anywhere;
-  }
-
-  .history-meta {
-    flex: 0 0 auto;
-    font-size: calc(11px * var(--bt-text-scale, 1));
-    color: rgba($white, 0.62);
-    overflow-wrap: anywhere;
-    white-space: nowrap;
-  }
-
-  :global(.clear-button) {
-    width: 100%;
-    margin-top: 2px;
-  }
+:global(.clear-button) {
+  width: 100%;
+  margin-top: 2px;
+}
 </style>

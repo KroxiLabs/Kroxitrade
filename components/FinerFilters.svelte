@@ -106,135 +106,133 @@
   {/if}
 </div>
 
-<style lang="scss">
-  @use "../lib/styles/variables" as *;
+<style>
+.finer-filters-container {
+  width: 100%;
+  background-color: rgba(5, 5, 5, 0.4);
+  border-top: 1px solid rgba(163, 141, 109, 0.1);
+  display: flex;
+  flex-direction: column;
+  margin-top: auto;
+}
 
-  .finer-filters-container {
-    width: 100%;
-    background-color: rgba($black, 0.4);
-    border-top: 1px solid rgba($gold, 0.1);
-    display: flex;
-    flex-direction: column;
-    margin-top: auto;
-  }
+.finer-header {
+  border: none;
+  width: 100%;
+  background: linear-gradient(180deg, rgba(163, 141, 109, 0.08), transparent);
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+  border-bottom: 1px solid rgba(163, 141, 109, 0.05);
+  text-align: left;
+}
+.finer-header span {
+  color: #a38d6d;
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  font-family: "FontinSmallcaps", serif;
+  letter-spacing: 0.1em;
+  font-weight: bold;
+}
+.finer-header .chevron {
+  font-size: calc(10px * var(--bt-text-scale, 1));
+  transition: transform 0.2s;
+}
+.finer-header .chevron.collapsed {
+  transform: rotate(-90deg);
+}
+.finer-header:hover {
+  background: linear-gradient(180deg, rgba(163, 141, 109, 0.12), rgba(163, 141, 109, 0.02));
+}
 
-  .finer-header {
-    border: none;
-    width: 100%;
-    background: linear-gradient(180deg, rgba($gold, 0.08), transparent);
-    padding: 10px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-    user-select: none;
-    border-bottom: 1px solid rgba($gold, 0.05);
-    text-align: left;
+.finer-body {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  max-height: 250px;
+  overflow-y: auto;
+}
 
-    span {
-      color: $gold;
-      font-size: calc(11px * var(--bt-text-scale, 1));
-      font-family: $primary-font;
-      letter-spacing: 0.1em;
-      font-weight: bold;
-    }
+.section-title {
+  color: rgba(238, 238, 238, 0.6);
+  font-size: calc(10px * var(--bt-text-scale, 1));
+  font-family: "FontinSmallcaps", serif;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  letter-spacing: 0.05em;
+}
 
-    .chevron {
-      font-size: calc(10px * var(--bt-text-scale, 1));
-      transition: transform 0.2s;
-      &.collapsed {
-        transform: rotate(-90deg);
-      }
-    }
-    
-    &:hover {
-      background: linear-gradient(180deg, rgba($gold, 0.12), rgba($gold, 0.02));
-    }
-  }
+.modifiers-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
-  .finer-body {
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    max-height: 250px;
-    overflow-y: auto;
-  }
+.finer-global-btn {
+  display: grid;
+  grid-template-areas: "name minus plus";
+  grid-template-columns: 1fr 24px 24px;
+  grid-gap: 4px;
+  background: rgba(238, 238, 238, 0.02);
+  border: 1px solid rgba(238, 238, 238, 0.05);
+  border-radius: 4px;
+  padding: 2px 4px;
+}
 
-  .section-title {
-    color: rgba($white, 0.6);
-    font-size: calc(10px * var(--bt-text-scale, 1));
-    font-family: $primary-font;
-    text-transform: uppercase;
-    margin-bottom: 8px;
-    letter-spacing: 0.05em;
-  }
+.buyout-controls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 4px;
+  margin-top: 2px;
+}
 
+.mod-name {
+  grid-area: name;
+  display: flex;
+  align-items: center;
+  color: #eeeeee;
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  font-family: "FontinSmallcaps", serif;
+  padding-left: 2px;
+}
 
-  .modifiers-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-  }
-
-  .finer-global-btn {
-    display: grid;
-    grid-template-areas: "name minus plus";
-    grid-template-columns: 1fr 24px 24px;
-    grid-gap: 4px;
-    background: rgba($white, 0.02);
-    border: 1px solid rgba($white, 0.05);
-    border-radius: 4px;
-    padding: 2px 4px;
-  }
-
-  .buyout-controls {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 4px;
-    margin-top: 2px;
-  }
-
-  .mod-name {
-    grid-area: name;
-    display: flex;
-    align-items: center;
-    color: $white;
-    font-size: calc(11px * var(--bt-text-scale, 1));
-    font-family: $primary-font;
-    padding-left: 2px;
-  }
-
-  .action-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    color: $white;
-    font-size: calc(14px * var(--bt-text-scale, 1));
-    border-radius: 2px;
-    cursor: pointer;
-    padding: 2px 0;
-
-    &.minus {
-      grid-area: minus;
-      background: rgba(220, 53, 69, 0.3);
-      &:hover { background: rgba(220, 53, 69, 0.5); }
-    }
-
-    &.plus {
-      grid-area: plus;
-      background: rgba(40, 167, 69, 0.3);
-      &:hover { background: rgba(40, 167, 69, 0.5); }
-    }
-
-    &.buyout {
-      background: rgba($gold, 0.18);
-      &:hover { background: rgba($gold, 0.28); }
-    }
-
-    &.buyout-clear {
-      background: rgba(220, 53, 69, 0.3);
-      &:hover { background: rgba(220, 53, 69, 0.5); }
-    }
-  }
+.action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  color: #eeeeee;
+  font-size: calc(14px * var(--bt-text-scale, 1));
+  border-radius: 2px;
+  cursor: pointer;
+  padding: 2px 0;
+}
+.action-btn.minus {
+  grid-area: minus;
+  background: rgba(220, 53, 69, 0.3);
+}
+.action-btn.minus:hover {
+  background: rgba(220, 53, 69, 0.5);
+}
+.action-btn.plus {
+  grid-area: plus;
+  background: rgba(40, 167, 69, 0.3);
+}
+.action-btn.plus:hover {
+  background: rgba(40, 167, 69, 0.5);
+}
+.action-btn.buyout {
+  background: rgba(163, 141, 109, 0.18);
+}
+.action-btn.buyout:hover {
+  background: rgba(163, 141, 109, 0.28);
+}
+.action-btn.buyout-clear {
+  background: rgba(220, 53, 69, 0.3);
+}
+.action-btn.buyout-clear:hover {
+  background: rgba(220, 53, 69, 0.5);
+}
 </style>

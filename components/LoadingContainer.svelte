@@ -24,50 +24,74 @@
   {/if}
 </div>
 
-<style lang="scss">
-  @use "../lib/styles/variables" as *;
-  @use "../lib/styles/mixins" as *;
-
-  .loading-container {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-width: 0;
-    min-height: 0;
+<style>
+@keyframes fade-in-keyframes {
+  from {
+    opacity: 0;
   }
-
-  .loader {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    flex: 0 0 auto;
-    margin: 10px 0;
-    font-size: calc(25px * var(--bt-text-scale, 1));
-    color: $white;
-    @include delayed-fade-in;
-
-    &.is-small { margin: 5px 0; font-size: calc(15px * var(--bt-text-scale, 1)); }
-    &.is-large { margin: 20px 0; font-size: calc(25px * var(--bt-text-scale, 1)); }
+  to {
+    opacity: 1;
   }
-
-  .spinner {
-    display: inline-block;
-    animation: spin 1s linear infinite;
+}
+@keyframes delayed-fade-in-keyframes {
+  0% {
+    opacity: 0;
   }
-
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
+  25% {
+    opacity: 0;
   }
-
-  .content {
-    display: flex;
-    flex: 1 1 auto;
-    flex-direction: column;
-    @include fade-in;
-    width: 100%;
-    min-width: 0;
-    min-height: 0;
+  100% {
+    opacity: 1;
   }
+}
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
+
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex: 0 0 auto;
+  margin: 10px 0;
+  font-size: calc(25px * var(--bt-text-scale, 1));
+  color: #eeeeee;
+  animation: delayed-fade-in-keyframes 0.2s ease forwards;
+}
+.loader.is-small {
+  margin: 5px 0;
+  font-size: calc(15px * var(--bt-text-scale, 1));
+}
+.loader.is-large {
+  margin: 20px 0;
+  font-size: calc(25px * var(--bt-text-scale, 1));
+}
+
+.spinner {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.content {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  animation: fade-in-keyframes 0.2s ease;
+  width: 100%;
+  min-width: 0;
+  min-height: 0;
+}
 </style>

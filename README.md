@@ -79,7 +79,7 @@ The project currently focuses on making recurring trade searches easier to save,
 - **WXT** for browser extension structure and MV3 integration
 - **Svelte 5** for the injected UI, using runes mode
 - **TypeScript** for extension and domain logic
-- **Sass** for theming and trade-site layout enhancements
+- **CSS** for theming and trade-site layout enhancements
 - **Chrome Extension APIs** for storage, tab coordination, and background requests
 
 ## Project Structure
