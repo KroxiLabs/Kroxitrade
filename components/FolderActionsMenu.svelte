@@ -264,115 +264,111 @@
   </div>
 </div>
 
-<style lang="scss">
-  @use "../lib/styles/variables" as *;
+<style>
+.folder-actions-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 
-  .folder-actions-menu {
-    position: relative;
-    display: flex;
-    align-items: center;
-  }
+.folder-actions-menu__inline {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
 
-  .folder-actions-menu__inline {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-  }
+.folder-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid rgba(238, 238, 238, 0.12);
+  background: rgba(5, 5, 5, 0.45);
+  color: rgba(238, 238, 238, 0.82);
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+.folder-action-btn:hover {
+  background-color: rgba(238, 238, 238, 0.08);
+  border-color: rgba(163, 141, 109, 0.38);
+  color: #eeeeee;
+}
+.folder-action-btn.is-danger:hover {
+  background-color: rgba(109, 28, 28, 0.18);
+  border-color: rgba(109, 28, 28, 0.5);
+  color: #ffd7d7;
+}
 
-  .folder-action-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    border: 1px solid rgba($white, 0.12);
-    background: rgba($black, 0.45);
-    color: rgba($white, 0.82);
-    cursor: pointer;
-    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+.folder-action-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  font-size: 0;
+}
 
-    &:hover {
-      background-color: rgba($white, 0.08);
-      border-color: rgba($gold, 0.38);
-      color: $white;
-    }
+:global(.folder-action-menu-portal) {
+  position: fixed;
+  left: -9999px;
+  top: -9999px;
+  z-index: 2147483647;
+  min-width: 180px;
+  padding: 6px;
+  border: 1px solid rgba(168, 129, 73, 0.3);
+  border-radius: 6px;
+  background: #0b0b0b;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+}
 
-    &.is-danger:hover {
-      background-color: rgba($red, 0.18);
-      border-color: rgba($red, 0.5);
-      color: #ffd7d7;
-    }
-  }
+:global(.folder-action-menu-portal[data-ready="true"]) {
+  opacity: 1;
+  pointer-events: auto;
+}
 
-  .folder-action-btn__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 13px;
-    height: 13px;
-    flex-shrink: 0;
-    font-size: 0;
-  }
+:global(.folder-action-menu-portal__item) {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 4px;
+  background: #0b0b0b;
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+  text-align: left;
+  font-size: calc(12px * var(--bt-text-scale, 1));
+  line-height: 1.35;
+}
 
-  :global(.folder-action-menu-portal) {
-    position: fixed;
-    left: -9999px;
-    top: -9999px;
-    z-index: 2147483647;
-    min-width: 180px;
-    padding: 6px;
-    border: 1px solid rgba(168, 129, 73, 0.3);
-    border-radius: 6px;
-    background: #0b0b0b;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-    display: flex;
-    flex-direction: column;
-    opacity: 0;
-    pointer-events: none;
-  }
+:global(.folder-action-menu-portal__item:hover) {
+  background: #171717;
+}
 
-  :global(.folder-action-menu-portal[data-ready="true"]) {
-    opacity: 1;
-    pointer-events: auto;
-  }
+:global(.folder-action-menu-portal__item.is-danger:hover) {
+  background-color: rgba(120, 38, 38, 0.32);
+  color: #ffd7d7;
+}
 
-  :global(.folder-action-menu-portal__item) {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    padding: 10px 12px;
-    border: 0;
-    border-radius: 4px;
-    background: #0b0b0b;
-    color: rgba(255, 255, 255, 0.9);
-    cursor: pointer;
-    text-align: left;
-    font-size: calc(12px * var(--bt-text-scale, 1));
-    line-height: 1.35;
-  }
+:global(.folder-action-menu-portal__icon) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  font-size: 0;
+}
 
-  :global(.folder-action-menu-portal__item:hover) {
-    background: #171717;
-  }
-
-  :global(.folder-action-menu-portal__item.is-danger:hover) {
-    background-color: rgba(120, 38, 38, 0.32);
-    color: #ffd7d7;
-  }
-
-  :global(.folder-action-menu-portal__icon) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 13px;
-    height: 13px;
-    flex-shrink: 0;
-    font-size: 0;
-  }
-
-  :global(.folder-action-menu-portal__label) {
-    white-space: nowrap;
-  }
+:global(.folder-action-menu-portal__label) {
+  white-space: nowrap;
+}
 </style>

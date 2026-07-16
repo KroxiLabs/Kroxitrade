@@ -442,173 +442,161 @@
   </div>
 {/if}
 
-<style lang="scss">
-  @use "../lib/styles/variables" as *;
+<style>
+.onboarding-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2147483647;
+  pointer-events: none;
+}
 
-  .onboarding-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 2147483647;
-    pointer-events: none;
-  }
+.onboarding-highlight {
+  position: absolute;
+  border-radius: 10px;
+  border: 1px solid rgba(163, 141, 109, 0.62);
+  background: rgba(163, 141, 109, 0.08);
+  box-shadow: 0 0 0 1px rgba(196, 177, 140, 0.28), 0 0 22px rgba(163, 141, 109, 0.18);
+}
 
-  .onboarding-highlight {
-    position: absolute;
-    border-radius: 10px;
-    border: 1px solid rgba($gold, 0.62);
-    background: rgba($gold, 0.08);
-    box-shadow:
-      0 0 0 1px rgba($gold-alt, 0.28),
-      0 0 22px rgba($gold, 0.18);
-  }
+.onboarding-coachmark {
+  position: absolute;
+  padding: 14px;
+  border: 1px solid rgba(163, 141, 109, 0.22);
+  border-radius: 12px;
+  background: linear-gradient(180deg, rgba(163, 141, 109, 0.08), rgba(163, 141, 109, 0.02)), rgba(5, 5, 5, 0.98);
+  box-shadow: inset 0 1px 0 rgba(238, 238, 238, 0.03), 0 18px 38px rgba(5, 5, 5, 0.48);
+  pointer-events: auto;
+}
+.onboarding-coachmark::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: calc(var(--pointer-left) - 8px);
+  width: 14px;
+  height: 14px;
+  transform: rotate(45deg);
+  background: rgba(5, 5, 5, 0.98);
+  border-left: 1px solid rgba(163, 141, 109, 0.22);
+  border-top: 1px solid rgba(163, 141, 109, 0.22);
+}
+.onboarding-coachmark.is-above::before {
+  top: auto;
+  bottom: -7px;
+  border-left: none;
+  border-top: none;
+  border-right: 1px solid rgba(163, 141, 109, 0.22);
+  border-bottom: 1px solid rgba(163, 141, 109, 0.22);
+}
+.onboarding-coachmark.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
 
-  .onboarding-coachmark {
-    position: absolute;
-    padding: 14px;
-    border: 1px solid rgba($gold, 0.22);
-    border-radius: 12px;
-    background:
-      linear-gradient(180deg, rgba($gold, 0.08), rgba($gold, 0.02)),
-      rgba($poe-black, 0.98);
-    box-shadow:
-      inset 0 1px 0 rgba($white, 0.03),
-      0 18px 38px rgba($black, 0.48);
-    pointer-events: auto;
+.onboarding-coachmark__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.onboarding-coachmark__header h2 {
+  margin: 6px 0 0;
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(16px * var(--bt-text-scale, 1));
+  line-height: 1.2;
+  color: rgba(238, 238, 238, 0.96);
+}
 
-    &::before {
-      content: "";
-      position: absolute;
-      top: -7px;
-      left: calc(var(--pointer-left) - 8px);
-      width: 14px;
-      height: 14px;
-      transform: rotate(45deg);
-      background: rgba($poe-black, 0.98);
-      border-left: 1px solid rgba($gold, 0.22);
-      border-top: 1px solid rgba($gold, 0.22);
-    }
+.onboarding-coachmark__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  padding: 0 7px;
+  border: 1px solid rgba(163, 141, 109, 0.2);
+  border-radius: 999px;
+  background: rgba(163, 141, 109, 0.09);
+  color: rgba(196, 177, 140, 0.92);
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(10px * var(--bt-text-scale, 1));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
-    &.is-above::before {
-      top: auto;
-      bottom: -7px;
-      border-left: none;
-      border-top: none;
-      border-right: 1px solid rgba($gold, 0.22);
-      border-bottom: 1px solid rgba($gold, 0.22);
-    }
+.onboarding-close {
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 1px solid rgba(238, 238, 238, 0.08);
+  border-radius: 999px;
+  background: rgba(5, 5, 5, 0.3);
+  color: rgba(238, 238, 238, 0.76);
+  font-size: calc(15px * var(--bt-text-scale, 1));
+  line-height: 1;
+  cursor: pointer;
+}
 
-    &.is-hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-  }
+.onboarding-coachmark__body {
+  margin: 10px 0 0;
+  color: rgba(238, 238, 238, 0.76);
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  line-height: 1.5;
+}
 
-  .onboarding-coachmark__header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 10px;
+.onboarding-steps {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 8px;
+}
 
-    h2 {
-      margin: 6px 0 0;
-      font-family: $primary-font;
-      font-size: calc(16px * var(--bt-text-scale, 1));
-      line-height: 1.2;
-      color: rgba($white, 0.96);
-    }
-  }
+.onboarding-step-row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 9px;
+  align-items: start;
+}
 
-  .onboarding-coachmark__eyebrow {
-    display: inline-flex;
-    align-items: center;
-    min-height: 20px;
-    padding: 0 7px;
-    border: 1px solid rgba($gold, 0.2);
-    border-radius: 999px;
-    background: rgba($gold, 0.09);
-    color: rgba($gold-alt, 0.92);
-    font-family: $primary-font;
-    font-size: calc(10px * var(--bt-text-scale, 1));
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+.onboarding-step-index {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(163, 141, 109, 0.24);
+  background: rgba(163, 141, 109, 0.11);
+  color: #a38d6d;
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  font-weight: 700;
+}
 
-  .onboarding-close {
-    width: 24px;
-    height: 24px;
-    padding: 0;
-    border: 1px solid rgba($white, 0.08);
-    border-radius: 999px;
-    background: rgba($black, 0.3);
-    color: rgba($white, 0.76);
-    font-size: calc(15px * var(--bt-text-scale, 1));
-    line-height: 1;
-    cursor: pointer;
-  }
+.onboarding-step-copy {
+  color: rgba(238, 238, 238, 0.88);
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  line-height: 1.45;
+}
 
-  .onboarding-coachmark__body {
-    margin: 10px 0 0;
-    color: rgba($white, 0.76);
-    font-size: calc(11px * var(--bt-text-scale, 1));
-    line-height: 1.5;
-  }
+.onboarding-coachmark__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
 
-  .onboarding-steps {
-    margin: 12px 0 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 8px;
-  }
+.onboarding-progress {
+  color: rgba(196, 177, 140, 0.86);
+  font-size: calc(10px * var(--bt-text-scale, 1));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
-  .onboarding-step-row {
-    display: grid;
-    grid-template-columns: 24px minmax(0, 1fr);
-    gap: 9px;
-    align-items: start;
-  }
-
-  .onboarding-step-index {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 999px;
-    border: 1px solid rgba($gold, 0.24);
-    background: rgba($gold, 0.11);
-    color: $gold;
-    font-family: $primary-font;
-    font-size: calc(11px * var(--bt-text-scale, 1));
-    font-weight: 700;
-  }
-
-  .onboarding-step-copy {
-    color: rgba($white, 0.88);
-    font-size: calc(11px * var(--bt-text-scale, 1));
-    line-height: 1.45;
-  }
-
-  .onboarding-coachmark__footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 14px;
-    flex-wrap: wrap;
-  }
-
-  .onboarding-progress {
-    color: rgba($gold-alt, 0.86);
-    font-size: calc(10px * var(--bt-text-scale, 1));
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-
-  .onboarding-actions {
-    display: flex;
-    gap: 8px;
-    margin-left: auto;
-    flex-wrap: wrap;
-  }
+.onboarding-actions {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
 </style>

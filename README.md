@@ -79,7 +79,7 @@ The project currently focuses on making recurring trade searches easier to save,
 - **WXT** for browser extension structure and MV3 integration
 - **Svelte 5** for the injected UI, using runes mode
 - **TypeScript** for extension and domain logic
-- **Sass** for theming and trade-site layout enhancements
+- **CSS** for theming and trade-site layout enhancements
 - **Chrome Extension APIs** for storage, tab coordination, and background requests
 
 ## Project Structure
@@ -90,17 +90,17 @@ assets/              Branding assets and imported media
 components/          Svelte UI components and panel pages
 contents/            Shared content-script logic and mounted Svelte app
 lib/services/        Bookmarks, trade tracking, settings, result enhancements, poe.ninja
+lib/background.ts    Background bridge logic used by the WXT background entrypoint
 lib/styles/          Base and enhancement styles for the site and sidebar
 lib/types/           Shared TypeScript models
 lib/utilities/       Small helpers for URLs, IDs, clipboard, dates, and parsing
 public/              Static extension assets copied as-is into the bundle
 scripts/             Build/version helper scripts
-background.ts        Background bridge logic used by the WXT background entrypoint
-popup.svelte         Shared popup Svelte component
+components/pages/Popup.svelte  Shared popup Svelte component
 wxt.config.ts        WXT build and manifest configuration
 ```
 
-See `docs/ARCHITECTURE.md` for a deeper architectural overview if you want to explore the internal services and messaging flow.
+See `docs/ARCHITECTURE.md` for a deeper architectural overview, `docs/EXTENSION-BEST-PRACTICES.md` for the project's engineering guidelines, and `docs/DEPENDENCY-AUDIT.md` for the direct-dependency audit.
 
 ## Development
 

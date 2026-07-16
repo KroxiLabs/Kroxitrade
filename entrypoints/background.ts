@@ -1,4 +1,4 @@
-import { registerBackgroundHandlers } from "~/background"
+import { registerBackgroundHandlers } from "~/lib/background"
 
 export default defineBackground({
   type: "module",

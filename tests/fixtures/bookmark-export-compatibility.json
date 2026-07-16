@@ -1,0 +1,81 @@
+{
+  "v5Unicode": {
+    "serialized": "5:eyJpY24iOiJwb2UyLWxpY2giLCJ0aXQiOiJDw61yY3VsbyDigJQg0J/RgNC40LLQtdGCIOOBk+OCk+OBq+OBoeOBryDtlZzqta3slrQg4Lig4Liy4Lip4Liy4LmE4LiX4LiiIiwidmVyIjoiMiIsImNhdHMiOlt7ImlkIjoiY2F0LXVuaXF1ZSIsInRpdCI6Ik9mZXJ0YXMgw7puaWNhcyJ9XSwidHJzIjpbeyJ0aXQiOiLDiXhhbHTDqSDigJQg55u+IiwibG9jIjoiMjpleGNoYW5nZTpTdGFuZGFyZDphbmlsbG8iLCJjYXQiOiJjYXQtdW5pcXVlIn1dfQ==",
+    "payload": {
+      "icn": "poe2-lich",
+      "tit": "Círculo — Привет こんにちは 한국어 ภาษาไทย",
+      "ver": "2",
+      "cats": [
+        {
+          "id": "cat-unique",
+          "tit": "Ofertas únicas"
+        }
+      ],
+      "trs": [
+        {
+          "tit": "Éxalté — 盾",
+          "loc": "2:exchange:Standard:anillo",
+          "cat": "cat-unique"
+        }
+      ]
+    },
+    "folder": {
+      "icon": "poe2-lich",
+      "title": "Círculo — Привет こんにちは 한국어 ภาษาไทย",
+      "version": "2",
+      "archivedAt": null,
+      "categories": [
+        {
+          "id": "cat-unique",
+          "title": "Ofertas únicas"
+        }
+      ]
+    },
+    "trades": [
+      {
+        "title": "Éxalté — 盾",
+        "completedAt": null,
+        "categoryId": "cat-unique",
+        "location": {
+          "version": "2",
+          "type": "exchange",
+          "league": "Standard",
+          "slug": "anillo"
+        }
+      }
+    ]
+  },
+  "v2Legacy": {
+    "serialized": "2:eyJpY24iOiJib29rbWFyayIsInRpdCI6IkxlZ2FjeSBmb2xkZXIiLCJ0cnMiOlt7InRpdCI6Ik9sZCB0cmFkZSIsImxvYyI6InNlYXJjaDpsZWdhY3ktc2x1ZyJ9XX0=",
+    "payload": {
+      "icn": "bookmark",
+      "tit": "Legacy folder",
+      "trs": [
+        {
+          "tit": "Old trade",
+          "loc": "search:legacy-slug"
+        }
+      ]
+    },
+    "folder": {
+      "icon": "bookmark",
+      "title": "Legacy folder",
+      "version": "1",
+      "archivedAt": null,
+      "categories": []
+    },
+    "trades": [
+      {
+        "title": "Old trade",
+        "completedAt": null,
+        "categoryId": null,
+        "location": {
+          "version": "1",
+          "type": "search",
+          "league": null,
+          "slug": "legacy-slug"
+        }
+      }
+    ]
+  }
+}

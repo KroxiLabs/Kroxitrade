@@ -46,108 +46,103 @@
   </button>
 {/if}
 
-<style lang="scss">
-  @use "sass:color";
-  @use "../lib/styles/variables" as *;
+<style>
+.button {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  height: 28px;
+  padding: 0 14px;
+  border: 1px solid rgba(238, 238, 238, 0.1);
+  background: rgba(238, 238, 238, 0.03);
+  border-radius: 2px;
+  text-decoration: none;
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+  color: rgba(238, 238, 238, 0.8);
+  cursor: pointer;
+  transition: background-color 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), border-color 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), color 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), box-shadow 0.2s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.button:hover {
+  background: rgba(238, 238, 238, 0.08);
+  color: #eeeeee;
+  border-color: rgba(238, 238, 238, 0.3);
+}
+.button:active {
+  transform: translateY(1px);
+}
+.button:focus-visible {
+  border-color: rgba(163, 141, 109, 0.72);
+  box-shadow: 0 0 0 1px rgba(163, 141, 109, 0.3), 0 0 0 3px rgba(163, 141, 109, 0.14);
+}
+.button.is-blue {
+  border-color: rgba(15, 28, 46, 0.4);
+  background: rgba(15, 28, 46, 0.1);
+  color: rgb(40.0819672131, 74.8196721311, 122.9180327869);
+}
+.button.is-blue:hover {
+  background: rgba(15, 28, 46, 0.2);
+  border-color: rgba(15, 28, 46, 0.8);
+  box-shadow: 0 0 8px rgba(15, 28, 46, 0.3);
+  color: #eeeeee;
+}
+.button.is-gold {
+  border-color: rgba(163, 141, 109, 0.4);
+  background: rgba(163, 141, 109, 0.08);
+  color: #a38d6d;
+}
+.button.is-gold:hover {
+  background: rgba(163, 141, 109, 0.15);
+  border-color: #a38d6d;
+  box-shadow: 0 0 8px rgba(163, 141, 109, 0.2);
+  color: rgb(202.4285714286, 189.8571428571, 171.5714285714);
+}
+.button.is-red {
+  border-color: rgba(109, 28, 28, 0.4);
+  background: rgba(109, 28, 28, 0.08);
+  color: rgb(169.8649635036, 43.6350364964, 43.6350364964);
+}
+.button.is-red:hover {
+  background: rgba(109, 28, 28, 0.15);
+  border-color: #6d1c1c;
+  box-shadow: 0 0 8px rgba(109, 28, 28, 0.3);
+  color: #eeeeee;
+}
 
-  .button {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    height: 28px;
-    padding: 0 14px;
-    border: 1px solid rgba($white, 0.1);
-    background: rgba($white, 0.03);
-    border-radius: 2px;
-    text-decoration: none;
-    font-family: $primary-font;
-    font-size: calc(11px * var(--bt-text-scale, 1));
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    font-weight: 600;
-    color: rgba($white, 0.8);
-    cursor: pointer;
-    transition:
-      background-color 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
-      border-color 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
-      color 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
-      box-shadow 0.2s cubic-bezier(0.25, 0.8, 0.25, 1),
-      transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
+.file-input {
+  display: none !important;
+}
 
-    &:hover {
-      background: rgba($white, 0.08);
-      color: $white;
-      border-color: rgba($white, 0.3);
-    }
+.icon {
+  margin-right: 8px;
+  font-size: calc(14px * var(--bt-text-scale, 1));
+}
 
-    &:active {
-      transform: translateY(1px);
-    }
+.icon-html {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  font-size: 0;
+}
 
-    &:focus-visible {
-      border-color: rgba($gold, 0.72);
-      box-shadow:
-        0 0 0 1px rgba($gold, 0.3),
-        0 0 0 3px rgba($gold, 0.14);
-    }
+.icon-html :global(.toolbar-svg) {
+  width: 14px;
+  height: 14px;
+  min-width: 14px;
+  min-height: 14px;
+  display: block;
+  overflow: visible;
+  stroke-width: 1.65;
+}
 
-    &.is-blue {
-      border-color: rgba($blue, 0.4);
-      background: rgba($blue, 0.1);
-      color: color.adjust($blue, $lightness: 20%);
-      &:hover { 
-          background: rgba($blue, 0.2);
-          border-color: rgba($blue, 0.8);
-          box-shadow: 0 0 8px rgba($blue, 0.3);
-          color: $white;
-      }
-    }
-
-    &.is-gold {
-      border-color: rgba($gold, 0.4);
-      background: rgba($gold, 0.08);
-      color: $gold;
-      &:hover { 
-          background: rgba($gold, 0.15);
-          border-color: $gold;
-          box-shadow: 0 0 8px rgba($gold, 0.2);
-          color: color.adjust($gold, $lightness: 20%);
-      }
-    }
-
-    &.is-red {
-      border-color: rgba($red, 0.4);
-      background: rgba($red, 0.08);
-      color: color.adjust($red, $lightness: 15%);
-      &:hover { 
-          background: rgba($red, 0.15);
-          border-color: $red;
-          box-shadow: 0 0 8px rgba($red, 0.3);
-          color: $white;
-      }
-    }
-  }
-
-  .file-input { display: none !important; }
-  .icon { margin-right: 8px; font-size: calc(14px * var(--bt-text-scale, 1)); }
-  .icon-html {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 14px;
-    height: 14px;
-    font-size: 0;
-  }
-
-  .icon-html :global(.toolbar-svg) {
-    width: 14px;
-    height: 14px;
-    min-width: 14px;
-    min-height: 14px;
-    display: block;
-    overflow: visible;
-    stroke-width: 1.65;
-  }
-
-  .label { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 </style>

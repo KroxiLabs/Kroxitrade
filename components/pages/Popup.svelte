@@ -5,9 +5,9 @@
   import hammerIcon from "lucide-static/icons/hammer.svg?raw"
   import packageSearchIcon from "lucide-static/icons/package-search.svg?raw"
   import searchIcon from "lucide-static/icons/search.svg?raw"
-  import { languageStore, setLanguage, translate, type AppLanguage } from "./lib/services/i18n"
-  import { settings } from "./lib/services/settings"
-  import SvgIcon from "./components/SvgIcon.svelte"
+  import { languageStore, setLanguage, translate, type AppLanguage } from "~lib/services/i18n"
+  import { settings } from "~lib/services/settings"
+  import SvgIcon from "~components/SvgIcon.svelte"
 
   const tradeLinks = [
     {
@@ -95,8 +95,8 @@
     { id: "shared", labelKey: "popup.shortcuts.shared" }
   ]
 
-  import poe1Logo from "./assets/logo-trade.webp?inline"
-  import poe2Logo from "./assets/logo-trade2.webp?inline"
+  import poe1Logo from "~assets/logo-trade.webp?inline"
+  import poe2Logo from "~assets/logo-trade2.webp?inline"
 
   const SHORTCUTS_VISIBLE_KEY = "popup-shortcuts-visible"
   const TEXT_SIZE_SCALE = {

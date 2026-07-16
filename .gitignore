@@ -31,6 +31,9 @@ yarn-error.log*
 out/
 build/
 dist/
+.agents/
+.codebase-memory/
+.codex/
 
 # wxt
 .wxt

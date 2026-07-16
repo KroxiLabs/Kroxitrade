@@ -74,121 +74,103 @@
   </div>
 {/if}
 
-<style lang="scss">
-  @use "../lib/styles/variables" as *;
+<style>
+.welcome-dialog-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 2147483647;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(5, 5, 5, 0.72);
+  backdrop-filter: blur(6px);
+}
 
-  .welcome-dialog-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 2147483647;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 16px;
-    background: rgba($black, 0.72);
-    backdrop-filter: blur(6px);
-  }
+.welcome-dialog {
+  width: min(100%, 420px);
+  border: 1px solid rgba(163, 141, 109, 0.22);
+  border-radius: 8px;
+  background: linear-gradient(180deg, rgba(163, 141, 109, 0.05), rgba(163, 141, 109, 0.015)), rgba(5, 5, 5, 0.98);
+  box-shadow: inset 0 1px 0 rgba(238, 238, 238, 0.02), 0 18px 38px rgba(5, 5, 5, 0.55);
+  overflow: hidden;
+}
 
-  .welcome-dialog {
-    width: min(100%, 420px);
-    border: 1px solid rgba($gold, 0.22);
-    border-radius: 8px;
-    background:
-      linear-gradient(180deg, rgba($gold, 0.05), rgba($gold, 0.015)),
-      rgba($poe-black, 0.98);
-    box-shadow:
-      inset 0 1px 0 rgba($white, 0.02),
-      0 18px 38px rgba($black, 0.55);
-    overflow: hidden;
-  }
+.welcome-dialog__header {
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid rgba(163, 141, 109, 0.1);
+}
+.welcome-dialog__header h3 {
+  margin: 0;
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(15px * var(--bt-text-scale, 1));
+  letter-spacing: 0.04em;
+  color: #a38d6d;
+}
 
-  .welcome-dialog__header {
-    padding: 14px 16px 10px;
-    border-bottom: 1px solid rgba($gold, 0.1);
+.welcome-dialog__body {
+  padding: 14px 16px 16px;
+}
+.welcome-dialog__body p {
+  margin: 0 0 14px;
+  color: rgba(238, 238, 238, 0.82);
+  font-size: calc(12px * var(--bt-text-scale, 1));
+  line-height: 1.5;
+}
 
-    h3 {
-      margin: 0;
-      font-family: $primary-font;
-      font-size: calc(15px * var(--bt-text-scale, 1));
-      letter-spacing: 0.04em;
-      color: $gold;
-    }
-  }
+.welcome-dialog__label {
+  margin-bottom: 10px;
+  color: rgba(196, 177, 140, 0.88);
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(10px * var(--bt-text-scale, 1));
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
 
-  .welcome-dialog__body {
-    padding: 14px 16px 16px;
+.welcome-language-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
 
-    p {
-      margin: 0 0 14px;
-      color: rgba($white, 0.82);
-      font-size: calc(12px * var(--bt-text-scale, 1));
-      line-height: 1.5;
-    }
-  }
+.welcome-language-button {
+  min-height: 34px;
+  padding: 0 10px;
+  border: 1px solid rgba(238, 238, 238, 0.1);
+  border-radius: 4px;
+  background: rgba(238, 238, 238, 0.03);
+  color: rgba(238, 238, 238, 0.84);
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: border-color 0.16s ease, background-color 0.16s ease, color 0.16s ease, box-shadow 0.16s ease, transform 0.16s ease;
+}
+.welcome-language-button:hover {
+  border-color: rgba(163, 141, 109, 0.34);
+  background: rgba(163, 141, 109, 0.08);
+  color: #eeeeee;
+}
+.welcome-language-button:focus-visible {
+  border-color: rgba(163, 141, 109, 0.5);
+  box-shadow: 0 0 0 1px rgba(163, 141, 109, 0.22), 0 0 0 3px rgba(163, 141, 109, 0.1);
+}
+.welcome-language-button.is-selected {
+  border-color: rgba(163, 141, 109, 0.42);
+  background: rgba(163, 141, 109, 0.12);
+  color: #a38d6d;
+  box-shadow: 0 0 0 1px rgba(163, 141, 109, 0.14);
+}
 
-  .welcome-dialog__label {
-    margin-bottom: 10px;
-    color: rgba($gold-alt, 0.88);
-    font-family: $primary-font;
-    font-size: calc(10px * var(--bt-text-scale, 1));
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+.welcome-dialog__actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 16px 16px;
+}
 
-  .welcome-language-grid {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 8px;
-  }
-
+@media (prefers-reduced-motion: reduce) {
   .welcome-language-button {
-    min-height: 34px;
-    padding: 0 10px;
-    border: 1px solid rgba($white, 0.1);
-    border-radius: 4px;
-    background: rgba($white, 0.03);
-    color: rgba($white, 0.84);
-    font-family: $primary-font;
-    font-size: calc(11px * var(--bt-text-scale, 1));
-    letter-spacing: 0.04em;
-    cursor: pointer;
-    transition:
-      border-color 0.16s ease,
-      background-color 0.16s ease,
-      color 0.16s ease,
-      box-shadow 0.16s ease,
-      transform 0.16s ease;
-
-    &:hover {
-      border-color: rgba($gold, 0.34);
-      background: rgba($gold, 0.08);
-      color: $white;
-    }
-
-    &:focus-visible {
-      border-color: rgba($gold, 0.5);
-      box-shadow:
-        0 0 0 1px rgba($gold, 0.22),
-        0 0 0 3px rgba($gold, 0.1);
-    }
-
-    &.is-selected {
-      border-color: rgba($gold, 0.42);
-      background: rgba($gold, 0.12);
-      color: $gold;
-      box-shadow: 0 0 0 1px rgba($gold, 0.14);
-    }
+    transition: none !important;
   }
-
-  .welcome-dialog__actions {
-    display: flex;
-    justify-content: flex-end;
-    padding: 0 16px 16px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .welcome-language-button {
-      transition: none !important;
-    }
-  }
+}
 </style>

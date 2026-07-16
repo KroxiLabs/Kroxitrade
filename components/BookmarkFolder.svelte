@@ -972,571 +972,516 @@
     }
   }} />
 
-<style lang="scss">
-  @use "../lib/styles/variables" as *;
-
-  .folder {
-    margin-bottom: 10px;
-    border: 1px solid rgba($gold, 0.12);
-    border-radius: 8px;
-    overflow: visible;
-    font-family: $primary-font;
-    background: linear-gradient(180deg, rgba($gold, 0.035), rgba($gold, 0.015)),
-      rgba($black, 0.4);
-    box-shadow:
-      inset 0 1px 0 rgba($white, 0.02),
-      0 8px 18px rgba(0, 0, 0, 0.18);
-    transition:
-      transform 0.18s ease,
-      border-color 0.18s ease,
-      background-color 0.18s ease,
-      box-shadow 0.18s ease;
-
-    &.is-archived {
-      opacity: 0.72;
-    }
-
-    &.is-folder-dragging {
-      opacity: 0.45;
-      transform: scale(0.985);
-    }
-
-    &.is-folder-drag-over {
-      border-color: rgba($gold, 0.34);
-      box-shadow:
-        inset 0 1px 0 rgba($white, 0.02),
-        0 0 0 1px rgba($gold, 0.2),
-        0 10px 22px rgba(0, 0, 0, 0.24);
-    }
-  }
-
-  .folder-header {
-    display: flex;
-    align-items: stretch;
-    gap: 8px;
-    background: linear-gradient(
-        180deg,
-        rgba($blue-alt, 0.92),
-        rgba($blue, 0.96)
-      ),
-      $blue;
-    padding: 8px 10px;
-    color: $white;
-    font-family: $primary-font;
-    border-bottom: 1px solid rgba($gold, 0.1);
-    border-radius: 8px 8px 0 0;
-  }
-
-  .folder:not(.is-expanded):not(.is-editing) .folder-header {
-    border-radius: 8px;
-  }
-
-  .folder-drag-handle {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 18px;
-    color: rgba($gold-alt, 0.34);
-    cursor: grab;
-    user-select: none;
-
-    &:active {
-      cursor: grabbing;
-    }
-  }
-
-  .expansion-wrapper {
-    display: flex;
-    flex: 1;
-    min-width: 0;
-    align-items: center;
-    gap: 10px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 0;
-    color: inherit;
-    text-align: left;
-    width: 100%;
-    
-    &:focus-visible {
-      border-radius: 4px;
-      box-shadow:
-        0 0 0 1px rgba($gold, 0.22),
-        0 0 0 3px rgba($gold, 0.1);
-    }
-  }
-
-  .header-copy {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .header-main {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    min-width: 0;
-  }
-
-  .folder-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 26px;
-    height: 26px;
-    flex: 0 0 26px;
-    overflow: hidden;
-    border-radius: 4px;
-
-    img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-    }
-  }
-
-  .folder-icon--preview {
-    width: 24px;
-    height: 24px;
-    flex-basis: 24px;
-  }
-
-  .header-label {
-    flex: 1;
-    font-family: $primary-font;
-    font-size: calc(14px * var(--bt-text-scale, 1));
-    font-weight: 700;
-    letter-spacing: 0.02em;
-    color: rgba($white, 0.96);
-    text-transform: uppercase;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .inline-edit-input {
-    flex: 1;
-    width: 0;
-    min-width: 0;
-    background: rgba($black, 0.4);
-    border: 1px solid rgba($gold, 0.5);
-    color: $white;
-    font-family: $primary-font;
-    font-size: calc(14px * var(--bt-text-scale, 1));
-    text-transform: uppercase;
-    padding: 2px 6px;
-    border-radius: 2px;
-    margin-right: 8px;
-
-    &:focus-visible {
-      border-color: $gold;
-      box-shadow: 0 0 0 1px rgba($gold, 0.2);
-    }
-  }
-
-  .trade-edit {
-    font-size: calc(12px * var(--bt-text-scale, 1));
-    margin-right: 0;
-  }
-
-  .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex-shrink: 0;
-    padding-left: 8px;
-    border-left: 1px solid rgba($white, 0.06);
-  }
-
-  .folder-edit-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    border-top: 1px solid rgba($white, 0.06);
-    background: rgba($black, 0.22);
-  }
-
-  .folder-edit-panel__top {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
-    gap: 6px;
-  }
-
-  .folder-icon-option {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    min-height: 34px;
-    padding: 4px;
-    border: 1px solid rgba($white, 0.08);
-    border-radius: 4px;
-    background: rgba($black, 0.28);
-    cursor: pointer;
-    overflow: hidden;
-    transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
-
-    img {
-      display: block;
-      width: 24px;
-      height: 24px;
-      object-fit: cover;
-      object-position: center;
-      border-radius: 3px;
-    }
-
-    &:hover {
-      border-color: rgba($gold, 0.26);
-      background: rgba($white, 0.05);
-      transform: translateY(-1px);
-    }
-
-    &:focus-visible {
-      border-color: rgba($gold, 0.3);
-      box-shadow:
-        0 0 0 1px rgba($gold, 0.18),
-        0 0 0 3px rgba($gold, 0.08);
-    }
-
-    &.is-selected {
-      border-color: rgba($gold, 0.42);
-      background: rgba($gold, 0.08);
-    }
-  }
-
-  .folder-icon-option--clear {
-    padding: 4px 6px;
-  }
-
-  .folder-icon-option__empty {
-    font-family: $primary-font;
-    font-size: calc(9px * var(--bt-text-scale, 1));
-    color: rgba($white, 0.75);
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .folder-edit-panel__actions {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-  }
-
-  .folder-edit-panel__preview {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-width: 0;
-  }
-
-  .folder-edit-panel__label {
-    color: rgba($white, 0.72);
-    font-size: calc(11px * var(--bt-text-scale, 1));
-    line-height: 1.4;
-  }
-
-  .folder-edit-panel__buttons {
-    display: flex;
-    gap: 6px;
-    flex-shrink: 0;
-  }
-
-  .action-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 13px;
-    height: 13px;
-    font-size: 0;
-  }
-
-  .action-icon :global(.action-svg) {
-    width: 13px;
-    height: 13px;
-    min-width: 13px;
-    min-height: 13px;
-    display: block;
-    overflow: visible;
-    stroke-width: 1.6;
-  }
-
-  .trades-list {
-    list-style: none;
-    padding: 10px;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    background: linear-gradient(180deg, rgba($white, 0.015), rgba($white, 0)),
-      rgba($black, 0.36);
-  }
-
-  .category-row {
-    list-style: none;
-  }
-
-  .category-heading {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 28px;
-    padding: 2px 4px;
-    color: rgba($gold-alt, 0.82);
-    font-family: $primary-font;
-    font-size: calc(11px * var(--bt-text-scale, 1));
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-  }
-
-  .category-heading__rule {
-    height: 1px;
-    min-width: 14px;
-    flex: 1;
-    background: rgba($gold, 0.2);
-  }
-
-  .category-heading__title {
-    max-width: 62%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .category-heading__actions {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    flex: 0 0 auto;
-  }
-
-  .category-action {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 22px;
-    height: 22px;
-    padding: 0;
-    border: 1px solid rgba($white, 0.1);
-    border-radius: 3px;
-    background: rgba($black, 0.35);
-    color: rgba($white, 0.72);
-    cursor: pointer;
-
-    &:hover {
-      border-color: rgba($gold, 0.32);
-      color: $white;
-      background: rgba($white, 0.06);
-    }
-
-    &.is-danger:hover {
-      border-color: rgba($red, 0.45);
-      color: #ffd7d7;
-      background: rgba($red, 0.16);
-    }
-  }
-
-  .trade-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 9px 10px;
-    border: 1px solid rgba($white, 0.06);
-    border-radius: 6px;
-    background: rgba($black, 0.34);
-    cursor: pointer;
-    transition:
-      background-color 0.2s,
-      border-color 0.2s,
-      opacity 0.2s,
-      transform 0.2s;
-
-    &:hover {
-      background-color: rgba($white, 0.05);
-      border-color: rgba($gold, 0.16);
-      transform: translateY(-1px);
-    }
-
-    &:focus-visible {
-      border-color: rgba($gold, 0.42);
-      box-shadow: 0 0 0 2px rgba($gold, 0.14);
-      outline: none;
-    }
-
-    &.is-dragging {
-      opacity: 0.3;
-      background-color: rgba($gold, 0.1);
-    }
-
-    &.is-completed {
-      background: rgba($green, 0.14);
-      border-color: rgba($green, 0.28);
-    }
-
-    &.is-drag-over {
-      border-color: rgba($gold, 0.42);
-      background-color: rgba($gold, 0.15);
-      box-shadow: 0 0 0 1px rgba($gold, 0.18);
-    }
-  }
-
-  .drag-handle {
-    padding: 0;
-    border: 0;
-    background: transparent;
-    cursor: grab;
-    color: rgba($white, 0.3);
-    font-size: calc(15px * var(--bt-text-scale, 1));
-    user-select: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    flex: 0 0 16px;
-
-    &:hover {
-      color: $gold;
-    }
-    &:active {
-      cursor: grabbing;
-    }
-  }
-
-  .trade-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    flex: 1;
-    min-width: 0;
-    gap: 4px;
-  }
-
-  .trade-top {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-  }
-
-  .trade-copy {
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
-  }
-
-  .trade-link {
-    color: $white;
-    text-decoration: none;
-    font-size: calc(13px * var(--bt-text-scale, 1));
-    line-height: 1.2;
-    cursor: inherit;
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    display: block;
-  }
-
-  .trade-actions {
-    display: flex;
-    align-items: center;
-    gap: 3px;
-    min-width: 0;
-    flex-shrink: 0;
-    padding: 0;
-    margin: 0;
-  }
-
-  .trade-actions--compact {
-    margin-left: auto;
-  }
-
-  .indicator {
-    flex: 0 0 auto;
-    color: rgba($gold-alt, 0.78);
-    font-size: calc(11px * var(--bt-text-scale, 1));
-  }
-
-  .trades-content {
-    background: rgba($black, 0.24);
-    border-radius: 0 0 8px 8px;
-  }
-
-  .footer-actions {
-    padding: 10px;
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    border-top: 1px solid rgba($gold, 0.08);
-    background: linear-gradient(180deg, rgba($gold, 0.04), rgba($gold, 0));
-  }
-
-  .folder.is-ultra-compact {
-    .trades-list {
-      gap: 1px;
-      padding: 4px;
-    }
-
-    .category-heading {
-      min-height: 22px;
-      padding: 0 4px;
-      font-size: calc(10px * var(--bt-text-scale, 1));
-    }
-
-    .category-row {
-      padding-top: 4px;
-      padding-bottom: 4px;
-    }
-
-    .trade-item {
-      gap: 6px;
-      min-height: 29px;
-      padding: 4px 7px;
-      border-color: rgba($white, 0.075);
-      border-radius: 3px;
-
-      &:hover {
-        transform: none;
-      }
-    }
-
-    .drag-handle {
-      width: 12px;
-      flex-basis: 12px;
-      font-size: calc(12px * var(--bt-text-scale, 1));
-    }
-
-    .trade-content,
-    .trade-copy {
-      gap: 0;
-    }
-
-    .trade-top {
-      gap: 4px;
-    }
-
-    .trade-link {
-      font-size: calc(12px * var(--bt-text-scale, 1));
-      line-height: 1.1;
-    }
-  }
-
-  .save-search-anchor {
-    display: flex;
-    flex: 1 1 180px;
-    min-width: 0;
-  }
-
-  :global(.folder-action-footer-btn) {
-    flex: 0 0 auto;
-  }
+<style>
+.folder {
+  margin-bottom: 10px;
+  border: 1px solid rgba(163, 141, 109, 0.12);
+  border-radius: 8px;
+  overflow: visible;
+  font-family: "FontinSmallcaps", serif;
+  background: linear-gradient(180deg, rgba(163, 141, 109, 0.035), rgba(163, 141, 109, 0.015)), rgba(5, 5, 5, 0.4);
+  box-shadow: inset 0 1px 0 rgba(238, 238, 238, 0.02), 0 8px 18px rgba(0, 0, 0, 0.18);
+  transition: transform 0.18s ease, border-color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+.folder.is-archived {
+  opacity: 0.72;
+}
+.folder.is-folder-dragging {
+  opacity: 0.45;
+  transform: scale(0.985);
+}
+.folder.is-folder-drag-over {
+  border-color: rgba(163, 141, 109, 0.34);
+  box-shadow: inset 0 1px 0 rgba(238, 238, 238, 0.02), 0 0 0 1px rgba(163, 141, 109, 0.2), 0 10px 22px rgba(0, 0, 0, 0.24);
+}
+
+.folder-header {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  background: linear-gradient(180deg, rgba(26, 42, 58, 0.92), rgba(15, 28, 46, 0.96)), #0f1c2e;
+  padding: 8px 10px;
+  color: #eeeeee;
+  font-family: "FontinSmallcaps", serif;
+  border-bottom: 1px solid rgba(163, 141, 109, 0.1);
+  border-radius: 8px 8px 0 0;
+}
+
+.folder:not(.is-expanded):not(.is-editing) .folder-header {
+  border-radius: 8px;
+}
+
+.folder-drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 18px;
+  color: rgba(196, 177, 140, 0.34);
+  cursor: grab;
+  user-select: none;
+}
+.folder-drag-handle:active {
+  cursor: grabbing;
+}
+
+.expansion-wrapper {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+}
+.expansion-wrapper:focus-visible {
+  border-radius: 4px;
+  box-shadow: 0 0 0 1px rgba(163, 141, 109, 0.22), 0 0 0 3px rgba(163, 141, 109, 0.1);
+}
+
+.header-copy {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.header-main {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.folder-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  flex: 0 0 26px;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.folder-icon img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.folder-icon--preview {
+  width: 24px;
+  height: 24px;
+  flex-basis: 24px;
+}
+
+.header-label {
+  flex: 1;
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(14px * var(--bt-text-scale, 1));
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: rgba(238, 238, 238, 0.96);
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.inline-edit-input {
+  flex: 1;
+  width: 0;
+  min-width: 0;
+  background: rgba(5, 5, 5, 0.4);
+  border: 1px solid rgba(163, 141, 109, 0.5);
+  color: #eeeeee;
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(14px * var(--bt-text-scale, 1));
+  text-transform: uppercase;
+  padding: 2px 6px;
+  border-radius: 2px;
+  margin-right: 8px;
+}
+.inline-edit-input:focus-visible {
+  border-color: #a38d6d;
+  box-shadow: 0 0 0 1px rgba(163, 141, 109, 0.2);
+}
+
+.trade-edit {
+  font-size: calc(12px * var(--bt-text-scale, 1));
+  margin-right: 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+  padding-left: 8px;
+  border-left: 1px solid rgba(238, 238, 238, 0.06);
+}
+
+.folder-edit-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border-top: 1px solid rgba(238, 238, 238, 0.06);
+  background: rgba(5, 5, 5, 0.22);
+}
+
+.folder-edit-panel__top {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(34px, 1fr));
+  gap: 6px;
+}
+
+.folder-icon-option {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 34px;
+  padding: 4px;
+  border: 1px solid rgba(238, 238, 238, 0.08);
+  border-radius: 4px;
+  background: rgba(5, 5, 5, 0.28);
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+}
+.folder-icon-option img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 3px;
+}
+.folder-icon-option:hover {
+  border-color: rgba(163, 141, 109, 0.26);
+  background: rgba(238, 238, 238, 0.05);
+  transform: translateY(-1px);
+}
+.folder-icon-option:focus-visible {
+  border-color: rgba(163, 141, 109, 0.3);
+  box-shadow: 0 0 0 1px rgba(163, 141, 109, 0.18), 0 0 0 3px rgba(163, 141, 109, 0.08);
+}
+.folder-icon-option.is-selected {
+  border-color: rgba(163, 141, 109, 0.42);
+  background: rgba(163, 141, 109, 0.08);
+}
+
+.folder-icon-option--clear {
+  padding: 4px 6px;
+}
+
+.folder-icon-option__empty {
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(9px * var(--bt-text-scale, 1));
+  color: rgba(238, 238, 238, 0.75);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.folder-edit-panel__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.folder-edit-panel__preview {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.folder-edit-panel__label {
+  color: rgba(238, 238, 238, 0.72);
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  line-height: 1.4;
+}
+
+.folder-edit-panel__buttons {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.action-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 13px;
+  height: 13px;
+  font-size: 0;
+}
+
+.action-icon :global(.action-svg) {
+  width: 13px;
+  height: 13px;
+  min-width: 13px;
+  min-height: 13px;
+  display: block;
+  overflow: visible;
+  stroke-width: 1.6;
+}
+
+.trades-list {
+  list-style: none;
+  padding: 10px;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background: linear-gradient(180deg, rgba(238, 238, 238, 0.015), rgba(238, 238, 238, 0)), rgba(5, 5, 5, 0.36);
+}
+
+.category-row {
+  list-style: none;
+}
+
+.category-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 28px;
+  padding: 2px 4px;
+  color: rgba(196, 177, 140, 0.82);
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(11px * var(--bt-text-scale, 1));
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.category-heading__rule {
+  height: 1px;
+  min-width: 14px;
+  flex: 1;
+  background: rgba(163, 141, 109, 0.2);
+}
+
+.category-heading__title {
+  max-width: 62%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.category-heading__actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+}
+
+.category-action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 1px solid rgba(238, 238, 238, 0.1);
+  border-radius: 3px;
+  background: rgba(5, 5, 5, 0.35);
+  color: rgba(238, 238, 238, 0.72);
+  cursor: pointer;
+}
+.category-action:hover {
+  border-color: rgba(163, 141, 109, 0.32);
+  color: #eeeeee;
+  background: rgba(238, 238, 238, 0.06);
+}
+.category-action.is-danger:hover {
+  border-color: rgba(109, 28, 28, 0.45);
+  color: #ffd7d7;
+  background: rgba(109, 28, 28, 0.16);
+}
+
+.trade-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 10px;
+  border: 1px solid rgba(238, 238, 238, 0.06);
+  border-radius: 6px;
+  background: rgba(5, 5, 5, 0.34);
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, opacity 0.2s, transform 0.2s;
+}
+.trade-item:hover {
+  background-color: rgba(238, 238, 238, 0.05);
+  border-color: rgba(163, 141, 109, 0.16);
+  transform: translateY(-1px);
+}
+.trade-item:focus-visible {
+  border-color: rgba(163, 141, 109, 0.42);
+  box-shadow: 0 0 0 2px rgba(163, 141, 109, 0.14);
+  outline: none;
+}
+.trade-item.is-dragging {
+  opacity: 0.3;
+  background-color: rgba(163, 141, 109, 0.1);
+}
+.trade-item.is-completed {
+  background: rgba(30, 77, 30, 0.14);
+  border-color: rgba(30, 77, 30, 0.28);
+}
+.trade-item.is-drag-over {
+  border-color: rgba(163, 141, 109, 0.42);
+  background-color: rgba(163, 141, 109, 0.15);
+  box-shadow: 0 0 0 1px rgba(163, 141, 109, 0.18);
+}
+
+.drag-handle {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: grab;
+  color: rgba(238, 238, 238, 0.3);
+  font-size: calc(15px * var(--bt-text-scale, 1));
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  flex: 0 0 16px;
+}
+.drag-handle:hover {
+  color: #a38d6d;
+}
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.trade-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+  min-width: 0;
+  gap: 4px;
+}
+
+.trade-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.trade-copy {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.trade-link {
+  color: #eeeeee;
+  text-decoration: none;
+  font-size: calc(13px * var(--bt-text-scale, 1));
+  line-height: 1.2;
+  cursor: inherit;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+.trade-actions {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  min-width: 0;
+  flex-shrink: 0;
+  padding: 0;
+  margin: 0;
+}
+
+.trade-actions--compact {
+  margin-left: auto;
+}
+
+.indicator {
+  flex: 0 0 auto;
+  color: rgba(196, 177, 140, 0.78);
+  font-size: calc(11px * var(--bt-text-scale, 1));
+}
+
+.trades-content {
+  background: rgba(5, 5, 5, 0.24);
+  border-radius: 0 0 8px 8px;
+}
+
+.footer-actions {
+  padding: 10px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  border-top: 1px solid rgba(163, 141, 109, 0.08);
+  background: linear-gradient(180deg, rgba(163, 141, 109, 0.04), rgba(163, 141, 109, 0));
+}
+
+.folder.is-ultra-compact .trades-list {
+  gap: 1px;
+  padding: 4px;
+}
+.folder.is-ultra-compact .category-heading {
+  min-height: 22px;
+  padding: 0 4px;
+  font-size: calc(10px * var(--bt-text-scale, 1));
+}
+.folder.is-ultra-compact .category-row {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+.folder.is-ultra-compact .trade-item {
+  gap: 6px;
+  min-height: 29px;
+  padding: 4px 7px;
+  border-color: rgba(238, 238, 238, 0.075);
+  border-radius: 3px;
+}
+.folder.is-ultra-compact .trade-item:hover {
+  transform: none;
+}
+.folder.is-ultra-compact .drag-handle {
+  width: 12px;
+  flex-basis: 12px;
+  font-size: calc(12px * var(--bt-text-scale, 1));
+}
+.folder.is-ultra-compact .trade-content,
+.folder.is-ultra-compact .trade-copy {
+  gap: 0;
+}
+.folder.is-ultra-compact .trade-top {
+  gap: 4px;
+}
+.folder.is-ultra-compact .trade-link {
+  font-size: calc(12px * var(--bt-text-scale, 1));
+  line-height: 1.1;
+}
+
+.save-search-anchor {
+  display: flex;
+  flex: 1 1 180px;
+  min-width: 0;
+}
+
+:global(.folder-action-footer-btn) {
+  flex: 0 0 auto;
+}
 </style>

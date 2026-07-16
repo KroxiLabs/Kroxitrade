@@ -1,5 +1,5 @@
-import "~/lib/styles/base.scss"
-import "~/lib/styles/enhancements.scss"
+import "~/lib/styles/base.css"
+import "~/lib/styles/enhancements.css"
 
 import { mount, unmount } from "svelte"
 

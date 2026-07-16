@@ -5,6 +5,10 @@ type LocalizedWhatsNewTexts = Partial<Record<AppLanguage, Record<string, string>
 export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
   en: {},
   es: {
+    "Cleaner Bookmark Layout preview": "Vista previa del diseño de marcadores más limpia",
+    "The live Bookmark Layout preview no longer shows a league label, keeping the sample focused on the layout and actions.": "La vista previa en vivo del diseño de marcadores ya no muestra una etiqueta de liga, manteniendo el ejemplo centrado en el diseño y las acciones.",
+    "Bookmarks update more reliably": "Los marcadores se actualizan de forma más confiable",
+    "Saved bookmark changes now validate stored data before updating the sidebar, preventing malformed or outdated storage entries from causing problems.": "Los cambios en los marcadores guardados ahora validan los datos almacenados antes de actualizar la barra lateral, lo que evita problemas con entradas de almacenamiento malformadas u obsoletas.",
     "Optional desecrated mods in Craft of Exile exports": "Mods desecrated opcionales en las exportaciones de Craft of Exile",
     "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "Las exportaciones de Craft of Exile ahora excluyen los mods desecrated por defecto. Puedes activarlos desde Ajustes de resultados para incluirlos como modificadores normales, con un aviso de que Craft of Exile todavía no permite importarlos.",
     "Foulborn items add the correct modifier": "Los objetos repugnantes añaden el modificador correcto",
@@ -85,6 +89,10 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "El manejo de clics en tarjetas y la accesibilidad al panel del vendedor se reforzaron para flujos de trabajo comerciales repetidos.",
   },
   pt: {
+    "Cleaner Bookmark Layout preview": "Visualização do layout de favoritos mais limpa",
+    "The live Bookmark Layout preview no longer shows a league label, keeping the sample focused on the layout and actions.": "A visualização ao vivo do layout de favoritos não mostra mais uma etiqueta de liga, mantendo o exemplo focado no layout e nas ações.",
+    "Bookmarks update more reliably": "Os favoritos são atualizados com mais confiabilidade",
+    "Saved bookmark changes now validate stored data before updating the sidebar, preventing malformed or outdated storage entries from causing problems.": "As alterações nos favoritos salvos agora validam os dados armazenados antes de atualizar a barra lateral, evitando problemas causados por entradas de armazenamento malformadas ou desatualizadas.",
     "Optional desecrated mods in Craft of Exile exports": "Mods desecrated opcionais nas exportações do Craft of Exile",
     "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "As exportações do Craft of Exile agora excluem mods desecrated por padrão. Você pode ativá-los nas configurações de Resultados para incluí-los como modificadores normais, com um aviso de que o Craft of Exile ainda não permite importá-los.",
     "Foulborn items add the correct modifier": "Itens Foulborn adicionam o modificador correto",
@@ -165,6 +173,10 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "O manuseio de cliques no cartão e a acessibilidade ao painel do vendedor foram aprimorados para fluxos de trabalho comerciais repetidos.",
   },
   ru: {
+    "Cleaner Bookmark Layout preview": "Более чистый предпросмотр макета закладок",
+    "The live Bookmark Layout preview no longer shows a league label, keeping the sample focused on the layout and actions.": "В живом предпросмотре макета закладок больше не отображается метка лиги, поэтому пример сосредоточен на макете и действиях.",
+    "Bookmarks update more reliably": "Закладки обновляются надёжнее",
+    "Saved bookmark changes now validate stored data before updating the sidebar, preventing malformed or outdated storage entries from causing problems.": "Изменения сохранённых закладок теперь проверяют сохранённые данные перед обновлением боковой панели, предотвращая проблемы из-за повреждённых или устаревших записей хранилища.",
     "Optional desecrated mods in Craft of Exile exports": "Необязательные осквернённые модификаторы в экспорте Craft of Exile",
     "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "Экспорт Craft of Exile теперь по умолчанию исключает осквернённые модификаторы. Их можно включить в настройках результатов как обычные модификаторы; там же будет предупреждение, что Craft of Exile пока не поддерживает их импорт.",
     "Foulborn items add the correct modifier": "Грязнорожденные предметы имеют правильный модификатор.",
@@ -245,6 +257,10 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "Обработка кликов по картам и доступность панели продавца были ужесточены для повторяющихся торговых процессов.",
   },
   th: {
+    "Cleaner Bookmark Layout preview": "ตัวอย่างเลย์เอาต์บุ๊กมาร์กที่สะอาดขึ้น",
+    "The live Bookmark Layout preview no longer shows a league label, keeping the sample focused on the layout and actions.": "ตัวอย่างเลย์เอาต์บุ๊กมาร์กแบบสดจะไม่แสดงป้ายลีกอีกต่อไป ทำให้ตัวอย่างเน้นที่เลย์เอาต์และการทำงาน",
+    "Bookmarks update more reliably": "บุ๊กมาร์กอัปเดตได้อย่างน่าเชื่อถือขึ้น",
+    "Saved bookmark changes now validate stored data before updating the sidebar, preventing malformed or outdated storage entries from causing problems.": "การเปลี่ยนแปลงบุ๊กมาร์กที่บันทึกไว้จะตรวจสอบข้อมูลที่เก็บไว้ก่อนอัปเดตแถบด้านข้าง ช่วยป้องกันปัญหาจากข้อมูลในที่เก็บที่ผิดรูปแบบหรือล้าสมัย",
     "Optional desecrated mods in Craft of Exile exports": "ม็อด Desecrated แบบเลือกได้ในการส่งออก Craft of Exile",
     "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "การส่งออก Craft of Exile จะไม่รวมม็อด Desecrated โดยค่าเริ่มต้น คุณสามารถเปิดใช้ได้จากการตั้งค่าผลลัพธ์เพื่อรวมเป็นม็อดปกติ พร้อมคำเตือนว่า Craft of Exile ยังไม่รองรับการนำเข้าม็อดเหล่านี้",
     "Foulborn items add the correct modifier": "ไอเทมที่ผิดกติกาจะเพิ่มตัวแก้ไขที่ถูกต้อง",
@@ -325,6 +341,10 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "การจัดการการคลิกการ์ดและการเข้าถึงแผงผู้ขายได้รับการปรับปรุงให้เข้มงวดขึ้นสำหรับขั้นตอนการซื้อขายซ้ำๆ",
   },
   de: {
+    "Cleaner Bookmark Layout preview": "Übersichtlichere Vorschau des Lesezeichen-Layouts",
+    "The live Bookmark Layout preview no longer shows a league label, keeping the sample focused on the layout and actions.": "Die Live-Vorschau des Lesezeichen-Layouts zeigt keine Liga-Bezeichnung mehr, damit das Beispiel auf Layout und Aktionen konzentriert bleibt.",
+    "Bookmarks update more reliably": "Lesezeichen werden zuverlässiger aktualisiert",
+    "Saved bookmark changes now validate stored data before updating the sidebar, preventing malformed or outdated storage entries from causing problems.": "Gespeicherte Lesezeichenänderungen prüfen nun gespeicherte Daten, bevor die Seitenleiste aktualisiert wird. Dadurch verursachen fehlerhafte oder veraltete Speichereinträge keine Probleme mehr.",
     "Optional desecrated mods in Craft of Exile exports": "Optionale entweihte Mods in Craft-of-Exile-Exporten",
     "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "Craft-of-Exile-Exporte schließen entweihte Mods jetzt standardmäßig aus. Du kannst sie in den Ergebnis-Einstellungen als normale Modifikatoren einschließen; dort wird darauf hingewiesen, dass Craft of Exile ihren Import noch nicht unterstützt.",
     "Foulborn items add the correct modifier": "Foulborn-Gegenstände fügen den richtigen Modifikator hinzu",
@@ -405,6 +425,10 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "Die Handhabung von Kartenklicks und die Zugänglichkeit des Verkäuferpanels wurden für wiederholte Handelsabläufe verbessert.",
   },
   fr: {
+    "Cleaner Bookmark Layout preview": "Aperçu de la mise en page des marque-pages plus épuré",
+    "The live Bookmark Layout preview no longer shows a league label, keeping the sample focused on the layout and actions.": "L'aperçu en direct de la mise en page des marque-pages n'affiche plus de libellé de ligue, afin de garder l'exemple centré sur la mise en page et les actions.",
+    "Bookmarks update more reliably": "Les marque-pages se mettent à jour plus fiablement",
+    "Saved bookmark changes now validate stored data before updating the sidebar, preventing malformed or outdated storage entries from causing problems.": "Les modifications des marque-pages enregistrés vérifient désormais les données stockées avant de mettre à jour la barre latérale, afin d'éviter les problèmes causés par des entrées de stockage mal formées ou obsolètes.",
     "Optional desecrated mods in Craft of Exile exports": "Mods profanés facultatifs dans les exports Craft of Exile",
     "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "Les exports Craft of Exile excluent désormais les mods profanés par défaut. Vous pouvez les activer dans les paramètres des résultats pour les inclure comme modificateurs normaux, avec un avertissement indiquant que Craft of Exile ne permet pas encore de les importer.",
     "Foulborn items add the correct modifier": "Les objets ignobles ajoutent le bon modificateur",
@@ -485,6 +509,10 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "La gestion des clics sur les cartes et l'accessibilité du panneau des vendeurs ont été renforcées pour les flux de travail commerciaux répétés.",
   },
   ja: {
+    "Cleaner Bookmark Layout preview": "ブックマークレイアウトのプレビューを整理",
+    "The live Bookmark Layout preview no longer shows a league label, keeping the sample focused on the layout and actions.": "ライブのブックマークレイアウトプレビューにリーグラベルが表示されなくなり、レイアウトとアクションに集中できるようになりました。",
+    "Bookmarks update more reliably": "ブックマークの更新がより安定しました",
+    "Saved bookmark changes now validate stored data before updating the sidebar, preventing malformed or outdated storage entries from causing problems.": "保存されたブックマークの変更は、サイドバーを更新する前に保存データを検証するようになりました。不正な形式や古いストレージエントリによる問題を防ぎます。",
     "Optional desecrated mods in Craft of Exile exports": "Craft of Exile エクスポートでの任意の Desecrated モッド",
     "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "Craft of Exile のエクスポートでは、Desecrated モッドがデフォルトで除外されるようになりました。結果設定で有効にすると通常のモッドとして含められますが、Craft of Exile はまだこれらのインポートに対応していないという警告が表示されます。",
     "Foulborn items add the correct modifier": "Foulborn アイテムは正しい修飾子を追加します",
@@ -565,6 +593,10 @@ export const localizedWhatsNewTexts: LocalizedWhatsNewTexts = {
     "Card click handling and seller panel accessibility were tightened for repeated trade workflows.": "繰り返される取引ワークフローのために、カードのクリック処理と販売者パネルへのアクセシビリティが強化されました。",
   },
   ko: {
+    "Cleaner Bookmark Layout preview": "더 깔끔해진 북마크 레이아웃 미리보기",
+    "The live Bookmark Layout preview no longer shows a league label, keeping the sample focused on the layout and actions.": "실시간 북마크 레이아웃 미리보기에서 더 이상 리그 라벨을 표시하지 않아 레이아웃과 작업에 집중할 수 있습니다.",
+    "Bookmarks update more reliably": "북마크 업데이트가 더 안정적으로 개선되었습니다",
+    "Saved bookmark changes now validate stored data before updating the sidebar, preventing malformed or outdated storage entries from causing problems.": "저장된 북마크 변경 사항은 이제 사이드바를 업데이트하기 전에 저장된 데이터를 검증하여, 잘못된 형식이거나 오래된 저장소 항목으로 인한 문제를 방지합니다.",
     "Optional desecrated mods in Craft of Exile exports": "Craft of Exile 내보내기의 선택적 Desecrated 모드",
     "Craft of Exile exports now exclude desecrated mods by default. You can opt in from Results settings to include them as normal modifiers, with a warning that Craft of Exile does not yet support importing them.": "Craft of Exile 내보내기에서는 이제 Desecrated 모드가 기본적으로 제외됩니다. 결과 설정에서 이를 켜면 일반 모드로 포함할 수 있으며, Craft of Exile이 아직 가져오기를 지원하지 않는다는 경고가 표시됩니다.",
     "Foulborn items add the correct modifier": "Foulborn 아이템에 올바른 수정자가 추가되었습니다.",

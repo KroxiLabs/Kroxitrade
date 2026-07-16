@@ -1,4 +1,3 @@
-import { Base64 } from "js-base64"
 import { get, writable } from "svelte/store"
 
 import type {
@@ -9,6 +8,7 @@ import type {
   PartialBookmarksTradeLocation
 } from "../types/bookmarks"
 import type { TradeSiteVersion } from "../types/trade-location"
+import { decodeBase64Utf8, encodeBase64Utf8 } from "../utilities/base64"
 import { uniqueId } from "../utilities/unique-id"
 import { languageStore, translate } from "./i18n"
 import { storageService } from "./storage"
@@ -17,6 +17,22 @@ const FOLDERS_KEY = "bookmark-folders"
 const TRADES_PREFIX_KEY = "bookmark-trades"
 const SECTION_DELIMITER = "\n--------------------\n"
 const LINE_DELIMITER = "\n"
+
+const getStorageChangeValue = <T>(
+  change: chrome.storage.StorageChange | undefined
+): T | undefined => {
+  const payload = change?.newValue
+
+  if (
+    typeof payload !== "object" ||
+    payload === null ||
+    !("value" in payload)
+  ) {
+    return undefined
+  }
+
+  return payload.value as T
+}
 
 type ExportVersion = 1 | 2 | 3 | 4 | 5
 type BookmarksChangeEvent = {
@@ -68,7 +84,9 @@ export class BookmarksService {
 
       const foldersChange = changes[FOLDERS_KEY]
       if (foldersChange) {
-        const folders = this.normalizeFolders(foldersChange.newValue?.value)
+        const folders = this.normalizeFolders(
+          getStorageChangeValue<Partial<BookmarksFolderStruct>[]>(foldersChange)
+        )
         this.foldersStore.set(folders)
         this.notifyChange({ foldersChanged: true })
       }
@@ -78,7 +96,9 @@ export class BookmarksService {
         if (!key.startsWith(tradesPrefix)) continue
 
         const folderId = key.slice(tradesPrefix.length)
-        const trades = this.normalizeTrades(change.newValue?.value)
+        const trades = this.normalizeTrades(
+          getStorageChangeValue<BookmarksTradeStruct[]>(change)
+        )
         this.tradesCache.set(folderId, trades)
         this.tradesRequests.delete(folderId)
         this.notifyChange({ tradesChanged: true, folderId })
@@ -536,7 +556,7 @@ export class BookmarksService {
         cat: t.categoryId || undefined
       }))
     }
-    return `5:${Base64.encode(JSON.stringify(payload))}`
+    return `5:${encodeBase64Utf8(JSON.stringify(payload))}`
   }
 
   deserializeFolder(
@@ -604,7 +624,7 @@ export class BookmarksService {
     exportString: string
   ): string {
     if (version >= 2) {
-      return Base64.decode(exportString.slice(2))
+      return decodeBase64Utf8(exportString.slice(2))
     }
     return atob(exportString)
   }

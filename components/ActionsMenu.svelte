@@ -269,125 +269,118 @@
   {/if}
 </div>
 
-<style lang="scss">
-  @use "../lib/styles/variables" as *;
+<style>
+.actions-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  z-index: 20;
+}
 
-  .actions-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    min-width: 0;
-    z-index: 20;
-  }
+.actions-container.is-open {
+  z-index: 40;
+}
 
-  .actions-container.is-open {
-    z-index: 40;
-  }
+.actions-inline {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding-left: 8px;
+  border-left: 1px solid rgba(238, 238, 238, 0.05);
+  min-width: 0;
+}
 
-  .actions-inline {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    padding-left: 8px;
-    border-left: 1px solid rgba($white, 0.05);
-    min-width: 0;
-  }
+.actions-inline--compact {
+  gap: 8px;
+  padding-left: 0;
+  border-left: none;
+}
 
-  .actions-inline--compact {
-    gap: 8px;
-    padding-left: 0;
-    border-left: none;
-  }
+.actions-inline__text {
+  min-width: 0;
+  font-size: calc(10px * var(--bt-text-scale, 1));
+  line-height: 1.2;
+  color: rgba(196, 177, 140, 0.52);
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-  .actions-inline__text {
-    min-width: 0;
-    font-size: calc(10px * var(--bt-text-scale, 1));
-    line-height: 1.2;
-    color: rgba($gold-alt, 0.52);
-    letter-spacing: 0.03em;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid rgba(238, 238, 238, 0.12);
+  background-color: rgba(5, 5, 5, 0.45);
+  color: rgba(238, 238, 238, 0.82);
+  cursor: pointer;
+  transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+}
+.btn:hover {
+  background-color: rgba(238, 238, 238, 0.08);
+  border-color: rgba(163, 141, 109, 0.38);
+  color: #eeeeee;
+}
+.btn--danger:hover {
+  background-color: rgba(109, 28, 28, 0.18);
+  border-color: rgba(109, 28, 28, 0.5);
+  color: #ffd7d7;
+}
+.btn--icon {
+  width: 24px;
+  height: 24px;
+  font-size: calc(12px * var(--bt-text-scale, 1));
+  line-height: 1;
+}
+.btn--menu {
+  justify-content: flex-start;
+  width: 100%;
+  gap: 10px;
+  padding: 10px 12px;
+  border: none;
+  background: #0b0b0b;
+  border-radius: 4px;
+  text-align: left;
+  font-size: calc(12px * var(--bt-text-scale, 1));
+  line-height: 1.35;
+}
+.btn--menu:hover {
+  background-color: #171717;
+  border-color: transparent;
+}
 
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    border: 1px solid rgba($white, 0.12);
-    background-color: rgba($black, 0.45);
-    color: rgba($white, 0.82);
-    cursor: pointer;
-    transition: background-color 120ms ease, border-color 120ms ease, color 120ms ease;
+.btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  font-size: 0;
+}
 
-    &:hover {
-      background-color: rgba($white, 0.08);
-      border-color: rgba($gold, 0.38);
-      color: $white;
-    }
+.btn__label {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
-    &--danger:hover {
-      background-color: rgba($red, 0.18);
-      border-color: rgba($red, 0.5);
-      color: #ffd7d7;
-    }
-
-    &--icon {
-      width: 24px;
-      height: 24px;
-      font-size: calc(12px * var(--bt-text-scale, 1));
-      line-height: 1;
-    }
-
-    &--menu {
-      justify-content: flex-start;
-      width: 100%;
-      gap: 10px;
-      padding: 10px 12px;
-      border: none;
-      background: #0b0b0b;
-      border-radius: 4px;
-      text-align: left;
-      font-size: calc(12px * var(--bt-text-scale, 1));
-      line-height: 1.35;
-
-      &:hover {
-        background-color: #171717;
-        border-color: transparent;
-      }
-    }
-  }
-
-  .btn__icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 13px;
-    height: 13px;
-    flex-shrink: 0;
-    font-size: 0;
-  }
-
-  .btn__label {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .menu-dropdown {
-    position: fixed;
-    z-index: 10000;
-    min-width: 172px;
-    background-color: #0b0b0b;
-    opacity: 1;
-    border: 1px solid rgba($gold, 0.3);
-    border-radius: 6px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
-    backdrop-filter: none;
-    padding: 6px;
-    display: flex;
-    flex-direction: column;
-    pointer-events: auto;
-  }
+.menu-dropdown {
+  position: fixed;
+  z-index: 10000;
+  min-width: 172px;
+  background-color: #0b0b0b;
+  opacity: 1;
+  border: 1px solid rgba(163, 141, 109, 0.3);
+  border-radius: 6px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+  backdrop-filter: none;
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  pointer-events: auto;
+}
 </style>

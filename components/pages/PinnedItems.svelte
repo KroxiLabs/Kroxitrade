@@ -49,60 +49,69 @@
   <AlertMessage type="warning" message="Note: Pinned items are only kept for the current session." />
 </div>
 
-<style lang="scss">
-  @use "../../lib/styles/variables" as *;
+<style>
+.pinned-items-page {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}
 
-  .pinned-items-page {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-  }
+.items-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 10px;
+  width: 100%;
+  min-width: 0;
+}
 
-  .items-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-bottom: 10px;
-    width: 100%;
-    min-width: 0;
-  }
+.pinned-item-card {
+  background-color: #000;
+  border: 1px solid #1a2a3a;
+  width: 100%;
+  min-width: 0;
+  overflow: hidden;
+}
+.pinned-item-card :global(.itemPopupContainer) {
+  margin: 0;
+  background-color: #000;
+}
+.pinned-item-card :global(.itemPopupAdditional) {
+  padding: 5px;
+  background-color: #000;
+  font-size: calc(12px * var(--bt-text-scale, 1));
+}
 
-  .pinned-item-card {
-    background-color: #000;
-    border: 1px solid $blue-alt;
-    width: 100%;
-    min-width: 0;
-    overflow: hidden;
-    
-    :global(.itemPopupContainer) { margin: 0; background-color: #000; }
-    :global(.itemPopupAdditional) { padding: 5px; background-color: #000; font-size: calc(12px * var(--bt-text-scale, 1)); }
-  }
+.rendered-wrapper {
+  display: flex;
+  justify-content: center;
+  background-color: #000;
+}
 
-  .rendered-wrapper {
-      display: flex;
-      justify-content: center;
-      background-color: #000;
-  }
+.pricing-wrapper {
+  padding: 10px;
+  text-align: center;
+  background-color: #000;
+  color: #a38d6d;
+}
+.pricing-wrapper :global(img) {
+  height: 24px;
+  vertical-align: middle;
+}
 
-  .pricing-wrapper {
-      padding: 10px;
-      text-align: center;
-      background-color: #000;
-      color: #a38d6d;
-      :global(img) { height: 24px; vertical-align: middle; }
-  }
-
-  .item-actions {
-    display: flex;
-    gap: 5px;
-    padding: 10px;
-    background-color: #000;
-    border-top: 1px solid rgba($blue-alt, 0.3);
-    width: 100%;
-    min-width: 0;
-    :global(button) { flex: 1; }
-  }
+.item-actions {
+  display: flex;
+  gap: 5px;
+  padding: 10px;
+  background-color: #000;
+  border-top: 1px solid rgba(26, 42, 58, 0.3);
+  width: 100%;
+  min-width: 0;
+}
+.item-actions :global(button) {
+  flex: 1;
+}
 </style>
