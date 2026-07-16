@@ -1,7 +1,6 @@
 const childProcess = require("child_process")
 const fs = require("fs")
 const path = require("path")
-const ts = require("typescript")
 
 const root = path.join(__dirname, "..")
 const buildDir = path.join(root, "build")
@@ -47,20 +46,30 @@ const run = (command, args, options = {}) => {
 }
 
 const loadTypeScriptModule = (relativePath) => {
-  const source = fs.readFileSync(path.join(root, relativePath), "utf8")
-  const output = ts.transpileModule(source, {
-    compilerOptions: {
-      module: ts.ModuleKind.CommonJS,
-      target: ts.ScriptTarget.ES2022
+  const modulePath = path.join(root, relativePath)
+  const loader = `process.stdout.write(JSON.stringify(require(${JSON.stringify(modulePath)})))`
+  const result = childProcess.spawnSync(
+    process.execPath,
+    ["--experimental-strip-types", "-e", loader],
+    {
+      encoding: "utf8",
+      stdio: ["ignore", "pipe", "pipe"]
     }
-  }).outputText
-  const module = { exports: {} }
-  new Function("exports", "module", "require", output)(
-    module.exports,
-    module,
-    require
   )
-  return module.exports
+
+  if (result.status !== 0) {
+    throw new Error(
+      `Unable to load ${relativePath} with Node's TypeScript type stripping.\n${result.stderr || result.error?.message || ""}`
+    )
+  }
+
+  try {
+    return JSON.parse(result.stdout)
+  } catch (error) {
+    throw new Error(
+      `Unable to parse exports from ${relativePath}: ${error instanceof Error ? error.message : String(error)}`
+    )
+  }
 }
 
 const resolveText = (item, englishTranslations, field) => {
