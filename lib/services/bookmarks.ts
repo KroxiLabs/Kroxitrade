@@ -1,4 +1,3 @@
-import { Base64 } from "js-base64"
 import { get, writable } from "svelte/store"
 
 import type {
@@ -9,6 +8,7 @@ import type {
   PartialBookmarksTradeLocation
 } from "../types/bookmarks"
 import type { TradeSiteVersion } from "../types/trade-location"
+import { decodeBase64Utf8, encodeBase64Utf8 } from "../utilities/base64"
 import { uniqueId } from "../utilities/unique-id"
 import { languageStore, translate } from "./i18n"
 import { storageService } from "./storage"
@@ -536,7 +536,7 @@ export class BookmarksService {
         cat: t.categoryId || undefined
       }))
     }
-    return `5:${Base64.encode(JSON.stringify(payload))}`
+    return `5:${encodeBase64Utf8(JSON.stringify(payload))}`
   }
 
   deserializeFolder(
@@ -604,7 +604,7 @@ export class BookmarksService {
     exportString: string
   ): string {
     if (version >= 2) {
-      return Base64.decode(exportString.slice(2))
+      return decodeBase64Utf8(exportString.slice(2))
     }
     return atob(exportString)
   }
