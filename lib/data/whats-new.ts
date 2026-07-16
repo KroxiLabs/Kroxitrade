@@ -176,6 +176,19 @@ const version118Features: WhatsNewItem[] = [
   }
 ];
 
+const version118Fixes: WhatsNewItem[] = [
+  {
+    title: "Bookmarks update more reliably",
+    description:
+      "Saved bookmark changes now validate stored data before updating the sidebar, preventing malformed or outdated storage entries from causing problems."
+  },
+  {
+    title: "Cleaner Bookmark Layout preview",
+    description:
+      "The live Bookmark Layout preview no longer shows a league label, keeping the sample focused on the layout and actions."
+  }
+];
+
 const version117Features: WhatsNewItem[] = [
   {
     titleKey: "whatsNew.item.activeRealmBookmarksTitle",
@@ -277,9 +290,18 @@ const version110Changes: WhatsNewItem[] = [
 ];
 
 export const latestWhatsNew: WhatsNewEntry = {
-  version: "1.1.8",
-  date: "2026-07-15",
+  version: "1.1.9",
+  date: "2026-07-16",
   sections: [
+    {
+      title: "1.1.9",
+      groups: [
+        {
+          titleKey: "whatsNew.section.fixes",
+          items: version118Fixes
+        }
+      ]
+    },
     {
       title: "1.1.8",
       groups: [

@@ -677,7 +677,6 @@
                     <div class="preview-trade-actions preview-trade-actions--compact">
                       <TradeActionsMenu
                         trade={previewTrade}
-                        compactText="Mercenaries"
                         onEdit={noopPreviewAction}
                         onReplace={noopPreviewAction}
                         onCopy={noopPreviewAction}
@@ -690,7 +689,6 @@
 
                 {#if !$settings.compactActionsMenu}
                   <div class="preview-trade__bottom">
-                    <span class="preview-trade__meta">Mercenaries</span>
                     <div class="preview-trade-actions">
                       <TradeActionsMenu
                         trade={previewTrade}
@@ -1559,18 +1557,6 @@
   color: #eeeeee;
   font-size: calc(13px * var(--bt-text-scale, 1));
   line-height: 1.2;
-}
-
-.preview-trade__meta {
-  min-width: 0;
-  flex: 1;
-  color: rgba(196, 177, 140, 0.52);
-  font-size: calc(10px * var(--bt-text-scale, 1));
-  line-height: 1.2;
-  letter-spacing: 0.03em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 
 .preview-trade-actions {
