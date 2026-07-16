@@ -3,6 +3,7 @@ export type BuyoutCurrency =
   | "Exalted Orb"
   | "Divine Orb"
   | "Chaos Orb Equivalent"
+  | "Exalted Orb Equivalent"
 
 export type BuyoutCurrencyPreset = {
   label: string
@@ -46,6 +47,17 @@ const buyoutCurrencyLabels: Record<BuyoutCurrency, string[]> = {
     "Equivalente a Orbe de caos",
     "カオスオーブ同等物",
     "카오스 오브 등가물"
+  ],
+  "Exalted Orb Equivalent": [
+    "Exalted Orb Equivalent",
+    "Equivalente a Orbe Exaltado",
+    "Эквивалент сфер возвышения",
+    "เทียบเป็น Exalted Orb",
+    "Erhabene Sphäre Äquivalent",
+    "Équivalent en orbes exaltés",
+    "Equivalente a Orbe Exaltado",
+    "高貴なオーブ同等物",
+    "엑잘티드 오브 등가물"
   ],
   "Chaos Orb": [
     "Chaos Orb",
@@ -145,5 +157,9 @@ export const setBuyoutCurrencyPreset = (currency: BuyoutCurrency) => {
 }
 
 export const clearBuyoutPrice = () => {
-  setBuyoutCurrencyPreset("Chaos Orb Equivalent")
+  setBuyoutCurrencyPreset(
+    window.location.pathname.startsWith("/trade2")
+      ? "Exalted Orb Equivalent"
+      : "Chaos Orb Equivalent"
+  )
 }

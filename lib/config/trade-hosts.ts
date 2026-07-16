@@ -1,5 +1,6 @@
 export const tradeHosts = [
   "https://www.pathofexile.com/trade*",
+  "https://pathofexile.com/trade*",
   "https://br.pathofexile.com/trade*",
   "https://ru.pathofexile.com/trade*",
   "https://th.pathofexile.com/trade*",
