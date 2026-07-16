@@ -31,17 +31,17 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
-    "lucide-static": "^1.7.0",
-    "svelte": "^5.56.3"
+    "lucide-static": "^1.24.0",
+    "svelte": "^5.56.5"
   },
   "devDependencies": {
     "@ianvs/prettier-plugin-sort-imports": "4.7.1",
-    "@types/chrome": "0.0.258",
-    "@types/node": "20.11.5",
+    "@types/chrome": "0.2.2",
+    "@types/node": "26.1.1",
     "@wxt-dev/module-svelte": "^2.0.5",
-    "prettier": "3.2.4",
-    "typescript": "^5.5.0",
-    "wxt": "^0.20.26"
+    "prettier": "3.9.5",
+    "typescript": "^7.0.2",
+    "wxt": "^0.20.27"
   },
   "overrides": {
     "content-security-policy-parser": "0.6.0",

@@ -18,6 +18,22 @@ const TRADES_PREFIX_KEY = "bookmark-trades"
 const SECTION_DELIMITER = "\n--------------------\n"
 const LINE_DELIMITER = "\n"
 
+const getStorageChangeValue = <T>(
+  change: chrome.storage.StorageChange | undefined
+): T | undefined => {
+  const payload = change?.newValue
+
+  if (
+    typeof payload !== "object" ||
+    payload === null ||
+    !("value" in payload)
+  ) {
+    return undefined
+  }
+
+  return payload.value as T
+}
+
 type ExportVersion = 1 | 2 | 3 | 4 | 5
 type BookmarksChangeEvent = {
   foldersChanged?: boolean
@@ -68,7 +84,9 @@ export class BookmarksService {
 
       const foldersChange = changes[FOLDERS_KEY]
       if (foldersChange) {
-        const folders = this.normalizeFolders(foldersChange.newValue?.value)
+        const folders = this.normalizeFolders(
+          getStorageChangeValue<Partial<BookmarksFolderStruct>[]>(foldersChange)
+        )
         this.foldersStore.set(folders)
         this.notifyChange({ foldersChanged: true })
       }
@@ -78,7 +96,9 @@ export class BookmarksService {
         if (!key.startsWith(tradesPrefix)) continue
 
         const folderId = key.slice(tradesPrefix.length)
-        const trades = this.normalizeTrades(change.newValue?.value)
+        const trades = this.normalizeTrades(
+          getStorageChangeValue<BookmarksTradeStruct[]>(change)
+        )
         this.tradesCache.set(folderId, trades)
         this.tradesRequests.delete(folderId)
         this.notifyChange({ tradesChanged: true, folderId })
