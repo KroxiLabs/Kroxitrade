@@ -410,6 +410,8 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "folder.renameFolder": "Rename folder",
   "folder.chooseIcon": "Choose a folder icon",
   "folder.noIcon": "No icon",
+  "folder.currencies": "Currencies",
+  "folder.ascendancies": "Ascendancies",
   "folder.duplicateFolder": "Duplicate folder",
   "folder.duplicatedFolder": ({ title }) => `Duplicated folder "${title}"`,
   "folder.saveFolderChanges": "Save folder",

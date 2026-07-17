@@ -174,6 +174,8 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "folder.deleteTrade": "Удалить trade",
   "folder.actionsMenu": "Дополнительные действия",
   "folder.renameFolder": "Переименовать папку",
+  "folder.currencies": "Валюта",
+  "folder.ascendancies": "Восхождения",
   "folder.duplicateFolder": "Дублировать папку",
   "folder.duplicatedFolder": ({ title }) => `Папка "${title}" дублирована`,
   "folder.saveCurrentSearch": "Сохранить текущий поиск",

@@ -1,77 +1,83 @@
-import iconPoe1Alchemy from "../../assets/images/bookmark-folder/poe1-alchemy.webp"
-import iconPoe1Ascendant from "../../assets/images/bookmark-folder/poe1-ascendant.webp"
-import iconPoe1Assassin from "../../assets/images/bookmark-folder/poe1-assassin.webp"
-import iconPoe1Berserker from "../../assets/images/bookmark-folder/poe1-berserker.webp"
-import iconPoe1Card from "../../assets/images/bookmark-folder/poe1-card.webp"
-import iconPoe1Champion from "../../assets/images/bookmark-folder/poe1-champion.webp"
-import iconPoe1Chaos from "../../assets/images/bookmark-folder/poe1-chaos.webp"
-import iconPoe1Chieftain from "../../assets/images/bookmark-folder/poe1-chieftain.webp"
-import iconPoe1Deadeye from "../../assets/images/bookmark-folder/poe1-deadeye.webp"
-import iconPoe1Divine from "../../assets/images/bookmark-folder/poe1-divine.webp"
-import iconPoe1Elementalist from "../../assets/images/bookmark-folder/poe1-elementalist.webp"
-import iconPoe1Essence from "../../assets/images/bookmark-folder/poe1-essence.webp"
-import iconPoe1Exalt from "../../assets/images/bookmark-folder/poe1-exalt.webp"
-import iconPoe1Fossil from "../../assets/images/bookmark-folder/poe1-fossil.webp"
-import iconPoe1Gem from "../../assets/images/bookmark-folder/poe1-gem.webp"
-import iconPoe1Gladiator from "../../assets/images/bookmark-folder/poe1-gladiator.webp"
-import iconPoe1Guardian from "../../assets/images/bookmark-folder/poe1-guardian.webp"
-import iconPoe1Hierophant from "../../assets/images/bookmark-folder/poe1-hierophant.webp"
-import iconPoe1Inquisitor from "../../assets/images/bookmark-folder/poe1-inquisitor.webp"
-import iconPoe1Juggernaut from "../../assets/images/bookmark-folder/poe1-juggernaut.webp"
-import iconPoe1Map from "../../assets/images/bookmark-folder/poe1-map.webp"
-import iconPoe1Mirror from "../../assets/images/bookmark-folder/poe1-mirror.webp"
-import iconPoe1Necromancer from "../../assets/images/bookmark-folder/poe1-necromancer.webp"
-import iconPoe1Occultist from "../../assets/images/bookmark-folder/poe1-occultist.webp"
-import iconPoe1Pathfinder from "../../assets/images/bookmark-folder/poe1-pathfinder.webp"
-import iconPoe1Raider from "../../assets/images/bookmark-folder/poe1-raider.webp"
-import iconPoe1Saboteur from "../../assets/images/bookmark-folder/poe1-saboteur.webp"
-import iconPoe1Scarab from "../../assets/images/bookmark-folder/poe1-scarab.webp"
-import iconPoe1Slayer from "../../assets/images/bookmark-folder/poe1-slayer.webp"
-import iconPoe1Trickster from "../../assets/images/bookmark-folder/poe1-trickster.webp"
-import iconPoe2AcolyteOfChayula from "../../assets/images/bookmark-folder/poe2-acolyte-of-chayula.webp"
-import iconPoe2Alchemy from "../../assets/images/bookmark-folder/poe2-alchemy.webp"
-import iconPoe2Amazon from "../../assets/images/bookmark-folder/poe2-amazon.webp"
-import iconPoe2Annul from "../../assets/images/bookmark-folder/poe2-annul.webp"
-import iconPoe2Artificer from "../../assets/images/bookmark-folder/poe2-artificer.webp"
-import iconPoe2Augment from "../../assets/images/bookmark-folder/poe2-augment.webp"
-import iconPoe2BloodMage from "../../assets/images/bookmark-folder/poe2-blood-mage.webp"
-import iconPoe2Chance from "../../assets/images/bookmark-folder/poe2-chance.webp"
-import iconPoe2Chaos from "../../assets/images/bookmark-folder/poe2-chaos.webp"
-import iconPoe2Chronomancer from "../../assets/images/bookmark-folder/poe2-chronomancer.webp"
-import iconPoe2Deadeye from "../../assets/images/bookmark-folder/poe2-deadeye.webp"
-import iconPoe2DiscipleOfVarashta from "../../assets/images/bookmark-folder/poe2-disciple-of-varashta.webp"
-import iconPoe2Divine from "../../assets/images/bookmark-folder/poe2-divine.webp"
-import iconPoe2Essence from "../../assets/images/bookmark-folder/poe2-essence.webp"
-import iconPoe2Exalt from "../../assets/images/bookmark-folder/poe2-exalt.webp"
-import iconPoe2Gemcutter from "../../assets/images/bookmark-folder/poe2-gemcutter.webp"
-import iconPoe2GemlingLegionnaire from "../../assets/images/bookmark-folder/poe2-gemling-legionnaire.webp"
-import iconPoe2Glassblower from "../../assets/images/bookmark-folder/poe2-glassblower.webp"
-import iconPoe2Infernalist from "../../assets/images/bookmark-folder/poe2-infernalist.webp"
-import iconPoe2Invoker from "../../assets/images/bookmark-folder/poe2-invoker.webp"
-import iconPoe2Lich from "../../assets/images/bookmark-folder/poe2-lich.webp"
-import iconPoe2MartialArtist from "../../assets/images/bookmark-folder/poe2-martial-artist.webp"
-import iconPoe2Mirror from "../../assets/images/bookmark-folder/poe2-mirror.webp"
-import iconPoe2Pathfinder from "../../assets/images/bookmark-folder/poe2-pathfinder.webp"
-import iconPoe2Regal from "../../assets/images/bookmark-folder/poe2-regal.webp"
-import iconPoe2Ritualist from "../../assets/images/bookmark-folder/poe2-ritualist.webp"
-import iconPoe2Rune from "../../assets/images/bookmark-folder/poe2-rune.webp"
-import iconPoe2SmithOfKitava from "../../assets/images/bookmark-folder/poe2-smith-of-kitava.webp"
-import iconPoe2SpiritWalker from "../../assets/images/bookmark-folder/poe2-spirit-walker.webp"
-import iconPoe2Stormweaver from "../../assets/images/bookmark-folder/poe2-stormweaver.webp"
-import iconPoe2Tactician from "../../assets/images/bookmark-folder/poe2-tactician.webp"
-import iconPoe2Titan from "../../assets/images/bookmark-folder/poe2-titan.webp"
-import iconPoe2Transmute from "../../assets/images/bookmark-folder/poe2-transmute.webp"
-import iconPoe2Vaal from "../../assets/images/bookmark-folder/poe2-vaal.webp"
-import iconPoe2Warbringer from "../../assets/images/bookmark-folder/poe2-warbringer.webp"
-import iconPoe2Waystone from "../../assets/images/bookmark-folder/poe2-waystone.webp"
-import iconPoe2Wisdom from "../../assets/images/bookmark-folder/poe2-wisdom.webp"
-import iconPoe2WitchHunter from "../../assets/images/bookmark-folder/poe2-witch-hunter.webp"
+import iconPoe1Alchemy from "../../assets/images/bookmark-folder/poe1/currencies/alchemy.webp"
+import iconPoe1Ascendant from "../../assets/images/bookmark-folder/poe1/ascendancies/ascendant.webp"
+import iconPoe1Assassin from "../../assets/images/bookmark-folder/poe1/ascendancies/assassin.webp"
+import iconPoe1Berserker from "../../assets/images/bookmark-folder/poe1/ascendancies/berserker.webp"
+import iconPoe1Card from "../../assets/images/bookmark-folder/poe1/currencies/card.webp"
+import iconPoe1Champion from "../../assets/images/bookmark-folder/poe1/ascendancies/champion.webp"
+import iconPoe1Chaos from "../../assets/images/bookmark-folder/poe1/currencies/chaos.webp"
+import iconPoe1Chieftain from "../../assets/images/bookmark-folder/poe1/ascendancies/chieftain.webp"
+import iconPoe1Deadeye from "../../assets/images/bookmark-folder/poe1/ascendancies/deadeye.webp"
+import iconPoe1Divine from "../../assets/images/bookmark-folder/poe1/currencies/divine.webp"
+import iconPoe1Elementalist from "../../assets/images/bookmark-folder/poe1/ascendancies/elementalist.webp"
+import iconPoe1Essence from "../../assets/images/bookmark-folder/poe1/currencies/essence.webp"
+import iconPoe1Exalt from "../../assets/images/bookmark-folder/poe1/currencies/exalt.webp"
+import iconPoe1Fossil from "../../assets/images/bookmark-folder/poe1/currencies/fossil.webp"
+import iconPoe1Gem from "../../assets/images/bookmark-folder/poe1/currencies/gem.webp"
+import iconPoe1Gladiator from "../../assets/images/bookmark-folder/poe1/ascendancies/gladiator.webp"
+import iconPoe1Guardian from "../../assets/images/bookmark-folder/poe1/ascendancies/guardian.webp"
+import iconPoe1Hierophant from "../../assets/images/bookmark-folder/poe1/ascendancies/hierophant.webp"
+import iconPoe1Inquisitor from "../../assets/images/bookmark-folder/poe1/ascendancies/inquisitor.webp"
+import iconPoe1Juggernaut from "../../assets/images/bookmark-folder/poe1/ascendancies/juggernaut.webp"
+import iconPoe1Map from "../../assets/images/bookmark-folder/poe1/currencies/map.webp"
+import iconPoe1Mirror from "../../assets/images/bookmark-folder/poe1/currencies/mirror.webp"
+import iconPoe1Necromancer from "../../assets/images/bookmark-folder/poe1/ascendancies/necromancer.webp"
+import iconPoe1Occultist from "../../assets/images/bookmark-folder/poe1/ascendancies/occultist.webp"
+import iconPoe1Pathfinder from "../../assets/images/bookmark-folder/poe1/ascendancies/pathfinder.webp"
+import iconPoe1Raider from "../../assets/images/bookmark-folder/poe1/ascendancies/raider.webp"
+import iconPoe1Reliquarian from "../../assets/images/bookmark-folder/poe1/ascendancies/reliquarian.webp"
+import iconPoe1Saboteur from "../../assets/images/bookmark-folder/poe1/ascendancies/saboteur.webp"
+import iconPoe1Scarab from "../../assets/images/bookmark-folder/poe1/currencies/scarab.webp"
+import iconPoe1Slayer from "../../assets/images/bookmark-folder/poe1/ascendancies/slayer.webp"
+import iconPoe1Trickster from "../../assets/images/bookmark-folder/poe1/ascendancies/trickster.webp"
+import iconPoe2AcolyteOfChayula from "../../assets/images/bookmark-folder/poe2/ascendancies/acolyte-of-chayula.webp"
+import iconPoe2Alchemy from "../../assets/images/bookmark-folder/poe2/currencies/alchemy.webp"
+import iconPoe2Amazon from "../../assets/images/bookmark-folder/poe2/ascendancies/amazon.webp"
+import iconPoe2Annul from "../../assets/images/bookmark-folder/poe2/currencies/annul.webp"
+import iconPoe2Artificer from "../../assets/images/bookmark-folder/poe2/currencies/artificer.webp"
+import iconPoe2Augment from "../../assets/images/bookmark-folder/poe2/currencies/augment.webp"
+import iconPoe2BloodMage from "../../assets/images/bookmark-folder/poe2/ascendancies/blood-mage.webp"
+import iconPoe2Chance from "../../assets/images/bookmark-folder/poe2/currencies/chance.webp"
+import iconPoe2Chaos from "../../assets/images/bookmark-folder/poe2/currencies/chaos.webp"
+import iconPoe2Chronomancer from "../../assets/images/bookmark-folder/poe2/ascendancies/chronomancer.webp"
+import iconPoe2Deadeye from "../../assets/images/bookmark-folder/poe2/ascendancies/deadeye.webp"
+import iconPoe2DiscipleOfVarashta from "../../assets/images/bookmark-folder/poe2/ascendancies/disciple-of-varashta.webp"
+import iconPoe2Divine from "../../assets/images/bookmark-folder/poe2/currencies/divine.webp"
+import iconPoe2Essence from "../../assets/images/bookmark-folder/poe2/currencies/essence.webp"
+import iconPoe2Exalt from "../../assets/images/bookmark-folder/poe2/currencies/exalt.webp"
+import iconPoe2Gemcutter from "../../assets/images/bookmark-folder/poe2/currencies/gemcutter.webp"
+import iconPoe2GemlingLegionnaire from "../../assets/images/bookmark-folder/poe2/ascendancies/gemling-legionnaire.webp"
+import iconPoe2Glassblower from "../../assets/images/bookmark-folder/poe2/currencies/glassblower.webp"
+import iconPoe2Infernalist from "../../assets/images/bookmark-folder/poe2/ascendancies/infernalist.webp"
+import iconPoe2Invoker from "../../assets/images/bookmark-folder/poe2/ascendancies/invoker.webp"
+import iconPoe2Lich from "../../assets/images/bookmark-folder/poe2/ascendancies/lich.webp"
+import iconPoe2MartialArtist from "../../assets/images/bookmark-folder/poe2/ascendancies/martial-artist.webp"
+import iconPoe2Mirror from "../../assets/images/bookmark-folder/poe2/currencies/mirror.webp"
+import iconPoe2Pathfinder from "../../assets/images/bookmark-folder/poe2/ascendancies/pathfinder.webp"
+import iconPoe2Regal from "../../assets/images/bookmark-folder/poe2/currencies/regal.webp"
+import iconPoe2Ritualist from "../../assets/images/bookmark-folder/poe2/ascendancies/ritualist.webp"
+import iconPoe2Rune from "../../assets/images/bookmark-folder/poe2/currencies/rune.webp"
+import iconPoe2SmithOfKitava from "../../assets/images/bookmark-folder/poe2/ascendancies/smith-of-kitava.webp"
+import iconPoe2SpiritWalker from "../../assets/images/bookmark-folder/poe2/ascendancies/spirit-walker.webp"
+import iconPoe2Stormweaver from "../../assets/images/bookmark-folder/poe2/ascendancies/stormweaver.webp"
+import iconPoe2Tactician from "../../assets/images/bookmark-folder/poe2/ascendancies/tactician.webp"
+import iconPoe2Titan from "../../assets/images/bookmark-folder/poe2/ascendancies/titan.webp"
+import iconPoe2Transmute from "../../assets/images/bookmark-folder/poe2/currencies/transmute.webp"
+import iconPoe2Vaal from "../../assets/images/bookmark-folder/poe2/currencies/vaal.webp"
+import iconPoe2Warbringer from "../../assets/images/bookmark-folder/poe2/ascendancies/warbringer.webp"
+import iconPoe2Waystone from "../../assets/images/bookmark-folder/poe2/currencies/waystone.webp"
+import iconPoe2Wisdom from "../../assets/images/bookmark-folder/poe2/currencies/wisdom.webp"
+import iconPoe2WitchHunter from "../../assets/images/bookmark-folder/poe2/ascendancies/witch-hunter.webp"
 import type { TradeSiteVersion } from "../types/trade-location"
+
+export type BookmarkFolderIconCategory = "currency" | "ascendancy"
 
 export interface BookmarkFolderIconOption {
   id: string
   label: string
   version: TradeSiteVersion
+  category: BookmarkFolderIconCategory
+  // Present only on ascendancy options; groups them by base class in the picker.
+  characterClass?: string
   url: string
 }
 
@@ -102,6 +108,7 @@ export const bookmarkFolderIconMap = new Map<string, string>([
   ["poe1-occultist", iconPoe1Occultist],
   ["poe1-pathfinder", iconPoe1Pathfinder],
   ["poe1-raider", iconPoe1Raider],
+  ["poe1-reliquarian", iconPoe1Reliquarian],
   ["poe1-saboteur", iconPoe1Saboteur],
   ["poe1-scarab", iconPoe1Scarab],
   ["poe1-slayer", iconPoe1Slayer],
@@ -146,256 +153,420 @@ export const bookmarkFolderIconMap = new Map<string, string>([
   ["poe2-witch-hunter", iconPoe2WitchHunter]
 ])
 
+// Ascendancies are ordered so each base class forms one column in the picker,
+// with the class's ascendancies listed from bottom to top (first entry = bottom).
 export const bookmarkFolderIconOptions: BookmarkFolderIconOption[] = [
-  { id: "poe1-alchemy", label: "Alchemy", version: "1", url: iconPoe1Alchemy },
-  { id: "poe1-chaos", label: "Chaos", version: "1", url: iconPoe1Chaos },
-  { id: "poe1-exalt", label: "Exalt", version: "1", url: iconPoe1Exalt },
-  { id: "poe1-divine", label: "Divine", version: "1", url: iconPoe1Divine },
-  { id: "poe1-mirror", label: "Mirror", version: "1", url: iconPoe1Mirror },
-  { id: "poe1-card", label: "Card", version: "1", url: iconPoe1Card },
-  { id: "poe1-essence", label: "Essence", version: "1", url: iconPoe1Essence },
-  { id: "poe1-fossil", label: "Fossil", version: "1", url: iconPoe1Fossil },
-  { id: "poe1-map", label: "Map", version: "1", url: iconPoe1Map },
-  { id: "poe1-scarab", label: "Scarab", version: "1", url: iconPoe1Scarab },
-  { id: "poe1-gem", label: "Gem", version: "1", url: iconPoe1Gem },
+  // PoE 1 — Currencies
+  { id: "poe1-alchemy", label: "Alchemy", version: "1", category: "currency", url: iconPoe1Alchemy },
+  { id: "poe1-chaos", label: "Chaos", version: "1", category: "currency", url: iconPoe1Chaos },
+  { id: "poe1-exalt", label: "Exalt", version: "1", category: "currency", url: iconPoe1Exalt },
+  { id: "poe1-divine", label: "Divine", version: "1", category: "currency", url: iconPoe1Divine },
+  { id: "poe1-mirror", label: "Mirror", version: "1", category: "currency", url: iconPoe1Mirror },
+  { id: "poe1-card", label: "Card", version: "1", category: "currency", url: iconPoe1Card },
+  { id: "poe1-essence", label: "Essence", version: "1", category: "currency", url: iconPoe1Essence },
+  { id: "poe1-fossil", label: "Fossil", version: "1", category: "currency", url: iconPoe1Fossil },
+  { id: "poe1-map", label: "Map", version: "1", category: "currency", url: iconPoe1Map },
+  { id: "poe1-scarab", label: "Scarab", version: "1", category: "currency", url: iconPoe1Scarab },
+  { id: "poe1-gem", label: "Gem", version: "1", category: "currency", url: iconPoe1Gem },
+
+  // PoE 1 — Ascendancies (grouped by base class, bottom to top)
+  // Marauder
   {
-    id: "poe1-ascendant",
-    label: "Ascendant",
+    id: "poe1-juggernaut",
+    label: "Juggernaut",
     version: "1",
-    url: iconPoe1Ascendant
-  },
-  {
-    id: "poe1-assassin",
-    label: "Assassin",
-    version: "1",
-    url: iconPoe1Assassin
+    category: "ascendancy",
+    characterClass: "Marauder",
+    url: iconPoe1Juggernaut
   },
   {
     id: "poe1-berserker",
     label: "Berserker",
     version: "1",
+    category: "ascendancy",
+    characterClass: "Marauder",
     url: iconPoe1Berserker
   },
   {
-    id: "poe1-champion",
-    label: "Champion",
+    id: "poe1-chieftain",
+    label: "Chieftain",
     version: "1",
-    url: iconPoe1Champion
+    category: "ascendancy",
+    characterClass: "Marauder",
+    url: iconPoe1Chieftain
   },
-  { id: "poe1-deadeye", label: "Deadeye", version: "1", url: iconPoe1Deadeye },
+
+  // Duelist
   {
-    id: "poe1-elementalist",
-    label: "Elementalist",
+    id: "poe1-slayer",
+    label: "Slayer",
     version: "1",
-    url: iconPoe1Elementalist
+    category: "ascendancy",
+    characterClass: "Duelist",
+    url: iconPoe1Slayer
   },
   {
     id: "poe1-gladiator",
     label: "Gladiator",
     version: "1",
+    category: "ascendancy",
+    characterClass: "Duelist",
     url: iconPoe1Gladiator
   },
   {
-    id: "poe1-guardian",
-    label: "Guardian",
+    id: "poe1-champion",
+    label: "Champion",
     version: "1",
-    url: iconPoe1Guardian
-  },
-  {
-    id: "poe1-hierophant",
-    label: "Hierophant",
-    version: "1",
-    url: iconPoe1Hierophant
-  },
-  {
-    id: "poe1-inquisitor",
-    label: "Inquisitor",
-    version: "1",
-    url: iconPoe1Inquisitor
-  },
-  {
-    id: "poe1-juggernaut",
-    label: "Juggernaut",
-    version: "1",
-    url: iconPoe1Juggernaut
+    category: "ascendancy",
+    characterClass: "Duelist",
+    url: iconPoe1Champion
   },
 
+  // Ranger
+  {
+    id: "poe1-deadeye",
+    label: "Deadeye",
+    version: "1",
+    category: "ascendancy",
+    characterClass: "Ranger",
+    url: iconPoe1Deadeye
+  },
+  {
+    id: "poe1-raider",
+    label: "Raider",
+    version: "1",
+    category: "ascendancy",
+    characterClass: "Ranger",
+    url: iconPoe1Raider
+  },
+  {
+    id: "poe1-pathfinder",
+    label: "Pathfinder",
+    version: "1",
+    category: "ascendancy",
+    characterClass: "Ranger",
+    url: iconPoe1Pathfinder
+  },
+
+  // Shadow
+  {
+    id: "poe1-assassin",
+    label: "Assassin",
+    version: "1",
+    category: "ascendancy",
+    characterClass: "Shadow",
+    url: iconPoe1Assassin
+  },
+  {
+    id: "poe1-saboteur",
+    label: "Saboteur",
+    version: "1",
+    category: "ascendancy",
+    characterClass: "Shadow",
+    url: iconPoe1Saboteur
+  },
+  {
+    id: "poe1-trickster",
+    label: "Trickster",
+    version: "1",
+    category: "ascendancy",
+    characterClass: "Shadow",
+    url: iconPoe1Trickster
+  },
+
+  // Witch
   {
     id: "poe1-necromancer",
     label: "Necromancer",
     version: "1",
+    category: "ascendancy",
+    characterClass: "Witch",
     url: iconPoe1Necromancer
   },
   {
     id: "poe1-occultist",
     label: "Occultist",
     version: "1",
+    category: "ascendancy",
+    characterClass: "Witch",
     url: iconPoe1Occultist
   },
   {
-    id: "poe1-pathfinder",
-    label: "Pathfinder",
+    id: "poe1-elementalist",
+    label: "Elementalist",
     version: "1",
-    url: iconPoe1Pathfinder
-  },
-  { id: "poe1-raider", label: "Raider", version: "1", url: iconPoe1Raider },
-  {
-    id: "poe1-saboteur",
-    label: "Saboteur",
-    version: "1",
-    url: iconPoe1Saboteur
-  },
-  { id: "poe1-slayer", label: "Slayer", version: "1", url: iconPoe1Slayer },
-  {
-    id: "poe1-trickster",
-    label: "Trickster",
-    version: "1",
-    url: iconPoe1Trickster
+    category: "ascendancy",
+    characterClass: "Witch",
+    url: iconPoe1Elementalist
   },
 
-  { id: "poe2-alchemy", label: "Alchemy", version: "2", url: iconPoe2Alchemy },
-  { id: "poe2-annul", label: "Annul", version: "2", url: iconPoe2Annul },
+  // Templar
+  {
+    id: "poe1-inquisitor",
+    label: "Inquisitor",
+    version: "1",
+    category: "ascendancy",
+    characterClass: "Templar",
+    url: iconPoe1Inquisitor
+  },
+  {
+    id: "poe1-hierophant",
+    label: "Hierophant",
+    version: "1",
+    category: "ascendancy",
+    characterClass: "Templar",
+    url: iconPoe1Hierophant
+  },
+  {
+    id: "poe1-guardian",
+    label: "Guardian",
+    version: "1",
+    category: "ascendancy",
+    characterClass: "Templar",
+    url: iconPoe1Guardian
+  },
+
+  // Scion
+  {
+    id: "poe1-ascendant",
+    label: "Ascendant",
+    version: "1",
+    category: "ascendancy",
+    characterClass: "Scion",
+    url: iconPoe1Ascendant
+  },
+  {
+    id: "poe1-reliquarian",
+    label: "Reliquarian",
+    version: "1",
+    category: "ascendancy",
+    characterClass: "Scion",
+    url: iconPoe1Reliquarian
+  },
+
+  // PoE 2 — Currencies
+  { id: "poe2-alchemy", label: "Alchemy", version: "2", category: "currency", url: iconPoe2Alchemy },
+  { id: "poe2-annul", label: "Annul", version: "2", category: "currency", url: iconPoe2Annul },
   {
     id: "poe2-artificer",
     label: "Artificer",
     version: "2",
+    category: "currency",
     url: iconPoe2Artificer
   },
-  { id: "poe2-chance", label: "Chance", version: "2", url: iconPoe2Chance },
-  { id: "poe2-chaos", label: "Chaos", version: "2", url: iconPoe2Chaos },
-  { id: "poe2-augment", label: "Augment", version: "2", url: iconPoe2Augment },
-  { id: "poe2-divine", label: "Divine", version: "2", url: iconPoe2Divine },
-  { id: "poe2-essence", label: "Essence", version: "2", url: iconPoe2Essence },
-  { id: "poe2-exalt", label: "Exalt", version: "2", url: iconPoe2Exalt },
+  { id: "poe2-chance", label: "Chance", version: "2", category: "currency", url: iconPoe2Chance },
+  { id: "poe2-chaos", label: "Chaos", version: "2", category: "currency", url: iconPoe2Chaos },
+  { id: "poe2-augment", label: "Augment", version: "2", category: "currency", url: iconPoe2Augment },
+  { id: "poe2-divine", label: "Divine", version: "2", category: "currency", url: iconPoe2Divine },
+  { id: "poe2-essence", label: "Essence", version: "2", category: "currency", url: iconPoe2Essence },
+  { id: "poe2-exalt", label: "Exalt", version: "2", category: "currency", url: iconPoe2Exalt },
   {
     id: "poe2-gemcutter",
     label: "Gemcutter",
     version: "2",
+    category: "currency",
     url: iconPoe2Gemcutter
   },
   {
     id: "poe2-glassblower",
     label: "Glassblower",
     version: "2",
+    category: "currency",
     url: iconPoe2Glassblower
   },
-  { id: "poe2-mirror", label: "Mirror", version: "2", url: iconPoe2Mirror },
-  { id: "poe2-regal", label: "Regal", version: "2", url: iconPoe2Regal },
-  { id: "poe2-rune", label: "Rune", version: "2", url: iconPoe2Rune },
+  { id: "poe2-mirror", label: "Mirror", version: "2", category: "currency", url: iconPoe2Mirror },
+  { id: "poe2-regal", label: "Regal", version: "2", category: "currency", url: iconPoe2Regal },
+  { id: "poe2-rune", label: "Rune", version: "2", category: "currency", url: iconPoe2Rune },
   {
     id: "poe2-transmute",
     label: "Transmute",
     version: "2",
+    category: "currency",
     url: iconPoe2Transmute
   },
-  { id: "poe2-vaal", label: "Vaal", version: "2", url: iconPoe2Vaal },
-
+  { id: "poe2-vaal", label: "Vaal", version: "2", category: "currency", url: iconPoe2Vaal },
   {
     id: "poe2-waystone",
     label: "Waystone",
     version: "2",
+    category: "currency",
     url: iconPoe2Waystone
   },
-  { id: "poe2-wisdom", label: "Wisdom", version: "2", url: iconPoe2Wisdom },
-  {
-    id: "poe2-acolyte-of-chayula",
-    label: "Acolyte Of Chayula",
-    version: "2",
-    url: iconPoe2AcolyteOfChayula
-  },
-  { id: "poe2-amazon", label: "Amazon", version: "2", url: iconPoe2Amazon },
+  { id: "poe2-wisdom", label: "Wisdom", version: "2", category: "currency", url: iconPoe2Wisdom },
 
+  // PoE 2 — Ascendancies (grouped by base class, bottom to top)
+  // Warrior
   {
-    id: "poe2-blood-mage",
-    label: "Blood Mage",
+    id: "poe2-titan",
+    label: "Titan",
     version: "2",
-    url: iconPoe2BloodMage
-  },
-
-  {
-    id: "poe2-chronomancer",
-    label: "Chronomancer",
-    version: "2",
-    url: iconPoe2Chronomancer
-  },
-  { id: "poe2-deadeye", label: "Deadeye", version: "2", url: iconPoe2Deadeye },
-  {
-    id: "poe2-disciple-of-varashta",
-    label: "Disciple Of Varashta",
-    version: "2",
-    url: iconPoe2DiscipleOfVarashta
-  },
-
-  {
-    id: "poe2-gemling-legionnaire",
-    label: "Gemling Legionnaire",
-    version: "2",
-    url: iconPoe2GemlingLegionnaire
-  },
-
-  {
-    id: "poe2-infernalist",
-    label: "Infernalist",
-    version: "2",
-    url: iconPoe2Infernalist
-  },
-  { id: "poe2-invoker", label: "Invoker", version: "2", url: iconPoe2Invoker },
-  { id: "poe2-lich", label: "Lich", version: "2", url: iconPoe2Lich },
-  {
-    id: "poe2-martial-artist",
-    label: "Martial Artist",
-    version: "2",
-    url: iconPoe2MartialArtist
+    category: "ascendancy",
+    characterClass: "Warrior",
+    url: iconPoe2Titan
   },
   {
-    id: "poe2-pathfinder",
-    label: "Pathfinder",
+    id: "poe2-warbringer",
+    label: "Warbringer",
     version: "2",
-    url: iconPoe2Pathfinder
-  },
-  {
-    id: "poe2-ritualist",
-    label: "Ritualist",
-    version: "2",
-    url: iconPoe2Ritualist
+    category: "ascendancy",
+    characterClass: "Warrior",
+    url: iconPoe2Warbringer
   },
   {
     id: "poe2-smith-of-kitava",
     label: "Smith Of Kitava",
     version: "2",
+    category: "ascendancy",
+    characterClass: "Warrior",
     url: iconPoe2SmithOfKitava
   },
-  {
-    id: "poe2-spirit-walker",
-    label: "Spirit Walker",
-    version: "2",
-    url: iconPoe2SpiritWalker
-  },
+
+  // Sorceress
   {
     id: "poe2-stormweaver",
     label: "Stormweaver",
     version: "2",
+    category: "ascendancy",
+    characterClass: "Sorceress",
     url: iconPoe2Stormweaver
+  },
+  {
+    id: "poe2-chronomancer",
+    label: "Chronomancer",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Sorceress",
+    url: iconPoe2Chronomancer
+  },
+  {
+    id: "poe2-disciple-of-varashta",
+    label: "Disciple Of Varashta",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Sorceress",
+    url: iconPoe2DiscipleOfVarashta
+  },
+
+  // Ranger
+  {
+    id: "poe2-deadeye",
+    label: "Deadeye",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Ranger",
+    url: iconPoe2Deadeye
+  },
+  {
+    id: "poe2-pathfinder",
+    label: "Pathfinder",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Ranger",
+    url: iconPoe2Pathfinder
+  },
+
+  // Monk
+  {
+    id: "poe2-invoker",
+    label: "Invoker",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Monk",
+    url: iconPoe2Invoker
+  },
+  {
+    id: "poe2-acolyte-of-chayula",
+    label: "Acolyte Of Chayula",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Monk",
+    url: iconPoe2AcolyteOfChayula
+  },
+  {
+    id: "poe2-martial-artist",
+    label: "Martial Artist",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Monk",
+    url: iconPoe2MartialArtist
+  },
+
+  // Mercenary
+  {
+    id: "poe2-witch-hunter",
+    label: "Witch Hunter",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Mercenary",
+    url: iconPoe2WitchHunter
+  },
+  {
+    id: "poe2-gemling-legionnaire",
+    label: "Gemling Legionnaire",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Mercenary",
+    url: iconPoe2GemlingLegionnaire
   },
   {
     id: "poe2-tactician",
     label: "Tactician",
     version: "2",
+    category: "ascendancy",
+    characterClass: "Mercenary",
     url: iconPoe2Tactician
   },
-  { id: "poe2-titan", label: "Titan", version: "2", url: iconPoe2Titan },
+
+  // Witch
   {
-    id: "poe2-warbringer",
-    label: "Warbringer",
+    id: "poe2-infernalist",
+    label: "Infernalist",
     version: "2",
-    url: iconPoe2Warbringer
+    category: "ascendancy",
+    characterClass: "Witch",
+    url: iconPoe2Infernalist
+  },
+  {
+    id: "poe2-blood-mage",
+    label: "Blood Mage",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Witch",
+    url: iconPoe2BloodMage
+  },
+  {
+    id: "poe2-lich",
+    label: "Lich",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Witch",
+    url: iconPoe2Lich
   },
 
+  // Huntress
   {
-    id: "poe2-witch-hunter",
-    label: "Witch Hunter",
+    id: "poe2-amazon",
+    label: "Amazon",
     version: "2",
-    url: iconPoe2WitchHunter
+    category: "ascendancy",
+    characterClass: "Huntress",
+    url: iconPoe2Amazon
+  },
+  {
+    id: "poe2-ritualist",
+    label: "Ritualist",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Huntress",
+    url: iconPoe2Ritualist
+  },
+  {
+    id: "poe2-spirit-walker",
+    label: "Spirit Walker",
+    version: "2",
+    category: "ascendancy",
+    characterClass: "Huntress",
+    url: iconPoe2SpiritWalker
   }
 ]
 

@@ -181,6 +181,8 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "folder.deleteTrade": "trade 삭제",
   "folder.actionsMenu": "추가 작업",
   "folder.renameFolder": "폴더 이름 변경",
+  "folder.currencies": "화폐",
+  "folder.ascendancies": "승천",
   "folder.duplicateFolder": "폴더 복제",
   "folder.duplicatedFolder": ({ title }) => `폴더 "${title}" 복제됨`,
   "folder.saveCurrentSearch": "현재 검색 저장",
