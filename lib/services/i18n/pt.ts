@@ -187,6 +187,8 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
   "folder.deleteTrade": "Excluir trade",
   "folder.actionsMenu": "Mais ações",
   "folder.renameFolder": "Renomear pasta",
+  "folder.currencies": "Moedas",
+  "folder.ascendancies": "Ascendências",
   "folder.duplicateFolder": "Duplicar pasta",
   "folder.duplicatedFolder": ({ title }) => `Pasta "${title}" duplicada`,
   "folder.saveCurrentSearch": "Salvar busca atual",

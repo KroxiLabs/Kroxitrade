@@ -419,6 +419,8 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "folder.renameFolder": "Renombrar carpeta",
   "folder.chooseIcon": "Elegí un ícono para la carpeta",
   "folder.noIcon": "Sin ícono",
+  "folder.currencies": "Monedas",
+  "folder.ascendancies": "Ascendencias",
   "folder.duplicateFolder": "Duplicar carpeta",
   "folder.duplicatedFolder": ({ title }) => `Carpeta "${title}" duplicada`,
   "folder.saveFolderChanges": "Guardar carpeta",
