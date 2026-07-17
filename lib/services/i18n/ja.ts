@@ -183,6 +183,8 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "folder.deleteTrade": "trade を削除",
   "folder.actionsMenu": "その他のアクション",
   "folder.renameFolder": "フォルダーの名前を変更",
+  "folder.currencies": "通貨",
+  "folder.ascendancies": "アセンダンシー",
   "folder.duplicateFolder": "フォルダーを複製",
   "folder.duplicatedFolder": ({ title }) =>
     `フォルダーを複製しました: "${title}"`,

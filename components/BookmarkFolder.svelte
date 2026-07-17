@@ -2,6 +2,8 @@
   import gripVerticalIcon from "lucide-static/icons/grip-vertical.svg?raw";
   import pencilIcon from "lucide-static/icons/pencil.svg?raw";
   import trashIcon from "lucide-static/icons/trash-2.svg?raw";
+  import xIcon from "lucide-static/icons/x.svg?raw";
+  import imageIcon from "lucide-static/icons/image.svg?raw";
   import { onDestroy, tick } from "svelte"
   import { slide } from "svelte/transition"
 
@@ -12,7 +14,8 @@
   import { bookmarksService } from "../lib/services/bookmarks"
   import {
     bookmarkFolderIconOptions,
-    getBookmarkFolderIconUrl
+    getBookmarkFolderIconUrl,
+    type BookmarkFolderIconOption
   } from "../lib/data/bookmark-folder-icons"
   import { flashMessages } from "../lib/services/flash"
   import { languageStore, translate } from "../lib/services/i18n"
@@ -515,6 +518,11 @@
   let isSavingFolderTitle = false
 
   const startEditingFolder = async () => {
+    // Collapse the folder first so its expanded actions (e.g. "Save current search")
+    // can't be triggered while editing, which would error.
+    if (isExpanded) {
+      onToggleExpansion(folder.id || "")
+    }
     folderEditTitle = folder.title
     folderEditIcon = folder.icon
     editingFolder = true
@@ -662,6 +670,27 @@
   let visibleFolderIconOptions = $derived(bookmarkFolderIconOptions.filter(
     (option) => option.version === folder.version
   ))
+  let currencyIconOptions = $derived(
+    visibleFolderIconOptions.filter((option) => option.category === "currency")
+  )
+  let ascendancyIconOptions = $derived(
+    visibleFolderIconOptions.filter((option) => option.category === "ascendancy")
+  )
+  // Group ascendancies into one column per base class (data is contiguous per class).
+  // Each column renders bottom-to-top, so the first option ends up at the bottom.
+  let ascendancyClassGroups = $derived.by(() => {
+    const groups: { key: string; options: BookmarkFolderIconOption[] }[] = []
+    for (const option of ascendancyIconOptions) {
+      const key = option.characterClass ?? option.id
+      const lastGroup = groups[groups.length - 1]
+      if (lastGroup && lastGroup.key === key) {
+        lastGroup.options.push(option)
+      } else {
+        groups.push({ key, options: [option] })
+      }
+    }
+    return groups
+  })
   let categoryOptions = $derived(folder.categories || [])
   let categoryById = $derived(new Map(categoryOptions.map((category) => [category.id, category])))
   let displayedTrades = $derived(getDisplayedTrades())
@@ -746,29 +775,53 @@
 
   {#if editingFolder}
     <div class="folder-edit-panel">
-      <div class="folder-edit-panel__top">
-        <button
-          type="button"
-          class="folder-icon-option folder-icon-option--clear"
-          class:is-selected={!folderEditIcon}
-          onclick={() => (folderEditIcon = null)}
-        >
-          <span class="folder-icon-option__empty">{translate($languageStore, "folder.noIcon")}</span>
-        </button>
+      <div class="folder-edit-panel__title">{translate($languageStore, "folder.chooseIcon")}</div>
 
-        {#each visibleFolderIconOptions as option (option.id)}
-          <button
-            type="button"
-            class="folder-icon-option"
-            class:is-selected={folderEditIcon === option.id}
-            title={option.label}
-            aria-label={option.label}
-            onclick={() => (folderEditIcon = option.id)}
-          >
-            <img src={option.url} alt="" />
-          </button>
-        {/each}
+      <div class="folder-edit-panel__top">
+        {#if currencyIconOptions.length > 0}
+          <div class="folder-icon-divider" role="separator">
+            <span>{translate($languageStore, "folder.currencies")}</span>
+          </div>
+
+          {#each currencyIconOptions as option (option.id)}
+            <button
+              type="button"
+              class="folder-icon-option"
+              class:is-selected={folderEditIcon === option.id}
+              title={option.label}
+              aria-label={option.label}
+              onclick={() => (folderEditIcon = option.id)}
+            >
+              <img src={option.url} alt="" />
+            </button>
+          {/each}
+        {/if}
       </div>
+
+      {#if ascendancyClassGroups.length > 0}
+        <div class="folder-icon-divider" role="separator">
+          <span>{translate($languageStore, "folder.ascendancies")}</span>
+        </div>
+
+        <div class="folder-icon-classes">
+          {#each ascendancyClassGroups as group (group.key)}
+            <div class="folder-icon-class-column">
+              {#each group.options as option (option.id)}
+                <button
+                  type="button"
+                  class="folder-icon-option"
+                  class:is-selected={folderEditIcon === option.id}
+                  title={option.label}
+                  aria-label={option.label}
+                  onclick={() => (folderEditIcon = option.id)}
+                >
+                  <img src={option.url} alt="" />
+                </button>
+              {/each}
+            </div>
+          {/each}
+        </div>
+      {/if}
 
       <div class="folder-edit-panel__actions">
         <div class="folder-edit-panel__preview">
@@ -776,8 +829,23 @@
             <span class="folder-icon folder-icon--preview" aria-hidden="true">
               <img src={folderEditIconUrl} alt="" />
             </span>
+            <button
+              type="button"
+              class="category-action is-danger"
+              title={translate($languageStore, "folder.noIcon")}
+              aria-label={translate($languageStore, "folder.noIcon")}
+              onclick={() => (folderEditIcon = null)}
+            >
+              <span class="action-icon"><SvgIcon svg={xIcon} /></span>
+            </button>
+          {:else}
+            <span
+              class="folder-icon folder-icon--preview folder-icon--placeholder"
+              aria-hidden="true"
+            >
+              <SvgIcon svg={imageIcon} size={16} />
+            </span>
           {/if}
-          <span class="folder-edit-panel__label">{translate($languageStore, "folder.chooseIcon")}</span>
         </div>
 
         <div class="folder-edit-panel__buttons">
@@ -1077,9 +1145,19 @@
 }
 
 .folder-icon--preview {
-  width: 24px;
-  height: 24px;
-  flex-basis: 24px;
+  width: 28.8px;
+  height: 28.8px;
+  flex-basis: 28.8px;
+}
+
+.folder-icon--placeholder {
+  border: 1px dashed rgba(238, 238, 238, 0.2);
+  background: rgba(5, 5, 5, 0.28);
+  color: rgba(238, 238, 238, 0.38);
+}
+.folder-icon--placeholder :global(.action-svg) {
+  width: 16px;
+  height: 16px;
 }
 
 .header-label {
@@ -1143,6 +1221,45 @@
   gap: 6px;
 }
 
+.folder-icon-divider {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 6px 0 2px;
+}
+.folder-icon-divider::before,
+.folder-icon-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: rgba(238, 238, 238, 0.12);
+}
+.folder-icon-divider span {
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(10.35px * var(--bt-text-scale, 1));
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(163, 141, 109, 0.72);
+  white-space: nowrap;
+}
+
+.folder-icon-classes {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+.folder-icon-class-column {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-start;
+  gap: 6px;
+  flex: 1 1 0;
+  min-width: 34px;
+}
+
 .folder-icon-option {
   display: inline-flex;
   align-items: center;
@@ -1179,16 +1296,11 @@
   background: rgba(163, 141, 109, 0.08);
 }
 
-.folder-icon-option--clear {
-  padding: 4px 6px;
-}
-
-.folder-icon-option__empty {
+.folder-edit-panel__title {
   font-family: "FontinSmallcaps", serif;
-  font-size: calc(9px * var(--bt-text-scale, 1));
-  color: rgba(238, 238, 238, 0.75);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-size: calc(12.65px * var(--bt-text-scale, 1));
+  letter-spacing: 0.02em;
+  color: rgba(238, 238, 238, 0.82);
 }
 
 .folder-edit-panel__actions {
@@ -1196,6 +1308,10 @@
   align-items: center;
   justify-content: space-between;
   gap: 10px;
+  /* Horizontal rule separating the save/cancel row from the selectable icons. */
+  margin-top: 2px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(238, 238, 238, 0.12);
 }
 
 .folder-edit-panel__preview {
@@ -1203,12 +1319,6 @@
   align-items: center;
   gap: 8px;
   min-width: 0;
-}
-
-.folder-edit-panel__label {
-  color: rgba(238, 238, 238, 0.72);
-  font-size: calc(11px * var(--bt-text-scale, 1));
-  line-height: 1.4;
 }
 
 .folder-edit-panel__buttons {

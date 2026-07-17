@@ -175,6 +175,8 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "folder.deleteTrade": "ลบ trade",
   "folder.actionsMenu": "การทำงานเพิ่มเติม",
   "folder.renameFolder": "เปลี่ยนชื่อโฟลเดอร์",
+  "folder.currencies": "สกุลเงิน",
+  "folder.ascendancies": "แอสเซนแดนซี",
   "folder.duplicateFolder": "คัดลอกโฟลเดอร์",
   "folder.duplicatedFolder": ({ title }) => `คัดลอกโฟลเดอร์ "${title}" แล้ว`,
   "folder.saveCurrentSearch": "บันทึกการค้นหาปัจจุบัน",

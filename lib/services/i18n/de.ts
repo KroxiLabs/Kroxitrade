@@ -177,6 +177,8 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "folder.deleteTrade": "Trade löschen",
   "folder.actionsMenu": "Weitere Aktionen",
   "folder.renameFolder": "Ordner umbenennen",
+  "folder.currencies": "Währungen",
+  "folder.ascendancies": "Aufstiegsklassen",
   "folder.duplicateFolder": "Ordner duplizieren",
   "folder.duplicatedFolder": ({ title }) => `Ordner "${title}" dupliziert`,
   "folder.saveCurrentSearch": "Aktuelle Suche speichern",
