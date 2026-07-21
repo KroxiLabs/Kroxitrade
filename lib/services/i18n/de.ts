@@ -9,6 +9,8 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.tutorialRefreshDescription": "Das Tutorial folgt jetzt den wichtigsten Abläufen, fasst verwandte Einstellungen zusammen und verdeckt die erklärten Bedienelemente nicht.",
   "whatsNew.item.bookmarkPreviewRealTitle": "Lesezeichen-Vorschau entspricht der echten Liste",
   "whatsNew.item.bookmarkPreviewRealDescription": "Die Live-Vorschau nutzt jetzt echte Ordner- und Lesezeichenkomponenten mit Kategorien, zwei Beispielsuchen und layoutabhängigen Aktionen.",
+  "whatsNew.item.middleClickAutoScrollTitle": "Mittelklick aktiviert kein automatisches Scrollen mehr",
+  "whatsNew.item.middleClickAutoScrollDescription": "Ein Mittelklick auf eine gespeicherte Suche öffnet sie in einem Hintergrund-Tab, ohne den Auto-Scroll-Cursor des Browsers zu aktivieren.",
   "settings.bookmarkPreviewTradeSecondary": "Schnelle Kartenräumung",
   "settings.bookmarkPreviewCategoryMapping": "Karten",
   "settings.bookmarkPreviewCategoryBossing": "Bosse",

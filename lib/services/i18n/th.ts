@@ -9,6 +9,8 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.tutorialRefreshDescription": "คู่มือตอนนี้ทำตามขั้นตอนหลัก จัดกลุ่มการตั้งค่าที่เกี่ยวข้อง และไม่บังตัวควบคุมที่กำลังอธิบาย.",
   "whatsNew.item.bookmarkPreviewRealTitle": "ตัวอย่างบุ๊กมาร์กตรงกับรายการจริง",
   "whatsNew.item.bookmarkPreviewRealDescription": "ตัวอย่างสดใช้คอมโพเนนต์โฟลเดอร์และบุ๊กมาร์กจริง พร้อมหมวดหมู่ การค้นหาตัวอย่างสองรายการ และการวางปุ่มตามรูปแบบ.",
+  "whatsNew.item.middleClickAutoScrollTitle": "คลิกกลางจะไม่เปิดโหมดเลื่อนอัตโนมัติอีกต่อไป",
+  "whatsNew.item.middleClickAutoScrollDescription": "การคลิกกลางที่การค้นหาที่บันทึกไว้จะเปิดในแท็บเบื้องหลังโดยไม่เปิดเคอร์เซอร์เลื่อนอัตโนมัติของเบราว์เซอร์.",
   "settings.bookmarkPreviewTradeSecondary": "เคลียร์แผนที่อย่างรวดเร็ว",
   "settings.bookmarkPreviewCategoryMapping": "แผนที่",
   "settings.bookmarkPreviewCategoryBossing": "บอส",

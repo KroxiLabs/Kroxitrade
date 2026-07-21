@@ -625,6 +625,12 @@
     return !!element?.closest("button, a, input, textarea, select, [data-no-card-open]")
   }
 
+  const handleTradeCardPointerDown = (event: PointerEvent) => {
+    if (event.button === 1 && !shouldIgnoreTradeCardClick(event.target)) {
+      event.preventDefault()
+    }
+  }
+
   const handleTradeCardClick = (event: MouseEvent | PointerEvent, trade: BookmarksTradeStruct) => {
     if (shouldIgnoreTradeCardClick(event.target)) return
     if (event.button === 1) {
@@ -948,6 +954,7 @@
                   class:is-drag-over={dragOverIndex === i}
                   role="group"
                   aria-label={trade.title}
+                  onpointerdown={handleTradeCardPointerDown}
                   onpointerup={(event) => handleTradeCardClick(event, trade)}>
                   <button
                     type="button"
