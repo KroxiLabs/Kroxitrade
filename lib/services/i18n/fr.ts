@@ -9,6 +9,8 @@ export const frenchTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.tutorialRefreshDescription": "Le tutoriel suit désormais les principaux parcours, regroupe les réglages liés et ne masque pas les contrôles qu’il explique.",
   "whatsNew.item.bookmarkPreviewRealTitle": "L’aperçu des favoris correspond à la liste réelle",
   "whatsNew.item.bookmarkPreviewRealDescription": "L’aperçu en direct utilise maintenant les vrais composants de dossier et de favori, avec catégories, deux recherches d’exemple et actions propres à chaque disposition.",
+  "whatsNew.item.middleClickAutoScrollTitle": "Le clic central n’active plus le défilement automatique",
+  "whatsNew.item.middleClickAutoScrollDescription": "Un clic central sur une recherche sauvegardée l’ouvre dans un onglet en arrière-plan sans activer le curseur de défilement automatique du navigateur.",
   "settings.bookmarkPreviewTradeSecondary": "Nettoyage rapide des cartes",
   "settings.bookmarkPreviewCategoryMapping": "Cartographie",
   "settings.bookmarkPreviewCategoryBossing": "Boss",

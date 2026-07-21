@@ -9,6 +9,8 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.tutorialRefreshDescription": "튜토리얼은 이제 주요 흐름을 따르고 관련 설정을 묶으며, 설명하는 컨트롤을 가리지 않습니다.",
   "whatsNew.item.bookmarkPreviewRealTitle": "북마크 미리 보기가 실제 목록과 일치",
   "whatsNew.item.bookmarkPreviewRealDescription": "라이브 미리 보기는 실제 폴더와 북마크 구성 요소를 사용하며 카테고리, 두 개의 검색 예시 및 레이아웃별 작업을 보여 줍니다.",
+  "whatsNew.item.middleClickAutoScrollTitle": "가운데 클릭이 자동 스크롤을 켜지 않도록 개선",
+  "whatsNew.item.middleClickAutoScrollDescription": "저장된 검색을 가운데 클릭하면 브라우저의 자동 스크롤 커서를 켜지 않고 백그라운드 탭에서 열립니다.",
   "settings.bookmarkPreviewTradeSecondary": "빠른 맵 클리어",
   "settings.bookmarkPreviewCategoryMapping": "맵핑",
   "settings.bookmarkPreviewCategoryBossing": "보스",

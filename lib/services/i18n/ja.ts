@@ -9,6 +9,8 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.tutorialRefreshDescription": "チュートリアルは主要な操作の流れに沿い、関連する設定をまとめ、説明中のコントロールを覆いません。",
   "whatsNew.item.bookmarkPreviewRealTitle": "ブックマークのプレビューが実際のリストと一致",
   "whatsNew.item.bookmarkPreviewRealDescription": "ライブプレビューは実際のフォルダーとブックマークのコンポーネントを使い、カテゴリ、2つの検索例、レイアウト別の操作を表示します。",
+  "whatsNew.item.middleClickAutoScrollTitle": "中クリックで自動スクロールが有効にならないように改善",
+  "whatsNew.item.middleClickAutoScrollDescription": "保存した検索を中クリックすると、ブラウザーの自動スクロールカーソルを有効にせず、バックグラウンドタブで開きます。",
   "settings.bookmarkPreviewTradeSecondary": "高速マップ周回",
   "settings.bookmarkPreviewCategoryMapping": "マップ周回",
   "settings.bookmarkPreviewCategoryBossing": "ボス戦",

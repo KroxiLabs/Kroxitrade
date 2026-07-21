@@ -9,6 +9,8 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.tutorialRefreshDescription": "Руководство теперь следует основным сценариям, объединяет связанные настройки и не закрывает элементы управления, которые объясняет.",
   "whatsNew.item.bookmarkPreviewRealTitle": "Предпросмотр закладок соответствует реальному списку",
   "whatsNew.item.bookmarkPreviewRealDescription": "В предпросмотре теперь используются реальные компоненты папки и закладки: категории, два примера поиска и действия для каждого вида.",
+  "whatsNew.item.middleClickAutoScrollTitle": "Средний клик больше не включает автопрокрутку",
+  "whatsNew.item.middleClickAutoScrollDescription": "Средний клик по сохранённому поиску открывает его в фоновой вкладке, не включая курсор автопрокрутки браузера.",
   "settings.bookmarkPreviewTradeSecondary": "Быстрая зачистка карт",
   "settings.bookmarkPreviewCategoryMapping": "Карты",
   "settings.bookmarkPreviewCategoryBossing": "Боссы",

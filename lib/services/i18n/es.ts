@@ -59,6 +59,9 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.bookmarkPreviewRealTitle": "La vista previa de Favoritos coincide con la lista real",
   "whatsNew.item.bookmarkPreviewRealDescription":
     "La vista previa ahora usa los componentes reales de carpeta y bookmark, con categorías, dos búsquedas de ejemplo y la posición de acciones de cada diseño.",
+  "whatsNew.item.middleClickAutoScrollTitle": "El clic central ya no activa el desplazamiento automático",
+  "whatsNew.item.middleClickAutoScrollDescription":
+    "El clic central en una búsqueda guardada la abre en una pestaña en segundo plano sin activar el cursor de desplazamiento automático del navegador.",
   "whatsNew.item.version1110Title": "Más iconos de carpeta y copia de PoE2 restaurada",
   "whatsNew.item.version1110Description":
     "Los iconos de carpeta ahora se organizan por monedas y ascendencias de PoE1 y PoE2, y la opción de copia para Path of Building vuelve a estar disponible en resultados de PoE2.",

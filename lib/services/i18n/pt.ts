@@ -9,6 +9,8 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.tutorialRefreshDescription": "O tutorial agora segue os fluxos principais, agrupa definições relacionadas e não cobre os controlos que explica.",
   "whatsNew.item.bookmarkPreviewRealTitle": "A pré-visualização de favoritos corresponde à lista real",
   "whatsNew.item.bookmarkPreviewRealDescription": "A pré-visualização ao vivo agora usa componentes reais de pasta e favorito, com categorias, duas buscas de exemplo e ações específicas do layout.",
+  "whatsNew.item.middleClickAutoScrollTitle": "O clique do meio já não ativa a rolagem automática",
+  "whatsNew.item.middleClickAutoScrollDescription": "Clicar com o botão do meio numa busca guardada abre-a numa aba em segundo plano sem ativar o cursor de rolagem automática do navegador.",
   "settings.bookmarkPreviewTradeSecondary": "Limpeza rápida de mapas",
   "settings.bookmarkPreviewCategoryMapping": "Mapeamento",
   "settings.bookmarkPreviewCategoryBossing": "Chefes",
