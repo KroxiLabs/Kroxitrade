@@ -8,6 +8,7 @@ export const tradeHosts = [
   "https://fr.pathofexile.com/trade*",
   "https://es.pathofexile.com/trade*",
   "https://jp.pathofexile.com/trade*",
+  "https://poe.kakaogames.com/trade*",
   "https://poe2.kakaogames.com/trade*"
 ]
 
@@ -20,5 +21,6 @@ export const tradeHostPermissions = [
   "https://fr.pathofexile.com/*",
   "https://es.pathofexile.com/*",
   "https://jp.pathofexile.com/*",
+  "https://poe.kakaogames.com/*",
   "https://poe2.kakaogames.com/*"
 ]

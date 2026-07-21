@@ -4,7 +4,7 @@ import {
 } from "../utilities/extension-context"
 
 const TRADE_URL_PATTERN =
-  /^https:\/\/(?:(?:[^./]+\.)?pathofexile\.com|poe2\.kakaogames\.com)\/trade(?:2)?(?:\/|$)/i
+  /^https:\/\/(?:(?:[^./]+\.)?pathofexile\.com|poe(?:2)?\.kakaogames\.com)\/trade(?:2)?(?:\/|$)/i
 
 const getActiveTab = async () => {
   if (!hasValidExtensionContext() || !chrome.tabs?.query) {

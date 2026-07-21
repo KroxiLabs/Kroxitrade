@@ -21,7 +21,7 @@ const HISTORY_KEY = "trade-history"
 const MAX_HISTORY = 50
 const TRADE_REALMS = ["xbox", "sony", "poe2"]
 const TRADE_HOSTNAME_PATTERN =
-  /(?:^|\.)pathofexile\.com$|^poe2\.kakaogames\.com$/i
+  /(?:^|\.)pathofexile\.com$|^poe(?:2)?\.kakaogames\.com$/i
 
 const safeDecodeURIComponent = (value: string | undefined) => {
   if (!value) return value
