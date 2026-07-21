@@ -289,10 +289,37 @@ const version110Changes: WhatsNewItem[] = [
   }
 ];
 
+const version1110Features: WhatsNewItem[] = [
+  {
+    title: "Open saved searches in new tabs",
+    description:
+      "Middle-click a saved search to open it in a background tab, so you can queue several searches without leaving the current one."
+  },
+  {
+    title: "Bookmark icons are easier to browse",
+    description:
+      "The folder icon picker now groups currency and ascendancy icons, making the right icon faster to find."
+  },
+  {
+    title: "Sidebar preferences are more reliable",
+    description:
+      "Sidebar defaults are shared consistently, and the Path of Building copy action remains visible where it is available on PoE2."
+  }
+];
+
 export const latestWhatsNew: WhatsNewEntry = {
-  version: "1.1.9",
-  date: "2026-07-16",
+  version: "1.1.10",
+  date: "2026-07-21",
   sections: [
+    {
+      title: "1.1.10",
+      groups: [
+        {
+          titleKey: "whatsNew.section.features",
+          items: version1110Features
+        }
+      ]
+    },
     {
       title: "1.1.9",
       groups: [
