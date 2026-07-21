@@ -126,7 +126,7 @@ const titleCaseLegacyName = (name: string) =>
 
 const getMagebloodLegacyLocale = (): MagebloodLegacyLocale => {
   const host = window.location.hostname.toLowerCase();
-  if (host === "poe2.kakaogames.com") return "ko";
+  if (host === "poe.kakaogames.com" || host === "poe2.kakaogames.com") return "ko";
   const subdomain = host.split(".")[0];
   if (subdomain === "br") return "pt";
   if (subdomain === "jp") return "jp";

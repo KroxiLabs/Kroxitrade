@@ -63,6 +63,9 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.middleClickAutoScrollTitle": "Middle-click no longer enables auto-scroll",
   "whatsNew.item.middleClickAutoScrollDescription":
     "Middle-clicking a saved search opens it in a background tab without activating the browser's auto-scroll cursor.",
+  "whatsNew.item.kakaoTradeSupportTitle": "Kakao Games trade site support",
+  "whatsNew.item.kakaoTradeSupportDescription":
+    "The sidebar and trade helpers now work on poe.kakaogames.com for both PoE1 (/trade) and PoE2 (/trade2).",
   "whatsNew.item.version1110Title": "Expanded folder icons and restored PoE2 copy",
   "whatsNew.item.version1110Description":
     "Folder icons are now organized by PoE1 and PoE2 currencies and ascendancies, while the Path of Building copy option is available again on PoE2 results.",

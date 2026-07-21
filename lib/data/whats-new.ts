@@ -74,6 +74,13 @@ const version1112Fixes: WhatsNewItem[] = [
   }
 ];
 
+const version1113Features: WhatsNewItem[] = [
+  {
+    titleKey: "whatsNew.item.kakaoTradeSupportTitle",
+    descriptionKey: "whatsNew.item.kakaoTradeSupportDescription"
+  }
+];
+
 const version112Features: WhatsNewItem[] = [
   {
     title: "External reference links in the popup",
@@ -326,9 +333,18 @@ const version1110Features: WhatsNewItem[] = [
 ];
 
 export const latestWhatsNew: WhatsNewEntry = {
-  version: "1.1.12",
+  version: "1.1.13",
   date: "2026-07-21",
   sections: [
+    {
+      title: "1.1.13",
+      groups: [
+        {
+          titleKey: "whatsNew.section.features",
+          items: version1113Features
+        }
+      ]
+    },
     {
       title: "1.1.12",
       groups: [

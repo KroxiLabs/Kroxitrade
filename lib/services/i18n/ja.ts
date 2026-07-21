@@ -11,6 +11,8 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.bookmarkPreviewRealDescription": "ライブプレビューは実際のフォルダーとブックマークのコンポーネントを使い、カテゴリ、2つの検索例、レイアウト別の操作を表示します。",
   "whatsNew.item.middleClickAutoScrollTitle": "中クリックで自動スクロールが有効にならないように改善",
   "whatsNew.item.middleClickAutoScrollDescription": "保存した検索を中クリックすると、ブラウザーの自動スクロールカーソルを有効にせず、バックグラウンドタブで開きます。",
+  "whatsNew.item.kakaoTradeSupportTitle": "Kakao Games のトレードサイトに対応",
+  "whatsNew.item.kakaoTradeSupportDescription": "サイドバーとトレード補助機能が、poe.kakaogames.com の PoE1 (/trade) と PoE2 (/trade2) で使えるようになりました。",
   "settings.bookmarkPreviewTradeSecondary": "高速マップ周回",
   "settings.bookmarkPreviewCategoryMapping": "マップ周回",
   "settings.bookmarkPreviewCategoryBossing": "ボス戦",

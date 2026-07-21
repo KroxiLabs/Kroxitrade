@@ -11,6 +11,8 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.bookmarkPreviewRealDescription": "Die Live-Vorschau nutzt jetzt echte Ordner- und Lesezeichenkomponenten mit Kategorien, zwei Beispielsuchen und layoutabhängigen Aktionen.",
   "whatsNew.item.middleClickAutoScrollTitle": "Mittelklick aktiviert kein automatisches Scrollen mehr",
   "whatsNew.item.middleClickAutoScrollDescription": "Ein Mittelklick auf eine gespeicherte Suche öffnet sie in einem Hintergrund-Tab, ohne den Auto-Scroll-Cursor des Browsers zu aktivieren.",
+  "whatsNew.item.kakaoTradeSupportTitle": "Unterstützung für die Kakao-Games-Handelsseite",
+  "whatsNew.item.kakaoTradeSupportDescription": "Die Seitenleiste und Handelswerkzeuge funktionieren jetzt auf poe.kakaogames.com für PoE1 (/trade) und PoE2 (/trade2).",
   "settings.bookmarkPreviewTradeSecondary": "Schnelle Kartenräumung",
   "settings.bookmarkPreviewCategoryMapping": "Karten",
   "settings.bookmarkPreviewCategoryBossing": "Bosse",

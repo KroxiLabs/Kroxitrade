@@ -11,6 +11,8 @@ export const frenchTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.bookmarkPreviewRealDescription": "L’aperçu en direct utilise maintenant les vrais composants de dossier et de favori, avec catégories, deux recherches d’exemple et actions propres à chaque disposition.",
   "whatsNew.item.middleClickAutoScrollTitle": "Le clic central n’active plus le défilement automatique",
   "whatsNew.item.middleClickAutoScrollDescription": "Un clic central sur une recherche sauvegardée l’ouvre dans un onglet en arrière-plan sans activer le curseur de défilement automatique du navigateur.",
+  "whatsNew.item.kakaoTradeSupportTitle": "Prise en charge du site de commerce Kakao Games",
+  "whatsNew.item.kakaoTradeSupportDescription": "La barre latérale et les outils de commerce fonctionnent désormais sur poe.kakaogames.com pour PoE1 (/trade) et PoE2 (/trade2).",
   "settings.bookmarkPreviewTradeSecondary": "Nettoyage rapide des cartes",
   "settings.bookmarkPreviewCategoryMapping": "Cartographie",
   "settings.bookmarkPreviewCategoryBossing": "Boss",
