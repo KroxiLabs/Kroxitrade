@@ -39,6 +39,7 @@
 
   interface Props {
     folder: BookmarksFolderStruct;
+    previewTrades?: BookmarksTradeStruct[];
     isExpanded?: boolean;
     onToggleExpansion: (id: string) => void;
     onArchiveEvent: () => void;
@@ -56,6 +57,7 @@
 
   let {
     folder = $bindable(),
+    previewTrades,
     isExpanded = false,
     onToggleExpansion,
     onArchiveEvent,
@@ -94,6 +96,11 @@
       }
 
   const loadTrades = async (force = false) => {
+    if (previewTrades) {
+      trades = previewTrades
+      hasLoadedTrades = true
+      return
+    }
     if (!folder.id) return
     if (!force && (isLoading || hasLoadedTrades)) return
 
@@ -128,6 +135,11 @@
   }
 
   const syncTradesFromCache = () => {
+    if (previewTrades) {
+      trades = previewTrades
+      hasLoadedTrades = true
+      return
+    }
     if (!folder.id) return
 
     const cachedTrades = bookmarksService.getCachedTradesByFolderId(folder.id)
@@ -707,6 +719,13 @@
   let tradeListEntries = $derived(getTradeListEntries())
   let folderIconUrl = $derived(getBookmarkFolderIconUrl(folder.icon))
   let folderEditIconUrl = $derived(getBookmarkFolderIconUrl(folderEditIcon))
+
+  $effect(() => {
+    if (previewTrades) {
+      trades = previewTrades
+      hasLoadedTrades = true
+    }
+  })
 </script>
 
 <div
@@ -983,7 +1002,7 @@
                       {/if}
                     </div>
                     {#if !$settings.compactActionsMenu}
-                      <div class="trade-actions">
+                      <div class="trade-actions trade-actions--classic">
                         <TradeActionsMenu
                           {trade}
                           onEdit={() => void startEditingTrade(trade)}
@@ -1005,16 +1024,18 @@
             {/if}
           {/each}
         </ul>
-        <div class="footer-actions">
-          <div
-            class="save-search-anchor"
-            data-tutorial={isTutorialSaveTarget ? "save-search" : undefined}>
-            <Button
-              label={translate($languageStore, "folder.saveCurrentSearch")}
-              theme="gold"
-              onClick={createTradeFromCurrent} />
+        {#if !previewTrades}
+          <div class="footer-actions">
+            <div
+              class="save-search-anchor"
+              data-tutorial={isTutorialSaveTarget ? "save-search" : undefined}>
+              <Button
+                label={translate($languageStore, "folder.saveCurrentSearch")}
+                theme="gold"
+                onClick={createTradeFromCurrent} />
+            </div>
           </div>
-        </div>
+        {/if}
       </LoadingContainer>
     </div>
   {/if}
@@ -1502,6 +1523,7 @@
 }
 
 .trade-copy {
+  flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -1532,6 +1554,10 @@
 }
 
 .trade-actions--compact {
+  margin-left: auto;
+}
+
+.trade-actions--classic {
   margin-left: auto;
 }
 

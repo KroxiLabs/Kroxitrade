@@ -30,7 +30,6 @@
 
   interface Props {
     open?: boolean;
-    showHistoryStep?: boolean;
     showEquivalentStep?: boolean;
     onClose?: () => void;
     onStepChange?: (
@@ -41,7 +40,6 @@
 
   let {
     open = false,
-    showHistoryStep = true,
     showEquivalentStep = true,
     onClose = () => {},
     onStepChange = () => {}
@@ -118,7 +116,7 @@
     {
       id: "settings-sidebar" as OnboardingStepId,
       page: "settings" as OnboardingPage,
-      targetSelector: '[data-tutorial="settings-sidebar"]',
+      targetSelector: '[data-tutorial="settings-interface"]',
       preferredPlacement: "above",
       eyebrow: translate($languageStore, "onboarding.step5Eyebrow"),
       title: translate($languageStore, "onboarding.step5Title"),
@@ -146,8 +144,8 @@
     {
       id: "settings-equivalent" as OnboardingStepId,
       page: "settings" as OnboardingPage,
-      targetSelector: '[data-tutorial="settings-equivalent"]',
-      preferredPlacement: "above",
+      targetSelector: '[data-tutorial="settings-results"]',
+      preferredPlacement: "below",
       eyebrow: translate($languageStore, "onboarding.step7Eyebrow"),
       title: translate($languageStore, "onboarding.step7Title"),
       body: translate($languageStore, "onboarding.step7Body"),
@@ -189,7 +187,7 @@
       id: "settings-bookmarks" as OnboardingStepId,
       page: "settings" as OnboardingPage,
       targetSelector: '[data-tutorial="settings-bookmarks"]',
-      preferredPlacement: "above",
+      preferredPlacement: "below",
       eyebrow: translate($languageStore, "onboarding.step11Eyebrow"),
       title: translate($languageStore, "onboarding.step11Title"),
       body: translate($languageStore, "onboarding.step11Body"),
@@ -201,10 +199,25 @@
     }
   ])
 
+  const stepOrder: OnboardingStepId[] = [
+    "create-folder",
+    "save-search",
+    "settings-bookmarks",
+    "settings-equivalent",
+    "settings-bulk",
+    "settings-sidebar",
+    "settings-tutorial"
+  ]
+
   let steps = $derived(
-    (showHistoryStep ? allSteps : allSteps.filter((step) => step.id !== "history")).filter(
-      (step) => showEquivalentStep || step.id !== "settings-equivalent"
-    )
+    [...allSteps]
+      .filter((step) =>
+        step.id !== "history" &&
+        step.id !== "settings-history" &&
+        step.id !== "settings-language"
+      )
+      .filter((step) => showEquivalentStep || step.id !== "settings-equivalent")
+      .sort((left, right) => stepOrder.indexOf(left.id) - stepOrder.indexOf(right.id))
   )
 
   const getQueryRoot = (): Document | ShadowRoot => {
@@ -245,7 +258,7 @@
 
     const containerRect = container.getBoundingClientRect()
     const targetRect = target.getBoundingClientRect()
-    const cardWidth = Math.min(272, Math.max(220, containerRect.width - 20))
+    const cardWidth = Math.min(360, Math.max(280, containerRect.width - 20))
     const cardHeight = coachmarkElement?.offsetHeight || 172
     const gap = 12
     const relativeTop = targetRect.top - containerRect.top

@@ -13,7 +13,8 @@
   import { itemResultsService } from "../../lib/services/item-results";
   import { DEFAULT_SIDEBAR_WIDTH, settings, type BookmarkLayout, type BookmarkTradeActionId, type QuickFiltersPlacement, type SidebarSide, type TextSizePreference } from "../../lib/services/settings";
   import { tradeLocationService } from "../../lib/services/trade-location";
-  import type { BookmarksTradeStruct } from "../../lib/types/bookmarks";
+  import type { BookmarksFolderStruct, BookmarksTradeStruct } from "../../lib/types/bookmarks";
+  import BookmarkFolder from "../BookmarkFolder.svelte";
   import Button from "../Button.svelte";
   import SvgIcon from "../SvgIcon.svelte";
   import TradeActionsMenu from "../TradeActionsMenu.svelte";
@@ -78,6 +79,44 @@
       league: "Mercenaries"
     }
   };
+  const previewTradeSecondary: BookmarksTradeStruct = {
+    ...previewTrade,
+    id: "settings-preview-trade-secondary",
+    location: {
+      ...previewTrade.location,
+      slug: "settings-preview-secondary"
+    }
+  };
+  const previewMappingCategoryId = "settings-preview-category-mapping";
+  const previewBossingCategoryId = "settings-preview-category-bossing";
+  let previewFolder = $derived<BookmarksFolderStruct>({
+    title: translate($languageStore, "settings.bookmarkPreviewFolder"),
+    version: "2",
+    icon: null,
+    archivedAt: null,
+    categories: [
+      {
+        id: previewMappingCategoryId,
+        title: translate($languageStore, "settings.bookmarkPreviewCategoryMapping")
+      },
+      {
+        id: previewBossingCategoryId,
+        title: translate($languageStore, "settings.bookmarkPreviewCategoryBossing")
+      }
+    ]
+  });
+  let previewBookmarks = $derived<BookmarksTradeStruct[]>([
+    {
+      ...previewTrade,
+      title: translate($languageStore, "settings.bookmarkPreviewTrade"),
+      categoryId: previewMappingCategoryId
+    },
+    {
+      ...previewTradeSecondary,
+      title: translate($languageStore, "settings.bookmarkPreviewTradeSecondary"),
+      categoryId: previewBossingCategoryId
+    }
+  ]);
   const languages: Array<{ code: AppLanguage; label: string; flag: string; emoji: string }> = [
     { code: "en", label: "English", flag: flagGB, emoji: "🇬🇧" },
     { code: "es", label: "Español", flag: flagES, emoji: "🇪🇸" },
@@ -371,7 +410,7 @@
     {/each}
   </div>
 
-  <div class="settings-grid">
+  <div class="settings-grid" data-tutorial="settings-interface">
     {#if activeTab === "interface"}
       <section class="settings-section settings-section--feature settings-section--wide" data-tutorial="settings-language">
       <div class="section-heading">
@@ -540,8 +579,8 @@
         </div>
         <p class="section-description">{translate($languageStore, "settings.sidebarModulesDescription")}</p>
 
-        <div class="settings-row-list settings-row-list--spaced">
-          <div class="settings-row" data-tutorial="settings-bulk">
+        <div class="settings-row-list settings-row-list--spaced" data-tutorial="settings-bulk">
+          <div class="settings-row">
             <div class="settings-row__copy">
               <div class="settings-row__title">{translate($languageStore, "settings.bulkTitle")}</div>
               <div class="settings-row__description">{translate($languageStore, "settings.bulkDescription")}</div>
@@ -571,6 +610,7 @@
       </section>
 
     {:else if activeTab === "bookmarks"}
+      <div class="settings-section-group" data-tutorial="settings-bookmarks">
       <section class="settings-section settings-section--wide">
         <div class="settings-section__header-row">
           <div class="section-heading">
@@ -586,7 +626,7 @@
         <p class="section-description">{translate($languageStore, "settings.bookmarkCategoriesDescription")}</p>
       </section>
 
-      <section class="settings-section settings-section--wide settings-section--bookmarks-layout" data-tutorial="settings-bookmarks">
+      <section class="settings-section settings-section--wide settings-section--bookmarks-layout">
       <div class="section-heading">
         <h3 class="section-title">{translate($languageStore, "settings.compactActionsTitle")}</h3>
       </div>
@@ -659,12 +699,29 @@
           </span>
         </div>
 
-        <div class="preview-folder">
+        <div class="bookmark-layout-preview__live">
+          <BookmarkFolder
+            folder={previewFolder}
+            previewTrades={previewBookmarks}
+            isExpanded={true}
+            onToggleExpansion={() => {}}
+            onArchiveEvent={() => {}}
+            onDeleteEvent={() => {}} />
+        </div>
+
+        <div class="preview-folder bookmark-layout-preview__legacy">
           <div class="preview-folder__header">
             <span class="preview-folder__icon" aria-hidden="true"></span>
             <span class="preview-folder__title">{translate($languageStore, "settings.bookmarkPreviewFolder")}</span>
             <span class="preview-folder__chevron" aria-hidden="true">▼</span>
           </div>
+
+          {#if $settings.bookmarkCategoriesEnabled}
+            <div class="preview-category">
+              <span class="preview-category__marker" aria-hidden="true"></span>
+              <span>{translate($languageStore, "folder.noCategory")}</span>
+            </div>
+          {/if}
 
           <div class="preview-trades-list" class:is-ultra-compact={$settings.ultraCompactBookmarks}>
             <div class="preview-trade-item">
@@ -702,13 +759,49 @@
                 {/if}
               </div>
             </div>
+            <div class="preview-trade-item">
+              <span class="preview-trade__drag" aria-hidden="true">≡</span>
+              <div class="preview-trade__content">
+                <div class="preview-trade__top">
+                  <span class="preview-trade__title">{translate($languageStore, "settings.bookmarkPreviewTradeSecondary")}</span>
+                  {#if $settings.compactActionsMenu}
+                    <div class="preview-trade-actions preview-trade-actions--compact">
+                      <TradeActionsMenu
+                        trade={previewTradeSecondary}
+                        onEdit={noopPreviewAction}
+                        onReplace={noopPreviewAction}
+                        onCopy={noopPreviewAction}
+                        onOpenLive={noopPreviewAction}
+                        onToggle={noopPreviewAction}
+                        onDelete={noopPreviewAction} />
+                    </div>
+                  {/if}
+                </div>
+
+                {#if !$settings.compactActionsMenu}
+                  <div class="preview-trade__bottom">
+                    <div class="preview-trade-actions">
+                      <TradeActionsMenu
+                        trade={previewTradeSecondary}
+                        onEdit={noopPreviewAction}
+                        onReplace={noopPreviewAction}
+                        onCopy={noopPreviewAction}
+                        onOpenLive={noopPreviewAction}
+                        onToggle={noopPreviewAction}
+                        onDelete={noopPreviewAction} />
+                    </div>
+                  </div>
+                {/if}
+              </div>
+            </div>
           </div>
         </div>
       </div>
       </section>
+      </div>
 
     {:else if activeTab === "results"}
-      <section class="settings-section settings-section--wide">
+      <section class="settings-section settings-section--wide" data-tutorial="settings-results">
       <div class="section-heading">
         <h3 class="section-title">{translate($languageStore, "settings.resultsTitle")}</h3>
       </div>
@@ -840,6 +933,11 @@
 }
 
 .settings-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.settings-section-group {
   display: grid;
   gap: 14px;
 }
@@ -1432,6 +1530,14 @@
   margin-bottom: 12px;
 }
 
+.bookmark-layout-preview__live {
+  pointer-events: none;
+}
+
+.bookmark-layout-preview__legacy {
+  display: none;
+}
+
 .bookmark-layout-preview__copy {
   display: flex;
   align-items: center;
@@ -1461,6 +1567,30 @@
   border-radius: 8px;
   background: linear-gradient(180deg, rgba(163, 141, 109, 0.035), rgba(163, 141, 109, 0.012)), rgba(5, 5, 5, 0.4);
   box-shadow: inset 0 1px 0 rgba(238, 238, 238, 0.02), 0 10px 22px rgba(5, 5, 5, 0.2);
+}
+
+.preview-category {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 4px 10px;
+  border-bottom: 1px solid rgba(163, 141, 109, 0.1);
+  background: rgba(5, 5, 5, 0.22);
+  color: rgba(196, 177, 140, 0.88);
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(10px * var(--bt-text-scale, 1));
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.preview-category__marker {
+  width: 7px;
+  height: 7px;
+  border: 1px solid rgba(196, 177, 140, 0.62);
+  border-radius: 999px;
+  background: rgba(163, 141, 109, 0.24);
 }
 
 .preview-folder__header {
@@ -1624,6 +1754,9 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .settings-section--wide {
+    grid-column: 1/-1;
+  }
+  .settings-section-group {
     grid-column: 1/-1;
   }
 }

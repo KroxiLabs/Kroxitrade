@@ -53,6 +53,15 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.resizableSidebar":
     "El panel se puede redimensionar y fijar a cualquiera de los lados del sitio de trade.",
   "whatsNew.item.languages": "La interfaz incluye cobertura de más idiomas.",
+  "whatsNew.item.tutorialRefreshTitle": "Tutorial guiado renovado",
+  "whatsNew.item.tutorialRefreshDescription":
+    "El tutorial ahora sigue los flujos principales, agrupa ajustes relacionados y mantiene sus carteles fuera de los controles que explica.",
+  "whatsNew.item.bookmarkPreviewRealTitle": "La vista previa de Favoritos coincide con la lista real",
+  "whatsNew.item.bookmarkPreviewRealDescription":
+    "La vista previa ahora usa los componentes reales de carpeta y bookmark, con categorías, dos búsquedas de ejemplo y la posición de acciones de cada diseño.",
+  "whatsNew.item.version1110Title": "Más iconos de carpeta y copia de PoE2 restaurada",
+  "whatsNew.item.version1110Description":
+    "Los iconos de carpeta ahora se organizan por monedas y ascendencias de PoE1 y PoE2, y la opción de copia para Path of Building vuelve a estar disponible en resultados de PoE2.",
   "welcome.title": "Bienvenido a Poe Trade Plus",
   "welcome.message":
     "Elegí el idioma que querés usar para la extensión antes de empezar.",
@@ -93,25 +102,25 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "Usala para reabrir búsquedas recientes sin armarlas de nuevo.",
   "onboarding.step3Highlight3":
     "Si querés conservar una para siempre, después guardala desde Favoritos.",
-  "onboarding.step4Eyebrow": "Ajustes",
-  "onboarding.step4Title": "Volvé a abrir la guía desde acá",
+  "onboarding.step4Eyebrow": "Acerca de",
+  "onboarding.step4Title": "Volvé a abrir esta guía cuando la necesites",
   "onboarding.step4Body":
-    "Este primer bloque de ajustes es sólo para el tutorial.",
+    "El tutorial vive en Acerca de, así Ajustes queda enfocado en cómo funciona la extensión.",
   "onboarding.step4Highlight1":
     "Usá Abrir tutorial cuando quieras volver a recorrer esta guía.",
   "onboarding.step4Highlight2":
-    "Sirve después de cambios o cuando querés repasar una función.",
+    "Usalo después de una actualización o cuando quieras repasar una función.",
   "onboarding.step4Highlight3":
-    "En los siguientes pasos te voy marcando el resto de los ajustes uno por uno.",
-  "onboarding.step5Eyebrow": "Ajustes",
-  "onboarding.step5Title": "Posición del panel",
+    "El recorrido siempre vuelve a empezar por las búsquedas guardadas.",
+  "onboarding.step5Eyebrow": "Panel e interfaz",
+  "onboarding.step5Title": "Adaptá el panel a tu forma de jugar",
   "onboarding.step5Body":
-    "Estos controles cambian en qué lado de la pantalla vive la extensión y con qué ancho arranca.",
+    "Dejá la interfaz cómoda eligiendo su lado, ancho, tamaño de texto e idioma.",
   "onboarding.step5Highlight1":
-    "Izquierda mueve el panel al lado izquierdo del sitio de trade.",
-  "onboarding.step5Highlight2": "Derecha lo mueve al lado derecho.",
+    "Elegí Izquierda o Derecha y arrastrá el borde del panel para cambiar su tamaño cuando lo necesites.",
+  "onboarding.step5Highlight2": "Ajustá el tamaño de texto para leer el panel más cómodo en tu pantalla.",
   "onboarding.step5Highlight3":
-    "Restablecer ancho vuelve al ancho por defecto si lo redimensionaste.",
+    "Elegí acá el idioma de la interfaz; Restablecer ancho vuelve al tamaño original del panel.",
   "onboarding.step6Eyebrow": "Ajustes",
   "onboarding.step6Title": "Idioma",
   "onboarding.step6Body":
@@ -122,24 +131,24 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "La bandera y las etiquetas muestran la opción actual.",
   "onboarding.step6Highlight3":
     "Al cambiarlo, se actualizan los textos de toda la extensión.",
-  "onboarding.step7Eyebrow": "Ajustes",
-  "onboarding.step7Title": "Precio equivalente",
+  "onboarding.step7Eyebrow": "Resultados",
+  "onboarding.step7Title": "Elegí las herramientas que se muestran en los resultados",
   "onboarding.step7Body":
-    "Este toggle controla la línea extra que convierte precios listados a equivalentes en chaos o divine.",
+    "Esta sección controla los asistentes que aparecen mientras recorrés los resultados de trade.",
   "onboarding.step7Highlight1":
-    "Activarlo te da ayuda rápida de conversión en los resultados.",
+    "Precio equivalente agrega conversiones a chaos y divine usando ratios de poe.ninja.",
   "onboarding.step7Highlight2":
-    "Desactivarlo deja la lista de trade más limpia.",
+    "Las acciones de resultado agregan accesos como Craft of Exile y la wiki a los objetos compatibles.",
   "onboarding.step7Highlight3":
-    "Sólo cambia cómo se muestran los precios, no la búsqueda en sí.",
-  "onboarding.step8Eyebrow": "Ajustes",
-  "onboarding.step8Title": "Bulk Sellers",
-  "onboarding.step8Body": "Este toggle muestra u oculta la pestaña Bulk.",
+    "Activá sólo los asistentes que uses; algunas opciones aparecen únicamente en Path of Exile 2.",
+  "onboarding.step8Eyebrow": "Herramientas del panel",
+  "onboarding.step8Title": "Bulk Sellers e Historial",
+  "onboarding.step8Body": "Activá las herramientas que quieras en el panel: una agrupa vendedores repetidos y la otra mantiene a mano tus búsquedas recientes.",
   "onboarding.step8Highlight1":
-    "Activala si querés ver vendedores repetidos agrupados en los resultados actuales.",
-  "onboarding.step8Highlight2": "Desactivala si casi no usás la ayuda Bulk.",
+    "Bulk Sellers agrupa vendedores repetidos de los resultados actuales.",
+  "onboarding.step8Highlight2": "Historial te permite volver a abrir búsquedas recientes sin armarlas de nuevo.",
   "onboarding.step8Highlight3":
-    "Cuando está oculta, la pestaña Bulk desaparece de la navegación superior.",
+    "Desactivá cualquiera de las dos si preferís una navegación más simple.",
   "onboarding.step9Eyebrow": "Ajustes",
   "onboarding.step9Title": "Historial",
   "onboarding.step9Body": "Este toggle muestra u oculta la pestaña Historial.",
@@ -158,16 +167,15 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "Desactivarlo simplifica un poco más la barra lateral.",
   "onboarding.step10Highlight3":
     "Afecta el panel auxiliar que aparece al fondo de la extensión.",
-  "onboarding.step11Eyebrow": "Ajustes",
-  "onboarding.step11Title": "Diseño de Favoritos",
+  "onboarding.step11Eyebrow": "Favoritos",
+  "onboarding.step11Title": "Organizá carpetas y elegí su diseño",
   "onboarding.step11Body":
-    "Estos controles cambian cómo se muestran las búsquedas guardadas y sus botones de acción.",
-  "onboarding.step11Highlight1":
-    "Clásico mantiene la vista más completa de bookmarks.",
+    "Las categorías ordenan las carpetas y los controles de diseño definen cómo se ven las búsquedas guardadas y sus acciones.",
+  "onboarding.step11Highlight1": "Activá las categorías para agrupar carpetas relacionadas.",
   "onboarding.step11Highlight2":
-    "Compacto acomoda las acciones en un diseño más apretado con menú de tres puntos.",
+    "Elegí Clásico, Compacto o Minimal según cuántos detalles quieras ver.",
   "onboarding.step11Highlight3":
-    "Si activás Compacto, las opciones de abajo deciden qué acciones quedan visibles.",
+    "La vista previa de abajo cambia al instante para mostrar el diseño y las categorías elegidas.",
   "onboarding.sampleFolder": "Carpeta del tutorial",
   "onboarding.sampleTrade": "Favorito de ejemplo",
   "onboarding.back": "Atrás",
@@ -271,6 +279,9 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "Mirá cómo se va a ver una búsqueda guardada con el diseño actual de favoritos.",
   "settings.bookmarkPreviewFolder": "Equipo favorito",
   "settings.bookmarkPreviewTrade": "Botas con resistencias altas",
+  "settings.bookmarkPreviewTradeSecondary": "Limpieza de mapas rápida",
+  "settings.bookmarkPreviewCategoryMapping": "Mapeo",
+  "settings.bookmarkPreviewCategoryBossing": "Jefes",
   "settings.saveFailed": "No se pudieron guardar los ajustes. Probá de nuevo.",
   "settings.tabs.label": "Categorías de ajustes",
   "settings.tabs.interface": "General",

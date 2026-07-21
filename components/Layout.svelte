@@ -423,6 +423,7 @@ import About from "./pages/About.svelte";
     {#if $settings.showBulkSellers}
       <button 
           class="nav-item {currentPage === 'bulk' ? 'is-active' : ''} {showOnboarding && onboardingHighlightedPage === 'bulk' ? 'is-onboarding-focus' : ''}" 
+          data-tutorial="nav-bulk"
           onclick={() => currentPage = 'bulk'}
       >
           <span class="nav-item__icon" aria-hidden="true"><SvgIcon svg={navIcons.bulk} size={14} className="nav-svg" /></span>
@@ -495,7 +496,6 @@ import About from "./pages/About.svelte";
 
   <OnboardingModal
     open={showOnboarding}
-    showHistoryStep={$settings.showHistory}
     showEquivalentStep={true}
     onClose={closeOnboarding}
     onStepChange={handleOnboardingStepChange} />

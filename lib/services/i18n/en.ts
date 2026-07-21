@@ -54,6 +54,15 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "The sidebar can be resized and pinned to either side of the trade site.",
   "whatsNew.item.languages":
     "The interface now includes broader language coverage.",
+  "whatsNew.item.tutorialRefreshTitle": "Guided tutorial refreshed",
+  "whatsNew.item.tutorialRefreshDescription":
+    "The tutorial now follows the main workflows, groups related settings together, and keeps its guide cards out of the way of the controls they explain.",
+  "whatsNew.item.bookmarkPreviewRealTitle": "Bookmark Layout preview matches the real list",
+  "whatsNew.item.bookmarkPreviewRealDescription":
+    "The live preview now uses the real folder and bookmark components, including categories, two example searches, and the layout-specific action placement.",
+  "whatsNew.item.version1110Title": "Expanded folder icons and restored PoE2 copy",
+  "whatsNew.item.version1110Description":
+    "Folder icons are now organized by PoE1 and PoE2 currencies and ascendancies, while the Path of Building copy option is available again on PoE2 results.",
   "welcome.title": "Welcome to Poe Trade Plus",
   "welcome.message":
     "Choose the language you want to use for the extension before you start.",
@@ -90,25 +99,25 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "onboarding.step3Highlight2": "Use it to reopen recent searches quickly.",
   "onboarding.step3Highlight3":
     "If you want to keep one permanently, save it later from Bookmarks.",
-  "onboarding.step4Eyebrow": "Settings",
-  "onboarding.step4Title": "Reopen the guide from here",
+  "onboarding.step4Eyebrow": "About",
+  "onboarding.step4Title": "Reopen this guide whenever you need it",
   "onboarding.step4Body":
-    "This first settings block is just for the tutorial itself.",
+    "The tutorial lives in About, so Settings can stay focused on how the extension works.",
   "onboarding.step4Highlight1":
     "Use Open Tutorial whenever you want to run this guide again.",
   "onboarding.step4Highlight2":
-    "It is useful after updates or when you want to revisit a feature.",
+    "Use it after an update or whenever you want to revisit a feature.",
   "onboarding.step4Highlight3":
-    "The next steps will mark the rest of the settings one by one.",
-  "onboarding.step5Eyebrow": "Settings",
-  "onboarding.step5Title": "Sidebar Position",
+    "The tour always starts again with saved searches.",
+  "onboarding.step5Eyebrow": "Panel and interface",
+  "onboarding.step5Title": "Make the panel fit the way you play",
   "onboarding.step5Body":
-    "These controls change where the extension lives on the screen and how wide it starts.",
+    "Keep the interface comfortable by choosing its side, width, text size, and language.",
   "onboarding.step5Highlight1":
-    "Left moves the panel to the left side of the trade site.",
-  "onboarding.step5Highlight2": "Right moves it to the right side.",
+    "Choose Left or Right, then drag the panel edge to resize it whenever you need.",
+  "onboarding.step5Highlight2": "Adjust text size so the panel is easier to read on your screen.",
   "onboarding.step5Highlight3":
-    "Reset Width restores the default sidebar width if you resized it.",
+    "Choose the interface language here; Reset Width restores the default panel size.",
   "onboarding.step6Eyebrow": "Settings",
   "onboarding.step6Title": "Language",
   "onboarding.step6Body":
@@ -118,25 +127,25 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "onboarding.step6Highlight2": "The flag and labels show the current choice.",
   "onboarding.step6Highlight3":
     "Changing this updates the extension text across the panel.",
-  "onboarding.step7Eyebrow": "Settings",
-  "onboarding.step7Title": "Equivalent Pricing",
+  "onboarding.step7Eyebrow": "Results",
+  "onboarding.step7Title": "Choose the tools shown on trade results",
   "onboarding.step7Body":
-    "This toggle controls the extra line that converts listed prices into chaos or divine equivalents.",
+    "This section controls the helpers that appear while you browse trade results.",
   "onboarding.step7Highlight1":
-    "Turn it on if you want quick conversion help in results.",
+    "Equivalent Pricing adds chaos and divine conversions using poe.ninja ratios.",
   "onboarding.step7Highlight2":
-    "Turn it off if you prefer a cleaner trade list.",
+    "Result actions add shortcuts such as Craft of Exile and the wiki to supported items.",
   "onboarding.step7Highlight3":
-    "It only affects how prices are shown, not the search itself.",
-  "onboarding.step8Eyebrow": "Settings",
-  "onboarding.step8Title": "Bulk Sellers",
-  "onboarding.step8Body": "This toggle shows or hides the Bulk tab.",
+    "Enable only the helpers you use; some options appear only on Path of Exile 2.",
+  "onboarding.step8Eyebrow": "Sidebar tools",
+  "onboarding.step8Title": "Bulk Sellers and History",
+  "onboarding.step8Body": "Enable the tools you want in the sidebar: one groups repeated sellers and the other keeps recent searches close by.",
   "onboarding.step8Highlight1":
-    "Enable it if you want grouped repeated sellers from the current results.",
+    "Bulk Sellers groups repeated sellers from the current results.",
   "onboarding.step8Highlight2":
-    "Disable it if you do not use the Bulk helper often.",
+    "History lets you reopen recent searches without building them again.",
   "onboarding.step8Highlight3":
-    "When hidden, the Bulk tab disappears from the top navigation.",
+    "Turn off either one if you prefer a simpler navigation.",
   "onboarding.step9Eyebrow": "Settings",
   "onboarding.step9Title": "History",
   "onboarding.step9Body": "This toggle shows or hides the History tab.",
@@ -154,15 +163,15 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "onboarding.step10Highlight2": "Disable it if you want a simpler sidebar.",
   "onboarding.step10Highlight3":
     "It affects the helper panel at the bottom of the extension.",
-  "onboarding.step11Eyebrow": "Settings",
-  "onboarding.step11Title": "Bookmark Layout",
+  "onboarding.step11Eyebrow": "Bookmarks",
+  "onboarding.step11Title": "Organize folders and choose their layout",
   "onboarding.step11Body":
-    "These controls change how saved searches and their action buttons are displayed in bookmarks.",
-  "onboarding.step11Highlight1": "Classic keeps the fuller bookmark layout.",
+    "Categories keep folders organized, while the layout controls decide how saved searches and their actions look.",
+  "onboarding.step11Highlight1": "Enable categories to group related folders together.",
   "onboarding.step11Highlight2":
-    "Compact moves actions into a tighter layout with a three-dot menu.",
+    "Choose Classic, Compact, or Minimal to fit the amount of detail you want to see.",
   "onboarding.step11Highlight3":
-    "If Compact is enabled, the extra options below choose which actions stay visible.",
+    "The live preview below updates immediately so you can see the selected layout and categories.",
   "onboarding.sampleFolder": "Tutorial Folder",
   "onboarding.sampleTrade": "Example Bookmark",
   "onboarding.back": "Back",
@@ -265,6 +274,9 @@ export const englishTranslations: Record<string, TranslationValue> = {
     "See how a saved search will look with the current bookmark layout settings.",
   "settings.bookmarkPreviewFolder": "Favorite Gear",
   "settings.bookmarkPreviewTrade": "High resistance boots",
+  "settings.bookmarkPreviewTradeSecondary": "Fast map clear",
+  "settings.bookmarkPreviewCategoryMapping": "Mapping",
+  "settings.bookmarkPreviewCategoryBossing": "Bossing",
   "settings.saveFailed": "Could not save settings. Please try again.",
   "settings.tabs.label": "Settings categories",
   "settings.tabs.interface": "General",
