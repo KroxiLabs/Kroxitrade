@@ -1,6 +1,10 @@
-import { hasValidExtensionContext, isExtensionContextInvalidatedError } from "../utilities/extension-context"
+import {
+  hasValidExtensionContext,
+  isExtensionContextInvalidatedError
+} from "../utilities/extension-context"
 
-const TRADE_URL_PATTERN = /^https:\/\/(?:(?:[^./]+\.)?pathofexile\.com|poe2\.kakaogames\.com)\/trade(?:2)?(?:\/|$)/i
+const TRADE_URL_PATTERN =
+  /^https:\/\/(?:(?:[^./]+\.)?pathofexile\.com|poe2\.kakaogames\.com)\/trade(?:2)?(?:\/|$)/i
 
 const getActiveTab = async () => {
   if (!hasValidExtensionContext() || !chrome.tabs?.query) {
@@ -40,7 +44,11 @@ export const openUrlInActiveTab = async (url: string) => {
   const tab = await getActiveTab()
 
   // Background script / popup script case
-  if (hasValidExtensionContext() && chrome.tabs?.update && typeof tab?.id === "number") {
+  if (
+    hasValidExtensionContext() &&
+    chrome.tabs?.update &&
+    typeof tab?.id === "number"
+  ) {
     try {
       await chrome.tabs.update(tab.id, { url, active: true })
       return
@@ -63,6 +71,25 @@ export const openUrlInActiveTab = async (url: string) => {
   }
 }
 
+export const openUrlInNewTab = async (url: string) => {
+  // Open inactive so repeated middle-clicks can queue searches without taking
+  // focus away from the bookmark panel or the current trade search.
+  if (hasValidExtensionContext() && chrome.tabs?.create) {
+    try {
+      await chrome.tabs.create({ url, active: false })
+      return
+    } catch (error) {
+      if (!isExtensionContextInvalidatedError(error)) {
+        console.warn("[Poe Trade Plus] Failed to open a new tab", error)
+      }
+    }
+  }
+
+  if (typeof window !== "undefined") {
+    window.open(url, "_blank", "noopener")
+  }
+}
+
 export const sendMessageToActiveTradeTab = async <T>(message: unknown) => {
   const tab = await getActiveTradeTab()
 
@@ -71,10 +98,13 @@ export const sendMessageToActiveTradeTab = async <T>(message: unknown) => {
   }
 
   try {
-    return await chrome.tabs.sendMessage(tab.id, message) as T
+    return (await chrome.tabs.sendMessage(tab.id, message)) as T
   } catch (error) {
     if (!isExtensionContextInvalidatedError(error)) {
-      console.warn("[Poe Trade Plus] Failed to send message to active trade tab", error)
+      console.warn(
+        "[Poe Trade Plus] Failed to send message to active trade tab",
+        error
+      )
     }
     return null
   }

@@ -9,7 +9,8 @@
 
   import {
     getActiveTradeTabTitle,
-    openUrlInActiveTab
+    openUrlInActiveTab,
+    openUrlInNewTab
   } from "../lib/services/active-trade-tab"
   import { bookmarksService } from "../lib/services/bookmarks"
   import {
@@ -479,8 +480,9 @@
     )
   }
 
-  const openTrade = async (trade: BookmarksTradeStruct) => {
-    await openUrlInActiveTab(resolveTradeUrl(trade.location, "", true))
+  const openTrade = async (trade: BookmarksTradeStruct, inNewTab = false) => {
+    const url = resolveTradeUrl(trade.location, "", true)
+    await (inNewTab ? openUrlInNewTab(url) : openUrlInActiveTab(url))
   }
 
   const exportFolder = () => {
@@ -601,9 +603,9 @@
     editingTradeId = null
   }
 
-  const openTradeFromCard = (trade: BookmarksTradeStruct) => {
+  const openTradeFromCard = (trade: BookmarksTradeStruct, inNewTab = false) => {
     if (suppressNextTradeOpen || editingTradeId === trade.id) return
-    void openTrade(trade)
+    void openTrade(trade, inNewTab)
   }
 
   const shouldIgnoreTradeCardClick = (target: EventTarget | null) => {
@@ -613,7 +615,15 @@
 
   const handleTradeCardClick = (event: MouseEvent | PointerEvent, trade: BookmarksTradeStruct) => {
     if (shouldIgnoreTradeCardClick(event.target)) return
-    openTradeFromCard(trade)
+    if (event.button === 1) {
+      event.preventDefault()
+      openTradeFromCard(trade, true)
+      return
+    }
+
+    if (event.button === 0) {
+      openTradeFromCard(trade)
+    }
   }
 
   const replaceSearchWithCurrent = async (trade: BookmarksTradeStruct) => {
