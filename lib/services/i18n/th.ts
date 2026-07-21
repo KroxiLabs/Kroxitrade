@@ -11,6 +11,8 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.bookmarkPreviewRealDescription": "ตัวอย่างสดใช้คอมโพเนนต์โฟลเดอร์และบุ๊กมาร์กจริง พร้อมหมวดหมู่ การค้นหาตัวอย่างสองรายการ และการวางปุ่มตามรูปแบบ.",
   "whatsNew.item.middleClickAutoScrollTitle": "คลิกกลางจะไม่เปิดโหมดเลื่อนอัตโนมัติอีกต่อไป",
   "whatsNew.item.middleClickAutoScrollDescription": "การคลิกกลางที่การค้นหาที่บันทึกไว้จะเปิดในแท็บเบื้องหลังโดยไม่เปิดเคอร์เซอร์เลื่อนอัตโนมัติของเบราว์เซอร์.",
+  "whatsNew.item.kakaoTradeSupportTitle": "รองรับเว็บไซต์ trade ของ Kakao Games",
+  "whatsNew.item.kakaoTradeSupportDescription": "แถบด้านข้างและเครื่องมือ trade ใช้งานได้บน poe.kakaogames.com สำหรับทั้ง PoE1 (/trade) และ PoE2 (/trade2).",
   "settings.bookmarkPreviewTradeSecondary": "เคลียร์แผนที่อย่างรวดเร็ว",
   "settings.bookmarkPreviewCategoryMapping": "แผนที่",
   "settings.bookmarkPreviewCategoryBossing": "บอส",

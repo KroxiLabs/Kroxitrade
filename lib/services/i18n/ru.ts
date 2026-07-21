@@ -11,6 +11,8 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.bookmarkPreviewRealDescription": "В предпросмотре теперь используются реальные компоненты папки и закладки: категории, два примера поиска и действия для каждого вида.",
   "whatsNew.item.middleClickAutoScrollTitle": "Средний клик больше не включает автопрокрутку",
   "whatsNew.item.middleClickAutoScrollDescription": "Средний клик по сохранённому поиску открывает его в фоновой вкладке, не включая курсор автопрокрутки браузера.",
+  "whatsNew.item.kakaoTradeSupportTitle": "Поддержка сайта торговли Kakao Games",
+  "whatsNew.item.kakaoTradeSupportDescription": "Боковая панель и торговые инструменты теперь работают на poe.kakaogames.com как для PoE1 (/trade), так и для PoE2 (/trade2).",
   "settings.bookmarkPreviewTradeSecondary": "Быстрая зачистка карт",
   "settings.bookmarkPreviewCategoryMapping": "Карты",
   "settings.bookmarkPreviewCategoryBossing": "Боссы",
