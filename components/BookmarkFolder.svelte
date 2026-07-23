@@ -410,6 +410,7 @@
   let draggedIndex: number | null = $state(null)
   let dragOverIndex: number | null = $state(null)
   let suppressNextTradeOpen = false
+  let suppressNextFolderToggle = false
 
   const handleDragStart = (e: DragEvent, index: number) => {
     draggedIndex = index
@@ -495,6 +496,13 @@
   const openTrade = async (trade: BookmarksTradeStruct, inNewTab = false) => {
     const url = resolveTradeUrl(trade.location, "", true)
     await (inNewTab ? openUrlInNewTab(url) : openUrlInActiveTab(url))
+  }
+
+  const openAllTradesInNewTabs = async () => {
+    await loadTrades()
+    for (const trade of trades) {
+      await openTrade(trade, true)
+    }
   }
 
   const exportFolder = () => {
@@ -631,6 +639,20 @@
     }
   }
 
+  const handleFolderHeaderPointerDown = (event: PointerEvent) => {
+    if (event.button === 1) event.preventDefault()
+  }
+
+  const handleFolderHeaderPointerUp = (event: PointerEvent) => {
+    if (event.button !== 1 || editingFolder) return
+    event.preventDefault()
+    suppressNextFolderToggle = true
+    window.setTimeout(() => {
+      suppressNextFolderToggle = false
+    }, 0)
+    void openAllTradesInNewTabs()
+  }
+
   const handleTradeCardClick = (event: MouseEvent | PointerEvent, trade: BookmarksTradeStruct) => {
     if (shouldIgnoreTradeCardClick(event.target)) return
     if (event.button === 1) {
@@ -762,8 +784,14 @@
     <button
       type="button"
       class="expansion-wrapper"
+      onpointerdown={handleFolderHeaderPointerDown}
+      onpointerup={handleFolderHeaderPointerUp}
       onclick={(e) => {
         e.stopPropagation()
+        if (suppressNextFolderToggle) {
+          suppressNextFolderToggle = false
+          return
+        }
         if (!editingFolder) onToggleExpansion(folder.id || "")
       }}
       aria-expanded={isExpanded}
