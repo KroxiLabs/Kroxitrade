@@ -11,6 +11,8 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.bookmarkPreviewRealDescription": "A pré-visualização ao vivo agora usa componentes reais de pasta e favorito, com categorias, duas buscas de exemplo e ações específicas do layout.",
   "whatsNew.item.middleClickAutoScrollTitle": "O clique do meio já não ativa a rolagem automática",
   "whatsNew.item.middleClickAutoScrollDescription": "Clicar com o botão do meio numa busca guardada abre-a numa aba em segundo plano sem ativar o cursor de rolagem automática do navegador.",
+  "whatsNew.item.middleClickFolderTitle": "Abra buscas salvas com o clique do meio nas pastas",
+  "whatsNew.item.middleClickFolderDescription": "Clique com o botão do meio numa pasta de favoritos para abrir todas as suas buscas salvas em abas em segundo plano.",
   "whatsNew.item.kakaoTradeSupportTitle": "Suporte ao site de trade da Kakao Games",
   "whatsNew.item.kakaoTradeSupportDescription": "A barra lateral e as ferramentas de trade agora funcionam em poe.kakaogames.com tanto para PoE1 (/trade) como para PoE2 (/trade2).",
   "settings.bookmarkPreviewTradeSecondary": "Limpeza rápida de mapas",

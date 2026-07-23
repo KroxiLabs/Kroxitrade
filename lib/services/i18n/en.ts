@@ -63,6 +63,9 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.middleClickAutoScrollTitle": "Middle-click no longer enables auto-scroll",
   "whatsNew.item.middleClickAutoScrollDescription":
     "Middle-clicking a saved search opens it in a background tab without activating the browser's auto-scroll cursor.",
+  "whatsNew.item.middleClickFolderTitle": "Middle-click folders to open saved searches",
+  "whatsNew.item.middleClickFolderDescription":
+    "Middle-click a bookmark folder to open all its saved searches in background tabs.",
   "whatsNew.item.kakaoTradeSupportTitle": "Kakao Games trade site support",
   "whatsNew.item.kakaoTradeSupportDescription":
     "The sidebar and trade helpers now work on poe.kakaogames.com for both PoE1 (/trade) and PoE2 (/trade2).",
