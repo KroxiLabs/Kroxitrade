@@ -62,6 +62,9 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.middleClickAutoScrollTitle": "El clic central ya no activa el desplazamiento automático",
   "whatsNew.item.middleClickAutoScrollDescription":
     "El clic central en una búsqueda guardada la abre en una pestaña en segundo plano sin activar el cursor de desplazamiento automático del navegador.",
+  "whatsNew.item.middleClickFolderTitle": "Abre búsquedas guardadas con clic central en las carpetas",
+  "whatsNew.item.middleClickFolderDescription":
+    "Haz clic central en una carpeta de marcadores para abrir todas sus búsquedas guardadas en pestañas en segundo plano.",
   "whatsNew.item.kakaoTradeSupportTitle": "Compatibilidad con el sitio de trade de Kakao Games",
   "whatsNew.item.kakaoTradeSupportDescription":
     "El panel lateral y las herramientas de trade ahora funcionan en poe.kakaogames.com tanto para PoE1 (/trade) como para PoE2 (/trade2).",

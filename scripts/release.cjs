@@ -272,8 +272,15 @@ const publish = () => {
   if (remoteBranch) run("git", ["push", "origin", "--delete", releaseBranch])
   if (localBranch) run("git", ["branch", "-D", releaseBranch])
 
+  run("git", ["fetch", "upstream", "main"])
+  run("git", ["switch", "main"])
+  run("git", ["merge", "--ff-only", "upstream/main"])
+  run("git", ["push", "origin", "main"])
+  run("pnpm", ["run", "version"])
+
   console.log(`Published ${tag} to ${originRepository} and ${upstreamRepository}.`)
   console.log(`Deleted release branch: ${releaseBranch}`)
+  console.log("Synchronized main with upstream and bumped the next patch version.")
 }
 
 const action = process.argv[2]
