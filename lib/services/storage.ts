@@ -8,6 +8,8 @@ interface StoragePayload {
   expiresAt: string | null
 }
 
+export type StorageArea = "local" | "sync"
+
 const isStoragePayload = (value: unknown): value is StoragePayload =>
   typeof value === "object" &&
   value !== null &&
@@ -26,12 +28,13 @@ export class StorageService {
   async setValue(
     key: string,
     value: unknown,
-    league: string | null = null
+    league: string | null = null,
+    area: StorageArea = "local"
   ): Promise<boolean> {
     return this.write(this.formatKey(key, league), {
       expiresAt: null,
       value
-    })
+    }, area)
   }
 
   async setEphemeralValue(
@@ -48,9 +51,10 @@ export class StorageService {
 
   async getValue<T>(
     key: string,
-    league: string | null = null
+    league: string | null = null,
+    area: StorageArea = "local"
   ): Promise<T | null> {
-    const payload = await this.read(this.formatKey(key, league))
+    const payload = await this.read(this.formatKey(key, league), area)
     if (!payload) return null
 
     const { expiresAt, value } = payload
@@ -72,13 +76,22 @@ export class StorageService {
     return (league ? `${key}--${league}` : key).toLowerCase()
   }
 
-  private async read(key: string): Promise<StoragePayload | null> {
-    if (!hasValidExtensionContext() || !chrome.storage?.local) {
+  private getStorageArea(area: StorageArea): chrome.storage.StorageArea | null {
+    if (!hasValidExtensionContext() || !chrome.storage?.[area]) {
       console.warn("Storage not available")
       return null
     }
+    return chrome.storage[area]
+  }
+
+  private async read(
+    key: string,
+    area: StorageArea = "local"
+  ): Promise<StoragePayload | null> {
+    const storageArea = this.getStorageArea(area)
+    if (!storageArea) return null
     try {
-      const result = await chrome.storage.local.get([key])
+      const result = await storageArea.get([key])
       const payload = result[key]
       return isStoragePayload(payload) ? payload : null
     } catch (error) {
@@ -91,9 +104,10 @@ export class StorageService {
 
   async deleteValue(
     key: string,
-    league: string | null = null
+    league: string | null = null,
+    area: StorageArea = "local"
   ): Promise<boolean> {
-    return this.remove(this.formatKey(key, league))
+    return this.remove(this.formatKey(key, league), area)
   }
 
   setLocalValue(key: string, value: string, league: string | null = null) {
@@ -108,13 +122,15 @@ export class StorageService {
     window.localStorage.removeItem(`bt-${this.formatKey(key, league)}`)
   }
 
-  private async write(key: string, value: StoragePayload): Promise<boolean> {
-    if (!hasValidExtensionContext() || !chrome.storage?.local) {
-      console.warn("Storage not available")
-      return false
-    }
+  private async write(
+    key: string,
+    value: StoragePayload,
+    area: StorageArea = "local"
+  ): Promise<boolean> {
+    const storageArea = this.getStorageArea(area)
+    if (!storageArea) return false
     try {
-      await chrome.storage.local.set({ [key]: value })
+      await storageArea.set({ [key]: value })
       return true
     } catch (error) {
       if (!isExtensionContextInvalidatedError(error)) {
@@ -124,13 +140,14 @@ export class StorageService {
     }
   }
 
-  private async remove(keys: string | string[]): Promise<boolean> {
-    if (!hasValidExtensionContext() || !chrome.storage?.local) {
-      console.warn("Storage not available")
-      return false
-    }
+  private async remove(
+    keys: string | string[],
+    area: StorageArea = "local"
+  ): Promise<boolean> {
+    const storageArea = this.getStorageArea(area)
+    if (!storageArea) return false
     try {
-      await chrome.storage.local.remove(keys)
+      await storageArea.remove(keys)
       return true
     } catch (error) {
       if (!isExtensionContextInvalidatedError(error)) {

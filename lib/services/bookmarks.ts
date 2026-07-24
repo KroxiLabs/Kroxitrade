@@ -11,10 +11,11 @@ import type { TradeSiteVersion } from "../types/trade-location"
 import { decodeBase64Utf8, encodeBase64Utf8 } from "../utilities/base64"
 import { uniqueId } from "../utilities/unique-id"
 import { languageStore, translate } from "./i18n"
-import { storageService } from "./storage"
+import { storageService, type StorageArea } from "./storage"
 
 const FOLDERS_KEY = "bookmark-folders"
 const TRADES_PREFIX_KEY = "bookmark-trades"
+const BOOKMARKS_STORAGE_AREA: StorageArea = "sync"
 const SECTION_DELIMITER = "\n--------------------\n"
 const LINE_DELIMITER = "\n"
 
@@ -80,7 +81,7 @@ export class BookmarksService {
     if (typeof chrome === "undefined" || !chrome.storage?.onChanged) return
 
     chrome.storage.onChanged.addListener((changes, areaName) => {
-      if (areaName !== "local") return
+      if (areaName !== BOOKMARKS_STORAGE_AREA) return
 
       const foldersChange = changes[FOLDERS_KEY]
       if (foldersChange) {
@@ -109,10 +110,9 @@ export class BookmarksService {
   // ─── STORAGE ──────────────────────────────────────────────
 
   async fetchFolders(): Promise<BookmarksFolderStruct[]> {
-    const folders =
-      await storageService.getValue<Partial<BookmarksFolderStruct>[]>(
-        FOLDERS_KEY
-      )
+    const folders = await this.fetchSynced<Partial<BookmarksFolderStruct>[]>(
+      FOLDERS_KEY
+    )
     return this.normalizeFolders(folders)
   }
 
@@ -174,8 +174,9 @@ export class BookmarksService {
       }
     }
 
-    const request = storageService
-      .getValue<BookmarksTradeStruct[]>(`${TRADES_PREFIX_KEY}--${folderId}`)
+    const request = this.fetchSynced<BookmarksTradeStruct[]>(
+      `${TRADES_PREFIX_KEY}--${folderId}`
+    )
       .then((trades) => {
         const normalized = this.normalizeTrades(trades)
         this.tradesCache.set(folderId, normalized)
@@ -187,6 +188,44 @@ export class BookmarksService {
 
     this.tradesRequests.set(folderId, request)
     return request
+  }
+
+  private async fetchSynced<T>(key: string): Promise<T | null> {
+    const synced = await storageService.getValue<T>(
+      key,
+      null,
+      BOOKMARKS_STORAGE_AREA
+    )
+    if (synced !== null) return synced
+
+    return storageService.getValue<T>(key)
+  }
+
+  private async persistSynced(key: string, value: unknown): Promise<void> {
+    const persisted = await storageService.setValue(
+      key,
+      value,
+      null,
+      BOOKMARKS_STORAGE_AREA
+    )
+    if (!persisted) {
+      throw new Error("Could not save bookmarks to browser sync storage")
+    }
+
+    await storageService.deleteValue(key)
+  }
+
+  private async deleteSynced(key: string): Promise<void> {
+    const deleted = await storageService.deleteValue(
+      key,
+      null,
+      BOOKMARKS_STORAGE_AREA
+    )
+    if (!deleted) {
+      throw new Error("Could not delete bookmarks from browser sync storage")
+    }
+
+    await storageService.deleteValue(key)
   }
 
   async fetchTradeByLocation(
@@ -249,7 +288,7 @@ export class BookmarksService {
   }
 
   async persistFolders(folders: BookmarksFolderStruct[]) {
-    await storageService.setValue(FOLDERS_KEY, folders)
+    await this.persistSynced(FOLDERS_KEY, folders)
   }
 
   async persistTrade(
@@ -278,7 +317,7 @@ export class BookmarksService {
       trades.map((t) => ({ ...t, id: t.id || uniqueId() }))
     )
     this.tradesCache.set(folderId, safeTrades)
-    await storageService.setValue(
+    await this.persistSynced(
       `${TRADES_PREFIX_KEY}--${folderId}`,
       safeTrades
     )
@@ -302,7 +341,7 @@ export class BookmarksService {
     await this.persistFolders(updated)
     this.tradesCache.delete(folderId)
     this.tradesRequests.delete(folderId)
-    await storageService.deleteValue(`${TRADES_PREFIX_KEY}--${folderId}`)
+    await this.deleteSynced(`${TRADES_PREFIX_KEY}--${folderId}`)
     await this.refresh()
   }
 
