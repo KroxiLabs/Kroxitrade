@@ -83,6 +83,7 @@ const DEFAULT_VERSION_SETTINGS: VersionSettings = {
 
 function normalizeTextSize(textSize: unknown): TextSizePreference {
   return textSize === "small" ||
+    textSize === "medium" ||
     textSize === "large" ||
     textSize === "extraLarge"
     ? textSize
