@@ -7,9 +7,15 @@ const STORAGE_KEYS = new Set([
   "app-settings",
   "app-settings-poe1",
   "app-settings-poe2",
-  "bookmark-folders"
+  "bookmark-folders",
+  "bookmark-folders-manifest"
 ]);
-const STORAGE_PREFIXES = ["bookmark-trades--"];
+const STORAGE_PREFIXES = [
+  "bookmark-trades--",
+  "bookmark-trades-manifest--",
+  "bookmark-trades-chunk--",
+  "bookmark-folders-chunk--"
+];
 const LOCAL_STORAGE_PREFIX = "bt-";
 const LOCAL_STORAGE_EXCLUDED_PREFIXES = [
   "bt-bulk-sellers-",
