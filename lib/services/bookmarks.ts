@@ -191,14 +191,33 @@ export class BookmarksService {
   }
 
   private async fetchSynced<T>(key: string): Promise<T | null> {
+    const local = await storageService.getValue<T>(key)
     const synced = await storageService.getValue<T>(
       key,
       null,
       BOOKMARKS_STORAGE_AREA
     )
+
+    if (this.hasStoredEntries(local) && !this.hasStoredEntries(synced)) {
+      const migrated = await storageService.setValue(
+        key,
+        local,
+        null,
+        BOOKMARKS_STORAGE_AREA
+      )
+      if (migrated) {
+        await storageService.deleteValue(key)
+      }
+      return local
+    }
+
     if (synced !== null) return synced
 
-    return storageService.getValue<T>(key)
+    return local
+  }
+
+  private hasStoredEntries(value: unknown): boolean {
+    return Array.isArray(value) ? value.length > 0 : value !== null
   }
 
   private async persistSynced(key: string, value: unknown): Promise<void> {
