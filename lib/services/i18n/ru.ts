@@ -2,6 +2,9 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const russianTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.mediumTextSizeTitle": "Средний размер текста работает корректно",
+  "whatsNew.item.mediumTextSizeDescription":
+    "Выбор среднего размера в общих настройках теперь сохраняется после перезагрузки расширения.",
   ...englishTranslations,
   "whatsNew.item.version1110Title": "Больше иконок папок и восстановленная копия PoE2",
   "whatsNew.item.version1110Description": "Иконки папок упорядочены по валютам и возвышениям PoE1 и PoE2, а копирование для Path of Building снова доступно в результатах PoE2.",

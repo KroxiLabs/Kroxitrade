@@ -88,6 +88,13 @@ const version1114Features: WhatsNewItem[] = [
   }
 ];
 
+const version1116Fixes: WhatsNewItem[] = [
+  {
+    titleKey: "whatsNew.item.mediumTextSizeTitle",
+    descriptionKey: "whatsNew.item.mediumTextSizeDescription"
+  }
+];
+
 const version112Features: WhatsNewItem[] = [
   {
     title: "External reference links in the popup",
@@ -340,9 +347,18 @@ const version1110Features: WhatsNewItem[] = [
 ];
 
 export const latestWhatsNew: WhatsNewEntry = {
-  version: "1.1.14",
-  date: "2026-07-23",
+  version: "1.1.16",
+  date: "2026-07-24",
   sections: [
+    {
+      title: "1.1.16",
+      groups: [
+        {
+          titleKey: "whatsNew.section.fixes",
+          items: version1116Fixes
+        }
+      ]
+    },
     {
       title: "1.1.14",
       groups: [

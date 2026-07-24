@@ -2,6 +2,9 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const frenchTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.mediumTextSizeTitle": "La taille de texte moyenne fonctionne correctement",
+  "whatsNew.item.mediumTextSizeDescription":
+    "Sélectionner Moyenne dans les paramètres généraux conserve désormais votre taille de texte après le rechargement de l’extension.",
   ...englishTranslations,
   "whatsNew.item.version1110Title": "Plus d’icônes de dossier et copie PoE2 restaurée",
   "whatsNew.item.version1110Description": "Les icônes de dossier sont organisées par monnaies et ascendances PoE1 et PoE2, et la copie Path of Building est de nouveau disponible dans les résultats PoE2.",
