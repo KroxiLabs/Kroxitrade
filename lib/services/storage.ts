@@ -8,12 +8,146 @@ interface StoragePayload {
   expiresAt: string | null
 }
 
+export type StorageArea = "local" | "sync"
+
+const SYNC_VALUE_FORMAT = 1
+const COMPRESSED_SYNC_VALUE_FORMAT = 2
+const COMPACT_KEYS: Record<string, string> = {
+  id: "i",
+  title: "t",
+  location: "l",
+  version: "v",
+  type: "y",
+  slug: "s",
+  league: "g",
+  completedAt: "d",
+  categoryId: "c",
+  categories: "a",
+  icon: "o",
+  archivedAt: "r",
+  sidebarSide: "S",
+  sidebarWidth: "W",
+  language: "L",
+  textSize: "T",
+  showEquivalentPricing: "e",
+  showMagebloodLegacyDescriptions: "m",
+  showBulkSellers: "b",
+  showHistory: "h",
+  showFinerFilters: "f",
+  showQuickFilters: "q",
+  quickFiltersPlacement: "p",
+  compactActionsMenu: "A",
+  ultraCompactBookmarks: "u",
+  classicBookmarkTradeActions: "C",
+  compactBookmarkTradeActions: "B",
+  ultraCompactBookmarkTradeActions: "U",
+  bookmarkCategoriesEnabled: "k",
+  chunkKeys: "K",
+  expiresAt: "x",
+  value: "V"
+}
+const EXPANDED_KEYS = Object.fromEntries(
+  Object.entries(COMPACT_KEYS).map(([key, compact]) => [compact, key])
+)
+
 const isStoragePayload = (value: unknown): value is StoragePayload =>
   typeof value === "object" &&
   value !== null &&
   "value" in value &&
   "expiresAt" in value &&
   (typeof value.expiresAt === "string" || value.expiresAt === null)
+
+const compactSyncValue = (value: unknown): unknown => {
+  if (Array.isArray(value)) return value.map(compactSyncValue)
+  if (typeof value !== "object" || value === null) return value
+
+  return Object.fromEntries(
+    Object.entries(value).map(([key, entry]) => [
+      COMPACT_KEYS[key] || key,
+      compactSyncValue(entry)
+    ])
+  )
+}
+
+const expandSyncValue = (value: unknown): unknown => {
+  if (Array.isArray(value)) return value.map(expandSyncValue)
+  if (typeof value !== "object" || value === null) return value
+
+  return Object.fromEntries(
+    Object.entries(value).map(([key, entry]) => [
+      EXPANDED_KEYS[key] || key,
+      expandSyncValue(entry)
+    ])
+  )
+}
+
+const isEncodedSyncValue = (value: unknown): value is [number, unknown] =>
+  Array.isArray(value) &&
+  value.length === 2 &&
+  (value[0] === SYNC_VALUE_FORMAT || value[0] === COMPRESSED_SYNC_VALUE_FORMAT)
+
+const isCompressedSyncValue = (value: unknown): value is [number, string] =>
+  Array.isArray(value) &&
+  value.length === 2 &&
+  value[0] === COMPRESSED_SYNC_VALUE_FORMAT &&
+  typeof value[1] === "string"
+
+const bytesToBase64 = (bytes: Uint8Array) => {
+  let binary = ""
+  for (const byte of bytes) binary += String.fromCharCode(byte)
+  return btoa(binary)
+}
+
+const base64ToBytes = (value: string) =>
+  Uint8Array.from(atob(value), (character) => character.charCodeAt(0))
+
+const gzip = async (value: string) => {
+  const stream = new Blob([value])
+    .stream()
+    .pipeThrough(new CompressionStream("gzip"))
+  return new Uint8Array(await new Response(stream).arrayBuffer())
+}
+
+const gunzip = async (value: Uint8Array) => {
+  const stream = new Blob([new Uint8Array(value).buffer])
+    .stream()
+    .pipeThrough(new DecompressionStream("gzip"))
+  return new Response(stream).text()
+}
+
+const encodeSyncValue = async (value: unknown): Promise<[number, unknown]> => {
+  const compact = compactSyncValue(value)
+  const compactValue: [number, unknown] = [SYNC_VALUE_FORMAT, compact]
+
+  if (
+    typeof CompressionStream === "undefined" ||
+    typeof DecompressionStream === "undefined" ||
+    typeof btoa === "undefined"
+  ) {
+    return compactValue
+  }
+
+  try {
+    const compressedValue: [number, string] = [
+      COMPRESSED_SYNC_VALUE_FORMAT,
+      bytesToBase64(await gzip(JSON.stringify(compact)))
+    ]
+    return JSON.stringify(compressedValue).length <
+      JSON.stringify(compactValue).length
+      ? compressedValue
+      : compactValue
+  } catch {
+    return compactValue
+  }
+}
+
+const decodeSyncValue = async (value: unknown): Promise<unknown> => {
+  if (isCompressedSyncValue(value)) {
+    return expandSyncValue(JSON.parse(await gunzip(base64ToBytes(value[1]))))
+  }
+
+  return isEncodedSyncValue(value) ? expandSyncValue(value[1]) : value
+}
 
 export class StorageService {
   private static instance: StorageService
@@ -26,12 +160,13 @@ export class StorageService {
   async setValue(
     key: string,
     value: unknown,
-    league: string | null = null
+    league: string | null = null,
+    area: StorageArea = "local"
   ): Promise<boolean> {
     return this.write(this.formatKey(key, league), {
       expiresAt: null,
       value
-    })
+    }, area)
   }
 
   async setEphemeralValue(
@@ -48,9 +183,10 @@ export class StorageService {
 
   async getValue<T>(
     key: string,
-    league: string | null = null
+    league: string | null = null,
+    area: StorageArea = "local"
   ): Promise<T | null> {
-    const payload = await this.read(this.formatKey(key, league))
+    const payload = await this.read(this.formatKey(key, league), area)
     if (!payload) return null
 
     const { expiresAt, value } = payload
@@ -72,15 +208,42 @@ export class StorageService {
     return (league ? `${key}--${league}` : key).toLowerCase()
   }
 
-  private async read(key: string): Promise<StoragePayload | null> {
-    if (!hasValidExtensionContext() || !chrome.storage?.local) {
+  private getStorageArea(area: StorageArea): chrome.storage.StorageArea | null {
+    if (!hasValidExtensionContext() || !chrome.storage?.[area]) {
       console.warn("Storage not available")
       return null
     }
+    return chrome.storage[area]
+  }
+
+  private async read(
+    key: string,
+    area: StorageArea = "local"
+  ): Promise<StoragePayload | null> {
+    const storageArea = this.getStorageArea(area)
+    if (!storageArea) return null
     try {
-      const result = await chrome.storage.local.get([key])
+      const result = await storageArea.get([key])
       const payload = result[key]
-      return isStoragePayload(payload) ? payload : null
+      if (!isStoragePayload(payload)) return null
+
+      if (area !== "sync") return payload
+
+      const value = await decodeSyncValue(payload.value)
+      if (!isCompressedSyncValue(payload.value)) {
+        const encodedValue = await encodeSyncValue(value)
+        if (JSON.stringify(encodedValue) === JSON.stringify(payload.value)) {
+          return { ...payload, value }
+        }
+        await storageArea.set({
+          [key]: {
+            ...payload,
+            value: encodedValue
+          }
+        })
+      }
+
+      return { ...payload, value }
     } catch (error) {
       if (!isExtensionContextInvalidatedError(error)) {
         console.warn("Storage read failed", error)
@@ -91,9 +254,10 @@ export class StorageService {
 
   async deleteValue(
     key: string,
-    league: string | null = null
+    league: string | null = null,
+    area: StorageArea = "local"
   ): Promise<boolean> {
-    return this.remove(this.formatKey(key, league))
+    return this.remove(this.formatKey(key, league), area)
   }
 
   setLocalValue(key: string, value: string, league: string | null = null) {
@@ -108,13 +272,20 @@ export class StorageService {
     window.localStorage.removeItem(`bt-${this.formatKey(key, league)}`)
   }
 
-  private async write(key: string, value: StoragePayload): Promise<boolean> {
-    if (!hasValidExtensionContext() || !chrome.storage?.local) {
-      console.warn("Storage not available")
-      return false
-    }
+  private async write(
+    key: string,
+    value: StoragePayload,
+    area: StorageArea = "local"
+  ): Promise<boolean> {
+    const storageArea = this.getStorageArea(area)
+    if (!storageArea) return false
     try {
-      await chrome.storage.local.set({ [key]: value })
+      const storedValue =
+        area === "sync" ? await encodeSyncValue(value.value) : value
+      await storageArea.set({
+        [key]:
+          area === "sync" ? { ...value, value: storedValue } : value
+      })
       return true
     } catch (error) {
       if (!isExtensionContextInvalidatedError(error)) {
@@ -124,13 +295,14 @@ export class StorageService {
     }
   }
 
-  private async remove(keys: string | string[]): Promise<boolean> {
-    if (!hasValidExtensionContext() || !chrome.storage?.local) {
-      console.warn("Storage not available")
-      return false
-    }
+  private async remove(
+    keys: string | string[],
+    area: StorageArea = "local"
+  ): Promise<boolean> {
+    const storageArea = this.getStorageArea(area)
+    if (!storageArea) return false
     try {
-      await chrome.storage.local.remove(keys)
+      await storageArea.remove(keys)
       return true
     } catch (error) {
       if (!isExtensionContextInvalidatedError(error)) {

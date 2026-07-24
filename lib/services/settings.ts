@@ -2,7 +2,7 @@ import { writable } from "svelte/store"
 
 import type { TradeSiteVersion } from "../types/trade-location"
 import { setLanguage, type AppLanguage } from "./i18n"
-import { storageService } from "./storage"
+import { storageService, type StorageArea } from "./storage"
 
 export type SidebarSide = "left" | "right"
 export type BookmarkTradeActionId =
@@ -54,6 +54,7 @@ interface GlobalSettings {
 }
 
 const GLOBAL_SETTINGS_KEY = "app-settings"
+const SETTINGS_STORAGE_AREA: StorageArea = "sync"
 export const DEFAULT_SIDEBAR_WIDTH = 450
 const versionSettingsKey = (version: TradeSiteVersion) =>
   `app-settings-poe${version}`
@@ -90,6 +91,21 @@ function normalizeTextSize(textSize: unknown): TextSizePreference {
     : DEFAULT_TEXT_SIZE
 }
 
+function getStorageChangeValue<T>(
+  change: chrome.storage.StorageChange | undefined
+): T | undefined {
+  const payload = change?.newValue
+  if (
+    typeof payload !== "object" ||
+    payload === null ||
+    !("value" in payload)
+  ) {
+    return undefined
+  }
+
+  return payload.value as T
+}
+
 let activeVersion: TradeSiteVersion = inferTradeVersion()
 let globalSettings: GlobalSettings = DEFAULT_GLOBAL_SETTINGS
 let activeVersionSettings: VersionSettings = DEFAULT_VERSION_SETTINGS
@@ -101,6 +117,17 @@ let currentSettings: AppSettings = combineSettings(
 let versionRequestId = 0
 
 const { subscribe, set } = writable<AppSettings>(currentSettings)
+
+function normalizeGlobalSettings(
+  value?: Partial<AppSettings> | null
+): GlobalSettings {
+  return {
+    sidebarSide: value?.sidebarSide ?? DEFAULT_GLOBAL_SETTINGS.sidebarSide,
+    sidebarWidth: value?.sidebarWidth ?? DEFAULT_GLOBAL_SETTINGS.sidebarWidth,
+    language: value?.language ?? DEFAULT_GLOBAL_SETTINGS.language,
+    textSize: normalizeTextSize(value?.textSize)
+  }
+}
 
 function inferTradeVersion(): TradeSiteVersion {
   if (typeof window === "undefined") return "1"
@@ -192,6 +219,74 @@ function publish() {
   set(currentSettings)
 }
 
+function bindStorageSync() {
+  if (typeof chrome === "undefined" || !chrome.storage?.onChanged) return
+
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== SETTINGS_STORAGE_AREA) return
+
+    const globalChange = changes[GLOBAL_SETTINGS_KEY]
+    if (globalChange) {
+      globalSettings = normalizeGlobalSettings(
+        getStorageChangeValue<Partial<AppSettings>>(globalChange)
+      )
+      setLanguage(globalSettings.language)
+      publish()
+    }
+
+    for (const version of ["1", "2"] as const) {
+      const change = changes[versionSettingsKey(version)]
+      if (!change) continue
+
+      const next = normalizeVersionSettings(
+        getStorageChangeValue<Partial<VersionSettings>>(change)
+      )
+      versionCache.set(version, next)
+      if (version === activeVersion) {
+        activeVersionSettings = next
+        publish()
+      }
+    }
+  })
+}
+
+async function fetchSynced<T>(key: string): Promise<T | null> {
+  const local = await storageService.getValue<T>(key)
+  const synced = await storageService.getValue<T>(
+    key,
+    null,
+    SETTINGS_STORAGE_AREA
+  )
+  if (synced !== null) return synced
+
+  if (local === null) return null
+
+  const migrated = await storageService.setValue(
+    key,
+    local,
+    null,
+    SETTINGS_STORAGE_AREA
+  )
+  if (migrated) {
+    await storageService.deleteValue(key)
+  }
+
+  return local
+}
+
+async function persistSynced(key: string, value: unknown): Promise<boolean> {
+  const persisted = await storageService.setValue(
+    key,
+    value,
+    null,
+    SETTINGS_STORAGE_AREA
+  )
+  if (!persisted) return false
+
+  await storageService.deleteValue(key)
+  return true
+}
+
 async function loadVersionSettings(
   version: TradeSiteVersion,
   legacy?: Partial<AppSettings> | null
@@ -199,7 +294,7 @@ async function loadVersionSettings(
   const cached = versionCache.get(version)
   if (cached) return cached
 
-  const stored = await storageService.getValue<VersionSettings>(
+  const stored = await fetchSynced<VersionSettings>(
     versionSettingsKey(version)
   )
   const next = stored
@@ -209,7 +304,7 @@ async function loadVersionSettings(
   versionCache.set(version, next)
 
   if (!stored) {
-    await storageService.setValue(versionSettingsKey(version), next)
+    await persistSynced(versionSettingsKey(version), next)
   }
 
   return next
@@ -218,15 +313,9 @@ async function loadVersionSettings(
 async function load() {
   const requestedVersion = inferTradeVersion()
   const requestId = ++versionRequestId
-  const stored =
-    await storageService.getValue<Partial<AppSettings>>(GLOBAL_SETTINGS_KEY)
+  const stored = await fetchSynced<Partial<AppSettings>>(GLOBAL_SETTINGS_KEY)
 
-  globalSettings = {
-    sidebarSide: stored?.sidebarSide ?? DEFAULT_GLOBAL_SETTINGS.sidebarSide,
-    sidebarWidth: stored?.sidebarWidth ?? DEFAULT_GLOBAL_SETTINGS.sidebarWidth,
-    language: stored?.language ?? DEFAULT_GLOBAL_SETTINGS.language,
-    textSize: normalizeTextSize(stored?.textSize)
-  }
+  globalSettings = normalizeGlobalSettings(stored)
 
   const [poe1Settings, poe2Settings] = await Promise.all([
     loadVersionSettings("1", stored),
@@ -241,7 +330,7 @@ async function load() {
 }
 
 async function saveGlobal(next: GlobalSettings) {
-  const saved = await storageService.setValue(GLOBAL_SETTINGS_KEY, next)
+  const saved = await persistSynced(GLOBAL_SETTINGS_KEY, next)
   if (!saved) {
     console.warn("[Poe Trade Plus] Failed to persist global settings")
     return false
@@ -253,7 +342,7 @@ async function saveGlobal(next: GlobalSettings) {
 }
 
 async function saveVersion(next: VersionSettings) {
-  const saved = await storageService.setValue(
+  const saved = await persistSynced(
     versionSettingsKey(activeVersion),
     next
   )
@@ -269,6 +358,8 @@ async function saveVersion(next: VersionSettings) {
   publish()
   return true
 }
+
+bindStorageSync()
 
 export const settings = {
   subscribe,

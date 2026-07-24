@@ -5,6 +5,8 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.mediumTextSizeTitle": "ขนาดข้อความปานกลางทำงานได้ถูกต้อง",
   "whatsNew.item.mediumTextSizeDescription":
     "การเลือกขนาดปานกลางในการตั้งค่าทั่วไปจะคงขนาดข้อความที่ต้องการไว้หลังจากโหลดส่วนขยายใหม่.",
+  "whatsNew.item.syncAcrossDevicesTitle": "ซิงค์บุ๊กมาร์กและการตั้งค่าระหว่างอุปกรณ์",
+  "whatsNew.item.syncAcrossDevicesDescription": "บุ๊กมาร์ก โฟลเดอร์บุ๊กมาร์ก และการตั้งค่าส่วนขยายจะติดตามโปรไฟล์เบราว์เซอร์ที่คุณลงชื่อเข้าใช้ ข้อมูลเดิมจะถูกย้ายอย่างปลอดภัยเมื่ออัปเดต",
   ...englishTranslations,
   "whatsNew.item.version1110Title": "เพิ่มไอคอนโฟลเดอร์และคืนค่าการคัดลอก PoE2",
   "whatsNew.item.version1110Description": "ไอคอนโฟลเดอร์จัดตามสกุลเงินและสายอาชีพ PoE1 และ PoE2 และการคัดลอกสำหรับ Path of Building กลับมาใช้ได้ในผลลัพธ์ PoE2.",

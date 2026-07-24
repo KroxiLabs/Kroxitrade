@@ -11,10 +11,16 @@ import type { TradeSiteVersion } from "../types/trade-location"
 import { decodeBase64Utf8, encodeBase64Utf8 } from "../utilities/base64"
 import { uniqueId } from "../utilities/unique-id"
 import { languageStore, translate } from "./i18n"
-import { storageService } from "./storage"
+import { storageService, type StorageArea } from "./storage"
 
 const FOLDERS_KEY = "bookmark-folders"
+const FOLDERS_MANIFEST_KEY = "bookmark-folders-manifest"
+const FOLDERS_CHUNK_PREFIX = "bookmark-folders-chunk--"
 const TRADES_PREFIX_KEY = "bookmark-trades"
+const TRADES_MANIFEST_PREFIX = "bookmark-trades-manifest--"
+const TRADES_CHUNK_PREFIX = "bookmark-trades-chunk--"
+const BOOKMARKS_STORAGE_AREA: StorageArea = "sync"
+const FOLDERS_CHUNK_TARGET_BYTES = 6 * 1024
 const SECTION_DELIMITER = "\n--------------------\n"
 const LINE_DELIMITER = "\n"
 
@@ -49,11 +55,18 @@ interface ExportedFolderStruct {
   trs: Array<{ tit: string; loc: string; cat?: string }>
 }
 
+interface FoldersManifest {
+  version: 1
+  chunkKeys: string[]
+}
+
 export class BookmarksService {
   private foldersStore = writable<BookmarksFolderStruct[]>([])
   private listeners = new Set<(event?: BookmarksChangeEvent) => void>()
   private tradesCache = new Map<string, BookmarksTradeStruct[]>()
   private tradesRequests = new Map<string, Promise<BookmarksTradeStruct[]>>()
+  private foldersMigration: Promise<void> | null = null
+  private tradesMigrations = new Map<string, Promise<void>>()
   public subscribe = this.foldersStore.subscribe
 
   constructor() {
@@ -80,28 +93,27 @@ export class BookmarksService {
     if (typeof chrome === "undefined" || !chrome.storage?.onChanged) return
 
     chrome.storage.onChanged.addListener((changes, areaName) => {
-      if (areaName !== "local") return
+      if (areaName !== BOOKMARKS_STORAGE_AREA) return
 
-      const foldersChange = changes[FOLDERS_KEY]
-      if (foldersChange) {
-        const folders = this.normalizeFolders(
-          getStorageChangeValue<Partial<BookmarksFolderStruct>[]>(foldersChange)
-        )
-        this.foldersStore.set(folders)
-        this.notifyChange({ foldersChanged: true })
+      const foldersChanged = Object.keys(changes).some(
+        (key) =>
+          key === FOLDERS_KEY ||
+          key === FOLDERS_MANIFEST_KEY ||
+          key.startsWith(FOLDERS_CHUNK_PREFIX)
+      )
+      if (foldersChanged) {
+        void this.refresh()
       }
 
-      const tradesPrefix = `${TRADES_PREFIX_KEY}--`
-      for (const [key, change] of Object.entries(changes)) {
-        if (!key.startsWith(tradesPrefix)) continue
-
-        const folderId = key.slice(tradesPrefix.length)
-        const trades = this.normalizeTrades(
-          getStorageChangeValue<BookmarksTradeStruct[]>(change)
-        )
-        this.tradesCache.set(folderId, trades)
+      const changedTradeFolderIds = new Set<string>()
+      for (const key of Object.keys(changes)) {
+        const folderId = this.getTradeFolderIdFromStorageKey(key)
+        if (folderId) changedTradeFolderIds.add(folderId)
+      }
+      for (const folderId of changedTradeFolderIds) {
+        this.tradesCache.delete(folderId)
         this.tradesRequests.delete(folderId)
-        this.notifyChange({ tradesChanged: true, folderId })
+        void this.refreshTradesFromStorage(folderId)
       }
     })
   }
@@ -109,11 +121,324 @@ export class BookmarksService {
   // ─── STORAGE ──────────────────────────────────────────────
 
   async fetchFolders(): Promise<BookmarksFolderStruct[]> {
-    const folders =
-      await storageService.getValue<Partial<BookmarksFolderStruct>[]>(
-        FOLDERS_KEY
+    const chunkedFolders = await this.fetchChunkedFolders()
+    if (chunkedFolders !== null) return this.normalizeFolders(chunkedFolders)
+
+    const legacyFolders = await this.fetchSynced<
+      Partial<BookmarksFolderStruct>[]
+    >(
+      FOLDERS_KEY
+    )
+    if (legacyFolders && legacyFolders.length > 0) {
+      await this.migrateFoldersToChunks(legacyFolders)
+    }
+
+    return this.normalizeFolders(legacyFolders)
+  }
+
+  private async fetchChunkedFolders(): Promise<
+    Partial<BookmarksFolderStruct>[] | null
+  > {
+    const manifest = await storageService.getValue<FoldersManifest>(
+      FOLDERS_MANIFEST_KEY,
+      null,
+      BOOKMARKS_STORAGE_AREA
+    )
+    if (
+      !manifest ||
+      manifest.version !== 1 ||
+      !Array.isArray(manifest.chunkKeys)
+    ) {
+      return null
+    }
+
+    const chunks = await Promise.all(
+      manifest.chunkKeys.map((key) =>
+        storageService.getValue<Partial<BookmarksFolderStruct>[]>(
+          key,
+          null,
+          BOOKMARKS_STORAGE_AREA
+        )
       )
-    return this.normalizeFolders(folders)
+    )
+    if (chunks.some((chunk) => chunk === null)) return null
+
+    return chunks.flatMap((chunk) => chunk || [])
+  }
+
+  private chunkFolders(
+    folders: BookmarksFolderStruct[]
+  ): Partial<BookmarksFolderStruct>[][] {
+    const chunks: Partial<BookmarksFolderStruct>[][] = []
+    let current: Partial<BookmarksFolderStruct>[] = []
+
+    for (const folder of folders) {
+      const candidate = [...current, folder]
+      const key = `${FOLDERS_CHUNK_PREFIX}${chunks.length}`
+      if (
+        current.length > 0 &&
+        this.storagePayloadBytes(key, candidate) > FOLDERS_CHUNK_TARGET_BYTES
+      ) {
+        chunks.push(current)
+        current = [folder]
+      } else {
+        current = candidate
+      }
+
+      if (
+        this.storagePayloadBytes(
+          `${FOLDERS_CHUNK_PREFIX}${chunks.length}`,
+          current
+        ) > 8192
+      ) {
+        throw new Error("A bookmark folder is too large to synchronize")
+      }
+    }
+
+    if (current.length > 0) chunks.push(current)
+    return chunks
+  }
+
+  private storagePayloadBytes(key: string, value: unknown): number {
+    return new TextEncoder().encode(
+      key + JSON.stringify({ expiresAt: null, value })
+    ).length
+  }
+
+  private async migrateFoldersToChunks(
+    folders: Partial<BookmarksFolderStruct>[]
+  ): Promise<void> {
+    if (!this.foldersMigration) {
+      this.foldersMigration = this.persistFoldersToChunks(
+        this.normalizeFolders(folders)
+      ).finally(() => {
+        this.foldersMigration = null
+      })
+    }
+
+    return this.foldersMigration
+  }
+
+  private async persistFoldersToChunks(
+    folders: BookmarksFolderStruct[]
+  ): Promise<void> {
+    const chunks = this.chunkFolders(folders)
+    const manifest: FoldersManifest = {
+      version: 1,
+      chunkKeys: chunks.map((_, index) => `${FOLDERS_CHUNK_PREFIX}${index}`)
+    }
+    const previous = await storageService.getValue<FoldersManifest>(
+      FOLDERS_MANIFEST_KEY,
+      null,
+      BOOKMARKS_STORAGE_AREA
+    )
+
+    const savedChunks = await Promise.all(
+      chunks.map((chunk, index) =>
+        storageService.setValue(
+          `${FOLDERS_CHUNK_PREFIX}${index}`,
+          chunk,
+          null,
+          BOOKMARKS_STORAGE_AREA
+        )
+      )
+    )
+    if (savedChunks.some((saved) => !saved)) {
+      throw new Error("Could not save bookmark folder chunks to sync storage")
+    }
+
+    await this.persistSynced(FOLDERS_MANIFEST_KEY, manifest)
+
+    const staleChunkKeys = (previous?.chunkKeys || []).filter(
+      (key) => !manifest.chunkKeys.includes(key)
+    )
+    await Promise.all(
+      staleChunkKeys.map((key) =>
+        storageService.deleteValue(key, null, BOOKMARKS_STORAGE_AREA)
+      )
+    )
+
+    await Promise.all([
+      storageService.deleteValue(FOLDERS_KEY),
+      storageService.deleteValue(
+        FOLDERS_KEY,
+        null,
+        BOOKMARKS_STORAGE_AREA
+      )
+    ])
+  }
+
+  private tradesManifestKey(folderId: string) {
+    return `${TRADES_MANIFEST_PREFIX}${folderId}`
+  }
+
+  private tradesChunkKey(folderId: string, index: number) {
+    return `${TRADES_CHUNK_PREFIX}${folderId}--${index}`
+  }
+
+  private getTradeFolderIdFromStorageKey(key: string): string | null {
+    const tradesPrefix = `${TRADES_PREFIX_KEY}--`
+    if (key.startsWith(tradesPrefix)) return key.slice(tradesPrefix.length)
+    if (key.startsWith(TRADES_MANIFEST_PREFIX)) {
+      return key.slice(TRADES_MANIFEST_PREFIX.length)
+    }
+    if (key.startsWith(TRADES_CHUNK_PREFIX)) {
+      const suffix = key.slice(TRADES_CHUNK_PREFIX.length)
+      return suffix.slice(0, suffix.lastIndexOf("--")) || null
+    }
+    return null
+  }
+
+  private async fetchTrades(folderId: string): Promise<BookmarksTradeStruct[]> {
+    const chunkedTrades = await this.fetchChunkedTrades(folderId)
+    if (chunkedTrades !== null) return chunkedTrades
+
+    const legacyTrades = await this.fetchSynced<BookmarksTradeStruct[]>(
+      `${TRADES_PREFIX_KEY}--${folderId}`
+    )
+    if (legacyTrades && legacyTrades.length > 0) {
+      await this.migrateTradesToChunks(folderId, legacyTrades)
+    }
+
+    return legacyTrades || []
+  }
+
+  private async fetchChunkedTrades(
+    folderId: string
+  ): Promise<BookmarksTradeStruct[] | null> {
+    const manifest = await storageService.getValue<FoldersManifest>(
+      this.tradesManifestKey(folderId),
+      null,
+      BOOKMARKS_STORAGE_AREA
+    )
+    if (
+      !manifest ||
+      manifest.version !== 1 ||
+      !Array.isArray(manifest.chunkKeys)
+    ) {
+      return null
+    }
+
+    const chunks = await Promise.all(
+      manifest.chunkKeys.map((key) =>
+        storageService.getValue<BookmarksTradeStruct[]>(
+          key,
+          null,
+          BOOKMARKS_STORAGE_AREA
+        )
+      )
+    )
+    if (chunks.some((chunk) => chunk === null)) return null
+
+    return chunks.flatMap((chunk) => chunk || [])
+  }
+
+  private chunkTrades(
+    folderId: string,
+    trades: BookmarksTradeStruct[]
+  ): BookmarksTradeStruct[][] {
+    const chunks: BookmarksTradeStruct[][] = []
+    let current: BookmarksTradeStruct[] = []
+
+    for (const trade of trades) {
+      const candidate = [...current, trade]
+      const key = this.tradesChunkKey(folderId, chunks.length)
+      if (
+        current.length > 0 &&
+        this.storagePayloadBytes(key, candidate) > FOLDERS_CHUNK_TARGET_BYTES
+      ) {
+        chunks.push(current)
+        current = [trade]
+      } else {
+        current = candidate
+      }
+
+      if (
+        this.storagePayloadBytes(
+          this.tradesChunkKey(folderId, chunks.length),
+          current
+        ) > 8192
+      ) {
+        throw new Error("A bookmarked trade is too large to synchronize")
+      }
+    }
+
+    if (current.length > 0) chunks.push(current)
+    return chunks
+  }
+
+  private async migrateTradesToChunks(
+    folderId: string,
+    trades: BookmarksTradeStruct[]
+  ): Promise<void> {
+    const migration = this.tradesMigrations.get(folderId)
+    if (migration) return migration
+
+    const nextMigration = this.persistTradesToChunks(folderId, trades).finally(
+      () => this.tradesMigrations.delete(folderId)
+    )
+    this.tradesMigrations.set(folderId, nextMigration)
+    return nextMigration
+  }
+
+  private async persistTradesToChunks(
+    folderId: string,
+    trades: BookmarksTradeStruct[]
+  ): Promise<void> {
+    const chunks = this.chunkTrades(folderId, trades)
+    const manifest: FoldersManifest = {
+      version: 1,
+      chunkKeys: chunks.map((_, index) => this.tradesChunkKey(folderId, index))
+    }
+    const manifestKey = this.tradesManifestKey(folderId)
+    const previous = await storageService.getValue<FoldersManifest>(
+      manifestKey,
+      null,
+      BOOKMARKS_STORAGE_AREA
+    )
+    const savedChunks = await Promise.all(
+      chunks.map((chunk, index) =>
+        storageService.setValue(
+          this.tradesChunkKey(folderId, index),
+          chunk,
+          null,
+          BOOKMARKS_STORAGE_AREA
+        )
+      )
+    )
+    if (savedChunks.some((saved) => !saved)) {
+      throw new Error("Could not save bookmarked trade chunks to sync storage")
+    }
+
+    await this.persistSynced(manifestKey, manifest)
+
+    const staleChunkKeys = (previous?.chunkKeys || []).filter(
+      (key) => !manifest.chunkKeys.includes(key)
+    )
+    await Promise.all(
+      staleChunkKeys.map((key) =>
+        storageService.deleteValue(key, null, BOOKMARKS_STORAGE_AREA)
+      )
+    )
+
+    await this.deleteSynced(`${TRADES_PREFIX_KEY}--${folderId}`)
+  }
+
+  private async deleteChunkedTrades(folderId: string): Promise<void> {
+    const manifestKey = this.tradesManifestKey(folderId)
+    const manifest = await storageService.getValue<FoldersManifest>(
+      manifestKey,
+      null,
+      BOOKMARKS_STORAGE_AREA
+    )
+    await Promise.all([
+      ...(manifest?.chunkKeys || []).map((key) =>
+        storageService.deleteValue(key, null, BOOKMARKS_STORAGE_AREA)
+      ),
+      storageService.deleteValue(manifestKey, null, BOOKMARKS_STORAGE_AREA),
+      storageService.deleteValue(manifestKey),
+      this.deleteSynced(`${TRADES_PREFIX_KEY}--${folderId}`)
+    ])
   }
 
   private normalizeFolders(
@@ -174,8 +499,7 @@ export class BookmarksService {
       }
     }
 
-    const request = storageService
-      .getValue<BookmarksTradeStruct[]>(`${TRADES_PREFIX_KEY}--${folderId}`)
+    const request = this.fetchTrades(folderId)
       .then((trades) => {
         const normalized = this.normalizeTrades(trades)
         this.tradesCache.set(folderId, normalized)
@@ -187,6 +511,69 @@ export class BookmarksService {
 
     this.tradesRequests.set(folderId, request)
     return request
+  }
+
+  private async refreshTradesFromStorage(folderId: string) {
+    const trades = await this.fetchTradesByFolderId(folderId, { force: true })
+    this.tradesCache.set(folderId, trades)
+    this.notifyChange({ tradesChanged: true, folderId })
+  }
+
+  private async fetchSynced<T>(key: string): Promise<T | null> {
+    const local = await storageService.getValue<T>(key)
+    const synced = await storageService.getValue<T>(
+      key,
+      null,
+      BOOKMARKS_STORAGE_AREA
+    )
+
+    if (this.hasStoredEntries(local) && !this.hasStoredEntries(synced)) {
+      const migrated = await storageService.setValue(
+        key,
+        local,
+        null,
+        BOOKMARKS_STORAGE_AREA
+      )
+      if (migrated) {
+        await storageService.deleteValue(key)
+      }
+      return local
+    }
+
+    if (synced !== null) return synced
+
+    return local
+  }
+
+  private hasStoredEntries(value: unknown): boolean {
+    return Array.isArray(value) ? value.length > 0 : value !== null
+  }
+
+  private async persistSynced(key: string, value: unknown): Promise<void> {
+    const persisted = await storageService.setValue(
+      key,
+      value,
+      null,
+      BOOKMARKS_STORAGE_AREA
+    )
+    if (!persisted) {
+      throw new Error("Could not save bookmarks to browser sync storage")
+    }
+
+    await storageService.deleteValue(key)
+  }
+
+  private async deleteSynced(key: string): Promise<void> {
+    const deleted = await storageService.deleteValue(
+      key,
+      null,
+      BOOKMARKS_STORAGE_AREA
+    )
+    if (!deleted) {
+      throw new Error("Could not delete bookmarks from browser sync storage")
+    }
+
+    await storageService.deleteValue(key)
   }
 
   async fetchTradeByLocation(
@@ -249,7 +636,7 @@ export class BookmarksService {
   }
 
   async persistFolders(folders: BookmarksFolderStruct[]) {
-    await storageService.setValue(FOLDERS_KEY, folders)
+    await this.persistFoldersToChunks(folders)
   }
 
   async persistTrade(
@@ -278,10 +665,7 @@ export class BookmarksService {
       trades.map((t) => ({ ...t, id: t.id || uniqueId() }))
     )
     this.tradesCache.set(folderId, safeTrades)
-    await storageService.setValue(
-      `${TRADES_PREFIX_KEY}--${folderId}`,
-      safeTrades
-    )
+    await this.persistTradesToChunks(folderId, safeTrades)
     return [...safeTrades]
   }
 
@@ -302,7 +686,7 @@ export class BookmarksService {
     await this.persistFolders(updated)
     this.tradesCache.delete(folderId)
     this.tradesRequests.delete(folderId)
-    await storageService.deleteValue(`${TRADES_PREFIX_KEY}--${folderId}`)
+    await this.deleteChunkedTrades(folderId)
     await this.refresh()
   }
 

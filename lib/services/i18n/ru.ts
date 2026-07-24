@@ -5,6 +5,8 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.mediumTextSizeTitle": "Средний размер текста работает корректно",
   "whatsNew.item.mediumTextSizeDescription":
     "Выбор среднего размера в общих настройках теперь сохраняется после перезагрузки расширения.",
+  "whatsNew.item.syncAcrossDevicesTitle": "Синхронизация закладок и настроек между устройствами",
+  "whatsNew.item.syncAcrossDevicesDescription": "Закладки, папки закладок и настройки расширения теперь следуют за профилем браузера, в который выполнен вход. Существующие данные безопасно переносятся при обновлении.",
   ...englishTranslations,
   "whatsNew.item.version1110Title": "Больше иконок папок и восстановленная копия PoE2",
   "whatsNew.item.version1110Description": "Иконки папок упорядочены по валютам и возвышениям PoE1 и PoE2, а копирование для Path of Building снова доступно в результатах PoE2.",

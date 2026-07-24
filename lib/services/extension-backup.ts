@@ -7,9 +7,15 @@ const STORAGE_KEYS = new Set([
   "app-settings",
   "app-settings-poe1",
   "app-settings-poe2",
-  "bookmark-folders"
+  "bookmark-folders",
+  "bookmark-folders-manifest"
 ]);
-const STORAGE_PREFIXES = ["bookmark-trades--"];
+const STORAGE_PREFIXES = [
+  "bookmark-trades--",
+  "bookmark-trades-manifest--",
+  "bookmark-trades-chunk--",
+  "bookmark-folders-chunk--"
+];
 const LOCAL_STORAGE_PREFIX = "bt-";
 const LOCAL_STORAGE_EXCLUDED_PREFIXES = [
   "bt-bulk-sellers-",
@@ -48,10 +54,14 @@ const getAppVersion = () => {
 };
 
 const readAllStorage = async () => {
-  if (!hasValidExtensionContext() || !chrome.storage?.local) return {};
+  if (!hasValidExtensionContext() || !chrome.storage?.local || !chrome.storage?.sync) return {};
 
   try {
-    return await chrome.storage.local.get(null) as Record<string, StoragePayload>;
+    const [local, sync] = await Promise.all([
+      chrome.storage.local.get(null),
+      chrome.storage.sync.get(null)
+    ]);
+    return {...sync, ...local} as Record<string, StoragePayload>;
   } catch (error) {
     if (!isExtensionContextInvalidatedError(error)) {
       console.warn("[Poe Trade Plus] Backup storage read failed", error);
@@ -61,15 +71,24 @@ const readAllStorage = async () => {
 };
 
 const writeStorage = async (values: Record<string, StoragePayload>) => {
-  if (!hasValidExtensionContext() || !chrome.storage?.local) return false;
+  if (!hasValidExtensionContext() || !chrome.storage?.local || !chrome.storage?.sync) return false;
 
   try {
-    const current = await chrome.storage.local.get(null);
-    const keysToRemove = Object.keys(current).filter(isManagedStorageKey);
+    const [local, sync] = await Promise.all([
+      chrome.storage.local.get(null),
+      chrome.storage.sync.get(null)
+    ]);
+    const keysToRemove = [...new Set([
+      ...Object.keys(local),
+      ...Object.keys(sync)
+    ])].filter(isManagedStorageKey);
     if (keysToRemove.length > 0) {
-      await chrome.storage.local.remove(keysToRemove);
+      await Promise.all([
+        chrome.storage.local.remove(keysToRemove),
+        chrome.storage.sync.remove(keysToRemove)
+      ]);
     }
-    await chrome.storage.local.set(values);
+    await chrome.storage.sync.set(values);
     return true;
   } catch (error) {
     if (!isExtensionContextInvalidatedError(error)) {
