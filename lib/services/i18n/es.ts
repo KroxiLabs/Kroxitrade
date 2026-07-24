@@ -4,6 +4,8 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.mediumTextSizeTitle": "El tamaño de texto Mediano funciona correctamente",
   "whatsNew.item.mediumTextSizeDescription":
     "Al seleccionar Mediano en los ajustes Generales, se conserva el tamaño de texto preferido tras recargar la extensión.",
+  "whatsNew.item.syncAcrossDevicesTitle": "Sincroniza marcadores y ajustes entre dispositivos",
+  "whatsNew.item.syncAcrossDevicesDescription": "Los marcadores, las carpetas de marcadores y los ajustes de la extensión ahora siguen el perfil con el que iniciaste sesión en el navegador. Tus datos existentes se migran de forma segura al actualizar.",
   "app.name": "Poe Trade Plus",
   "header.subtitle": "Compañero de Trade",
   "header.expandSidebar": "Expandir panel",

@@ -5,6 +5,8 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.mediumTextSizeTitle": "중간 텍스트 크기가 올바르게 작동합니다",
   "whatsNew.item.mediumTextSizeDescription":
     "일반 설정에서 중간을 선택하면 확장 프로그램을 다시 로드한 후에도 텍스트 크기 설정이 유지됩니다.",
+  "whatsNew.item.syncAcrossDevicesTitle": "기기 간 북마크와 설정 동기화",
+  "whatsNew.item.syncAcrossDevicesDescription": "북마크, 북마크 폴더 및 확장 프로그램 설정이 이제 로그인한 브라우저 프로필을 따라 동기화됩니다. 기존 데이터는 업데이트 시 안전하게 마이그레이션됩니다.",
   ...englishTranslations,
   "whatsNew.item.version1110Title": "폴더 아이콘 확장 및 PoE2 복사 복원",
   "whatsNew.item.version1110Description": "폴더 아이콘을 PoE1 및 PoE2 화폐와 전직별로 정리했고, Path of Building용 복사를 PoE2 결과에서 다시 사용할 수 있습니다.",

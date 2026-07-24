@@ -5,6 +5,8 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.mediumTextSizeTitle": "Mittlere Textgröße funktioniert korrekt",
   "whatsNew.item.mediumTextSizeDescription":
     "Die Auswahl von Mittel in den allgemeinen Einstellungen bleibt jetzt auch nach dem Neuladen der Erweiterung erhalten.",
+  "whatsNew.item.syncAcrossDevicesTitle": "Lesezeichen und Einstellungen zwischen Geräten synchronisieren",
+  "whatsNew.item.syncAcrossDevicesDescription": "Lesezeichen, Lesezeichenordner und Erweiterungseinstellungen folgen jetzt deinem angemeldeten Browserprofil. Bestehende Daten werden beim Update sicher migriert.",
   ...englishTranslations,
   "whatsNew.item.version1110Title": "Mehr Ordnersymbole und PoE2-Kopie wiederhergestellt",
   "whatsNew.item.version1110Description": "Ordnersymbole sind nach PoE1- und PoE2-Währungen sowie Aszendenzen organisiert; die Path-of-Building-Kopie ist wieder in PoE2-Ergebnissen verfügbar.",

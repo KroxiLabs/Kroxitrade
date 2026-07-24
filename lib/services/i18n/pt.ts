@@ -5,6 +5,8 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.mediumTextSizeTitle": "O tamanho de texto Médio funciona corretamente",
   "whatsNew.item.mediumTextSizeDescription":
     "Selecionar Médio nas configurações Gerais agora mantém o tamanho de texto preferido depois que a extensão é recarregada.",
+  "whatsNew.item.syncAcrossDevicesTitle": "Sincronize favoritos e configurações entre dispositivos",
+  "whatsNew.item.syncAcrossDevicesDescription": "Os favoritos, as pastas de favoritos e as configurações da extensão agora acompanham o perfil conectado no navegador. Os dados existentes são migrados com segurança ao atualizar.",
   ...englishTranslations,
   "whatsNew.item.version1110Title": "Mais ícones de pasta e cópia PoE2 restaurada",
   "whatsNew.item.version1110Description": "Os ícones de pasta são organizados por moedas e ascendências de PoE1 e PoE2, e a cópia para Path of Building voltou aos resultados de PoE2.",

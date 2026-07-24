@@ -4,6 +4,8 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.mediumTextSizeTitle": "Medium text size works correctly",
   "whatsNew.item.mediumTextSizeDescription":
     "Selecting Medium in General settings now keeps your preferred text size after the extension reloads.",
+  "whatsNew.item.syncAcrossDevicesTitle": "Sync bookmarks and settings across devices",
+  "whatsNew.item.syncAcrossDevicesDescription": "Bookmarks, bookmark folders, and extension settings now follow your signed-in browser profile. Existing data is safely migrated when you update.",
   "app.name": "Poe Trade Plus",
   "header.subtitle": "Trade Companion",
   "header.expandSidebar": "Expand Sidebar",
