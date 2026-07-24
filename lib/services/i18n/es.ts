@@ -1,6 +1,9 @@
 import type { TranslationValue } from "./types"
 
 export const spanishTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.mediumTextSizeTitle": "El tamaño de texto Mediano funciona correctamente",
+  "whatsNew.item.mediumTextSizeDescription":
+    "Al seleccionar Mediano en los ajustes Generales, se conserva el tamaño de texto preferido tras recargar la extensión.",
   "app.name": "Poe Trade Plus",
   "header.subtitle": "Compañero de Trade",
   "header.expandSidebar": "Expandir panel",

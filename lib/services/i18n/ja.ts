@@ -2,6 +2,9 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const japaneseTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.mediumTextSizeTitle": "中サイズの文字が正しく機能するようになりました",
+  "whatsNew.item.mediumTextSizeDescription":
+    "一般設定で中を選択すると、拡張機能を再読み込みした後も文字サイズの設定が保持されます。",
   ...englishTranslations,
   "whatsNew.item.version1110Title": "フォルダーアイコンの拡充と PoE2 コピーの復元",
   "whatsNew.item.version1110Description": "フォルダーアイコンを PoE1 と PoE2 の通貨・アセンダンシーごとに整理し、Path of Building 用コピーを PoE2 の結果で再び利用できるようにしました。",

@@ -1,6 +1,9 @@
 import type { TranslationValue } from "./types"
 
 export const englishTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.mediumTextSizeTitle": "Medium text size works correctly",
+  "whatsNew.item.mediumTextSizeDescription":
+    "Selecting Medium in General settings now keeps your preferred text size after the extension reloads.",
   "app.name": "Poe Trade Plus",
   "header.subtitle": "Trade Companion",
   "header.expandSidebar": "Expand Sidebar",
