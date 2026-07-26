@@ -284,6 +284,8 @@ export const frenchTranslations: Record<string, TranslationValue> = {
   "settings.equivalentRefreshUnavailable":
     "Ouvrez d’abord une ligue de trade pour actualiser le taux poe.ninja.",
   "settings.bulkTitle": "Vendeurs bulk",
+  "settings.pinnedTitle": "Objets épinglés",
+  "settings.pinnedDescription": "Conserve les résultats sélectionnés dans cet onglet jusqu'à sa fermeture.",
   "settings.bulkDescription":
     "Afficher ou masquer l’onglet Bulk qui regroupe les vendeurs répétés des résultats actuels.",
   "settings.historyTitle": "Historique",

@@ -283,6 +283,8 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "settings.equivalentRefreshUnavailable":
     "먼저 거래 리그를 연 다음 poe.ninja 환율을 새로고침하세요.",
   "settings.bulkTitle": "Bulk 판매자",
+  "settings.pinnedTitle": "고정한 아이템",
+  "settings.pinnedDescription": "선택한 결과를 이 탭을 닫을 때까지 유지합니다.",
   "settings.bulkDescription":
     "현재 결과에서 같은 판매자가 여러 번 나올 때 묶어 보여주는 Bulk 탭을 표시하거나 숨깁니다.",
   "settings.historyTitle": "기록",

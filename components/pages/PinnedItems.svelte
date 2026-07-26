@@ -1,18 +1,13 @@
 <script lang="ts">
-  import { itemResultsService } from "../../lib/services/item-results";
-  import { onMount } from "svelte";
+  import { pinnedItemsService } from "../../lib/services/pinned-items";
   import { sendMessageToActiveTradeTab } from "../../lib/services/active-trade-tab";
   import Button from "../Button.svelte";
   import AlertMessage from "../AlertMessage.svelte";
 
-  const pinnedItems = itemResultsService;
+  const pinnedItems = pinnedItemsService;
 
-  onMount(() => {
-    void itemResultsService.initialize();
-  });
-
-  const unpin = (id: string) => itemResultsService.unpin(id);
-  const clear = () => itemResultsService.clear();
+  const unpin = (id: string) => pinnedItemsService.unpin(id);
+  const clear = () => pinnedItemsService.clear();
 
   const scrollTo = async (id: string) => {
     await sendMessageToActiveTradeTab({ query: "scroll-to-item", itemId: id });

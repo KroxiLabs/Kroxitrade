@@ -290,6 +290,8 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
   "settings.equivalentRefreshUnavailable":
     "Abra uma liga de trade primeiro para atualizar a taxa do poe.ninja.",
   "settings.bulkTitle": "Vendedores bulk",
+  "settings.pinnedTitle": "Itens fixados",
+  "settings.pinnedDescription": "Mantém os resultados selecionados nesta aba até ela ser fechada.",
   "settings.bulkDescription":
     "Mostre ou oculte a aba de vendedores bulk que agrupa vendedores repetidos dos resultados atuais.",
   "settings.historyTitle": "Histórico",

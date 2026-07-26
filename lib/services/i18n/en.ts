@@ -255,6 +255,8 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "settings.quickFiltersPlacementPage": "Trade Page",
   "settings.quickFiltersPlacementSidebar": "Sidebar",
   "settings.bulkTitle": "Bulk Sellers",
+  "settings.pinnedTitle": "Pinned items",
+  "settings.pinnedDescription": "Keep selected trade results available in this browser tab until it closes.",
   "settings.bulkDescription":
     "Show or hide the bulk sellers tab that groups repeated sellers from the current trade results.",
   "settings.historyTitle": "History",

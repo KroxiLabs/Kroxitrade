@@ -8,6 +8,7 @@ import infoIcon from "lucide-static/icons/info.svg?raw";
   import Bookmarks from "./pages/Bookmarks.svelte";
   import BulkSellers from "./pages/BulkSellers.svelte";
   import History from "./pages/History.svelte";
+  import PinnedItems from "./pages/PinnedItems.svelte";
   import OnboardingModal from "./OnboardingModal.svelte";
 import Settings from "./pages/Settings.svelte";
 import About from "./pages/About.svelte";
@@ -33,7 +34,7 @@ import About from "./pages/About.svelte";
   const ONBOARDING_FOLDER_ID_KEY = "layout-onboarding-folder-id";
   const VERSION_NOTICE_SEEN_KEY = "layout-version-notice-seen";
 
-  let currentPage: 'bookmarks' | 'bulk' | 'history' | 'about' | 'settings' = $state('bookmarks');
+  let currentPage: 'bookmarks' | 'bulk' | 'pinned' | 'history' | 'about' | 'settings' = $state('bookmarks');
   let currentTradeVersion: "1" | "2" = $state(tradeLocationService.current.version);
   let isMinimized = $state(false);
   let isResizing = $state(false);
@@ -312,6 +313,9 @@ import About from "./pages/About.svelte";
       currentPage = 'bookmarks';
     }
   });
+  $effect(() => {
+    if (!$settings.showPinnedItems && currentPage === 'pinned') currentPage = 'bookmarks';
+  });
 
   const currentLocation = tradeLocationService.locationStore;
   let minimizedStorageKey = $derived(`${MINIMIZED_STORAGE_KEY}-${$currentLocation.version}`);
@@ -431,6 +435,11 @@ import About from "./pages/About.svelte";
       </button>
     {/if}
 
+    {#if $settings.showPinnedItems}
+      <button class="nav-item {currentPage === 'pinned' ? 'is-active' : ''}" onclick={() => currentPage = 'pinned'}>
+        <span class="nav-item__label">{translate($languageStore, "settings.pinnedTitle")}</span>
+      </button>
+    {/if}
     {#if $settings.showHistory}
       <button 
           class="nav-item {currentPage === 'history' ? 'is-active' : ''} {showOnboarding && onboardingHighlightedPage === 'history' ? 'is-onboarding-focus' : ''}" 
@@ -480,6 +489,8 @@ import About from "./pages/About.svelte";
           tutorialFolderId={showOnboarding ? onboardingTutorialFolderId : null} />
     {:else if currentPage === 'bulk' && $settings.showBulkSellers}
         <BulkSellers />
+    {:else if currentPage === 'pinned' && $settings.showPinnedItems}
+        <PinnedItems />
     {:else if currentPage === 'history' && $settings.showHistory}
         <History />
     {:else if currentPage === 'settings'}

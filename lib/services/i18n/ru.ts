@@ -277,6 +277,8 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "settings.equivalentRefreshUnavailable":
     "Сначала откройте торговую лигу, чтобы обновить курс poe.ninja.",
   "settings.bulkTitle": "Bulk-продавцы",
+  "settings.pinnedTitle": "Закрепленные предметы",
+  "settings.pinnedDescription": "Сохраняет выбранные результаты в этой вкладке до ее закрытия.",
   "settings.bulkDescription":
     "Показывать или скрывать вкладку Bulk, которая группирует повторяющихся продавцов из текущих результатов.",
   "settings.historyTitle": "История",

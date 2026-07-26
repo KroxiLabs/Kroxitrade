@@ -274,6 +274,8 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "settings.equivalentRefreshUnavailable":
     "เปิดลีกเทรดก่อน เพื่อรีเฟรชเรต poe.ninja",
   "settings.bulkTitle": "ผู้ขาย Bulk",
+  "settings.pinnedTitle": "ไอเท็มที่ปักหมุด",
+  "settings.pinnedDescription": "เก็บผลลัพธ์ที่เลือกไว้ในแท็บนี้จนกว่าจะปิดแท็บ",
   "settings.bulkDescription":
     "แสดงหรือซ่อนแท็บ Bulk ที่รวมผู้ขายที่ซ้ำกันจากผลลัพธ์ปัจจุบัน",
   "settings.historyTitle": "ประวัติ",

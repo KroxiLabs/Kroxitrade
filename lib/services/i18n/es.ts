@@ -260,6 +260,8 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "settings.quickFiltersPlacementPage": "Página de trade",
   "settings.quickFiltersPlacementSidebar": "Sidebar",
   "settings.bulkTitle": "Bulk Sellers",
+  "settings.pinnedTitle": "Objetos fijados",
+  "settings.pinnedDescription": "Mantiene los resultados seleccionados disponibles en esta pestaña hasta que se cierre.",
   "settings.bulkDescription":
     "Mostrá u ocultá la pestaña Bulk que agrupa vendedores repetidos de los resultados actuales.",
   "settings.historyTitle": "Historial",

@@ -287,6 +287,8 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "settings.equivalentRefreshUnavailable":
     "まずトレードリーグを開いてから poe.ninja のレートを更新してください。",
   "settings.bulkTitle": "Bulk 売り手",
+  "settings.pinnedTitle": "固定したアイテム",
+  "settings.pinnedDescription": "選択した結果を、このタブを閉じるまで保持します。",
   "settings.bulkDescription":
     "現在の結果で同じ売り手が複数回出る場合にまとめる Bulk タブの表示/非表示を切り替えます。",
   "settings.historyTitle": "履歴",

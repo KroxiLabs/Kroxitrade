@@ -19,6 +19,7 @@ import {
 } from "../utilities/copy-item-for-craft-of-exile";
 import { flashMessages } from "./flash";
 import { experimentalSettings } from "./experimental";
+import { pinnedItemsService } from "./pinned-items";
 
 
 
@@ -660,7 +661,8 @@ export class ItemResultsService {
       this.syncCoeButton(typedRow);
       this.syncWikiButton(typedRow);
       this.injectEquivalentPricing(typedRow);
-      this.enhanceMagebloodLegacy(typedRow);
+       this.enhanceMagebloodLegacy(typedRow);
+       this.syncPinButton(typedRow);
 
       if (typedRow.hasAttribute("bt-enhanced")) {
         return;
@@ -715,6 +717,38 @@ export class ItemResultsService {
     } else {
       left.appendChild(button);
     }
+  }
+
+  private syncPinButton(row: HTMLElement) {
+    const left = row.querySelector<HTMLElement>(".left");
+    const id = row.dataset.id;
+    if (!left || !id) return;
+    let button = left.querySelector<HTMLButtonElement>("button.bt-pin-button");
+    if (!button) {
+      button = document.createElement("button");
+      button.type = "button";
+      button.className = "bt-pin-button";
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        const title = row.querySelector<HTMLElement>(".itemName .itemHeader, .item-popup__header-line")?.textContent?.trim() || "Item";
+        pinnedItemsService.toggle({
+          id,
+          title,
+          detailsHtml: row.querySelector<HTMLElement>(".itemPopupContainer, .item-popup")?.outerHTML || "",
+          renderedHtml: row.querySelector<HTMLElement>(".item")?.outerHTML || "",
+          pricingHtml: row.querySelector<HTMLElement>("[data-field=price], .price")?.outerHTML || ""
+        });
+        this.syncPinButton(row);
+      });
+      left.appendChild(button);
+    }
+    const pinned = pinnedItemsService.has(id);
+    row.classList.toggle("bt-pinned", pinned);
+    button.textContent = pinned ? "Unpin" : "Pin";
+    button.title = button.textContent;
+    button.setAttribute("aria-label", button.textContent);
+    row.dataset.btPinId = id;
   }
 
   private syncWikiButton(row: HTMLElement) {

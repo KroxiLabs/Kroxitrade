@@ -279,6 +279,8 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "settings.equivalentRefreshUnavailable":
     "Öffne zuerst eine Handelsliga, um den poe.ninja-Kurs zu aktualisieren.",
   "settings.bulkTitle": "Bulk-Verkäufer",
+  "settings.pinnedTitle": "Angeheftete Gegenstände",
+  "settings.pinnedDescription": "Behält ausgewählte Ergebnisse in diesem Tab, bis er geschlossen wird.",
   "settings.bulkDescription":
     "Zeige oder verberge den Bulk-Tab, der wiederholte Verkäufer aus den aktuellen Suchergebnissen gruppiert.",
   "settings.historyTitle": "Verlauf",

@@ -196,6 +196,11 @@
       flashMessages.alert(translate($languageStore, "settings.saveFailed"));
     }
   }
+  async function handlePinnedItemsChange(showPinnedItems: boolean) {
+    if (!(await settings.updatePinnedItemsVisibility(showPinnedItems))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
+  }
 
   async function handleHistoryChange(showHistory: boolean) {
     if (!(await settings.updateHistoryVisibility(showHistory))) {
@@ -591,6 +596,14 @@
               stateLabel={toggleSwitchLabel($settings.showBulkSellers)}
               onToggle={() => handleBulkSellersChange(!$settings.showBulkSellers)}
             />
+          </div>
+
+          <div class="settings-row">
+            <div class="settings-row__copy">
+              <div class="settings-row__title">{translate($languageStore, "settings.pinnedTitle")}</div>
+              <div class="settings-row__description">{translate($languageStore, "settings.pinnedDescription")}</div>
+            </div>
+            <ToggleRow checked={$settings.showPinnedItems} label={translate($languageStore, "settings.pinnedTitle")} stateLabel={toggleSwitchLabel($settings.showPinnedItems)} onToggle={() => handlePinnedItemsChange(!$settings.showPinnedItems)} />
           </div>
 
           <div class="settings-row" data-tutorial="settings-history">

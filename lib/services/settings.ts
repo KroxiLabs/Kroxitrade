@@ -27,6 +27,7 @@ export interface VersionSettings {
   showEquivalentPricing: boolean
   showMagebloodLegacyDescriptions: boolean
   showBulkSellers: boolean
+  showPinnedItems: boolean
   showHistory: boolean
   showFinerFilters: boolean
   showQuickFilters: boolean
@@ -70,6 +71,7 @@ const DEFAULT_VERSION_SETTINGS: VersionSettings = {
   showEquivalentPricing: false,
   showMagebloodLegacyDescriptions: true,
   showBulkSellers: false,
+  showPinnedItems: false,
   showHistory: true,
   showFinerFilters: true,
   showQuickFilters: true,
@@ -179,6 +181,7 @@ function legacyVersionSettings(
     showEquivalentPricing: value?.showEquivalentPricing,
     showMagebloodLegacyDescriptions: value?.showMagebloodLegacyDescriptions,
     showBulkSellers: value?.showBulkSellers,
+    showPinnedItems: value?.showPinnedItems,
     showHistory: value?.showHistory,
     showFinerFilters: value?.showFinerFilters,
     showQuickFilters: value?.showQuickFilters,
@@ -397,6 +400,9 @@ export const settings = {
   },
   async updateBulkSellersVisibility(showBulkSellers: boolean) {
     return saveVersion({ ...activeVersionSettings, showBulkSellers })
+  },
+  async updatePinnedItemsVisibility(showPinnedItems: boolean) {
+    return saveVersion({ ...activeVersionSettings, showPinnedItems })
   },
   async updateHistoryVisibility(showHistory: boolean) {
     return saveVersion({ ...activeVersionSettings, showHistory })
