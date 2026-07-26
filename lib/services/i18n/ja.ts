@@ -269,6 +269,13 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.activeRealmBookmarksTitle": "ブックマークがアクティブなTradeリーグとRealmに追従",
   "whatsNew.item.activeRealmBookmarksDescription":
     "保存した検索はアクティブなTradeタブの現在のリーグとRealmで開き、保存済みリーグはフォールバックとして保持されます。",
+  "pinned.scrollTo": "結果へ移動",
+  "pinned.unpin": "固定を解除",
+  "pinned.clear": "すべてクリア",
+  "pinned.empty": "固定したアイテムはまだありません。Trade の結果にある固定ボタンを使ってください。",
+  "pinned.sessionNote": "新しい検索を開始するかページを再読み込みすると、固定したアイテムは削除されます。",
+  "whatsNew.item.pinnedItemsTitle": "固定したアイテムが復活",
+  "whatsNew.item.pinnedItemsDescription": "Better Trading の元のフローをもとに再実装しました。任意の固定で現在の検索中に結果を残し、サイドバーからその結果へ戻れます。",
   "whatsNew.item.buyoutClearTitle": "バイアウト価格をクリアするショートカット",
   "whatsNew.item.buyoutClearDescription":
     "クイックフィルタープリセットに、バイアウト価格をカオスオーブ同等物へ戻すクリアボタンが追加され、対応するTradeサイトの言語で動作します。",

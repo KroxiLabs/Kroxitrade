@@ -266,6 +266,13 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.activeRealmBookmarksTitle": "북마크가 활성 Trade 리그와 Realm을 따름",
   "whatsNew.item.activeRealmBookmarksDescription":
     "저장된 검색은 이제 활성 Trade 탭의 현재 리그와 Realm에서 열리며, 저장된 리그는 대체 값으로 유지됩니다.",
+  "pinned.scrollTo": "결과로 이동",
+  "pinned.unpin": "고정 해제",
+  "pinned.clear": "모두 지우기",
+  "pinned.empty": "아직 고정한 아이템이 없습니다. Trade 결과에서 고정 버튼을 사용하세요.",
+  "pinned.sessionNote": "새 검색을 시작하거나 페이지를 새로 고치면 고정한 아이템이 제거됩니다.",
+  "whatsNew.item.pinnedItemsTitle": "고정한 아이템이 돌아왔습니다",
+  "whatsNew.item.pinnedItemsDescription": "원본 Better Trading 흐름을 바탕으로 다시 구현했습니다. 선택적인 고정으로 현재 검색 중 결과를 유지하고 사이드바에서 해당 결과로 돌아갈 수 있습니다.",
   "whatsNew.item.buyoutClearTitle": "즉시 구매 가격 지우기 단축키",
   "whatsNew.item.buyoutClearDescription":
     "빠른 필터 프리셋에 즉시 구매 가격을 카오스 오브 등가물로 설정하는 지우기 버튼이 추가되었으며, 지원되는 Trade 사이트 언어에서 작동합니다.",

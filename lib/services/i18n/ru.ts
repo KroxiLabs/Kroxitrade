@@ -259,6 +259,13 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.activeRealmBookmarksTitle": "Закладки следуют активному миру trade",
   "whatsNew.item.activeRealmBookmarksDescription":
     "Сохранённые поиски теперь открываются в текущей лиге и мире активной вкладки Trade, сохраняя сохранённую лигу как резервный вариант.",
+  "pinned.scrollTo": "Перейти к результату",
+  "pinned.unpin": "Открепить",
+  "pinned.clear": "Очистить все",
+  "pinned.empty": "Закрепленных предметов пока нет. Используйте кнопку закрепления в результатах Trade.",
+  "pinned.sessionNote": "Закрепленные предметы удаляются при новом поиске или перезагрузке страницы.",
+  "whatsNew.item.pinnedItemsTitle": "Закрепленные предметы вернулись",
+  "whatsNew.item.pinnedItemsDescription": "Повторно реализованные по исходному потоку Better Trading, необязательные закрепления сохраняют результат во время текущего поиска и позволяют вернуться к нему из боковой панели.",
   "whatsNew.item.buyoutClearTitle": "Быстрая очистка цены выкупа",
   "whatsNew.item.buyoutClearDescription":
     "В быстрых фильтрах теперь есть кнопка «Очистить», которая переключает цену выкупа на эквивалент сферы хаоса и работает с поддерживаемыми языками сайта trade.",

@@ -1,5 +1,6 @@
 <script lang="ts">
   import { pinnedItemsService } from "../../lib/services/pinned-items";
+  import { languageStore, translate } from "../../lib/services/i18n";
   import pinOffIcon from "lucide-static/icons/pin-off.svg?raw";
   import Button from "../Button.svelte";
   import AlertMessage from "../AlertMessage.svelte";
@@ -38,17 +39,17 @@
             </div>
           </div>
           <div class="item-actions">
-            <Button label="Scroll to" theme="blue" onClick={() => scrollTo(item.id)} />
-            <Button label="Unpin" iconHtml={pinOffIcon} theme="blue" onClick={() => unpin(item.id)} />
+            <Button label={translate($languageStore, "pinned.scrollTo")} theme="blue" onClick={() => scrollTo(item.id)} />
+            <Button label={translate($languageStore, "pinned.unpin")} iconHtml={pinOffIcon} theme="blue" onClick={() => unpin(item.id)} />
           </div>
         </article>
       {/each}
     </div>
     
-    <Button label="Clear All" theme="gold" icon="✕" onClick={clear} />
-    <AlertMessage type="warning" message="Note: Pinned items are only kept for the current session." />
+    <Button label={translate($languageStore, "pinned.clear")} theme="gold" icon="✕" onClick={clear} />
+    <AlertMessage type="warning" message={translate($languageStore, "pinned.sessionNote")} />
   {:else}
-    <AlertMessage type="warning" message="No pinned items yet. Use the 'Pin' button on trade results." />
+    <AlertMessage type="warning" message={translate($languageStore, "pinned.empty")} />
   {/if}
 </div>
 

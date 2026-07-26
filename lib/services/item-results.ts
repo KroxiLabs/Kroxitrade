@@ -201,6 +201,7 @@ export class ItemResultsService {
   };
   private showEquivalentPricing = false;
   private showMagebloodLegacyDescriptions = false;
+  private showPinnedItems = false;
   private unsubscribeSettings: (() => void) | null = null;
   private unsubscribeLocation: (() => void) | null = null;
   private readonly postSearchRefreshDelays = [80, 220, 500, 900];
@@ -277,18 +278,24 @@ export class ItemResultsService {
     await settings.load();
     this.showEquivalentPricing = settings.getCurrent().showEquivalentPricing;
     this.showMagebloodLegacyDescriptions = settings.getCurrent().showMagebloodLegacyDescriptions;
+    this.showPinnedItems = settings.getCurrent().showPinnedItems;
     this.unsubscribeSettings?.();
     this.unsubscribeSettings = settings.subscribe((value) => {
       const changed = this.showEquivalentPricing !== value.showEquivalentPricing;
       const magebloodChanged =
         this.showMagebloodLegacyDescriptions !== value.showMagebloodLegacyDescriptions;
+      const pinsChanged = this.showPinnedItems !== value.showPinnedItems;
       this.showEquivalentPricing = value.showEquivalentPricing;
       this.showMagebloodLegacyDescriptions = value.showMagebloodLegacyDescriptions;
+      this.showPinnedItems = value.showPinnedItems;
       if (changed) {
         this.refreshEquivalentPricing();
       }
       if (magebloodChanged) {
         this.refreshMagebloodLegacyDescriptions();
+      }
+      if (pinsChanged) {
+        this.refreshPinButtons();
       }
     });
     this.unsubscribeLocation?.();
@@ -724,10 +731,18 @@ export class ItemResultsService {
   }
 
   private syncPinButton(row: HTMLElement) {
+    const existingButton = row.querySelector<HTMLButtonElement>("button.bt-pin-button");
+    if (!this.showPinnedItems) {
+      existingButton?.remove();
+      row.classList.remove("bt-pinned");
+      row.removeAttribute("data-bt-pin-id");
+      return;
+    }
+
     const left = row.querySelector<HTMLElement>(".left");
     const id = row.dataset.id;
     if (!left || !id) return;
-    let button = left.querySelector<HTMLButtonElement>("button.bt-pin-button");
+    let button = existingButton;
     if (!button) {
       button = document.createElement("button");
       button.type = "button";
@@ -764,6 +779,12 @@ export class ItemResultsService {
     button.title = label;
     button.setAttribute("aria-label", label);
     row.dataset.btPinId = id;
+  }
+
+  private refreshPinButtons() {
+    document
+      .querySelectorAll<HTMLElement>(".search-results .result-item, .search-results .row, .result-list .result-item, .row")
+      .forEach((row) => this.syncPinButton(row));
   }
 
   private syncWikiButton(row: HTMLElement) {

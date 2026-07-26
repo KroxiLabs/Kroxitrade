@@ -482,6 +482,13 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.activeRealmBookmarksTitle": "Los marcadores siguen el reino de trade activo",
   "whatsNew.item.activeRealmBookmarksDescription":
     "Las búsquedas guardadas ahora se abren en la liga y el reino actuales de la pestaña Trade activa, manteniendo la liga guardada como alternativa.",
+  "pinned.scrollTo": "Ir al resultado",
+  "pinned.unpin": "Quitar fijación",
+  "pinned.clear": "Limpiar todos",
+  "pinned.empty": "Todavía no hay objetos fijados. Usá el botón Fijar en los resultados de Trade.",
+  "pinned.sessionNote": "Los objetos fijados se eliminan al iniciar una búsqueda nueva o recargar la página.",
+  "whatsNew.item.pinnedItemsTitle": "Vuelven los objetos fijados",
+  "whatsNew.item.pinnedItemsDescription": "Reimplementados a partir del flujo original de Better Trading, los pins opcionales mantienen un resultado disponible durante la búsqueda actual y permiten volver a él desde la barra lateral.",
   "whatsNew.item.buyoutClearTitle": "Acceso rápido para limpiar el precio de compra",
   "whatsNew.item.buyoutClearDescription":
     "Los ajustes preestablecidos de filtro rápido ahora incluyen un botón Limpiar que restablece Precio de compra a Equivalente a Orbe de caos y funciona en los idiomas compatibles del sitio de trade."

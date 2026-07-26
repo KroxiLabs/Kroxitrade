@@ -261,6 +261,13 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.activeRealmBookmarksTitle": "Lesezeichen folgen dem aktiven Trade-Realm",
   "whatsNew.item.activeRealmBookmarksDescription":
     "Gespeicherte Suchen öffnen sich jetzt in Liga und Realm des aktiven Trade-Tabs; die gespeicherte Liga bleibt als Fallback erhalten.",
+  "pinned.scrollTo": "Zum Ergebnis",
+  "pinned.unpin": "Lösen",
+  "pinned.clear": "Alle löschen",
+  "pinned.empty": "Noch keine angehefteten Gegenstände. Nutze die Anheften-Schaltfläche in den Trade-Ergebnissen.",
+  "pinned.sessionNote": "Angeheftete Gegenstände werden bei einer neuen Suche oder beim Neuladen der Seite entfernt.",
+  "whatsNew.item.pinnedItemsTitle": "Angeheftete Gegenstände sind zurück",
+  "whatsNew.item.pinnedItemsDescription": "Nach dem ursprünglichen Better-Trading-Ablauf neu umgesetzt: Optionale Pins halten ein Ergebnis während der aktuellen Suche verfügbar und springen über die Seitenleiste dorthin zurück.",
   "whatsNew.item.buyoutClearTitle": "Schnellaktion zum Leeren des Kaufpreises",
   "whatsNew.item.buyoutClearDescription":
     "Schnellfilter-Voreinstellungen enthalten jetzt eine Schaltfläche zum Leeren, die den Kaufpreis auf Wert in Chaossphären setzt und mit unterstützten Trade-Website-Sprachen funktioniert.",
