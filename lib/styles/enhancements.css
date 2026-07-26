@@ -181,22 +181,27 @@ body.bt-dev-result-actions-visible.bt-dev-wiki-visible
 }
 .bt-pin-button {
   display: inline-flex;
+  position: absolute;
+  top: 4px;
+  right: auto;
+  left: 42px;
+  z-index: 4;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
   min-width: 36px !important;
   padding: 0;
-  margin-left: 5px !important;
+  margin: 0 !important;
   border: 0;
   background: transparent;
-  color: rgba(238, 238, 238, 0.78);
+  color: #ffffff;
   cursor: pointer;
 }
 .bt-pin-button svg {
   width: 21px;
   height: 21px;
-  stroke-width: 1.65;
+  stroke-width: 2.8;
   pointer-events: none;
 }
 .bt-pin-button:hover,
