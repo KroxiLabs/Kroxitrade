@@ -19,6 +19,9 @@ import {
 } from "../utilities/copy-item-for-craft-of-exile";
 import { flashMessages } from "./flash";
 import { experimentalSettings } from "./experimental";
+import { pinnedItemsService } from "./pinned-items";
+import pinIcon from "lucide-static/icons/pin.svg?raw";
+import pinOffIcon from "lucide-static/icons/pin-off.svg?raw";
 
 
 
@@ -198,6 +201,7 @@ export class ItemResultsService {
   };
   private showEquivalentPricing = false;
   private showMagebloodLegacyDescriptions = false;
+  private showPinnedItems = false;
   private unsubscribeSettings: (() => void) | null = null;
   private unsubscribeLocation: (() => void) | null = null;
   private readonly postSearchRefreshDelays = [80, 220, 500, 900];
@@ -274,18 +278,24 @@ export class ItemResultsService {
     await settings.load();
     this.showEquivalentPricing = settings.getCurrent().showEquivalentPricing;
     this.showMagebloodLegacyDescriptions = settings.getCurrent().showMagebloodLegacyDescriptions;
+    this.showPinnedItems = settings.getCurrent().showPinnedItems;
     this.unsubscribeSettings?.();
     this.unsubscribeSettings = settings.subscribe((value) => {
       const changed = this.showEquivalentPricing !== value.showEquivalentPricing;
       const magebloodChanged =
         this.showMagebloodLegacyDescriptions !== value.showMagebloodLegacyDescriptions;
+      const pinsChanged = this.showPinnedItems !== value.showPinnedItems;
       this.showEquivalentPricing = value.showEquivalentPricing;
       this.showMagebloodLegacyDescriptions = value.showMagebloodLegacyDescriptions;
+      this.showPinnedItems = value.showPinnedItems;
       if (changed) {
         this.refreshEquivalentPricing();
       }
       if (magebloodChanged) {
         this.refreshMagebloodLegacyDescriptions();
+      }
+      if (pinsChanged) {
+        this.refreshPinButtons();
       }
     });
     this.unsubscribeLocation?.();
@@ -377,6 +387,8 @@ export class ItemResultsService {
   }
 
   private async handleLocationChange() {
+    pinnedItemsService.clear();
+
     try {
       await this.fetchRatios();
     } catch (e) {
@@ -660,7 +672,8 @@ export class ItemResultsService {
       this.syncCoeButton(typedRow);
       this.syncWikiButton(typedRow);
       this.injectEquivalentPricing(typedRow);
-      this.enhanceMagebloodLegacy(typedRow);
+       this.enhanceMagebloodLegacy(typedRow);
+       this.syncPinButton(typedRow);
 
       if (typedRow.hasAttribute("bt-enhanced")) {
         return;
@@ -715,6 +728,63 @@ export class ItemResultsService {
     } else {
       left.appendChild(button);
     }
+  }
+
+  private syncPinButton(row: HTMLElement) {
+    const existingButton = row.querySelector<HTMLButtonElement>("button.bt-pin-button");
+    if (!this.showPinnedItems) {
+      existingButton?.remove();
+      row.classList.remove("bt-pinned");
+      row.removeAttribute("data-bt-pin-id");
+      return;
+    }
+
+    const left = row.querySelector<HTMLElement>(".left");
+    const id = row.dataset.id;
+    if (!left || !id) return;
+    let button = existingButton;
+    if (!button) {
+      button = document.createElement("button");
+      button.type = "button";
+      button.className = "bt-pin-button";
+      button.addEventListener("click", (event) => {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        const currentId = row.dataset.id;
+        console.debug("[Poe Trade Plus] Pin clicked", {
+          currentId,
+          rowConnected: row.isConnected
+        });
+        if (!currentId) {
+          console.debug("[Poe Trade Plus] Pin ignored: result has no id");
+          return;
+        }
+        const title = row.querySelector<HTMLElement>(".itemName .itemHeader, .item-popup__header-line")?.textContent?.trim() || "Item";
+        pinnedItemsService.toggle({
+          id: currentId,
+          title,
+          detailsHtml: row.querySelector<HTMLElement>(".itemPopupContainer, .item-popup")?.outerHTML || "",
+          renderedHtml: row.querySelector<HTMLElement>(".item")?.outerHTML || "",
+          pricingHtml: row.querySelector<HTMLElement>("[data-field=price], .price")?.outerHTML || ""
+        });
+        console.debug("[Poe Trade Plus] Pin toggled", { currentId });
+        this.syncPinButton(row);
+      }, true);
+      left.appendChild(button);
+    }
+    const pinned = pinnedItemsService.has(id);
+    row.classList.toggle("bt-pinned", pinned);
+    const label = pinned ? "Unpin" : "Pin";
+    button.innerHTML = pinned ? pinOffIcon : pinIcon;
+    button.title = label;
+    button.setAttribute("aria-label", label);
+    row.dataset.btPinId = id;
+  }
+
+  private refreshPinButtons() {
+    document
+      .querySelectorAll<HTMLElement>(".search-results .result-item, .search-results .row, .result-list .result-item, .row")
+      .forEach((row) => this.syncPinButton(row));
   }
 
   private syncWikiButton(row: HTMLElement) {

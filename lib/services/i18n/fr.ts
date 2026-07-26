@@ -266,6 +266,13 @@ export const frenchTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.activeRealmBookmarksTitle": "Les favoris suivent le royaume trade actif",
   "whatsNew.item.activeRealmBookmarksDescription":
     "Les recherches enregistrées s’ouvrent maintenant dans la ligue et le royaume de l’onglet Trade actif, tout en conservant la ligue enregistrée comme solution de repli.",
+  "pinned.scrollTo": "Aller au résultat",
+  "pinned.unpin": "Désépingler",
+  "pinned.clear": "Tout effacer",
+  "pinned.empty": "Aucun objet épinglé pour le moment. Utilisez le bouton Épingler dans les résultats de Trade.",
+  "pinned.sessionNote": "Les objets épinglés sont supprimés lors d'une nouvelle recherche ou du rechargement de la page.",
+  "whatsNew.item.pinnedItemsTitle": "Les objets épinglés reviennent",
+  "whatsNew.item.pinnedItemsDescription": "Réimplémentés depuis le flux original de Better Trading, les épingles facultatives gardent un résultat disponible pendant la recherche et permettent d'y revenir depuis la barre latérale.",
   "whatsNew.item.buyoutClearTitle": "Raccourci pour effacer le prix de rachat",
   "whatsNew.item.buyoutClearDescription":
     "Les préréglages de filtre rapide incluent désormais un bouton Effacer qui règle le prix de rachat sur Équivalent en orbes du chaos et fonctionne avec les langues prises en charge du site trade.",
@@ -284,6 +291,8 @@ export const frenchTranslations: Record<string, TranslationValue> = {
   "settings.equivalentRefreshUnavailable":
     "Ouvrez d’abord une ligue de trade pour actualiser le taux poe.ninja.",
   "settings.bulkTitle": "Vendeurs bulk",
+  "settings.pinnedTitle": "Objets épinglés",
+  "settings.pinnedDescription": "Conserve les résultats sélectionnés dans cet onglet jusqu'à sa fermeture.",
   "settings.bulkDescription":
     "Afficher ou masquer l’onglet Bulk qui regroupe les vendeurs répétés des résultats actuels.",
   "settings.historyTitle": "Historique",

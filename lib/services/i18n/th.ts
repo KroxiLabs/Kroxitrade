@@ -258,6 +258,13 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "whatsNew.item.activeRealmBookmarksTitle": "บุ๊กมาร์กใช้ realm ของ trade ที่กำลังใช้งาน",
   "whatsNew.item.activeRealmBookmarksDescription":
     "การค้นหาที่บันทึกไว้จะเปิดด้วยลีกและ realm ปัจจุบันของแท็บ Trade ที่ใช้งานอยู่ โดยเก็บลีกที่บันทึกไว้เป็นทางเลือกสำรอง.",
+  "pinned.scrollTo": "ไปยังผลลัพธ์",
+  "pinned.unpin": "เลิกปักหมุด",
+  "pinned.clear": "ล้างทั้งหมด",
+  "pinned.empty": "ยังไม่มีไอเท็มที่ปักหมุด ใช้ปุ่มปักหมุดในผลลัพธ์ Trade",
+  "pinned.sessionNote": "ไอเท็มที่ปักหมุดจะถูกลบเมื่อเริ่มการค้นหาใหม่หรือรีโหลดหน้า",
+  "whatsNew.item.pinnedItemsTitle": "ไอเท็มที่ปักหมุดกลับมาแล้ว",
+  "whatsNew.item.pinnedItemsDescription": "นำกลับมาใช้ใหม่จากขั้นตอนดั้งเดิมของ Better Trading โดยหมุดที่เลือกใช้ได้จะเก็บผลลัพธ์ไว้ระหว่างการค้นหาปัจจุบันและกลับไปยังผลลัพธ์นั้นจากแถบด้านข้างได้",
   "whatsNew.item.buyoutClearTitle": "ปุ่มล้างราคาซื้อทันที",
   "whatsNew.item.buyoutClearDescription":
     "พรีเซ็ตตัวกรองด่วนมีปุ่มล้างที่ตั้งราคาซื้อทันทีเป็นเทียบเป็น Chaos Orb และใช้ได้กับภาษาของเว็บไซต์ trade ที่รองรับ.",
@@ -274,6 +281,8 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "settings.equivalentRefreshUnavailable":
     "เปิดลีกเทรดก่อน เพื่อรีเฟรชเรต poe.ninja",
   "settings.bulkTitle": "ผู้ขาย Bulk",
+  "settings.pinnedTitle": "ไอเท็มที่ปักหมุด",
+  "settings.pinnedDescription": "เก็บผลลัพธ์ที่เลือกไว้ในแท็บนี้จนกว่าจะปิดแท็บ",
   "settings.bulkDescription":
     "แสดงหรือซ่อนแท็บ Bulk ที่รวมผู้ขายที่ซ้ำกันจากผลลัพธ์ปัจจุบัน",
   "settings.historyTitle": "ประวัติ",
