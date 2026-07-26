@@ -1,6 +1,6 @@
 <script lang="ts">
   import { pinnedItemsService } from "../../lib/services/pinned-items";
-  import { sendMessageToActiveTradeTab } from "../../lib/services/active-trade-tab";
+  import pinOffIcon from "lucide-static/icons/pin-off.svg?raw";
   import Button from "../Button.svelte";
   import AlertMessage from "../AlertMessage.svelte";
 
@@ -9,8 +9,14 @@
   const unpin = (id: string) => pinnedItemsService.unpin(id);
   const clear = () => pinnedItemsService.clear();
 
-  const scrollTo = async (id: string) => {
-    await sendMessageToActiveTradeTab({ query: "scroll-to-item", itemId: id });
+  const scrollTo = (id: string) => {
+    const row = Array.from(document.querySelectorAll<HTMLElement>("[data-bt-pin-id]"))
+      .find((element) => element.dataset.btPinId === id);
+    if (!row) return;
+
+    row.scrollIntoView({ block: "center", behavior: "smooth" });
+    row.classList.add("bt-pinned-glow");
+    window.setTimeout(() => row.classList.remove("bt-pinned-glow"), 2000);
   };
 </script>
 
@@ -33,7 +39,7 @@
           </div>
           <div class="item-actions">
             <Button label="Scroll to" theme="blue" onClick={() => scrollTo(item.id)} />
-            <Button label="Unpin" theme="blue" onClick={() => unpin(item.id)} />
+            <Button label="Unpin" iconHtml={pinOffIcon} theme="blue" onClick={() => unpin(item.id)} />
           </div>
         </article>
       {/each}

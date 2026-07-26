@@ -53,7 +53,10 @@
         return
       }
 
-      const el = document.querySelector<HTMLElement>(`.row[data-id="${escapeCssAttributeValue(request.itemId)}"]`)
+      const itemId = escapeCssAttributeValue(request.itemId)
+      const el = document.querySelector<HTMLElement>(
+        `[data-bt-pin-id="${itemId}"], .result-item[data-id="${itemId}"], .row[data-id="${itemId}"]`
+      )
       if (!el) {
         return
       }

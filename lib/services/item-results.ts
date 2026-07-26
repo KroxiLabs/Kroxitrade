@@ -20,6 +20,8 @@ import {
 import { flashMessages } from "./flash";
 import { experimentalSettings } from "./experimental";
 import { pinnedItemsService } from "./pinned-items";
+import pinIcon from "lucide-static/icons/pin.svg?raw";
+import pinOffIcon from "lucide-static/icons/pin-off.svg?raw";
 
 
 
@@ -378,6 +380,8 @@ export class ItemResultsService {
   }
 
   private async handleLocationChange() {
+    pinnedItemsService.clear();
+
     try {
       await this.fetchRatios();
     } catch (e) {
@@ -730,24 +734,35 @@ export class ItemResultsService {
       button.className = "bt-pin-button";
       button.addEventListener("click", (event) => {
         event.preventDefault();
-        event.stopPropagation();
+        event.stopImmediatePropagation();
+        const currentId = row.dataset.id;
+        console.debug("[Poe Trade Plus] Pin clicked", {
+          currentId,
+          rowConnected: row.isConnected
+        });
+        if (!currentId) {
+          console.debug("[Poe Trade Plus] Pin ignored: result has no id");
+          return;
+        }
         const title = row.querySelector<HTMLElement>(".itemName .itemHeader, .item-popup__header-line")?.textContent?.trim() || "Item";
         pinnedItemsService.toggle({
-          id,
+          id: currentId,
           title,
           detailsHtml: row.querySelector<HTMLElement>(".itemPopupContainer, .item-popup")?.outerHTML || "",
           renderedHtml: row.querySelector<HTMLElement>(".item")?.outerHTML || "",
           pricingHtml: row.querySelector<HTMLElement>("[data-field=price], .price")?.outerHTML || ""
         });
+        console.debug("[Poe Trade Plus] Pin toggled", { currentId });
         this.syncPinButton(row);
-      });
+      }, true);
       left.appendChild(button);
     }
     const pinned = pinnedItemsService.has(id);
     row.classList.toggle("bt-pinned", pinned);
-    button.textContent = pinned ? "Unpin" : "Pin";
-    button.title = button.textContent;
-    button.setAttribute("aria-label", button.textContent);
+    const label = pinned ? "Unpin" : "Pin";
+    button.innerHTML = pinned ? pinOffIcon : pinIcon;
+    button.title = label;
+    button.setAttribute("aria-label", label);
     row.dataset.btPinId = id;
   }
 

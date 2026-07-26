@@ -180,8 +180,29 @@ body.bt-dev-result-actions-visible.bt-dev-wiki-visible
   }
 }
 .bt-pin-button {
-  min-width: 47px !important;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  min-width: 36px !important;
+  padding: 0;
   margin-left: 5px !important;
+  border: 0;
+  background: transparent;
+  color: rgba(238, 238, 238, 0.78);
+  cursor: pointer;
+}
+.bt-pin-button svg {
+  width: 21px;
+  height: 21px;
+  stroke-width: 1.65;
+  pointer-events: none;
+}
+.bt-pin-button:hover,
+.bt-pin-button:focus-visible {
+  color: #c4b18c;
+  outline: none;
 }
 
 .bt-pinned {
