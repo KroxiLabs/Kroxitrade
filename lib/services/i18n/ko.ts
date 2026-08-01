@@ -205,6 +205,7 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "folder.copiedTrade": ({ title }) => `${title}을(를) 클립보드에 복사했습니다`,
   "folder.copyTradeError": "거래 URL을 복사할 수 없습니다.",
   "folder.duplicatedTrade": ({ title }) => `${title}을(를) 복제했습니다`,
+  "folder.duplicateTrade": "북마크 복제",
   "folder.invalidTradePage": "유효한 거래 페이지가 아닙니다",
   "folder.missingTradeType": "현재 검색에 거래 유형이 없습니다.",
   "folder.addedToFolder": ({ title }) => `"${title}"을(를) 폴더에 추가했습니다`,

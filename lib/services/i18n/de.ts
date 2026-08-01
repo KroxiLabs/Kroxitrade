@@ -203,6 +203,7 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "folder.copiedTrade": ({ title }) => `${title} in die Zwischenablage kopiert`,
   "folder.copyTradeError": "Die Trade-URL konnte nicht kopiert werden.",
   "folder.duplicatedTrade": ({ title }) => `${title} dupliziert`,
+  "folder.duplicateTrade": "Lesezeichen duplizieren",
   "folder.invalidTradePage": "Keine gültige Trade-Seite geöffnet",
   "folder.missingTradeType": "Für die aktuelle Suche fehlt der Trade-Typ.",
   "folder.addedToFolder": ({ title }) => `"${title}" zum Ordner hinzugefügt`,

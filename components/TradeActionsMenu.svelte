@@ -11,7 +11,8 @@
 
   import editIcon from "lucide-static/icons/pencil.svg?raw";
   import replaceIcon from "lucide-static/icons/refresh-cw.svg?raw";
-  import copyIcon from "lucide-static/icons/copy.svg?raw";
+  import linkIcon from "lucide-static/icons/link.svg?raw";
+  import duplicateIcon from "lucide-static/icons/copy.svg?raw";
   import liveIcon from "lucide-static/icons/activity.svg?raw";
   import checkIcon from "lucide-static/icons/check.svg?raw";
   import trashIcon from "lucide-static/icons/trash-2.svg?raw";
@@ -22,6 +23,7 @@
     onEdit: () => void;
     onReplace: () => void;
     onCopy: () => void;
+    onDuplicate: () => void;
     onOpenLive: () => void;
     onToggle: () => void;
     onDelete: () => void;
@@ -38,6 +40,7 @@
     onEdit,
     onReplace,
     onCopy,
+    onDuplicate,
     onOpenLive,
     onToggle,
     onDelete,
@@ -62,6 +65,7 @@
     "edit",
     "replace",
     "copy",
+    "duplicate",
     "openLive",
     "toggle",
     "delete"
@@ -86,9 +90,15 @@
     },
     {
       id: "copy",
-      icon: copyIcon,
+      icon: linkIcon,
       label: translate($languageStore, "folder.copyUrl"),
       handler: onCopy
+    },
+    {
+      id: "duplicate",
+      icon: duplicateIcon,
+      label: translate($languageStore, "folder.duplicateTrade"),
+      handler: onDuplicate
     },
     {
       id: "openLive",

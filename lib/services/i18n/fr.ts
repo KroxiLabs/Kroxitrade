@@ -206,6 +206,7 @@ export const frenchTranslations: Record<string, TranslationValue> = {
   "folder.copiedTrade": ({ title }) => `${title} copié dans le presse-papiers`,
   "folder.copyTradeError": "Impossible de copier l’URL du trade.",
   "folder.duplicatedTrade": ({ title }) => `${title} dupliqué`,
+  "folder.duplicateTrade": "Dupliquer le favori",
   "folder.invalidTradePage": "Vous n’êtes pas sur une page de trade valide",
   "folder.missingTradeType":
     "Le type de trade est manquant pour la recherche actuelle.",

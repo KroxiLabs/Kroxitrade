@@ -200,6 +200,7 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "folder.copiedTrade": ({ title }) => `${title} скопирован в буфер обмена`,
   "folder.copyTradeError": "Не удалось скопировать URL трейда.",
   "folder.duplicatedTrade": ({ title }) => `${title} дублирован`,
+  "folder.duplicateTrade": "Дублировать закладку",
   "folder.invalidTradePage": "Вы не на действительной странице трейда",
   "folder.missingTradeType": "Отсутствует тип трейда для текущего поиска.",
   "folder.addedToFolder": ({ title }) => `"${title}" добавлен в папку`,

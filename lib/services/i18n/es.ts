@@ -415,6 +415,7 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "folder.copiedTrade": ({ title }) => `Se copió ${title} al portapapeles`,
   "folder.copyTradeError": "No se pudo copiar la URL del trade.",
   "folder.duplicatedTrade": ({ title }) => `Se duplicó ${title}`,
+  "folder.duplicateTrade": "Duplicar bookmark",
   "folder.invalidTradePage": "No estás en una página válida de trade",
   "folder.missingTradeType": "Falta el tipo de trade para la búsqueda actual.",
   "folder.addedToFolder": ({ title }) => `Se agregó "${title}" a la carpeta`,

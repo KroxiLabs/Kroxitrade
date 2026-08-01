@@ -408,6 +408,7 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "folder.copiedTrade": ({ title }) => `Copied ${title} to clipboard`,
   "folder.copyTradeError": "Couldn't copy the trade URL.",
   "folder.duplicatedTrade": ({ title }) => `Duplicated ${title}`,
+  "folder.duplicateTrade": "Duplicate bookmark",
   "folder.invalidTradePage": "Not on a valid trade page",
   "folder.missingTradeType": "Missing trade type for the current search.",
   "folder.addedToFolder": ({ title }) => `Added "${title}" to folder`,

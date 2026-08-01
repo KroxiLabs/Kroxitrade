@@ -1025,6 +1025,7 @@
                             onEdit={() => void startEditingTrade(trade)}
                             onReplace={() => void replaceSearchWithCurrent(trade)}
                             onCopy={() => copyTrade(trade)}
+                            onDuplicate={() => void duplicateTrade(trade)}
                             onOpenLive={() => void openTradeLive(trade)}
                             onToggle={() => void toggleTrade(trade)}
                             onDelete={() => requestTradeDelete(trade)}
@@ -1043,6 +1044,7 @@
                           onEdit={() => void startEditingTrade(trade)}
                           onReplace={() => void replaceSearchWithCurrent(trade)}
                           onCopy={() => copyTrade(trade)}
+                          onDuplicate={() => void duplicateTrade(trade)}
                           onOpenLive={() => void openTradeLive(trade)}
                           onToggle={() => void toggleTrade(trade)}
                           onDelete={() => requestTradeDelete(trade)}

@@ -208,6 +208,7 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
     `${title} copiado para a área de transferência`,
   "folder.copyTradeError": "Não foi possível copiar a URL do trade.",
   "folder.duplicatedTrade": ({ title }) => `${title} duplicado`,
+  "folder.duplicateTrade": "Duplicar marcador",
   "folder.invalidTradePage": "Você não está em uma página de trade válida",
   "folder.missingTradeType": "Falta o tipo de trade para a busca atual.",
   "folder.addedToFolder": ({ title }) => `"${title}" foi adicionado à pasta`,

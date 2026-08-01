@@ -199,6 +199,7 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "folder.copiedTrade": ({ title }) => `คัดลอก ${title} ไปยังคลิปบอร์ดแล้ว`,
   "folder.copyTradeError": "ไม่สามารถคัดลอก URL ของ trade ได้",
   "folder.duplicatedTrade": ({ title }) => `คัดลอก ${title} แล้ว`,
+  "folder.duplicateTrade": "ทำซ้ำบุ๊กมาร์ก",
   "folder.invalidTradePage": "ไม่ได้อยู่ในหน้าการเทรดที่ถูกต้อง",
   "folder.missingTradeType": "ไม่มีประเภท trade สำหรับการค้นหาปัจจุบัน",
   "folder.addedToFolder": ({ title }) => `เพิ่ม "${title}" ไปยังโฟลเดอร์แล้ว`,

@@ -207,6 +207,7 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
     `${title} をクリップボードにコピーしました`,
   "folder.copyTradeError": "トレード URL をコピーできませんでした。",
   "folder.duplicatedTrade": ({ title }) => `${title} を複製しました`,
+  "folder.duplicateTrade": "ブックマークを複製",
   "folder.invalidTradePage": "有効なトレードページではありません",
   "folder.missingTradeType": "現在の検索にトレードタイプがありません。",
   "folder.addedToFolder": ({ title }) =>
