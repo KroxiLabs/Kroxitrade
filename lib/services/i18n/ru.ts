@@ -267,6 +267,8 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "pinned.sessionNote": "Закрепленные предметы удаляются при новом поиске или перезагрузке страницы.",
   "whatsNew.item.pinnedItemsTitle": "Закрепленные предметы вернулись",
   "whatsNew.item.pinnedItemsDescription": "Повторно реализованные по исходному потоку Better Trading, необязательные закрепления сохраняют результат во время текущего поиска и позволяют вернуться к нему из боковой панели.",
+  "whatsNew.item.duplicateBookmarksTitle": "Дублируйте закладки напрямую",
+  "whatsNew.item.duplicateBookmarksDescription": "В действиях сохраненного поиска теперь есть Дублировать закладку, чтобы создать копию без повторного создания поиска.",
   "whatsNew.item.buyoutClearTitle": "Быстрая очистка цены выкупа",
   "whatsNew.item.buyoutClearDescription":
     "В быстрых фильтрах теперь есть кнопка «Очистить», которая переключает цену выкупа на эквивалент сферы хаоса и работает с поддерживаемыми языками сайта trade.",

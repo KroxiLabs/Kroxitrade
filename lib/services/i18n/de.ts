@@ -269,6 +269,8 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "pinned.sessionNote": "Angeheftete Gegenstände werden bei einer neuen Suche oder beim Neuladen der Seite entfernt.",
   "whatsNew.item.pinnedItemsTitle": "Angeheftete Gegenstände sind zurück",
   "whatsNew.item.pinnedItemsDescription": "Nach dem ursprünglichen Better-Trading-Ablauf neu umgesetzt: Optionale Pins halten ein Ergebnis während der aktuellen Suche verfügbar und springen über die Seitenleiste dorthin zurück.",
+  "whatsNew.item.duplicateBookmarksTitle": "Lesezeichen direkt duplizieren",
+  "whatsNew.item.duplicateBookmarksDescription": "Gespeicherte Suchen bieten jetzt Lesezeichen duplizieren, damit du eine Kopie ohne erneutes Erstellen der Suche anlegen kannst.",
   "whatsNew.item.buyoutClearTitle": "Schnellaktion zum Leeren des Kaufpreises",
   "whatsNew.item.buyoutClearDescription":
     "Schnellfilter-Voreinstellungen enthalten jetzt eine Schaltfläche zum Leeren, die den Kaufpreis auf Wert in Chaossphären setzt und mit unterstützten Trade-Website-Sprachen funktioniert.",

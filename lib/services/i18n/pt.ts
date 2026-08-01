@@ -280,6 +280,8 @@ export const portugueseTranslations: Record<string, TranslationValue> = {
   "pinned.sessionNote": "Os itens fixados são removidos ao iniciar uma nova busca ou recarregar a página.",
   "whatsNew.item.pinnedItemsTitle": "Itens fixados retornam",
   "whatsNew.item.pinnedItemsDescription": "Reimplementados a partir do fluxo original do Better Trading, os pins opcionais mantêm um resultado disponível durante a busca atual e permitem voltar a ele pela barra lateral.",
+  "whatsNew.item.duplicateBookmarksTitle": "Duplique marcadores diretamente",
+  "whatsNew.item.duplicateBookmarksDescription": "As ações de busca salva agora incluem Duplicar marcador para criar uma cópia sem recriar a busca.",
   "whatsNew.item.buyoutClearTitle": "Atalho para limpar o preço de compra",
   "whatsNew.item.buyoutClearDescription":
     "Os presets de filtro rápido agora incluem um botão Limpar que redefine Preço de Compra para Equivalente a Orbe do Caos e funciona nos idiomas compatíveis do site de trade.",

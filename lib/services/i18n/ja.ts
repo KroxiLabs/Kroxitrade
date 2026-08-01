@@ -277,6 +277,8 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "pinned.sessionNote": "新しい検索を開始するかページを再読み込みすると、固定したアイテムは削除されます。",
   "whatsNew.item.pinnedItemsTitle": "固定したアイテムが復活",
   "whatsNew.item.pinnedItemsDescription": "Better Trading の元のフローをもとに再実装しました。任意の固定で現在の検索中に結果を残し、サイドバーからその結果へ戻れます。",
+  "whatsNew.item.duplicateBookmarksTitle": "ブックマークを直接複製",
+  "whatsNew.item.duplicateBookmarksDescription": "保存した検索のアクションにブックマークを複製が追加され、検索を作り直さずにコピーを作成できます。",
   "whatsNew.item.buyoutClearTitle": "バイアウト価格をクリアするショートカット",
   "whatsNew.item.buyoutClearDescription":
     "クイックフィルタープリセットに、バイアウト価格をカオスオーブ同等物へ戻すクリアボタンが追加され、対応するTradeサイトの言語で動作します。",

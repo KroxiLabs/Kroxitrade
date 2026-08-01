@@ -274,6 +274,8 @@ export const frenchTranslations: Record<string, TranslationValue> = {
   "pinned.sessionNote": "Les objets épinglés sont supprimés lors d'une nouvelle recherche ou du rechargement de la page.",
   "whatsNew.item.pinnedItemsTitle": "Les objets épinglés reviennent",
   "whatsNew.item.pinnedItemsDescription": "Réimplémentés depuis le flux original de Better Trading, les épingles facultatives gardent un résultat disponible pendant la recherche et permettent d'y revenir depuis la barre latérale.",
+  "whatsNew.item.duplicateBookmarksTitle": "Dupliquez les favoris directement",
+  "whatsNew.item.duplicateBookmarksDescription": "Les actions de recherche enregistrée incluent maintenant Dupliquer le favori, pour créer une copie sans recréer la recherche.",
   "whatsNew.item.buyoutClearTitle": "Raccourci pour effacer le prix de rachat",
   "whatsNew.item.buyoutClearDescription":
     "Les préréglages de filtre rapide incluent désormais un bouton Effacer qui règle le prix de rachat sur Équivalent en orbes du chaos et fonctionne avec les langues prises en charge du site trade.",

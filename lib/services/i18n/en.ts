@@ -481,6 +481,8 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "pinned.sessionNote": "Pinned items are cleared when you start a new search or reload the page.",
   "whatsNew.item.pinnedItemsTitle": "Pinned items return",
   "whatsNew.item.pinnedItemsDescription": "Reimplemented from the original Better Trading workflow, optional pins keep a result available during the current search and let you jump back to it from the sidebar.",
+  "whatsNew.item.duplicateBookmarksTitle": "Duplicate bookmarks directly",
+  "whatsNew.item.duplicateBookmarksDescription": "Saved-search actions now include Duplicate bookmark, so you can make a copy without recreating the search.",
   "whatsNew.item.buyoutClearTitle": "Clear Buyout Price shortcut",
   "whatsNew.item.buyoutClearDescription":
     "Quick Filter Presets now include a Clear button that resets Buyout Price to Chaos Orb Equivalent and works with supported trade-site languages."
