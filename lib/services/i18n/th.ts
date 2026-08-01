@@ -199,6 +199,7 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "folder.copiedTrade": ({ title }) => `คัดลอก ${title} ไปยังคลิปบอร์ดแล้ว`,
   "folder.copyTradeError": "ไม่สามารถคัดลอก URL ของ trade ได้",
   "folder.duplicatedTrade": ({ title }) => `คัดลอก ${title} แล้ว`,
+  "folder.duplicateTrade": "ทำซ้ำบุ๊กมาร์ก",
   "folder.invalidTradePage": "ไม่ได้อยู่ในหน้าการเทรดที่ถูกต้อง",
   "folder.missingTradeType": "ไม่มีประเภท trade สำหรับการค้นหาปัจจุบัน",
   "folder.addedToFolder": ({ title }) => `เพิ่ม "${title}" ไปยังโฟลเดอร์แล้ว`,
@@ -265,6 +266,8 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "pinned.sessionNote": "ไอเท็มที่ปักหมุดจะถูกลบเมื่อเริ่มการค้นหาใหม่หรือรีโหลดหน้า",
   "whatsNew.item.pinnedItemsTitle": "ไอเท็มที่ปักหมุดกลับมาแล้ว",
   "whatsNew.item.pinnedItemsDescription": "นำกลับมาใช้ใหม่จากขั้นตอนดั้งเดิมของ Better Trading โดยหมุดที่เลือกใช้ได้จะเก็บผลลัพธ์ไว้ระหว่างการค้นหาปัจจุบันและกลับไปยังผลลัพธ์นั้นจากแถบด้านข้างได้",
+  "whatsNew.item.duplicateBookmarksTitle": "ทำซ้ำบุ๊กมาร์กได้โดยตรง",
+  "whatsNew.item.duplicateBookmarksDescription": "การทำงานของการค้นหาที่บันทึกไว้มีตัวเลือกทำซ้ำบุ๊กมาร์กแล้ว จึงสร้างสำเนาได้โดยไม่ต้องสร้างการค้นหาใหม่",
   "whatsNew.item.buyoutClearTitle": "ปุ่มล้างราคาซื้อทันที",
   "whatsNew.item.buyoutClearDescription":
     "พรีเซ็ตตัวกรองด่วนมีปุ่มล้างที่ตั้งราคาซื้อทันทีเป็นเทียบเป็น Chaos Orb และใช้ได้กับภาษาของเว็บไซต์ trade ที่รองรับ.",

@@ -205,6 +205,7 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "folder.copiedTrade": ({ title }) => `${title}을(를) 클립보드에 복사했습니다`,
   "folder.copyTradeError": "거래 URL을 복사할 수 없습니다.",
   "folder.duplicatedTrade": ({ title }) => `${title}을(를) 복제했습니다`,
+  "folder.duplicateTrade": "북마크 복제",
   "folder.invalidTradePage": "유효한 거래 페이지가 아닙니다",
   "folder.missingTradeType": "현재 검색에 거래 유형이 없습니다.",
   "folder.addedToFolder": ({ title }) => `"${title}"을(를) 폴더에 추가했습니다`,
@@ -273,6 +274,8 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "pinned.sessionNote": "새 검색을 시작하거나 페이지를 새로 고치면 고정한 아이템이 제거됩니다.",
   "whatsNew.item.pinnedItemsTitle": "고정한 아이템이 돌아왔습니다",
   "whatsNew.item.pinnedItemsDescription": "원본 Better Trading 흐름을 바탕으로 다시 구현했습니다. 선택적인 고정으로 현재 검색 중 결과를 유지하고 사이드바에서 해당 결과로 돌아갈 수 있습니다.",
+  "whatsNew.item.duplicateBookmarksTitle": "북마크를 바로 복제",
+  "whatsNew.item.duplicateBookmarksDescription": "저장된 검색 작업에 북마크 복제가 추가되어 검색을 다시 만들지 않고 사본을 만들 수 있습니다.",
   "whatsNew.item.buyoutClearTitle": "즉시 구매 가격 지우기 단축키",
   "whatsNew.item.buyoutClearDescription":
     "빠른 필터 프리셋에 즉시 구매 가격을 카오스 오브 등가물로 설정하는 지우기 버튼이 추가되었으며, 지원되는 Trade 사이트 언어에서 작동합니다.",

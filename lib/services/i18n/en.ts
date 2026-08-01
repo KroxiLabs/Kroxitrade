@@ -408,6 +408,7 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "folder.copiedTrade": ({ title }) => `Copied ${title} to clipboard`,
   "folder.copyTradeError": "Couldn't copy the trade URL.",
   "folder.duplicatedTrade": ({ title }) => `Duplicated ${title}`,
+  "folder.duplicateTrade": "Duplicate bookmark",
   "folder.invalidTradePage": "Not on a valid trade page",
   "folder.missingTradeType": "Missing trade type for the current search.",
   "folder.addedToFolder": ({ title }) => `Added "${title}" to folder`,
@@ -480,6 +481,8 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "pinned.sessionNote": "Pinned items are cleared when you start a new search or reload the page.",
   "whatsNew.item.pinnedItemsTitle": "Pinned items return",
   "whatsNew.item.pinnedItemsDescription": "Reimplemented from the original Better Trading workflow, optional pins keep a result available during the current search and let you jump back to it from the sidebar.",
+  "whatsNew.item.duplicateBookmarksTitle": "Duplicate bookmarks directly",
+  "whatsNew.item.duplicateBookmarksDescription": "Saved-search actions now include Duplicate bookmark, so you can make a copy without recreating the search.",
   "whatsNew.item.buyoutClearTitle": "Clear Buyout Price shortcut",
   "whatsNew.item.buyoutClearDescription":
     "Quick Filter Presets now include a Clear button that resets Buyout Price to Chaos Orb Equivalent and works with supported trade-site languages."

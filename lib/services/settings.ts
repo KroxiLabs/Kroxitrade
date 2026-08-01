@@ -9,6 +9,7 @@ export type BookmarkTradeActionId =
   | "edit"
   | "replace"
   | "copy"
+  | "duplicate"
   | "openLive"
   | "toggle"
   | "delete"

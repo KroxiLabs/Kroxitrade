@@ -31,7 +31,8 @@
   import flagTH from "../../assets/TH.png?inline";
   import editIcon from "lucide-static/icons/pencil.svg?raw";
   import replaceIcon from "lucide-static/icons/refresh-cw.svg?raw";
-  import copyIcon from "lucide-static/icons/copy.svg?raw";
+  import linkIcon from "lucide-static/icons/link.svg?raw";
+  import duplicateIcon from "lucide-static/icons/copy.svg?raw";
   import liveIcon from "lucide-static/icons/activity.svg?raw";
   import toggleIcon from "lucide-static/icons/check.svg?raw";
   import deleteIcon from "lucide-static/icons/trash-2.svg?raw";
@@ -63,7 +64,8 @@
   const compactTradeActionOptions: Array<{ id: BookmarkTradeActionId; labelKey: string; icon: string }> = [
     { id: "edit", labelKey: "folder.editSearchName", icon: editIcon },
     { id: "replace", labelKey: "folder.replaceCurrentSearch", icon: replaceIcon },
-    { id: "copy", labelKey: "folder.copyUrl", icon: copyIcon },
+    { id: "copy", labelKey: "folder.copyUrl", icon: linkIcon },
+    { id: "duplicate", labelKey: "folder.duplicateTrade", icon: duplicateIcon },
     { id: "openLive", labelKey: "folder.openLiveSearch", icon: liveIcon },
     { id: "toggle", labelKey: "settings.compactTradeActionToggle", icon: toggleIcon },
     { id: "delete", labelKey: "folder.deleteTrade", icon: deleteIcon }

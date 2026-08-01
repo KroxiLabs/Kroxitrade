@@ -24,7 +24,8 @@
 • Highlight active stat filters directly in search results
 • Adjust quick filters, including a shortcut to clear Buyout Price
 • Show socket breakpoint warnings for armour items
-• Navigate pinned results and auto-scroll back to the selected item
+• Enable the optional Pinned Items tab to keep results from the current search close at hand and jump back to them with one click
+• Pins are cleared automatically when you start a new search or reload the page, so the list never carries stale results
 • Use integrated Finer Filters for fast stat modifications
 • Open matching PoE Wiki or PoE2 Wiki pages for unique items
 • Show optional Mageblood Legacy descriptions for PoE2 in every supported interface language
