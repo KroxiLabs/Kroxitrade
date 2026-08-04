@@ -29,5 +29,6 @@ export const chineseTradePageStorage = {
 
 export const chineseTradeMessage = {
   rebuildCache: "poeTradePlus.chineseTrade.rebuildCache",
+  getTemplates: "poeTradePlus.chineseTrade.getTemplates",
   reloadTradeTabs: "poeTradePlus.chineseTrade.reloadTradeTabs"
 } as const

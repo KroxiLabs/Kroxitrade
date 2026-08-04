@@ -1,6 +1,7 @@
 import { registerBackgroundHandlers } from "~/lib/background"
 import { buildChineseItemNameCache } from "~/lib/services/chinese-trade/item-name-cache"
 import { refreshChineseTradeCache } from "~/lib/services/chinese-trade/cache-builder"
+import { loadChineseStatTemplates } from "~/lib/services/chinese-trade/stat-templates"
 import { getTradeTranslationState } from "~/lib/services/trade-translation"
 import { chineseTradeMessage } from "~/lib/services/chinese-trade/contract"
 
@@ -73,6 +74,20 @@ export default defineBackground({
         prepareChineseTradeCaches(true)
           .then(() => sendResponse({ ok: true }))
           .catch(() => sendResponse({ ok: false }))
+        return true
+      }
+
+      if (request?.type === chineseTradeMessage.getTemplates) {
+        getTradeTranslationState()
+          .then(async (state) => {
+            if (!state.enabled) return {}
+            const templates = await loadChineseStatTemplates()
+            return state.language === "zh-cn"
+              ? templates.cn ?? {}
+              : templates.tw ?? {}
+          })
+          .then((templates) => sendResponse({ templates }))
+          .catch(() => sendResponse({ templates: {} }))
         return true
       }
 

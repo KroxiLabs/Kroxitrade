@@ -4,19 +4,13 @@ import { convertDeep } from "./simplifier"
 import {
   buildLocalizedStatCache,
   buildModifierTranslationMap,
-  type ChineseStatTemplates,
   type TradeStatGroup
 } from "./stat-cache-transform"
+import { loadChineseStatTemplates } from "./stat-templates"
 
 const TAIWAN_TRADE_API = "https://pathofexile.tw/api/trade/data/"
 const INTERNATIONAL_TRADE_API = "https://www.pathofexile.com/api/trade/data/"
 const CACHE_MAX_AGE_MS = 8 * 60 * 60 * 1000
-
-let templatesPromise: Promise<ChineseStatTemplates> | undefined
-const loadStatTemplates = () =>
-  (templatesPromise ??= import("~/data/chinese-trade/stat-templates.json").then(
-    ({ default: templates }) => templates as ChineseStatTemplates
-  ))
 
 const readCacheTimestamp = (): Promise<number> =>
   new Promise((resolve) =>
@@ -109,7 +103,7 @@ export const refreshChineseTradeCache = async (force = false): Promise<void> => 
     const [taiwanStats, internationalStats, templates] = await Promise.all([
       fetchTradeResult(`${TAIWAN_TRADE_API}stats`),
       fetchTradeResult(`${INTERNATIONAL_TRADE_API}stats`).catch(() => null),
-      loadStatTemplates()
+      loadChineseStatTemplates()
     ])
     if (!taiwanStats) return
 
