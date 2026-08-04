@@ -1,12 +1,14 @@
 import { registerBackgroundHandlers } from "~/lib/background"
-import { buildChineseItemNameCache } from "~/lib/services/chinese-trade/item-name-cache"
-import { refreshChineseTradeCache } from "~/lib/services/chinese-trade/cache-builder"
-import { loadChineseStatTemplates } from "~/lib/services/chinese-trade/stat-templates"
 import { getTradeTranslationState } from "~/lib/services/trade-translation"
 import { chineseTradeMessage } from "~/lib/services/chinese-trade/contract"
 
 const prepareChineseTradeCaches = async (force = false) => {
   if (!force && !(await getTradeTranslationState()).enabled) return
+  const [{ refreshChineseTradeCache }, { buildChineseItemNameCache }] =
+    await Promise.all([
+      import("~/lib/services/chinese-trade/cache-builder"),
+      import("~/lib/services/chinese-trade/item-name-cache")
+    ])
   await Promise.all([refreshChineseTradeCache(force), buildChineseItemNameCache(force)])
 }
 
@@ -81,6 +83,9 @@ export default defineBackground({
         getTradeTranslationState()
           .then(async (state) => {
             if (!state.enabled) return {}
+            const { loadChineseStatTemplates } = await import(
+              "~/lib/services/chinese-trade/stat-templates"
+            )
             const templates = await loadChineseStatTemplates()
             return state.language === "zh-cn"
               ? templates.cn ?? {}
