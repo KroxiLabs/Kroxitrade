@@ -4,6 +4,8 @@ import type { TranslationValue } from "./types"
 export const traditionalChineseTranslations: Record<string, TranslationValue> =
   {
     ...englishTranslations,
+    "whatsNew.item.reducedPermissionsTitle": "更少的瀏覽器權限",
+    "whatsNew.item.reducedPermissionsDescription": "擴充功能不再需要 Chrome 的指令碼執行和無限儲存空間權限。中文 Trade 資料現在使用更小的本機快取。",
     "app.name": "Poe Trade Plus",
     "header.subtitle": "交易工具",
     "settings.tradeTranslationTitle": "將市集一併中文化",

@@ -2,6 +2,8 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const thaiTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.reducedPermissionsTitle": "สิทธิ์ของเบราว์เซอร์น้อยลง",
+  "whatsNew.item.reducedPermissionsDescription": "ส่วนขยายไม่ต้องใช้สิทธิ์การรันสคริปต์หรือพื้นที่เก็บข้อมูลไม่จำกัดของ Chrome อีกต่อไป ข้อมูล Trade ภาษาจีนใช้แคชในเครื่องที่เล็กลงแล้ว",
   "settings.tradeTranslationTitle": "แปลเว็บไซต์เทรด",
   "settings.tradeTranslationDescription": "แสดงตัวกรองและตัวเลือกทางการเป็นภาษาจีน และค้นหาม็อดได้ทั้งภาษาจีนและอังกฤษ",
   "settings.tradeTranslationHint": "ใช้ได้เฉพาะเว็บไซต์เทรดสากลของ Path of Exile 1 และหน้าจะโหลดใหม่เมื่อเปลี่ยนค่า",

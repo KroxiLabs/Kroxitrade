@@ -2,6 +2,8 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const koreanTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.reducedPermissionsTitle": "브라우저 권한 축소",
+  "whatsNew.item.reducedPermissionsDescription": "확장 프로그램에 더 이상 Chrome 스크립팅 및 무제한 저장소 권한이 필요하지 않습니다. 중국어 Trade 데이터는 더 작은 로컬 캐시를 사용합니다.",
   "settings.tradeTranslationTitle": "거래 사이트 중국어 번역",
   "settings.tradeTranslationDescription": "공식 필터와 선택 항목을 중국어로 표시합니다. 옵션은 중국어와 영어 모두로 검색할 수 있습니다.",
   "settings.tradeTranslationHint": "국제 Path of Exile 1 거래 사이트에서만 사용할 수 있으며, 변경 시 페이지가 새로고침됩니다.",
