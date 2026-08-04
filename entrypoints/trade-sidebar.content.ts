@@ -5,11 +5,17 @@ import { mount, unmount } from "svelte"
 
 import App from "~/contents/index.svelte"
 import { tradeHosts } from "~/lib/config/trade-hosts"
+import { settings } from "~/lib/services/settings"
 
 export default defineContentScript({
   matches: tradeHosts,
 
   async main(ctx) {
+    // Do not mount with the default language and then replace it once storage
+    // resolves. This is especially noticeable after switching into Chinese,
+    // because that navigation deliberately reloads the trade page.
+    await settings.load()
+
     const ui = createIntegratedUi(ctx, {
       position: "inline",
       anchor: "body",

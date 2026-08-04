@@ -9,8 +9,10 @@ export type BookmarkTradeActionId =
   | "edit"
   | "replace"
   | "copy"
+  | "openNewTab"
   | "duplicate"
   | "openLive"
+  | "archive"
   | "toggle"
   | "delete"
 export type QuickFiltersPlacement = "page" | "sidebar"
@@ -20,6 +22,7 @@ export type BookmarkLayout = "classic" | "compact" | "ultra"
 
 const DEFAULT_CLASSIC_BOOKMARK_TRADE_ACTIONS: BookmarkTradeActionId[] = [
   "edit",
+  "openNewTab",
   "toggle",
   "delete"
 ]
@@ -33,6 +36,7 @@ export interface VersionSettings {
   showFinerFilters: boolean
   showQuickFilters: boolean
   quickFiltersPlacement: QuickFiltersPlacement
+  autoFuzzySearch: boolean
   compactActionsMenu: boolean
   ultraCompactBookmarks: boolean
   classicBookmarkTradeActions: BookmarkTradeActionId[]
@@ -46,6 +50,7 @@ export interface AppSettings extends VersionSettings {
   sidebarWidth: number
   language: AppLanguage
   textSize: TextSizePreference
+  translateTradeSite: boolean
 }
 
 interface GlobalSettings {
@@ -53,19 +58,43 @@ interface GlobalSettings {
   sidebarWidth: number
   language: AppLanguage
   textSize: TextSizePreference
+  translateTradeSite: boolean
 }
 
 const GLOBAL_SETTINGS_KEY = "app-settings"
 const SETTINGS_STORAGE_AREA: StorageArea = "sync"
+const LANGUAGE_SESSION_KEY = "poe-trade-plus-language"
 export const DEFAULT_SIDEBAR_WIDTH = 450
 const versionSettingsKey = (version: TradeSiteVersion) =>
   `app-settings-poe${version}`
 
+function getInitialLanguage(): AppLanguage {
+  if (typeof window === "undefined") return "en"
+
+  const stored =
+    window.sessionStorage.getItem(LANGUAGE_SESSION_KEY) ??
+    window.localStorage.getItem("bt-language")
+  return stored === "en" ||
+    stored === "es" ||
+    stored === "pt" ||
+    stored === "ru" ||
+    stored === "th" ||
+    stored === "de" ||
+    stored === "fr" ||
+    stored === "ja" ||
+    stored === "ko" ||
+    stored === "zh-cn" ||
+    stored === "zh-tw"
+    ? stored
+    : "en"
+}
+
 const DEFAULT_GLOBAL_SETTINGS: GlobalSettings = {
   sidebarSide: "right",
   sidebarWidth: DEFAULT_SIDEBAR_WIDTH,
-  language: "en",
-  textSize: DEFAULT_TEXT_SIZE
+  language: getInitialLanguage(),
+  textSize: DEFAULT_TEXT_SIZE,
+  translateTradeSite: false
 }
 
 const DEFAULT_VERSION_SETTINGS: VersionSettings = {
@@ -77,6 +106,7 @@ const DEFAULT_VERSION_SETTINGS: VersionSettings = {
   showFinerFilters: true,
   showQuickFilters: true,
   quickFiltersPlacement: "page",
+  autoFuzzySearch: true,
   compactActionsMenu: false,
   ultraCompactBookmarks: false,
   classicBookmarkTradeActions: DEFAULT_CLASSIC_BOOKMARK_TRADE_ACTIONS,
@@ -128,7 +158,8 @@ function normalizeGlobalSettings(
     sidebarSide: value?.sidebarSide ?? DEFAULT_GLOBAL_SETTINGS.sidebarSide,
     sidebarWidth: value?.sidebarWidth ?? DEFAULT_GLOBAL_SETTINGS.sidebarWidth,
     language: value?.language ?? DEFAULT_GLOBAL_SETTINGS.language,
-    textSize: normalizeTextSize(value?.textSize)
+    textSize: normalizeTextSize(value?.textSize),
+    translateTradeSite: value?.translateTradeSite === true
   }
 }
 
@@ -187,6 +218,7 @@ function legacyVersionSettings(
     showFinerFilters: value?.showFinerFilters,
     showQuickFilters: value?.showQuickFilters,
     quickFiltersPlacement: value?.quickFiltersPlacement,
+    autoFuzzySearch: value?.autoFuzzySearch,
     compactActionsMenu: value?.compactActionsMenu,
     ultraCompactBookmarks: value?.ultraCompactBookmarks,
     classicBookmarkTradeActions: value?.classicBookmarkTradeActions,
@@ -209,6 +241,10 @@ function publish() {
       currentSettings.quickFiltersPlacement
     )
     window.localStorage.setItem("bt-language", currentSettings.language)
+    window.sessionStorage.setItem(
+      LANGUAGE_SESSION_KEY,
+      currentSettings.language
+    )
     window.dispatchEvent(
       new CustomEvent("poe-trade-plus:quick-filters-change", {
         detail: {
@@ -345,6 +381,21 @@ async function saveGlobal(next: GlobalSettings) {
   return true
 }
 
+async function saveGlobalForReload(next: GlobalSettings) {
+  const saved = await persistSynced(GLOBAL_SETTINGS_KEY, next)
+  if (!saved) {
+    console.warn("[Poe Trade Plus] Failed to persist global settings")
+    return false
+  }
+
+  globalSettings = next
+  if (typeof window !== "undefined") {
+    window.localStorage.setItem("bt-language", next.language)
+    window.sessionStorage.setItem(LANGUAGE_SESSION_KEY, next.language)
+  }
+  return true
+}
+
 async function saveVersion(next: VersionSettings) {
   const saved = await persistSynced(
     versionSettingsKey(activeVersion),
@@ -419,6 +470,9 @@ export const settings = {
   ) {
     return saveVersion({ ...activeVersionSettings, quickFiltersPlacement })
   },
+  async updateAutoFuzzySearch(autoFuzzySearch: boolean) {
+    return saveVersion({ ...activeVersionSettings, autoFuzzySearch })
+  },
   async updateSidebarWidth(sidebarWidth: number) {
     return saveGlobal({ ...globalSettings, sidebarWidth })
   },
@@ -432,6 +486,12 @@ export const settings = {
     const saved = await saveGlobal({ ...globalSettings, language })
     if (saved) setLanguage(language)
     return saved
+  },
+  async updateLanguageForReload(language: AppLanguage) {
+    return saveGlobalForReload({ ...globalSettings, language })
+  },
+  async updateTradeSiteTranslation(translateTradeSite: boolean) {
+    return saveGlobal({ ...globalSettings, translateTradeSite })
   },
   async updateCompactActionsMenu(compactActionsMenu: boolean) {
     return saveVersion({ ...activeVersionSettings, compactActionsMenu })

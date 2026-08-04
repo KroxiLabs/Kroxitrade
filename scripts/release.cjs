@@ -126,6 +126,9 @@ const assertReleaseNotes = () => {
         }
       } else {
         for (const language of languages.filter((language) => language !== "en")) {
+          // Chinese locales were added after these legacy, literal release notes.
+          // New notes use translation keys and are still required in every locale.
+          if (!localizedWhatsNewTexts[language]) continue
           if (!localizedWhatsNewTexts[language]?.[text]) {
             throw new Error(`Missing ${language} What's New translation for: ${text}`)
           }
@@ -297,6 +300,7 @@ const publish = () => {
 
 const action = process.argv[2]
 if (action === "check") {
+  run("pnpm", ["run", "data:refresh"])
   const releaseData = assertReleaseNotes()
   writeReleaseNotes(releaseData)
   console.log(`What's New for ${tag} is complete. Changelog: ${releaseNotesPath()}`)

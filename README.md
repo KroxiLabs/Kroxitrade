@@ -167,7 +167,7 @@ The script reads commits since the latest `v*` tag, groups `feat:` commits as ne
 
 - `storage`: persists folders, settings, history, and cache data
 - `tabs`: detects and updates the active Path of Exile trade tab
-- `https://www.pathofexile.com/*` and localized Path of Exile trade hosts: injects the sidebar and trade helpers
+- `https://www.pathofexile.com/*`, `https://pathofexile.tw/*`, and localized Path of Exile trade hosts: injects the sidebar and trade helpers
 - `https://poe2.kakaogames.com/*`: supports the Korean PoE2 trade host
 - `https://poe.ninja/*`: fetches currency ratios for equivalent pricing
 

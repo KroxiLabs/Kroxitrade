@@ -11,6 +11,11 @@
   } from "../../lib/services/experimental";
   import { flashMessages } from "../../lib/services/flash";
   import { itemResultsService } from "../../lib/services/item-results";
+  import {
+    chineseTradeMessage,
+    chineseTradePageStorage,
+    chineseTradeStorage
+  } from "../../lib/services/chinese-trade/contract";
   import { DEFAULT_SIDEBAR_WIDTH, settings, type BookmarkLayout, type BookmarkTradeActionId, type QuickFiltersPlacement, type SidebarSide, type TextSizePreference } from "../../lib/services/settings";
   import { tradeLocationService } from "../../lib/services/trade-location";
   import type { BookmarksFolderStruct, BookmarksTradeStruct } from "../../lib/types/bookmarks";
@@ -34,8 +39,10 @@
   import editIcon from "lucide-static/icons/pencil.svg?raw";
   import replaceIcon from "lucide-static/icons/refresh-cw.svg?raw";
   import linkIcon from "lucide-static/icons/link.svg?raw";
+  import externalLinkIcon from "lucide-static/icons/external-link.svg?raw";
   import duplicateIcon from "lucide-static/icons/copy.svg?raw";
   import liveIcon from "lucide-static/icons/activity.svg?raw";
+  import archiveIcon from "lucide-static/icons/archive.svg?raw";
   import toggleIcon from "lucide-static/icons/check.svg?raw";
   import deleteIcon from "lucide-static/icons/trash-2.svg?raw";
 
@@ -67,8 +74,10 @@
     { id: "edit", labelKey: "folder.editSearchName", icon: editIcon },
     { id: "replace", labelKey: "folder.replaceCurrentSearch", icon: replaceIcon },
     { id: "copy", labelKey: "folder.copyUrl", icon: linkIcon },
+    { id: "openNewTab", labelKey: "folder.openInNewTab", icon: externalLinkIcon },
     { id: "duplicate", labelKey: "folder.duplicateTrade", icon: duplicateIcon },
     { id: "openLive", labelKey: "folder.openLiveSearch", icon: liveIcon },
+    { id: "archive", labelKey: "folder.archiveTrade", icon: archiveIcon },
     { id: "toggle", labelKey: "settings.compactTradeActionToggle", icon: toggleIcon },
     { id: "delete", labelKey: "folder.deleteTrade", icon: deleteIcon }
   ];
@@ -76,6 +85,7 @@
     id: "settings-preview-trade",
     title: "High resistance boots",
     completedAt: null,
+    archivedAt: null,
     location: {
       version: "2",
       type: "search",
@@ -140,6 +150,11 @@
     { id: "large", labelKey: "settings.textSizeLarge" },
     { id: "extraLarge", labelKey: "settings.textSizeExtraLarge" }
   ];
+  const canTranslateTradeSite = $derived(
+    ($settings.language === "zh-tw" || $settings.language === "zh-cn") &&
+      window.location.hostname !== "pathofexile.tw" &&
+      !window.location.pathname.startsWith("/trade2/")
+  );
 
   const localizedLanguageNames: Record<AppLanguage, Record<AppLanguage, string>> = {
     en: { en: "English", es: "Spanish", pt: "Portuguese", ru: "Russian", th: "Thai", de: "German", fr: "French", ja: "Japanese", ko: "Korean", "zh-tw": "Traditional Chinese", "zh-cn": "Simplified Chinese" },
@@ -228,6 +243,94 @@
     }
   }
 
+  async function handleAutoFuzzySearchChange(autoFuzzySearch: boolean) {
+    if (!(await settings.updateAutoFuzzySearch(autoFuzzySearch))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
+  }
+
+  async function handleTradeSiteTranslationChange(translateTradeSite: boolean) {
+    if (!(await settings.updateTradeSiteTranslation(translateTradeSite))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+      return;
+    }
+
+    if (translateTradeSite && ($settings.language === "zh-tw" || $settings.language === "zh-cn")) {
+      if (!(await prepareChineseTradeCache($settings.language))) {
+        flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+        return;
+      }
+    }
+
+    if (!(await reloadChineseTradeTabs())) {
+      window.location.reload();
+    }
+  }
+
+  function rebuildChineseTradeData(): Promise<boolean> {
+    return new Promise((resolve) => {
+      try {
+        chrome.runtime.sendMessage({ type: chineseTradeMessage.rebuildCache }, (reply) => {
+          resolve(reply?.ok === true);
+        });
+      } catch {
+        resolve(false);
+      }
+    });
+  }
+
+  function reloadChineseTradeTabs(): Promise<boolean> {
+    return new Promise((resolve) => {
+      try {
+        chrome.runtime.sendMessage({ type: chineseTradeMessage.reloadTradeTabs }, (reply) => {
+          resolve(reply?.ok === true);
+        });
+      } catch {
+        resolve(false);
+      }
+    });
+  }
+
+  function readChineseTradeCache(keys: string[]): Promise<Record<string, unknown>> {
+    return new Promise((resolve) => {
+      try {
+        chrome.storage.local.get(keys, (value) => resolve(value as Record<string, unknown>));
+      } catch {
+        resolve({});
+      }
+    });
+  }
+
+  async function prepareChineseTradeCache(language: "zh-tw" | "zh-cn") {
+    if (!(await rebuildChineseTradeData())) return false;
+
+    const source = language === "zh-cn"
+      ? chineseTradeStorage.simplified
+      : chineseTradeStorage.traditional;
+    const sourceKeys = [source.stats, source.staticData, source.filters, source.items];
+    const cache = await readChineseTradeCache(sourceKeys);
+    const targets: Record<string, string> = {
+      stats: "lscache-tradestats",
+      static: "lscache-tradedata",
+      filters: "lscache-tradefilters",
+      items: "lscache-tradeitems"
+    };
+
+    let injected = false;
+    for (const [[, target], sourceKey] of Object.entries(targets).map(
+      (entry, index) => [entry, sourceKeys[index]] as const
+    )) {
+      const value = cache[sourceKey];
+      if (!Array.isArray(value)) continue;
+      window.localStorage.setItem(target, JSON.stringify(value));
+      window.localStorage.removeItem(`${target}-cacheexpiration`);
+      injected = true;
+    }
+
+    if (injected) window.localStorage.setItem(chineseTradePageStorage.injected, "1");
+    return Array.isArray(cache[source.stats]);
+  }
+
   async function handleBookmarkLayoutChange(
     compactActionsMenu: boolean,
     ultraCompactBookmarks = false
@@ -289,8 +392,52 @@
   }
 
   async function handleLanguageChange(language: AppLanguage) {
+    const wasChinese =
+      $settings.language === "zh-tw" || $settings.language === "zh-cn";
+    const isChinese = language === "zh-tw" || language === "zh-cn";
+    const reloadIntoChinese =
+      $settings.translateTradeSite &&
+      isChinese &&
+      language !== $settings.language;
+    const resetTradeSiteLanguage =
+      $settings.translateTradeSite && wasChinese && !isChinese;
+
+    if (reloadIntoChinese) {
+      if (!(await prepareChineseTradeCache(language))) {
+        flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+        return;
+      }
+      if (!(await settings.updateLanguageForReload(language))) {
+        flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+        return;
+      }
+      if (!(await reloadChineseTradeTabs())) {
+        window.location.reload();
+      }
+      return;
+    }
+
     if (!(await settings.updateLanguage(language))) {
       flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+      return;
+    }
+
+    if (resetTradeSiteLanguage) {
+      if (wasChinese && !isChinese) {
+        for (const key of [
+          "lscache-tradestats",
+          "lscache-tradedata",
+          "lscache-tradefilters",
+          "lscache-tradeitems"
+        ]) {
+          window.localStorage.removeItem(key);
+          window.localStorage.removeItem(`${key}-cacheexpiration`);
+        }
+        window.localStorage.removeItem(chineseTradePageStorage.injected);
+      }
+      if (!(await reloadChineseTradeTabs())) {
+        window.location.reload();
+      }
     }
   }
 
@@ -477,6 +624,39 @@
         </div>
       </div>
       </section>
+
+      <section class="settings-section settings-section--wide">
+        <div class="settings-section__header-row">
+          <div class="section-heading">
+            <h3 class="section-title">{translate($languageStore, "settings.autoFuzzyTitle")}</h3>
+          </div>
+          <ToggleRow
+            checked={$settings.autoFuzzySearch}
+            label={translate($languageStore, "settings.autoFuzzyTitle")}
+            stateLabel={toggleSwitchLabel($settings.autoFuzzySearch)}
+            onToggle={() => handleAutoFuzzySearchChange(!$settings.autoFuzzySearch)}
+          />
+        </div>
+        <p class="section-description">{translate($languageStore, "settings.autoFuzzyDescription")}</p>
+      </section>
+
+      {#if canTranslateTradeSite}
+        <section class="settings-section settings-section--wide">
+          <div class="settings-section__header-row">
+            <div class="section-heading">
+              <h3 class="section-title">{translate($languageStore, "settings.tradeTranslationTitle")}</h3>
+            </div>
+            <ToggleRow
+              checked={$settings.translateTradeSite}
+              label={translate($languageStore, "settings.tradeTranslationTitle")}
+              stateLabel={toggleSwitchLabel($settings.translateTradeSite)}
+              onToggle={() => handleTradeSiteTranslationChange(!$settings.translateTradeSite)}
+            />
+          </div>
+          <p class="section-description">{translate($languageStore, "settings.tradeTranslationDescription")}</p>
+          <p class="section-description">{translate($languageStore, "settings.tradeTranslationHint")}</p>
+        </section>
+      {/if}
 
       <section class="settings-section settings-section--wide">
         <div class="section-heading">
@@ -757,7 +937,9 @@
                         onEdit={noopPreviewAction}
                         onReplace={noopPreviewAction}
                         onCopy={noopPreviewAction}
+                        onOpenNewTab={noopPreviewAction}
                         onOpenLive={noopPreviewAction}
+                        onToggleArchive={noopPreviewAction}
                         onToggle={noopPreviewAction}
                         onDelete={noopPreviewAction} />
                     </div>
@@ -772,7 +954,9 @@
                         onEdit={noopPreviewAction}
                         onReplace={noopPreviewAction}
                         onCopy={noopPreviewAction}
+                        onOpenNewTab={noopPreviewAction}
                         onOpenLive={noopPreviewAction}
+                        onToggleArchive={noopPreviewAction}
                         onToggle={noopPreviewAction}
                         onDelete={noopPreviewAction} />
                     </div>
@@ -792,7 +976,9 @@
                         onEdit={noopPreviewAction}
                         onReplace={noopPreviewAction}
                         onCopy={noopPreviewAction}
+                        onOpenNewTab={noopPreviewAction}
                         onOpenLive={noopPreviewAction}
+                        onToggleArchive={noopPreviewAction}
                         onToggle={noopPreviewAction}
                         onDelete={noopPreviewAction} />
                     </div>
@@ -807,7 +993,9 @@
                         onEdit={noopPreviewAction}
                         onReplace={noopPreviewAction}
                         onCopy={noopPreviewAction}
+                        onOpenNewTab={noopPreviewAction}
                         onOpenLive={noopPreviewAction}
+                        onToggleArchive={noopPreviewAction}
                         onToggle={noopPreviewAction}
                         onDelete={noopPreviewAction} />
                     </div>

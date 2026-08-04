@@ -130,6 +130,7 @@ const titleCaseLegacyName = (name: string) =>
 const getMagebloodLegacyLocale = (): MagebloodLegacyLocale => {
   const host = window.location.hostname.toLowerCase();
   if (host === "poe.kakaogames.com" || host === "poe2.kakaogames.com") return "ko";
+  if (host === "pathofexile.tw") return "zh-tw";
   const subdomain = host.split(".")[0];
   if (subdomain === "br") return "pt";
   if (subdomain === "jp") return "jp";
@@ -149,7 +150,8 @@ const getMagebloodLegacyBaseLabel = (locale: MagebloodLegacyLocale) =>
     de: "Basis",
     fr: "base",
     jp: "基礎",
-    ko: "기본"
+    ko: "기본",
+    "zh-tw": "基礎"
   })[locale];
 
 const getMagebloodLegacyEffectLabel = (locale: MagebloodLegacyLocale) =>
@@ -162,7 +164,8 @@ const getMagebloodLegacyEffectLabel = (locale: MagebloodLegacyLocale) =>
     de: "Effekt",
     fr: "d'effet",
     jp: "効果",
-    ko: "효과"
+    ko: "효과",
+    "zh-tw": "效果"
   })[locale];
 
 const formatMagebloodLegacyLine = (template: string, value: number) =>
@@ -211,6 +214,18 @@ export class ItemResultsService {
     const copyButton = target?.closest<HTMLButtonElement>("button.copy");
     const coeButton = target?.closest<HTMLButtonElement>("button.bt-copy-coe");
     const wikiButton = target?.closest<HTMLButtonElement>("button.bt-open-wiki");
+    const poedbButton = target?.closest<HTMLButtonElement>("button.bt-open-poedb");
+
+    if (poedbButton && experimentalSettings.isWikiVisible() && isEnglishTradeHost()) {
+      event.preventDefault();
+      event.stopImmediatePropagation();
+
+      const url = poedbButton.dataset.poedbUrl;
+      if (url) {
+        window.open(url, "_blank", "noopener,noreferrer");
+      }
+      return;
+    }
 
     if (wikiButton && experimentalSettings.isWikiVisible() && isEnglishTradeHost()) {
       event.preventDefault();
@@ -671,6 +686,7 @@ export class ItemResultsService {
       this.enablePoe2CopyButton(typedRow);
       this.syncCoeButton(typedRow);
       this.syncWikiButton(typedRow);
+      this.syncPoedbButton(typedRow);
       this.injectEquivalentPricing(typedRow);
        this.enhanceMagebloodLegacy(typedRow);
        this.syncPinButton(typedRow);
@@ -794,7 +810,7 @@ export class ItemResultsService {
     const existingButton = left.querySelector<HTMLButtonElement>("button.bt-open-wiki");
     const searchByButton = left.querySelector<HTMLButtonElement>("button.searchBy");
     const wikiUrl = experimentalSettings.isWikiVisible() && isEnglishTradeHost()
-      ? this.getUniqueItemWikiUrl(row)
+      ? this.getItemWikiUrl(row)
       : null;
 
     if (!wikiUrl) {
@@ -825,20 +841,78 @@ export class ItemResultsService {
     }
   }
 
-  private getUniqueItemWikiUrl(row: HTMLElement) {
-    const header = row.querySelector<HTMLElement>(".item-popup__header--unique");
+  private syncPoedbButton(row: HTMLElement) {
+    const left = row.querySelector<HTMLElement>(".left")
+    if (!left) return
+
+    const existingButton = left.querySelector<HTMLButtonElement>("button.bt-open-poedb")
+    const searchByButton = left.querySelector<HTMLButtonElement>("button.searchBy")
+    const poedbUrl = experimentalSettings.isWikiVisible() && isEnglishTradeHost()
+      ? this.getItemPoedbUrl(row)
+      : null
+
+    if (!poedbUrl) {
+      existingButton?.remove()
+      return
+    }
+
+    let button = existingButton
+    if (!button) {
+      button = document.createElement("button")
+      button.type = "button"
+      button.className = "bt-open-poedb"
+      button.setAttribute("aria-label", "PoeDB")
+      button.textContent = "P"
+    }
+
+    button.dataset.poedbUrl = poedbUrl
+    button.title = "PoeDB"
+
+    if (searchByButton) {
+      const coeButton = left.querySelector<HTMLButtonElement>("button.bt-copy-coe")
+      const wikiButton = left.querySelector<HTMLButtonElement>("button.bt-open-wiki")
+      const index = (coeButton ? 1 : 0) + (wikiButton ? 1 : 0)
+      if (!button.isConnected) {
+        ;(wikiButton || coeButton || searchByButton).insertAdjacentElement("afterend", button)
+      }
+      this.positionResultActionButton(button, searchByButton, index)
+    } else if (!button.isConnected) {
+      left.appendChild(button)
+    }
+  }
+
+  private getItemPoedbUrl(row: HTMLElement) {
+    const name = this.getExternalItemName(row)
+    if (!name || tradeLocationService.current.version !== "1") return null
+
+    const pageName = encodeURIComponent(
+      name.replace(/['’]/g, "").replace(/\s+/g, "_")
+    )
+    return `https://poedb.tw/us/${pageName}`
+  }
+
+  private getItemWikiUrl(row: HTMLElement) {
+    const name = this.getExternalItemName(row)
+    if (!name) return null
+
+    const baseUrl = tradeLocationService.current.version === "2"
+      ? "https://www.poe2wiki.net/wiki/"
+      : "https://www.poewiki.net/wiki/"
+    const pageName = encodeURIComponent(name.replace(/\s+/g, "_")).replace(/'/g, "%27")
+    return `${baseUrl}${pageName}`
+  }
+
+  private getExternalItemName(row: HTMLElement) {
+    const header = row.querySelector<HTMLElement>(
+      ".item-popup__header--unique, .item-popup__header--gem"
+    )
     const name = header
       ?.querySelector<HTMLElement>(".item-popup__header-line")
       ?.textContent
       ?.trim();
 
     if (!name) return null;
-
-    const baseUrl = tradeLocationService.current.version === "2"
-      ? "https://www.poe2wiki.net/wiki/"
-      : "https://www.poewiki.net/wiki/";
-    const pageName = encodeURIComponent(name.replace(/\s+/g, "_")).replace(/'/g, "%27");
-    return `${baseUrl}${pageName}`;
+    return name
   }
 
   private syncCoeButtonUnsupportedState(button: HTMLButtonElement, row: HTMLElement) {

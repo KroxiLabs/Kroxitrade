@@ -494,6 +494,15 @@ export const initFilterPanel = () => {
   const injectSearchPanelQuickFilters = () => {
     const pane = document.querySelector<HTMLElement>(".search-advanced-pane.brown")
     const existing = pane?.querySelector('[data-krox-filter-presets="true"]')
+    const isExchangeRoute = /^\/trade2?\/exchange(?:\/|$)/.test(
+      window.location.pathname
+    )
+
+    if (isExchangeRoute) {
+      existing?.remove()
+      return
+    }
+
     const storageKey = window.location.pathname.startsWith("/trade2/")
       ? "bt-quick-filters-visible-poe2"
       : "bt-quick-filters-visible-poe1"
@@ -655,6 +664,8 @@ export const initFilterPanel = () => {
   const prefixingInputs = new WeakSet<HTMLInputElement>()
 
   const ensureRegexPrefix = (input: HTMLInputElement, inputType?: string) => {
+    if (document.documentElement.dataset.kroxAutoFuzzy === "off") return
+
     const value = input.value ?? ""
     if (!value || value.startsWith("~") || value.startsWith(" ")) return
     if (inputType?.startsWith("delete")) return

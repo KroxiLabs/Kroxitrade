@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onDestroy, onMount } from "svelte";
   import { languageStore, translate } from "~lib/services/i18n";
-  import { settings } from "~lib/services/settings";
   import type { BookmarksFolderStruct } from "~lib/types/bookmarks";
   import { appendIconElement } from "~lib/utilities/icons";
   import SvgIcon from "./SvgIcon.svelte";
@@ -10,6 +9,7 @@
   import copyIcon from "lucide-static/icons/copy.svg?raw";
   import uploadIcon from "lucide-static/icons/upload.svg?raw";
   import trashIcon from "lucide-static/icons/trash-2.svg?raw";
+  import listChecksIcon from "lucide-static/icons/list-checks.svg?raw";
   import archiveIcon from "lucide-static/icons/archive.svg?raw";
   import archiveRestoreIcon from "lucide-static/icons/archive-restore.svg?raw";
   import moreIcon from "lucide-static/icons/more-horizontal.svg?raw";
@@ -20,6 +20,11 @@
     onArchive: () => void;
     onExport: () => void;
     onDuplicate: () => void;
+    onClearCompleted: () => void;
+    hasArchivedTrades?: boolean;
+    showArchivedTrades?: boolean;
+    onToggleArchivedTrades?: () => void;
+    onRestoreArchivedTrades?: () => void;
     onDelete: () => void;
   }
 
@@ -29,6 +34,11 @@
     onArchive,
     onExport,
     onDuplicate,
+    onClearCompleted,
+    hasArchivedTrades = false,
+    showArchivedTrades = false,
+    onToggleArchivedTrades = () => {},
+    onRestoreArchivedTrades = () => {},
     onDelete
   }: Props = $props();
 
@@ -54,14 +64,6 @@
       handler: onRename
     },
     {
-      id: "archive",
-      icon: folder.archivedAt ? archiveRestoreIcon : archiveIcon,
-      label: folder.archivedAt
-        ? translate($languageStore, "folder.restoreFolder")
-        : translate($languageStore, "folder.archiveFolder"),
-      handler: onArchive
-    },
-    {
       id: "export",
       icon: uploadIcon,
       label: translate($languageStore, "folder.exportFolder"),
@@ -74,6 +76,38 @@
       handler: onDuplicate
     },
     {
+      id: "clearCompleted",
+      icon: listChecksIcon,
+      label: translate($languageStore, "folder.archiveCompleted"),
+      handler: onClearCompleted
+    },
+    ...(hasArchivedTrades
+      ? [{
+          id: "toggleArchivedTrades",
+          icon: archiveIcon,
+          label: showArchivedTrades
+            ? translate($languageStore, "folder.showActiveTrades")
+            : translate($languageStore, "folder.showArchivedTrades"),
+          handler: onToggleArchivedTrades
+        }]
+      : []),
+    ...(showArchivedTrades
+      ? [{
+          id: "restoreArchivedTrades",
+          icon: archiveRestoreIcon,
+          label: translate($languageStore, "folder.restoreArchivedTrades"),
+          handler: onRestoreArchivedTrades
+        }]
+      : []),
+    {
+      id: "archive",
+      icon: folder.archivedAt ? archiveRestoreIcon : archiveIcon,
+      label: folder.archivedAt
+        ? translate($languageStore, "folder.restoreFolder")
+        : translate($languageStore, "folder.archiveFolder"),
+      handler: onArchive
+    },
+    {
       id: "delete",
       icon: trashIcon,
       label: translate($languageStore, "folder.deleteFolder"),
@@ -82,11 +116,7 @@
     }
   ] satisfies FolderAction[]);
 
-  let inlineActions = $derived($settings.compactActionsMenu
-    ? []
-    : actions.filter(
-        (action) => action.id === "rename" || action.id === "delete"
-      ));
+  let inlineActions = $derived([] as FolderAction[]);
   let dropdownActions = $derived(actions.filter((action) => !inlineActions.includes(action)));
   const stopAndRun = (handler: () => void) => (event: MouseEvent) => {
     event.stopPropagation();
