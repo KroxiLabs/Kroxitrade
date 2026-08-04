@@ -4,6 +4,7 @@
   import trashIcon from "lucide-static/icons/trash-2.svg?raw";
   import xIcon from "lucide-static/icons/x.svg?raw";
   import imageIcon from "lucide-static/icons/image.svg?raw";
+  import externalLinkIcon from "lucide-static/icons/external-link.svg?raw";
   import { onDestroy, tick } from "svelte"
   import { slide } from "svelte/transition"
 
@@ -78,6 +79,8 @@
   let hasLoadedTrades = $state(false)
   let isDuplicating = false
   let tradePendingDelete: BookmarksTradeStruct | null = $state(null)
+  let archiveCompletedPending = $state(false)
+  let showArchivedTrades = $state(false)
   let categoryPendingDelete: BookmarksCategoryStruct | null = $state(null)
   let currentFolderId: string | null = $state(folder.id || null)
   let loadRequestId = 0
@@ -177,8 +180,11 @@
   }
 
   const getDisplayedTrades = () => {
+    const visibleTrades = trades.filter((trade) =>
+      showArchivedTrades ? !!trade.archivedAt : !trade.archivedAt
+    )
     if (!$settings.bookmarkCategoriesEnabled || categoryOptions.length === 0) {
-      return [...trades]
+      return visibleTrades
     }
 
     const grouped = new Map<string, BookmarksTradeStruct[]>()
@@ -187,7 +193,7 @@
     }
 
     const uncategorized: BookmarksTradeStruct[] = []
-    for (const trade of trades) {
+    for (const trade of visibleTrades) {
       const categoryId = categoryIdForTrade(trade)
       if (categoryId) {
         grouped.get(categoryId)?.push(trade)
@@ -494,15 +500,90 @@
   }
 
   const openTrade = async (trade: BookmarksTradeStruct, inNewTab = false) => {
+    await tradeLocationService.stashPendingBookmarkTitles({
+      [trade.location.slug]: trade.title
+    })
     const url = resolveTradeUrl(trade.location, "", true)
     await (inNewTab ? openUrlInNewTab(url) : openUrlInActiveTab(url))
   }
 
+  const toggleTradeArchive = async (trade: BookmarksTradeStruct) => {
+    if (!folder.id) return
+    trades = await bookmarksService.toggleTradeArchive(trade, folder.id)
+    hasLoadedTrades = true
+    if (showArchivedTrades && !trades.some((entry) => entry.archivedAt)) {
+      showArchivedTrades = false
+    }
+  }
+
   const openAllTradesInNewTabs = async () => {
     await loadTrades()
-    for (const trade of trades) {
+    if (displayedTrades.length === 0) {
+      flashMessages.alert(translate($languageStore, "folder.noTradesToOpen"))
+      return
+    }
+    for (const trade of displayedTrades) {
       await openTrade(trade, true)
     }
+    flashMessages.success(
+      translate($languageStore, "folder.openedTabs", { count: displayedTrades.length })
+    )
+  }
+
+  const requestArchiveCompleted = () => {
+    archiveCompletedPending = true
+  }
+
+  const cancelArchiveCompleted = () => {
+    archiveCompletedPending = false
+  }
+
+  const archiveCompleted = async () => {
+    if (!folder.id) return
+    const allTrades = await bookmarksService.fetchTradesByFolderId(folder.id, {
+      force: true
+    })
+    const completedTrades = allTrades.filter(
+      (trade) => trade.completedAt && !trade.archivedAt
+    )
+    if (completedTrades.length === 0) {
+      archiveCompletedPending = false
+      flashMessages.alert(translate($languageStore, "folder.noCompletedItemsToArchive"))
+      return
+    }
+
+    const archivedAt = new Date().toISOString()
+    trades = await bookmarksService.persistTrades(
+      allTrades.map((trade) =>
+        trade.completedAt && !trade.archivedAt ? { ...trade, archivedAt } : trade
+      ),
+      folder.id
+    )
+    hasLoadedTrades = true
+    archiveCompletedPending = false
+    flashMessages.success(
+      translate($languageStore, "folder.archivedCompleted", {
+        count: completedTrades.length
+      })
+    )
+  }
+
+  const restoreArchivedTrades = async () => {
+    if (!folder.id) return
+    const archivedTrades = trades.filter((trade) => trade.archivedAt)
+    if (archivedTrades.length === 0) return
+    trades = await bookmarksService.persistTrades(
+      trades.map((trade) =>
+        trade.archivedAt ? { ...trade, archivedAt: null } : trade
+      ),
+      folder.id
+    )
+    showArchivedTrades = false
+    flashMessages.success(
+      translate($languageStore, "folder.restoredArchivedTrades", {
+        count: archivedTrades.length
+      })
+    )
   }
 
   const exportFolder = () => {
@@ -817,6 +898,9 @@
               </span>
             {/if}
             <div class="header-label">{folder.title}</div>
+            {#if isArchived}
+              <span class="archive-status">{translate($languageStore, "bookmarks.toolbar.archive")}</span>
+            {/if}
           </div>
         </div>
       {/if}
@@ -826,12 +910,28 @@
     </button>
 
     <div class="header-actions">
+      {#if !previewTrades && displayedTrades.length > 0}
+        <button
+          type="button"
+          class="category-action"
+          title={translate($languageStore, "folder.openAllInNewTabs")}
+          aria-label={translate($languageStore, "folder.openAllInNewTabs")}
+          onclick={() => void openAllTradesInNewTabs()}
+        >
+          <span class="action-icon"><SvgIcon svg={externalLinkIcon} /></span>
+        </button>
+      {/if}
       <FolderActionsMenu
         {folder}
         onRename={startEditingFolder}
         onArchive={onArchiveEvent}
         onExport={exportFolder}
         onDuplicate={duplicateFolder}
+        onClearCompleted={requestArchiveCompleted}
+        hasArchivedTrades={showArchivedTrades || trades.some((trade) => trade.archivedAt)}
+        {showArchivedTrades}
+        onToggleArchivedTrades={() => showArchivedTrades = !showArchivedTrades}
+        onRestoreArchivedTrades={() => void restoreArchivedTrades()}
         onDelete={onDeleteEvent} />
     </div>
   </div>
@@ -978,6 +1078,7 @@
                 <div
                   class="trade-item"
                   class:is-completed={!!trade.completedAt}
+                  class:is-archived={!!trade.archivedAt}
                   class:is-dragging={draggedIndex === i}
                   class:is-drag-over={dragOverIndex === i}
                   role="group"
@@ -1010,11 +1111,16 @@
                           onclick={(event) => event.stopPropagation()} />
                       {:else}
                         <div class="trade-copy">
-                          <span
-                            class="trade-link"
-                            title={trade.title}>
-                            {trade.title}
-                          </span>
+                          <div class="trade-title-row">
+                            <span
+                              class="trade-link"
+                              title={trade.title}>
+                              {trade.title}
+                            </span>
+                            {#if trade.archivedAt}
+                              <span class="archive-status">{translate($languageStore, "bookmarks.toolbar.archive")}</span>
+                            {/if}
+                          </div>
                         </div>
                       {/if}
 
@@ -1025,8 +1131,10 @@
                             onEdit={() => void startEditingTrade(trade)}
                             onReplace={() => void replaceSearchWithCurrent(trade)}
                             onCopy={() => copyTrade(trade)}
+                            onOpenNewTab={() => void openTrade(trade, true)}
                             onDuplicate={() => void duplicateTrade(trade)}
                             onOpenLive={() => void openTradeLive(trade)}
+                            onToggleArchive={() => void toggleTradeArchive(trade)}
                             onToggle={() => void toggleTrade(trade)}
                             onDelete={() => requestTradeDelete(trade)}
                             categoriesEnabled={$settings.bookmarkCategoriesEnabled}
@@ -1044,8 +1152,10 @@
                           onEdit={() => void startEditingTrade(trade)}
                           onReplace={() => void replaceSearchWithCurrent(trade)}
                           onCopy={() => copyTrade(trade)}
+                          onOpenNewTab={() => void openTrade(trade, true)}
                           onDuplicate={() => void duplicateTrade(trade)}
                           onOpenLive={() => void openTradeLive(trade)}
+                          onToggleArchive={() => void toggleTradeArchive(trade)}
                           onToggle={() => void toggleTrade(trade)}
                           onDelete={() => requestTradeDelete(trade)}
                           categoriesEnabled={$settings.bookmarkCategoriesEnabled}
@@ -1077,6 +1187,17 @@
     </div>
   {/if}
 </div>
+
+<ConfirmDialog
+  open={archiveCompletedPending}
+  title={translate($languageStore, "confirm.archiveCompletedTitle")}
+  message={translate($languageStore, "confirm.archiveCompletedMessage", {
+    title: folder.title
+  })}
+  confirmLabel={translate($languageStore, "confirm.archive")}
+  cancelLabel={translate($languageStore, "confirm.cancel")}
+  onCancel={cancelArchiveCompleted}
+  onConfirm={() => void archiveCompleted()} />
 
 <ConfirmDialog
   open={!!tradePendingDelete}
@@ -1568,6 +1689,7 @@
 }
 
 .trade-link {
+  flex: 1;
   color: #eeeeee;
   text-decoration: none;
   font-size: calc(13px * var(--bt-text-scale, 1));
@@ -1578,6 +1700,28 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   display: block;
+}
+
+.trade-title-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.archive-status {
+  flex: 0 0 auto;
+  border: 1px solid rgba(163, 141, 109, 0.42);
+  border-radius: 3px;
+  padding: 1px 5px;
+  color: rgba(205, 180, 137, 0.95);
+  background: rgba(163, 141, 109, 0.12);
+  font-family: "FontinSmallcaps", serif;
+  font-size: calc(9px * var(--bt-text-scale, 1));
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+  text-transform: uppercase;
 }
 
 .trade-actions {
@@ -1660,8 +1804,12 @@
 
 .save-search-anchor {
   display: flex;
-  flex: 1 1 180px;
+  flex: 0 1 auto;
   min-width: 0;
+}
+
+.trade-item.is-archived {
+  opacity: 0.68;
 }
 
 :global(.folder-action-footer-btn) {

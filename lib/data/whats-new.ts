@@ -116,6 +116,32 @@ const version1119Features: WhatsNewItem[] = [
   }
 ];
 
+const version1120Features: WhatsNewItem[] = [
+  {
+    titleKey: "whatsNew.item.chineseTradeTranslationTitle",
+    descriptionKey: "whatsNew.item.chineseTradeTranslationDescription"
+  },
+  {
+    titleKey: "whatsNew.item.archiveBookmarksTitle",
+    descriptionKey: "whatsNew.item.archiveBookmarksDescription"
+  },
+  {
+    titleKey: "whatsNew.item.gemReferenceLinksTitle",
+    descriptionKey: "whatsNew.item.gemReferenceLinksDescription"
+  },
+  {
+    titleKey: "whatsNew.item.githubReleaseNotesTitle",
+    descriptionKey: "whatsNew.item.githubReleaseNotesDescription"
+  }
+];
+
+const version1120Fixes: WhatsNewItem[] = [
+  {
+    titleKey: "whatsNew.item.historyReliabilityTitle",
+    descriptionKey: "whatsNew.item.historyReliabilityDescription"
+  }
+];
+
 const version112Features: WhatsNewItem[] = [
   {
     title: "External reference links in the popup",
@@ -368,9 +394,22 @@ const version1110Features: WhatsNewItem[] = [
 ];
 
 export const latestWhatsNew: WhatsNewEntry = {
-  version: "1.1.19",
-  date: "2026-08-01",
+  version: "1.1.20",
+  date: "2026-08-04",
   sections: [
+    {
+      title: "1.1.20",
+      groups: [
+        {
+          titleKey: "whatsNew.section.features",
+          items: version1120Features
+        },
+        {
+          titleKey: "whatsNew.section.fixes",
+          items: version1120Fixes
+        }
+      ]
+    },
     {
       title: "1.1.19",
       groups: [

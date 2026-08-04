@@ -15,6 +15,9 @@
   } = $props();
 
   let entry = $derived(getWhatsNewEntry(version));
+  let releaseNotesUrl = $derived(
+    `https://github.com/javijec/PoeTradePlus/releases/tag/v${entry.version}`
+  );
 
   const itemTitle = (item: import("../lib/data/whats-new").WhatsNewItem) =>
     item.titleKey
@@ -97,6 +100,9 @@
       </div>
 
       <footer class="whats-new-dialog__actions">
+        <Button
+          label={translate($languageStore, "whatsNew.openReleaseNotes")}
+          href={releaseNotesUrl} />
         <Button
           label={translate($languageStore, "whatsNew.dismiss")}
           theme="gold"
@@ -285,6 +291,7 @@ li span {
 
 .whats-new-dialog__actions {
   display: flex;
+  gap: 8px;
   justify-content: flex-end;
   padding: 12px 22px 18px;
 }

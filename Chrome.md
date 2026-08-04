@@ -51,8 +51,9 @@
 🌍 SUPPORTED TRADE SITES & LANGUAGES
 • Global: pathofexile.com
 • Localized trade sites: BR, RU, TH, DE, FR, ES, and JP
+• Taiwan: pathofexile.tw
 • Kakao Games: poe.kakaogames.com and poe2.kakaogames.com
-• Interface languages: English, Portuguese, Russian, Thai, German, French, Spanish, Japanese, and Korean
+• Interface languages: English, Portuguese, Russian, Thai, German, French, Spanish, Japanese, Korean, Traditional Chinese, and Simplified Chinese
 
 💿 DATA PRIVACY
 ✓ No PoeTradePlus account, tracking, analytics, or application-owned data server

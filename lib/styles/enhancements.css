@@ -55,7 +55,8 @@ body.bt-dev-poe2-copy-visible .row:hover > .left > button.copy {
 }
 
 .row > .left > button.bt-copy-coe,
-.row > .left > button.bt-open-wiki {
+.row > .left > button.bt-open-wiki,
+.row > .left > button.bt-open-poedb {
   display: none;
   position: absolute;
   align-items: center;
@@ -86,6 +87,19 @@ body.bt-dev-poe2-copy-visible .row:hover > .left > button.copy {
   text-decoration: none;
   text-shadow: 0 1px 2px rgba(5, 5, 5, 0.9);
 }
+
+.row > .left > button.bt-open-poedb {
+  border: 0;
+  background: transparent;
+  color: #eeeeee;
+  font-weight: 700;
+  text-decoration: none;
+  text-shadow: 0 1px 2px rgba(5, 5, 5, 0.9);
+}
+
+.row > .left > button.bt-open-poedb:focus-visible {
+  outline: none;
+}
 .row > .left > button.bt-open-wiki:focus-visible {
   outline: none;
 }
@@ -102,10 +116,15 @@ body.bt-dev-result-actions-visible.bt-dev-coe-visible
   > .left
   > button.bt-copy-coe,
 body.bt-dev-wiki-visible .row:hover > .left > button.bt-open-wiki,
+body.bt-dev-wiki-visible .row:hover > .left > button.bt-open-poedb,
 body.bt-dev-result-actions-visible.bt-dev-wiki-visible
   .row
   > .left
-  > button.bt-open-wiki {
+  > button.bt-open-wiki,
+body.bt-dev-result-actions-visible.bt-dev-wiki-visible
+  .row
+  > .left
+  > button.bt-open-poedb {
   display: inline-flex;
 }
 

@@ -468,6 +468,7 @@ export class BookmarksService {
   ): BookmarksTradeStruct[] {
     return (trades || []).map((t) => ({
       ...t,
+      archivedAt: typeof t.archivedAt === "string" ? t.archivedAt : null,
       categoryId:
         typeof t.categoryId === "string" && t.categoryId ? t.categoryId : null,
       location: {
@@ -698,8 +699,15 @@ export class BookmarksService {
     const trades = await this.fetchTradesByFolderId(targetFolderId, {
       force: true
     })
+    const originalIndex = trades.findIndex((item) => item.id === trade.id)
+    const updatedTrades = [...trades]
+    updatedTrades.splice(
+      originalIndex === -1 ? updatedTrades.length : originalIndex + 1,
+      0,
+      newTrade
+    )
     const persisted = await this.persistTrades(
-      [...trades, newTrade],
+      updatedTrades,
       targetFolderId
     )
     await this.refresh()
@@ -850,6 +858,24 @@ export class BookmarksService {
     return persisted
   }
 
+  async toggleTradeArchive(
+    trade: BookmarksTradeStruct,
+    folderId: string
+  ): Promise<BookmarksTradeStruct[]> {
+    const trades = await this.fetchTradesByFolderId(folderId, { force: true })
+    const updated = trades.map((entry) =>
+      entry.id === trade.id
+        ? {
+            ...entry,
+            archivedAt: entry.archivedAt ? null : new Date().toISOString()
+          }
+        : entry
+    )
+    const persisted = await this.persistTrades(updated, folderId)
+    await this.refresh()
+    return persisted
+  }
+
   async toggleFolderArchive(folder: BookmarksFolderStruct) {
     return this.persistFolder(
       {
@@ -984,6 +1010,7 @@ export class BookmarksService {
         return {
           title: trade.tit,
           completedAt: null,
+          archivedAt: null,
           categoryId: exportVersion >= 5 && trade.cat ? trade.cat : null,
           location: { version: version as TradeSiteVersion, type, slug, league }
         }
@@ -1102,6 +1129,7 @@ export class BookmarksService {
       location,
       title: "",
       completedAt: null,
+      archivedAt: null,
       categoryId: null
     }
   }

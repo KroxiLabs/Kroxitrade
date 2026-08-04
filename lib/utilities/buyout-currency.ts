@@ -33,7 +33,9 @@ const buyoutFilterTitles = [
   "Directe",
   "Precio de compra",
   "バイアウト価格",
-  "즉시 구매 가격"
+  "즉시 구매 가격",
+  "直購價",
+  "直购价"
 ]
 
 const buyoutCurrencyLabels: Record<BuyoutCurrency, string[]> = {
@@ -46,7 +48,9 @@ const buyoutCurrencyLabels: Record<BuyoutCurrency, string[]> = {
     "Équivalent en orbes du chaos",
     "Equivalente a Orbe de caos",
     "カオスオーブ同等物",
-    "카오스 오브 등가물"
+    "카오스 오브 등가물",
+    "與混沌石等值",
+    "与混沌石等值"
   ],
   "Exalted Orb Equivalent": [
     "Exalted Orb Equivalent",
@@ -57,7 +61,9 @@ const buyoutCurrencyLabels: Record<BuyoutCurrency, string[]> = {
     "Équivalent en orbes exaltés",
     "Equivalente a Orbe Exaltado",
     "高貴なオーブ同等物",
-    "엑잘티드 오브 등가물"
+    "엑잘티드 오브 등가물",
+    "與崇高石等值",
+    "与崇高石等值"
   ],
   "Chaos Orb": [
     "Chaos Orb",
@@ -68,7 +74,9 @@ const buyoutCurrencyLabels: Record<BuyoutCurrency, string[]> = {
     "Orbe du chaos",
     "Orbe de caos",
     "カオスオーブ",
-    "카오스 오브"
+    "카오스 오브",
+    "混沌石",
+    "混沌石"
   ],
   "Exalted Orb": [
     "Exalted Orb",
@@ -79,7 +87,9 @@ const buyoutCurrencyLabels: Record<BuyoutCurrency, string[]> = {
     "Orbe exalté",
     "Orbe exaltado",
     "高貴なオーブ",
-    "엑잘티드 오브"
+    "엑잘티드 오브",
+    "崇高石",
+    "崇高石"
   ],
   "Divine Orb": [
     "Divine Orb",
@@ -90,24 +100,47 @@ const buyoutCurrencyLabels: Record<BuyoutCurrency, string[]> = {
     "Orbe divin",
     "Orbe divino",
     "神のオーブ",
-    "신성한 오브"
+    "신성한 오브",
+    "神聖石",
+    "神圣石"
   ]
 }
 
 const normalizeLabel = (value: string | null | undefined) =>
   value?.replace(/\s+/g, " ").trim() || ""
 
-const findBuyoutFilter = () => {
+// Structural fallback: the Buyout Price row is the filter-property with a
+// currency multiselect and its two price inputs. This survives the translated
+// title text and is independent of the trade-site language.
+const findBuyoutFilterStructural = () => {
   const filters = Array.from(
     document.querySelectorAll<HTMLElement>(".filter.filter-property")
   )
 
   return (
     filters.find((filter) => {
-      const title = normalizeLabel(filter.querySelector(".filter-title")?.textContent)
-      return buyoutFilterTitles.includes(title)
+      const hasCurrencyMultiselect = !!filter.querySelector(
+        ".multiselect input.multiselect__input"
+      )
+      const priceInputs = filter.querySelectorAll<HTMLInputElement>(
+        "input.minmax, input[placeholder]"
+      )
+      return hasCurrencyMultiselect && priceInputs.length >= 2
     }) || null
   )
+}
+
+const findBuyoutFilter = () => {
+  const filters = Array.from(
+    document.querySelectorAll<HTMLElement>(".filter.filter-property")
+  )
+
+  const byTitle = filters.find((filter) => {
+    const title = normalizeLabel(filter.querySelector(".filter-title")?.textContent)
+    return buyoutFilterTitles.includes(title)
+  })
+
+  return byTitle || findBuyoutFilterStructural()
 }
 
 const getLocalizedCurrencyLabel = (
@@ -117,6 +150,9 @@ const getLocalizedCurrencyLabel = (
   const title = normalizeLabel(
     buyoutFilter.querySelector(".filter-title")?.textContent
   )
+  // The translated site's multiselect options use the native Chinese labels
+  // (e.g. 混沌石 / 崇高石 / 神聖石), so preserve the title-to-label mapping
+  // instead of submitting the internal English currency id.
   const languageIndex = buyoutFilterTitles.indexOf(title)
   return buyoutCurrencyLabels[currency][languageIndex] || currency
 }
@@ -129,23 +165,32 @@ export const setBuyoutCurrencyPreset = (currency: BuyoutCurrency) => {
 
   if (!buyoutFilter || !multiselect || !input) return
 
+  // Inspect all locale variants instead of deriving a single one from the
+  // translated title. The displayed list can be English, Chinese or bilingual.
+  const names = buyoutCurrencyLabels[currency]
+    .map(normalizeLabel)
+    .filter(Boolean)
+
   input.focus()
   input.click()
-  const localizedCurrency = getLocalizedCurrencyLabel(buyoutFilter, currency)
-
-  setNativeInputValue(input, localizedCurrency)
-  input.setSelectionRange(localizedCurrency.length, localizedCurrency.length)
+  setNativeInputValue(input, "")
   input.dispatchEvent(new Event("input", { bubbles: true }))
 
-  queueMicrotask(() => {
+  const selectOption = () => {
     const option = Array.from(
       multiselect.querySelectorAll<HTMLElement>(".multiselect__option")
-    ).find(
-      (candidate) =>
-        normalizeLabel(candidate.textContent) === localizedCurrency
     )
+    if (option.length === 0) return false
 
-    option?.dispatchEvent(
+    const labels = option.map((candidate) => normalizeLabel(candidate.textContent))
+    let index = labels.findIndex((label) => names.includes(label))
+    if (index === -1)
+      index = labels.findIndex((label) => names.some((name) => label.startsWith(name)))
+    if (index === -1)
+      index = labels.findIndex((label) => names.some((name) => label.includes(name)))
+    if (index === -1) return false
+
+    option[index].dispatchEvent(
       new MouseEvent("click", {
         bubbles: true,
         cancelable: true,
@@ -153,7 +198,15 @@ export const setBuyoutCurrencyPreset = (currency: BuyoutCurrency) => {
       })
     )
     input.dispatchEvent(new Event("change", { bubbles: true }))
-  })
+    return true
+  }
+
+  let attempts = 0
+  const trySelect = () => {
+    if (selectOption() || attempts++ >= 8) return
+    setTimeout(trySelect, 30)
+  }
+  setTimeout(trySelect, 0)
 }
 
 export const clearBuyoutPrice = () => {

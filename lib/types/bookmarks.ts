@@ -19,6 +19,7 @@ export interface BookmarksTradeStruct {
   title: string
   location: BookmarksTradeLocation
   completedAt: string | null
+  archivedAt: string | null
   categoryId?: string | null
 }
 

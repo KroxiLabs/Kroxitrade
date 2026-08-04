@@ -88,6 +88,7 @@ import About from "./pages/About.svelte";
     return {
       title: translate($languageStore, "onboarding.sampleTrade"),
       completedAt: null,
+      archivedAt: null,
       location: {
         version: current.version,
         type: current.type || "search",

@@ -12,8 +12,11 @@
   import editIcon from "lucide-static/icons/pencil.svg?raw";
   import replaceIcon from "lucide-static/icons/refresh-cw.svg?raw";
   import linkIcon from "lucide-static/icons/link.svg?raw";
+  import externalLinkIcon from "lucide-static/icons/external-link.svg?raw";
   import duplicateIcon from "lucide-static/icons/copy.svg?raw";
   import liveIcon from "lucide-static/icons/activity.svg?raw";
+  import archiveIcon from "lucide-static/icons/archive.svg?raw";
+  import archiveRestoreIcon from "lucide-static/icons/archive-restore.svg?raw";
   import checkIcon from "lucide-static/icons/check.svg?raw";
   import trashIcon from "lucide-static/icons/trash-2.svg?raw";
   import moreIcon from "lucide-static/icons/more-horizontal.svg?raw";
@@ -23,8 +26,10 @@
     onEdit: () => void;
     onReplace: () => void;
     onCopy: () => void;
+    onOpenNewTab: () => void;
     onDuplicate: () => void;
     onOpenLive: () => void;
+    onToggleArchive: () => void;
     onToggle: () => void;
     onDelete: () => void;
     compactText?: string;
@@ -40,8 +45,10 @@
     onEdit,
     onReplace,
     onCopy,
+    onOpenNewTab,
     onDuplicate,
     onOpenLive,
+    onToggleArchive,
     onToggle,
     onDelete,
     compactText = "",
@@ -65,8 +72,10 @@
     "edit",
     "replace",
     "copy",
+    "openNewTab",
     "duplicate",
     "openLive",
+    "archive",
     "toggle",
     "delete"
   ];
@@ -95,6 +104,12 @@
       handler: onCopy
     },
     {
+      id: "openNewTab",
+      icon: externalLinkIcon,
+      label: translate($languageStore, "folder.openInNewTab"),
+      handler: onOpenNewTab
+    },
+    {
       id: "duplicate",
       icon: duplicateIcon,
       label: translate($languageStore, "folder.duplicateTrade"),
@@ -105,6 +120,14 @@
       icon: liveIcon,
       label: translate($languageStore, "folder.openLiveSearch"),
       handler: onOpenLive
+    },
+    {
+      id: "archive",
+      icon: trade.archivedAt ? archiveRestoreIcon : archiveIcon,
+      label: trade.archivedAt
+        ? translate($languageStore, "folder.restoreTrade")
+        : translate($languageStore, "folder.archiveTrade"),
+      handler: onToggleArchive
     },
     {
       id: "toggle",
