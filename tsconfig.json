@@ -1,6 +1,7 @@
 {
   "extends": "./.wxt/tsconfig.json",
   "compilerOptions": {
+    "noUncheckedIndexedAccess": false,
     "paths": {
       "~assets/*": ["./assets/*"],
       "~components/*": ["./components/*"],
