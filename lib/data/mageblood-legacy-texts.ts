@@ -1,4 +1,4 @@
-export type MagebloodLegacyLocale = "en" | "es" | "pt" | "ru" | "th" | "de" | "fr" | "jp" | "ko";
+export type MagebloodLegacyLocale = "en" | "es" | "pt" | "ru" | "th" | "de" | "fr" | "jp" | "ko" | "zh-tw";
 
 type MagebloodLegacyText = Record<string, string[]>;
 
@@ -146,5 +146,21 @@ export const MAGEBLOOD_LEGACY_TEXTS: Record<MagebloodLegacyLocale, MagebloodLega
     stibnite: ["회피 {value}% 증가"],
     sulphur: ["피해 {value}% 증가", "정지 상태에서 신성화 지대"],
     topaz: ["번개 저항 +{value}%", "최대 번개 저항 +{value}%"]
+  },
+  "zh-tw": {
+    amethyst: ["混沌抗性 +{value}%"],
+    basalt: ["護甲提高 {value}%"],
+    bismuth: ["所有元素抗性 +{value}%"],
+    diamond: ["暴擊率提高 {value}%"],
+    gold: ["物品稀有度提高 {value}%"],
+    granite: ["護甲 +{value}"],
+    jade: ["閃避值 +{value}"],
+    quicksilver: ["移動速度提高 {value}%"],
+    ruby: ["火焰抗性 +{value}%", "最大火焰抗性 +{value}%"],
+    sapphire: ["冰冷抗性 +{value}%", "最大冰冷抗性 +{value}%"],
+    silver: ["技能速度提高 {value}%"],
+    stibnite: ["閃避值提高 {value}%"],
+    sulphur: ["傷害提高 {value}%", "靜止時獲得奉獻地面"],
+    topaz: ["閃電抗性 +{value}%", "最大閃電抗性 +{value}%"]
   }
 };

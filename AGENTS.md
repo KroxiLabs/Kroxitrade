@@ -27,7 +27,7 @@ ALWAYS prefer MCP graph tools over grep/glob/file-search for code discovery.
 ## Translations
 - Every new user-facing text created for this extension must be added for every supported language by default.
 - Do not add UI text only to English or Spanish and rely on fallback text.
-- Update all locale files under `lib/services/i18n/`: `en.ts`, `es.ts`, `pt.ts`, `ru.ts`, `th.ts`, `de.ts`, `fr.ts`, `ja.ts`, and `ko.ts`.
+- Update all locale files under `lib/services/i18n/`: `en.ts`, `es.ts`, `pt.ts`, `ru.ts`, `th.ts`, `de.ts`, `fr.ts`, `ja.ts`, `ko.ts`, `zh-cn.ts`, and `zh-tw.ts`.
 - This applies to settings, buttons, tooltips, aria labels, flash messages, popup text, sidebar text, What's New copy, and release-facing text inside the app.
 
 ## Release Notes

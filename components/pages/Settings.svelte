@@ -11,6 +11,11 @@
   } from "../../lib/services/experimental";
   import { flashMessages } from "../../lib/services/flash";
   import { itemResultsService } from "../../lib/services/item-results";
+  import {
+    chineseTradeMessage,
+    chineseTradePageStorage,
+    chineseTradeStorage
+  } from "../../lib/services/chinese-trade/contract";
   import { DEFAULT_SIDEBAR_WIDTH, settings, type BookmarkLayout, type BookmarkTradeActionId, type QuickFiltersPlacement, type SidebarSide, type TextSizePreference } from "../../lib/services/settings";
   import { tradeLocationService } from "../../lib/services/trade-location";
   import type { BookmarksFolderStruct, BookmarksTradeStruct } from "../../lib/types/bookmarks";
@@ -29,11 +34,15 @@
   import flagKR from "../../assets/KR.png?inline";
   import flagRU from "../../assets/RU.png?inline";
   import flagTH from "../../assets/TH.png?inline";
+  const flagTW = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 20'%3E%3Cpath fill='%23fe0000' d='M0 0h30v20H0z'/%3E%3Cpath fill='%23000095' d='M0 0h15v10H0z'/%3E%3Ccircle cx='7.5' cy='5' r='2.5' fill='white'/%3E%3C/svg%3E";
+  const flagCN = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 20'%3E%3Cpath fill='%23de2910' d='M0 0h30v20H0z'/%3E%3Cpath fill='%23ffde00' d='m5 2 .6 1.8 1.9.1-1.5 1.1.5 1.8L5 5.7 3.5 6.8 4 5 2.5 3.9l1.9-.1z'/%3E%3C/svg%3E";
   import editIcon from "lucide-static/icons/pencil.svg?raw";
   import replaceIcon from "lucide-static/icons/refresh-cw.svg?raw";
   import linkIcon from "lucide-static/icons/link.svg?raw";
+  import externalLinkIcon from "lucide-static/icons/external-link.svg?raw";
   import duplicateIcon from "lucide-static/icons/copy.svg?raw";
   import liveIcon from "lucide-static/icons/activity.svg?raw";
+  import archiveIcon from "lucide-static/icons/archive.svg?raw";
   import toggleIcon from "lucide-static/icons/check.svg?raw";
   import deleteIcon from "lucide-static/icons/trash-2.svg?raw";
 
@@ -65,8 +74,10 @@
     { id: "edit", labelKey: "folder.editSearchName", icon: editIcon },
     { id: "replace", labelKey: "folder.replaceCurrentSearch", icon: replaceIcon },
     { id: "copy", labelKey: "folder.copyUrl", icon: linkIcon },
+    { id: "openNewTab", labelKey: "folder.openInNewTab", icon: externalLinkIcon },
     { id: "duplicate", labelKey: "folder.duplicateTrade", icon: duplicateIcon },
     { id: "openLive", labelKey: "folder.openLiveSearch", icon: liveIcon },
+    { id: "archive", labelKey: "folder.archiveTrade", icon: archiveIcon },
     { id: "toggle", labelKey: "settings.compactTradeActionToggle", icon: toggleIcon },
     { id: "delete", labelKey: "folder.deleteTrade", icon: deleteIcon }
   ];
@@ -74,6 +85,7 @@
     id: "settings-preview-trade",
     title: "High resistance boots",
     completedAt: null,
+    archivedAt: null,
     location: {
       version: "2",
       type: "search",
@@ -128,7 +140,9 @@
     { code: "de", label: "Deutsch", flag: flagDE, emoji: "🇩🇪" },
     { code: "fr", label: "Français", flag: flagFR, emoji: "🇫🇷" },
     { code: "ja", label: "日本語", flag: flagJP, emoji: "🇯🇵" },
-    { code: "ko", label: "한국어", flag: flagKR, emoji: "🇰🇷" }
+    { code: "ko", label: "한국어", flag: flagKR, emoji: "🇰🇷" },
+    { code: "zh-tw", label: "繁體中文", flag: flagTW, emoji: "🇹🇼" },
+    { code: "zh-cn", label: "简体中文", flag: flagCN, emoji: "🇨🇳" }
   ];
   const textSizeOptions: Array<{ id: TextSizePreference; labelKey: string }> = [
     { id: "small", labelKey: "settings.textSizeSmall" },
@@ -136,17 +150,24 @@
     { id: "large", labelKey: "settings.textSizeLarge" },
     { id: "extraLarge", labelKey: "settings.textSizeExtraLarge" }
   ];
+  const canTranslateTradeSite = $derived(
+    ($settings.language === "zh-tw" || $settings.language === "zh-cn") &&
+      window.location.hostname !== "pathofexile.tw" &&
+      !window.location.pathname.startsWith("/trade2/")
+  );
 
   const localizedLanguageNames: Record<AppLanguage, Record<AppLanguage, string>> = {
-    en: { en: "English", es: "Spanish", pt: "Portuguese", ru: "Russian", th: "Thai", de: "German", fr: "French", ja: "Japanese", ko: "Korean" },
-    es: { en: "Inglés", es: "Español", pt: "Portugués", ru: "Ruso", th: "Tailandés", de: "Alemán", fr: "Francés", ja: "Japonés", ko: "Coreano" },
-    pt: { en: "Inglês", es: "Espanhol", pt: "Português", ru: "Russo", th: "Tailandês", de: "Alemão", fr: "Francês", ja: "Japonês", ko: "Coreano" },
-    ru: { en: "Английский", es: "Испанский", pt: "Португальский", ru: "Русский", th: "Тайский", de: "Немецкий", fr: "Французский", ja: "Японский", ko: "Корейский" },
-    th: { en: "อังกฤษ", es: "สเปน", pt: "โปรตุเกส", ru: "รัสเซีย", th: "ไทย", de: "เยอรมัน", fr: "ฝรั่งเศส", ja: "ญี่ปุ่น", ko: "เกาหลี" },
-    de: { en: "Englisch", es: "Spanisch", pt: "Portugiesisch", ru: "Russisch", th: "Thailändisch", de: "Deutsch", fr: "Französisch", ja: "Japanisch", ko: "Koreanisch" },
-    fr: { en: "Anglais", es: "Espagnol", pt: "Portugais", ru: "Russe", th: "Thaï", de: "Allemand", fr: "Français", ja: "Japonais", ko: "Coréen" },
-    ja: { en: "英語", es: "スペイン語", pt: "ポルトガル語", ru: "ロシア語", th: "タイ語", de: "ドイツ語", fr: "フランス語", ja: "日本語", ko: "韓国語" },
-    ko: { en: "영어", es: "스페인어", pt: "포르투갈어", ru: "러시아어", th: "태국어", de: "독일어", fr: "프랑스어", ja: "일본어", ko: "한국어" }
+    en: { en: "English", es: "Spanish", pt: "Portuguese", ru: "Russian", th: "Thai", de: "German", fr: "French", ja: "Japanese", ko: "Korean", "zh-tw": "Traditional Chinese", "zh-cn": "Simplified Chinese" },
+    es: { en: "Inglés", es: "Español", pt: "Portugués", ru: "Ruso", th: "Tailandés", de: "Alemán", fr: "Francés", ja: "Japonés", ko: "Coreano", "zh-tw": "Chino tradicional", "zh-cn": "Chino simplificado" },
+    pt: { en: "Inglês", es: "Espanhol", pt: "Português", ru: "Russo", th: "Tailandês", de: "Alemão", fr: "Francês", ja: "Japonês", ko: "Coreano", "zh-tw": "Chinês tradicional", "zh-cn": "Chinês simplificado" },
+    ru: { en: "Английский", es: "Испанский", pt: "Португальский", ru: "Русский", th: "Тайский", de: "Немецкий", fr: "Французский", ja: "Японский", ko: "Корейский", "zh-tw": "Традиционный китайский", "zh-cn": "Упрощённый китайский" },
+    th: { en: "อังกฤษ", es: "สเปน", pt: "โปรตุเกส", ru: "รัสเซีย", th: "ไทย", de: "เยอรมัน", fr: "ฝรั่งเศส", ja: "ญี่ปุ่น", ko: "เกาหลี", "zh-tw": "จีนตัวเต็ม", "zh-cn": "จีนตัวย่อ" },
+    de: { en: "Englisch", es: "Spanisch", pt: "Portugiesisch", ru: "Russisch", th: "Thailändisch", de: "Deutsch", fr: "Französisch", ja: "Japanisch", ko: "Koreanisch", "zh-tw": "Traditionelles Chinesisch", "zh-cn": "Vereinfachtes Chinesisch" },
+    fr: { en: "Anglais", es: "Espagnol", pt: "Portugais", ru: "Russe", th: "Thaï", de: "Allemand", fr: "Français", ja: "Japonais", ko: "Coréen", "zh-tw": "Chinois traditionnel", "zh-cn": "Chinois simplifié" },
+    ja: { en: "英語", es: "スペイン語", pt: "ポルトガル語", ru: "ロシア語", th: "タイ語", de: "ドイツ語", fr: "フランス語", ja: "日本語", ko: "韓国語", "zh-tw": "繁体字中国語", "zh-cn": "簡体字中国語" },
+    ko: { en: "영어", es: "스페인어", pt: "포르투갈어", ru: "러시아어", th: "태국어", de: "독일어", fr: "프랑스어", ja: "일본어", ko: "한국어", "zh-tw": "번체 중국어", "zh-cn": "간체 중국어" },
+    "zh-tw": { en: "英文", es: "西班牙文", pt: "葡萄牙文", ru: "俄文", th: "泰文", de: "德文", fr: "法文", ja: "日文", ko: "韓文", "zh-tw": "繁體中文", "zh-cn": "简体中文" },
+    "zh-cn": { en: "英语", es: "西班牙语", pt: "葡萄牙语", ru: "俄语", th: "泰语", de: "德语", fr: "法语", ja: "日语", ko: "韩语", "zh-tw": "繁體中文", "zh-cn": "简体中文" }
   };
 
   let isLanguageMenuOpen = $state(false);
@@ -222,6 +243,94 @@
     }
   }
 
+  async function handleAutoFuzzySearchChange(autoFuzzySearch: boolean) {
+    if (!(await settings.updateAutoFuzzySearch(autoFuzzySearch))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
+  }
+
+  async function handleTradeSiteTranslationChange(translateTradeSite: boolean) {
+    if (!(await settings.updateTradeSiteTranslation(translateTradeSite))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+      return;
+    }
+
+    if (translateTradeSite && ($settings.language === "zh-tw" || $settings.language === "zh-cn")) {
+      if (!(await prepareChineseTradeCache($settings.language))) {
+        flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+        return;
+      }
+    }
+
+    if (!(await reloadChineseTradeTabs())) {
+      window.location.reload();
+    }
+  }
+
+  function rebuildChineseTradeData(): Promise<boolean> {
+    return new Promise((resolve) => {
+      try {
+        chrome.runtime.sendMessage({ type: chineseTradeMessage.rebuildCache }, (reply) => {
+          resolve(reply?.ok === true);
+        });
+      } catch {
+        resolve(false);
+      }
+    });
+  }
+
+  function reloadChineseTradeTabs(): Promise<boolean> {
+    return new Promise((resolve) => {
+      try {
+        chrome.runtime.sendMessage({ type: chineseTradeMessage.reloadTradeTabs }, (reply) => {
+          resolve(reply?.ok === true);
+        });
+      } catch {
+        resolve(false);
+      }
+    });
+  }
+
+  function readChineseTradeCache(keys: string[]): Promise<Record<string, unknown>> {
+    return new Promise((resolve) => {
+      try {
+        chrome.storage.local.get(keys, (value) => resolve(value as Record<string, unknown>));
+      } catch {
+        resolve({});
+      }
+    });
+  }
+
+  async function prepareChineseTradeCache(language: "zh-tw" | "zh-cn") {
+    if (!(await rebuildChineseTradeData())) return false;
+
+    const source = language === "zh-cn"
+      ? chineseTradeStorage.simplified
+      : chineseTradeStorage.traditional;
+    const sourceKeys = [source.stats, source.staticData, source.filters, source.items];
+    const cache = await readChineseTradeCache(sourceKeys);
+    const targets: Record<string, string> = {
+      stats: "lscache-tradestats",
+      static: "lscache-tradedata",
+      filters: "lscache-tradefilters",
+      items: "lscache-tradeitems"
+    };
+
+    let injected = false;
+    for (const [[, target], sourceKey] of Object.entries(targets).map(
+      (entry, index) => [entry, sourceKeys[index]] as const
+    )) {
+      const value = cache[sourceKey];
+      if (!Array.isArray(value)) continue;
+      window.localStorage.setItem(target, JSON.stringify(value));
+      window.localStorage.removeItem(`${target}-cacheexpiration`);
+      injected = true;
+    }
+
+    if (injected) window.localStorage.setItem(chineseTradePageStorage.injected, "1");
+    return Array.isArray(cache[source.stats]);
+  }
+
   async function handleBookmarkLayoutChange(
     compactActionsMenu: boolean,
     ultraCompactBookmarks = false
@@ -283,8 +392,52 @@
   }
 
   async function handleLanguageChange(language: AppLanguage) {
+    const wasChinese =
+      $settings.language === "zh-tw" || $settings.language === "zh-cn";
+    const isChinese = language === "zh-tw" || language === "zh-cn";
+    const reloadIntoChinese =
+      $settings.translateTradeSite &&
+      isChinese &&
+      language !== $settings.language;
+    const resetTradeSiteLanguage =
+      $settings.translateTradeSite && wasChinese && !isChinese;
+
+    if (reloadIntoChinese) {
+      if (!(await prepareChineseTradeCache(language))) {
+        flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+        return;
+      }
+      if (!(await settings.updateLanguageForReload(language))) {
+        flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+        return;
+      }
+      if (!(await reloadChineseTradeTabs())) {
+        window.location.reload();
+      }
+      return;
+    }
+
     if (!(await settings.updateLanguage(language))) {
       flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+      return;
+    }
+
+    if (resetTradeSiteLanguage) {
+      if (wasChinese && !isChinese) {
+        for (const key of [
+          "lscache-tradestats",
+          "lscache-tradedata",
+          "lscache-tradefilters",
+          "lscache-tradeitems"
+        ]) {
+          window.localStorage.removeItem(key);
+          window.localStorage.removeItem(`${key}-cacheexpiration`);
+        }
+        window.localStorage.removeItem(chineseTradePageStorage.injected);
+      }
+      if (!(await reloadChineseTradeTabs())) {
+        window.location.reload();
+      }
     }
   }
 
@@ -471,6 +624,39 @@
         </div>
       </div>
       </section>
+
+      <section class="settings-section settings-section--wide">
+        <div class="settings-section__header-row">
+          <div class="section-heading">
+            <h3 class="section-title">{translate($languageStore, "settings.autoFuzzyTitle")}</h3>
+          </div>
+          <ToggleRow
+            checked={$settings.autoFuzzySearch}
+            label={translate($languageStore, "settings.autoFuzzyTitle")}
+            stateLabel={toggleSwitchLabel($settings.autoFuzzySearch)}
+            onToggle={() => handleAutoFuzzySearchChange(!$settings.autoFuzzySearch)}
+          />
+        </div>
+        <p class="section-description">{translate($languageStore, "settings.autoFuzzyDescription")}</p>
+      </section>
+
+      {#if canTranslateTradeSite}
+        <section class="settings-section settings-section--wide">
+          <div class="settings-section__header-row">
+            <div class="section-heading">
+              <h3 class="section-title">{translate($languageStore, "settings.tradeTranslationTitle")}</h3>
+            </div>
+            <ToggleRow
+              checked={$settings.translateTradeSite}
+              label={translate($languageStore, "settings.tradeTranslationTitle")}
+              stateLabel={toggleSwitchLabel($settings.translateTradeSite)}
+              onToggle={() => handleTradeSiteTranslationChange(!$settings.translateTradeSite)}
+            />
+          </div>
+          <p class="section-description">{translate($languageStore, "settings.tradeTranslationDescription")}</p>
+          <p class="section-description">{translate($languageStore, "settings.tradeTranslationHint")}</p>
+        </section>
+      {/if}
 
       <section class="settings-section settings-section--wide">
         <div class="section-heading">
@@ -751,7 +937,9 @@
                         onEdit={noopPreviewAction}
                         onReplace={noopPreviewAction}
                         onCopy={noopPreviewAction}
+                        onOpenNewTab={noopPreviewAction}
                         onOpenLive={noopPreviewAction}
+                        onToggleArchive={noopPreviewAction}
                         onToggle={noopPreviewAction}
                         onDelete={noopPreviewAction} />
                     </div>
@@ -766,7 +954,9 @@
                         onEdit={noopPreviewAction}
                         onReplace={noopPreviewAction}
                         onCopy={noopPreviewAction}
+                        onOpenNewTab={noopPreviewAction}
                         onOpenLive={noopPreviewAction}
+                        onToggleArchive={noopPreviewAction}
                         onToggle={noopPreviewAction}
                         onDelete={noopPreviewAction} />
                     </div>
@@ -786,7 +976,9 @@
                         onEdit={noopPreviewAction}
                         onReplace={noopPreviewAction}
                         onCopy={noopPreviewAction}
+                        onOpenNewTab={noopPreviewAction}
                         onOpenLive={noopPreviewAction}
+                        onToggleArchive={noopPreviewAction}
                         onToggle={noopPreviewAction}
                         onDelete={noopPreviewAction} />
                     </div>
@@ -801,7 +993,9 @@
                         onEdit={noopPreviewAction}
                         onReplace={noopPreviewAction}
                         onCopy={noopPreviewAction}
+                        onOpenNewTab={noopPreviewAction}
                         onOpenLive={noopPreviewAction}
+                        onToggleArchive={noopPreviewAction}
                         onToggle={noopPreviewAction}
                         onDelete={noopPreviewAction} />
                     </div>

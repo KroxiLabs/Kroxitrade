@@ -12,7 +12,19 @@ const tag = `v${version}`
 const branch = `release-${tag}`
 const originRepository = "javijec/PoeTradePlus"
 const upstreamRepository = "KroxiLabs/Kroxitrade"
-const languages = ["en", "es", "pt", "ru", "th", "de", "fr", "ja", "ko"]
+const languages = [
+  "en",
+  "es",
+  "pt",
+  "ru",
+  "th",
+  "de",
+  "fr",
+  "ja",
+  "ko",
+  "zh-cn",
+  "zh-tw"
+]
 
 const run = (command, args, options = {}) => {
   const useNpmCli = command === "npm" && !!process.env.npm_execpath
@@ -114,6 +126,9 @@ const assertReleaseNotes = () => {
         }
       } else {
         for (const language of languages.filter((language) => language !== "en")) {
+          // Chinese locales were added after these legacy, literal release notes.
+          // New notes use translation keys and are still required in every locale.
+          if (!localizedWhatsNewTexts[language]) continue
           if (!localizedWhatsNewTexts[language]?.[text]) {
             throw new Error(`Missing ${language} What's New translation for: ${text}`)
           }
@@ -285,6 +300,7 @@ const publish = () => {
 
 const action = process.argv[2]
 if (action === "check") {
+  run("pnpm", ["run", "data:refresh"])
   const releaseData = assertReleaseNotes()
   writeReleaseNotes(releaseData)
   console.log(`What's New for ${tag} is complete. Changelog: ${releaseNotesPath()}`)

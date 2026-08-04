@@ -8,6 +8,7 @@ export const tradeHosts = [
   "https://fr.pathofexile.com/trade*",
   "https://es.pathofexile.com/trade*",
   "https://jp.pathofexile.com/trade*",
+  "https://pathofexile.tw/trade*",
   "https://poe.kakaogames.com/trade*",
   "https://poe2.kakaogames.com/trade*"
 ]
@@ -21,6 +22,13 @@ export const tradeHostPermissions = [
   "https://fr.pathofexile.com/*",
   "https://es.pathofexile.com/*",
   "https://jp.pathofexile.com/*",
+  "https://pathofexile.tw/*",
   "https://poe.kakaogames.com/*",
   "https://poe2.kakaogames.com/*"
 ]
+
+export const isNativeChineseTradeSite = () =>
+  typeof location !== "undefined" && location.hostname === "pathofexile.tw"
+
+export const isPoe2TradeSite = () =>
+  typeof location !== "undefined" && location.pathname.startsWith("/trade2/")

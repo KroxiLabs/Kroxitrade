@@ -19,9 +19,11 @@ import { storageService } from "./storage"
 const DEFAULT_BASE_URL = "https://www.pathofexile.com"
 const HISTORY_KEY = "trade-history"
 const MAX_HISTORY = 50
+const PENDING_BOOKMARK_TITLES_KEY = "pending-bookmark-titles"
+const PENDING_BOOKMARK_TITLE_TTL_MS = 2 * 60 * 1000
 const TRADE_REALMS = ["xbox", "sony", "poe2"]
 const TRADE_HOSTNAME_PATTERN =
-  /(?:^|\.)pathofexile\.com$|^poe(?:2)?\.kakaogames\.com$/i
+  /(?:^|\.)pathofexile\.com$|^pathofexile\.tw$|^poe(?:2)?\.kakaogames\.com$/i
 
 const safeDecodeURIComponent = (value: string | undefined) => {
   if (!value) return value
@@ -273,19 +275,77 @@ export class TradeLocationService {
     const history = await this.fetchHistory(location.version)
     if (history[0] && this.isEqual(history[0], location)) return
 
-    history.unshift({
+    const pendingTitle = await this.readPendingBookmarkTitle(location.slug)
+    const entry = {
       ...location,
       id: uniqueId(),
       title:
+        pendingTitle ||
         searchPanelService.recommendTitle() ||
         translate(get(languageStore), "history.untitledSearch"),
       createdAt: new Date().toISOString()
-    } as TradeLocationHistoryStruct)
+    } as TradeLocationHistoryStruct
+
+    if (await this.logHistoryViaBackground(location.version, entry)) return
+
+    history.unshift(entry)
 
     await storageService.setValue(
       this.getHistoryStorageKey(location.version),
       history.slice(0, MAX_HISTORY)
     )
+  }
+
+  async stashPendingBookmarkTitles(titlesBySlug: Record<string, string>) {
+    const existing =
+      (await storageService.getValue<Record<string, string>>(
+        PENDING_BOOKMARK_TITLES_KEY
+      )) || {}
+
+    for (const [slug, title] of Object.entries(titlesBySlug)) {
+      if (slug && title) {
+        existing[slug] = title
+      }
+    }
+
+    await storageService.setEphemeralValue(
+      PENDING_BOOKMARK_TITLES_KEY,
+      existing,
+      new Date(Date.now() + PENDING_BOOKMARK_TITLE_TTL_MS)
+    )
+  }
+
+  private async readPendingBookmarkTitle(slug: string) {
+    const titles = await storageService.getValue<Record<string, string>>(
+      PENDING_BOOKMARK_TITLES_KEY
+    )
+    return titles?.[slug]
+  }
+
+  private async logHistoryViaBackground(
+    version: TradeSiteVersion,
+    entry: TradeLocationHistoryStruct
+  ): Promise<boolean> {
+    if (!hasValidExtensionContext()) return false
+
+    try {
+      const response = await chrome.runtime.sendMessage({
+        query: "log-trade-history",
+        key: this.getHistoryStorageKey(version),
+        entry,
+        max: MAX_HISTORY
+      })
+      return (
+        !!response &&
+        typeof response === "object" &&
+        (response as { logged?: unknown }).logged === true
+      )
+    } catch (error) {
+      if (!isExtensionContextInvalidatedError(error)) {
+        console.warn("Could not write trade history through background", error)
+      }
+      return false
+    }
   }
 
   async fetchHistory(

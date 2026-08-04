@@ -1,6 +1,9 @@
 import type { TranslationValue } from "./types"
 
 export const englishTranslations: Record<string, TranslationValue> = {
+  "settings.tradeTranslationTitle": "Translate the trade site",
+  "settings.tradeTranslationDescription": "Show official trade filters and selectors in Chinese. Modifiers remain searchable in Chinese and English.",
+  "settings.tradeTranslationHint": "Only available on the international Path of Exile 1 trade site. The page reloads when you change it.",
   "whatsNew.item.mediumTextSizeTitle": "Medium text size works correctly",
   "whatsNew.item.mediumTextSizeDescription":
     "Selecting Medium in General settings now keeps your preferred text size after the extension reloads.",
@@ -30,6 +33,17 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "whatsNew.releaseBadge": "Generated from recent changes",
   "whatsNew.close": "Close what's new",
   "whatsNew.dismiss": "Got it",
+  "whatsNew.openReleaseNotes": "View release on GitHub",
+  "whatsNew.item.chineseTradeTranslationTitle": "Chinese trade-site translation",
+  "whatsNew.item.chineseTradeTranslationDescription": "The extension now includes Traditional and Simplified Chinese, translates the international PoE1 trade site, and supports the Taiwan trade server while searches keep working in Chinese and English.",
+  "whatsNew.item.archiveBookmarksTitle": "Archive completed bookmarks",
+  "whatsNew.item.archiveBookmarksDescription": "Archive completed saved searches inside their folder, restore them later, and switch between active and archived entries.",
+  "whatsNew.item.gemReferenceLinksTitle": "Gem reference links",
+  "whatsNew.item.gemReferenceLinksDescription": "Skill gems now show Wiki links, plus PoeDB links for PoE1.",
+  "whatsNew.item.githubReleaseNotesTitle": "Full release notes on GitHub",
+  "whatsNew.item.githubReleaseNotesDescription": "The What's New dialog now links directly to the matching GitHub release.",
+  "whatsNew.item.historyReliabilityTitle": "More reliable search history",
+  "whatsNew.item.historyReliabilityDescription": "History keeps saved-search titles and serializes simultaneous writes so entries no longer overwrite each other.",
   "whatsNew.section.bookmarks": "Bookmarks",
   "whatsNew.section.features": "New features",
   "whatsNew.section.fixes": "Fixes",
@@ -249,6 +263,9 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "settings.equivalentRefreshUnavailable":
     "Open a trade league first to refresh the poe.ninja ratio.",
   "settings.quickFiltersTitle": "Quick Filter Presets",
+  "settings.autoFuzzyTitle": "Fuzzy Search by Default (~)",
+  "settings.autoFuzzyDescription":
+    "Automatically adds ~ while searching item and stat filters. Turn it off to use exact matching by default.",
   "settings.quickFiltersDescription":
     "Show or hide preset buttons injected above the trade site's Stat Filters.",
   "settings.quickFiltersPlacementTitle": "Display location",
@@ -393,6 +410,13 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "confirm.deleteFolderMessage": ({ title }) =>
     `This will permanently delete "${title}" and all saved trades inside it.`,
   "confirm.deleteTradeTitle": "Delete saved trade?",
+  "confirm.clearCompletedTitle": "Clear completed items?",
+  "confirm.clearCompletedMessage": ({ title }) =>
+    `This will permanently remove all completed items from "${title}".`,
+  "confirm.archiveCompletedTitle": "Archive completed items?",
+  "confirm.archive": "Archive",
+  "confirm.archiveCompletedMessage": ({ title }) =>
+    `This will archive all completed items in "${title}". They can be restored from this folder.`,
   "confirm.deleteTradeMessage": ({ title }) =>
     `This will permanently delete "${title}" from the folder.`,
   "history.clear": "Clear History",
@@ -424,7 +448,7 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "folder.expand": "Expand",
   "folder.editFolder": "Edit folder",
   "folder.restoreFolder": "Restore folder",
-  "folder.archiveFolder": "Archive folder",
+  "folder.archiveFolder": "Archive entire folder",
   "folder.exportFolder": "Export folder",
   "folder.deleteFolder": "Delete folder",
   "folder.dragTrade": "Drag to reorder",
@@ -445,6 +469,25 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "folder.duplicatedFolder": ({ title }) => `Duplicated folder "${title}"`,
   "folder.saveFolderChanges": "Save folder",
   "folder.saveCurrentSearch": "Save current search",
+  "folder.openInNewTab": "Open in new tab",
+  "folder.openAllInNewTabs": "Open all in new tabs",
+  "folder.openedTabs": ({ count }) => `Opened ${count} tab${count === 1 ? "" : "s"}`,
+  "folder.noTradesToOpen": "No saved searches to open.",
+  "folder.clearCompleted": "Clear completed items",
+  "folder.noCompletedItems": "No completed items to clear.",
+  "folder.clearedCompleted": ({ count }) =>
+    `Cleared ${count} completed item${count === 1 ? "" : "s"}`,
+  "folder.archiveCompleted": "Archive completed items",
+  "folder.archiveTrade": "Archive saved search",
+  "folder.restoreTrade": "Restore saved search",
+  "folder.noCompletedItemsToArchive": "No completed items to archive.",
+  "folder.archivedCompleted": ({ count }) =>
+    `Archived ${count} completed item${count === 1 ? "" : "s"}`,
+  "folder.showArchivedTrades": "Show archived searches",
+  "folder.showActiveTrades": "Show active searches",
+  "folder.restoreArchivedTrades": "Restore archived searches",
+  "folder.restoredArchivedTrades": ({ count }) =>
+    `Restored ${count} archived search${count === 1 ? "" : "es"}`,
   "folder.loadTradesError": "Couldn't load trades.",
   "folder.deleteTradeError": "Couldn't delete trade.",
   "folder.duplicateTradeError": "Couldn't duplicate trade.",

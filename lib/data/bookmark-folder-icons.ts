@@ -25,6 +25,7 @@ import iconPoe1Occultist from "../../assets/images/bookmark-folder/poe1/ascendan
 import iconPoe1Pathfinder from "../../assets/images/bookmark-folder/poe1/ascendancies/pathfinder.webp"
 import iconPoe1Raider from "../../assets/images/bookmark-folder/poe1/ascendancies/raider.webp"
 import iconPoe1Reliquarian from "../../assets/images/bookmark-folder/poe1/ascendancies/reliquarian.webp"
+import iconPoe1Luminary from "../../assets/images/bookmark-folder/poe1/ascendancies/luminary.webp"
 import iconPoe1Saboteur from "../../assets/images/bookmark-folder/poe1/ascendancies/saboteur.webp"
 import iconPoe1Scarab from "../../assets/images/bookmark-folder/poe1/currencies/scarab.webp"
 import iconPoe1Slayer from "../../assets/images/bookmark-folder/poe1/ascendancies/slayer.webp"
@@ -342,6 +343,14 @@ export const bookmarkFolderIconOptions: BookmarkFolderIconOption[] = [
     category: "ascendancy",
     characterClass: "Scion",
     url: iconPoe1Reliquarian
+  },
+   {
+    id: "poe1-luminary",
+    label: "Luminary",
+    version: "1",
+    category: "ascendancy",
+    characterClass: "Scion",
+    url: iconPoe1Luminary
   },
 
   // PoE 2 — Currencies

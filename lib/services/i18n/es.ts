@@ -1,6 +1,9 @@
 import type { TranslationValue } from "./types"
 
 export const spanishTranslations: Record<string, TranslationValue> = {
+  "settings.tradeTranslationTitle": "Traducir el sitio de trade",
+  "settings.tradeTranslationDescription": "Muestra los filtros y selectores oficiales en chino. Los modificadores se pueden buscar en chino e inglés.",
+  "settings.tradeTranslationHint": "Solo está disponible en el sitio internacional de trade de Path of Exile 1. La página se recarga al cambiarlo.",
   "whatsNew.item.mediumTextSizeTitle": "El tamaño de texto Mediano funciona correctamente",
   "whatsNew.item.mediumTextSizeDescription":
     "Al seleccionar Mediano en los ajustes Generales, se conserva el tamaño de texto preferido tras recargar la extensión.",
@@ -30,6 +33,17 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "whatsNew.releaseBadge": "Generado desde cambios recientes",
   "whatsNew.close": "Cerrar novedades",
   "whatsNew.dismiss": "Entendido",
+  "whatsNew.openReleaseNotes": "Ver versión en GitHub",
+  "whatsNew.item.chineseTradeTranslationTitle": "Traducción china del sitio de trade",
+  "whatsNew.item.chineseTradeTranslationDescription": "La extensión ahora incluye chino tradicional y simplificado, traduce el sitio internacional de trade de PoE1 y es compatible con el servidor de trade de Taiwán, manteniendo la búsqueda en chino e inglés.",
+  "whatsNew.item.archiveBookmarksTitle": "Archivar favoritos completados",
+  "whatsNew.item.archiveBookmarksDescription": "Archivá búsquedas guardadas completadas dentro de su carpeta, restauralas después y alterná entre entradas activas y archivadas.",
+  "whatsNew.item.gemReferenceLinksTitle": "Enlaces de referencia para gemas",
+  "whatsNew.item.gemReferenceLinksDescription": "Las gemas de habilidad ahora muestran enlaces a Wiki y, en PoE1, a PoeDB.",
+  "whatsNew.item.githubReleaseNotesTitle": "Notas de versión completas en GitHub",
+  "whatsNew.item.githubReleaseNotesDescription": "El diálogo de Novedades ahora enlaza directamente al release correspondiente de GitHub.",
+  "whatsNew.item.historyReliabilityTitle": "Historial de búsquedas más fiable",
+  "whatsNew.item.historyReliabilityDescription": "El historial conserva los títulos de búsquedas guardadas y serializa escrituras simultáneas para que las entradas no se sobrescriban.",
   "whatsNew.section.bookmarks": "Favoritos",
   "whatsNew.section.features": "Nuevas funciones",
   "whatsNew.section.fixes": "Correcciones",
@@ -254,6 +268,9 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "settings.equivalentRefreshUnavailable":
     "Abrí primero una liga de trade para recargar el ratio de poe.ninja.",
   "settings.quickFiltersTitle": "Presets rápidos de filtros",
+  "settings.autoFuzzyTitle": "Búsqueda flexible por defecto (~)",
+  "settings.autoFuzzyDescription":
+    "Agrega ~ automáticamente al buscar objetos y filtros de estadísticas. Desactivalo para usar coincidencias exactas por defecto.",
   "settings.quickFiltersDescription":
     "Mostrá u ocultá los botones de presets inyectados arriba de Stat Filters.",
   "settings.quickFiltersPlacementTitle": "Ubicación",
@@ -399,6 +416,13 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "confirm.deleteFolderMessage": ({ title }) =>
     `Esto eliminará permanentemente "${title}" y todos los trades guardados dentro.`,
   "confirm.deleteTradeTitle": "¿Eliminar trade guardado?",
+  "confirm.clearCompletedTitle": "¿Borrar elementos completados?",
+  "confirm.clearCompletedMessage": ({ title }) =>
+    `Esto eliminará permanentemente todos los elementos completados de "${title}".`,
+  "confirm.archiveCompletedTitle": "¿Archivar elementos completados?",
+  "confirm.archive": "Archivar",
+  "confirm.archiveCompletedMessage": ({ title }) =>
+    `Esto archivará todos los elementos completados de "${title}". Podés restaurarlos desde esta carpeta.`,
   "confirm.deleteTradeMessage": ({ title }) =>
     `Esto eliminará permanentemente "${title}" de la carpeta.`,
   "history.clear": "Borrar historial",
@@ -432,7 +456,7 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "folder.expand": "Expandir",
   "folder.editFolder": "Editar carpeta",
   "folder.restoreFolder": "Restaurar carpeta",
-  "folder.archiveFolder": "Archivar carpeta",
+  "folder.archiveFolder": "Archivar carpeta completa",
   "folder.exportFolder": "Exportar carpeta",
   "folder.deleteFolder": "Eliminar carpeta",
   "folder.dragTrade": "Arrastrar para reordenar",
@@ -453,6 +477,25 @@ export const spanishTranslations: Record<string, TranslationValue> = {
   "folder.duplicatedFolder": ({ title }) => `Carpeta "${title}" duplicada`,
   "folder.saveFolderChanges": "Guardar carpeta",
   "folder.saveCurrentSearch": "Guardar búsqueda actual",
+  "folder.openInNewTab": "Abrir en pestaña nueva",
+  "folder.openAllInNewTabs": "Abrir todo en pestañas nuevas",
+  "folder.openedTabs": ({ count }) => `Se abrieron ${count} pestaña${count === 1 ? "" : "s"}`,
+  "folder.noTradesToOpen": "No hay búsquedas guardadas para abrir.",
+  "folder.clearCompleted": "Borrar elementos completados",
+  "folder.noCompletedItems": "No hay elementos completados para borrar.",
+  "folder.clearedCompleted": ({ count }) =>
+    `Se borraron ${count} elemento${count === 1 ? "" : "s"} completado${count === 1 ? "" : "s"}`,
+  "folder.archiveCompleted": "Archivar elementos completados",
+  "folder.archiveTrade": "Archivar búsqueda guardada",
+  "folder.restoreTrade": "Restaurar búsqueda guardada",
+  "folder.noCompletedItemsToArchive": "No hay elementos completados para archivar.",
+  "folder.archivedCompleted": ({ count }) =>
+    `Se archivaron ${count} elemento${count === 1 ? "" : "s"} completado${count === 1 ? "" : "s"}`,
+  "folder.showArchivedTrades": "Mostrar búsquedas archivadas",
+  "folder.showActiveTrades": "Mostrar búsquedas activas",
+  "folder.restoreArchivedTrades": "Restaurar búsquedas archivadas",
+  "folder.restoredArchivedTrades": ({ count }) =>
+    `Se restauraron ${count} búsqueda${count === 1 ? "" : "s"} archivada${count === 1 ? "" : "s"}`,
   "folder.loadTradesError": "No se pudieron cargar los trades.",
   "folder.deleteTradeError": "No se pudo eliminar el trade.",
   "folder.duplicateTradeError": "No se pudo duplicar el trade.",
