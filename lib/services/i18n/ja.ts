@@ -2,6 +2,8 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const japaneseTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.reducedPermissionsTitle": "ブラウザー権限の削減",
+  "whatsNew.item.reducedPermissionsDescription": "拡張機能は Chrome のスクリプト実行権限と無制限ストレージ権限を必要としなくなりました。中国語 Trade データはより小さいローカルキャッシュを使用します。",
   "settings.tradeTranslationTitle": "トレードサイトを中国語化",
   "settings.tradeTranslationDescription": "公式のフィルターと選択項目を中国語で表示します。モッドは中国語と英語の両方で検索できます。",
   "settings.tradeTranslationHint": "国際版のPath of Exile 1トレードサイトでのみ利用できます。変更時にページが再読み込みされます。",

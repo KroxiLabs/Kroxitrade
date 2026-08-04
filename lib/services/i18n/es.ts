@@ -1,6 +1,8 @@
 import type { TranslationValue } from "./types"
 
 export const spanishTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.reducedPermissionsTitle": "Menos permisos del navegador",
+  "whatsNew.item.reducedPermissionsDescription": "La extensión ya no requiere los permisos de scripting ni almacenamiento ilimitado de Chrome. Los datos de Trade chino ahora usan una caché local más pequeña.",
   "settings.tradeTranslationTitle": "Traducir el sitio de trade",
   "settings.tradeTranslationDescription": "Muestra los filtros y selectores oficiales en chino. Los modificadores se pueden buscar en chino e inglés.",
   "settings.tradeTranslationHint": "Solo está disponible en el sitio internacional de trade de Path of Exile 1. La página se recarga al cambiarlo.",

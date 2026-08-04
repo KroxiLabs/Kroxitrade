@@ -2,6 +2,8 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const germanTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.reducedPermissionsTitle": "Weniger Browser-Berechtigungen",
+  "whatsNew.item.reducedPermissionsDescription": "Die Erweiterung benötigt keine Chrome-Berechtigungen für Scripting oder unbegrenzten Speicher mehr. Chinesische Trade-Daten verwenden jetzt einen kleineren lokalen Cache.",
   "settings.tradeTranslationTitle": "Handelsseite übersetzen",
   "settings.tradeTranslationDescription": "Zeigt offizielle Filter und Auswahlfelder auf Chinesisch. Modifikatoren bleiben auf Chinesisch und Englisch suchbar.",
   "settings.tradeTranslationHint": "Nur auf der internationalen Path of Exile 1-Handelsseite verfügbar. Die Seite wird bei einer Änderung neu geladen.",
