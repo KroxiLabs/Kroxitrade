@@ -1,13 +1,15 @@
+import { germanTranslations } from "./de"
 import { englishTranslations } from "./en"
 import { spanishTranslations } from "./es"
-import { portugueseTranslations } from "./pt"
-import { germanTranslations } from "./de"
 import { frenchTranslations } from "./fr"
-import { russianTranslations } from "./ru"
-import { thaiTranslations } from "./th"
 import { japaneseTranslations } from "./ja"
 import { koreanTranslations } from "./ko"
+import { portugueseTranslations } from "./pt"
+import { russianTranslations } from "./ru"
+import { thaiTranslations } from "./th"
 import type { TranslationValue } from "./types"
+import { simplifiedChineseTranslations } from "./zh-cn"
+import { traditionalChineseTranslations } from "./zh-tw"
 
 export const translations = {
   en: englishTranslations,
@@ -17,7 +19,17 @@ export const translations = {
 export const englishFallback = englishTranslations
 
 export const extendedTranslations: Record<
-  "en" | "es" | "pt" | "ru" | "th" | "de" | "fr" | "ja" | "ko",
+  | "en"
+  | "es"
+  | "pt"
+  | "ru"
+  | "th"
+  | "de"
+  | "fr"
+  | "ja"
+  | "ko"
+  | "zh-cn"
+  | "zh-tw",
   Record<string, TranslationValue>
 > = {
   ...translations,
@@ -27,5 +39,7 @@ export const extendedTranslations: Record<
   de: { ...englishFallback, ...germanTranslations },
   fr: { ...englishFallback, ...frenchTranslations },
   ja: { ...englishFallback, ...japaneseTranslations },
-  ko: { ...englishFallback, ...koreanTranslations }
+  ko: { ...englishFallback, ...koreanTranslations },
+  "zh-cn": { ...englishFallback, ...simplifiedChineseTranslations },
+  "zh-tw": { ...englishFallback, ...traditionalChineseTranslations }
 }

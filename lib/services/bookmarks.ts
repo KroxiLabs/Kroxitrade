@@ -698,8 +698,15 @@ export class BookmarksService {
     const trades = await this.fetchTradesByFolderId(targetFolderId, {
       force: true
     })
+    const originalIndex = trades.findIndex((item) => item.id === trade.id)
+    const updatedTrades = [...trades]
+    updatedTrades.splice(
+      originalIndex === -1 ? updatedTrades.length : originalIndex + 1,
+      0,
+      newTrade
+    )
     const persisted = await this.persistTrades(
-      [...trades, newTrade],
+      updatedTrades,
       targetFolderId
     )
     await this.refresh()

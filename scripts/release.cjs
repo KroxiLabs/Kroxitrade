@@ -12,7 +12,19 @@ const tag = `v${version}`
 const branch = `release-${tag}`
 const originRepository = "javijec/PoeTradePlus"
 const upstreamRepository = "KroxiLabs/Kroxitrade"
-const languages = ["en", "es", "pt", "ru", "th", "de", "fr", "ja", "ko"]
+const languages = [
+  "en",
+  "es",
+  "pt",
+  "ru",
+  "th",
+  "de",
+  "fr",
+  "ja",
+  "ko",
+  "zh-cn",
+  "zh-tw"
+]
 
 const run = (command, args, options = {}) => {
   const useNpmCli = command === "npm" && !!process.env.npm_execpath
