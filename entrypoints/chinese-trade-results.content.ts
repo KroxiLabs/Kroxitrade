@@ -5,9 +5,16 @@ import {
   normalizeEnglishTradeText,
   resolveTradeDisplayText
 } from "~/lib/services/chinese-trade/text-transform"
+import type { ChineseStatTemplates } from "~/lib/services/chinese-trade/stat-cache-transform"
 import { getTradeTranslationState } from "~/lib/services/trade-translation"
 
 type Modifier = { tw: string; us?: string; opt?: Record<string, string> }
+
+let bundledTemplatesPromise: Promise<ChineseStatTemplates> | undefined
+const loadBundledTemplates = () =>
+  (bundledTemplatesPromise ??= import("~/data/chinese-trade/stat-templates.json").then(
+    ({ default: templates }) => templates as ChineseStatTemplates
+  ))
 
 const isChinese = (value: string) => /[一-鿿]/.test(value)
 const numberTokens = /[+-]?\d+(?:\.\d+)?/g
@@ -56,6 +63,15 @@ export default defineContentScript({
     let templates: Record<string, string> = {}
     let modifiers: Record<string, Modifier> = {}
 
+    try {
+      const bundledTemplates = await loadBundledTemplates()
+      templates = state.language === "zh-cn"
+        ? bundledTemplates.cn ?? {}
+        : bundledTemplates.tw ?? {}
+    } catch {
+      // Result modifiers still use the smaller stat-id cache as a fallback.
+    }
+
     const translate = (element: HTMLElement) => {
       const content =
         element.querySelector<HTMLElement>("[data-field]") ??
@@ -79,11 +95,7 @@ export default defineContentScript({
     }
 
     const applyCache = (data: Record<string, unknown>) => {
-      const nextTemplates = data[locale.templates]
       const nextModifiers = data[locale.modifiers]
-      if (nextTemplates && typeof nextTemplates === "object") {
-        templates = nextTemplates as Record<string, string>
-      }
       if (nextModifiers && typeof nextModifiers === "object") {
         modifiers = nextModifiers as Record<string, Modifier>
       }
@@ -91,13 +103,13 @@ export default defineContentScript({
     }
 
     try {
-      chrome.storage.local.get([locale.templates, locale.modifiers], (data) =>
+      chrome.storage.local.get([locale.modifiers], (data) =>
         applyCache(data as Record<string, unknown>)
       )
       chrome.storage.onChanged.addListener((changes, area) => {
         if (area !== "local") return
         const changed: Record<string, unknown> = {}
-        for (const key of [locale.templates, locale.modifiers]) {
+        for (const key of [locale.modifiers]) {
           if (changes[key]) changed[key] = changes[key].newValue
         }
         if (Object.keys(changed).length) applyCache(changed)

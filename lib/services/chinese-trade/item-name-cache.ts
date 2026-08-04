@@ -259,8 +259,6 @@ export const buildChineseItemNameCache = async (force = false): Promise<void> =>
       [timestampKey]: Date.now(),
       [chineseTradeStorage.traditional.itemNames]: traditionalMap,
       [chineseTradeStorage.simplified.itemNames]: simplifiedMap,
-      [chineseTradeStorage.traditional.items]: traditional.result,
-      [chineseTradeStorage.simplified.items]: simplified.result,
       [chineseTradeStorage.traditional.reverseNames]: traditional.reverse,
       [chineseTradeStorage.simplified.reverseNames]: simplified.reverse
     })

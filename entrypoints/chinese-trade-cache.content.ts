@@ -61,10 +61,7 @@ export default defineContentScript({
       ? chineseTradeStorage.simplified
       : chineseTradeStorage.traditional
     const targets: Array<[string, (typeof tradeCacheKeys)[number]]> = [
-      [locale.stats, "lscache-tradestats"],
-      [locale.staticData, "lscache-tradedata"],
-      [locale.filters, "lscache-tradefilters"],
-      [locale.items, "lscache-tradeitems"]
+      [locale.stats, "lscache-tradestats"]
     ]
 
     let values: Record<string, unknown>

@@ -307,14 +307,9 @@
     const source = language === "zh-cn"
       ? chineseTradeStorage.simplified
       : chineseTradeStorage.traditional;
-    const sourceKeys = [source.stats, source.staticData, source.filters, source.items];
+    const sourceKeys = [source.stats];
     const cache = await readChineseTradeCache(sourceKeys);
-    const targets: Record<string, string> = {
-      stats: "lscache-tradestats",
-      static: "lscache-tradedata",
-      filters: "lscache-tradefilters",
-      items: "lscache-tradeitems"
-    };
+    const targets: Record<string, string> = { stats: "lscache-tradestats" };
 
     let injected = false;
     for (const [[, target], sourceKey] of Object.entries(targets).map(

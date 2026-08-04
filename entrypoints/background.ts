@@ -1,13 +1,8 @@
 import { registerBackgroundHandlers } from "~/lib/background"
 import { buildChineseItemNameCache } from "~/lib/services/chinese-trade/item-name-cache"
 import { refreshChineseTradeCache } from "~/lib/services/chinese-trade/cache-builder"
-import {
-  getChineseTradeLanguage,
-  getTradeTranslationState
-} from "~/lib/services/trade-translation"
+import { getTradeTranslationState } from "~/lib/services/trade-translation"
 import { chineseTradeMessage } from "~/lib/services/chinese-trade/contract"
-
-const SUPPLEMENT_FILE = "content-scripts/chinese-trade-supplement.js"
 
 const prepareChineseTradeCaches = async (force = false) => {
   if (!force && !(await getTradeTranslationState()).enabled) return
@@ -44,22 +39,6 @@ const isTaiwanPoe1Trade = (url: string | undefined) => {
   }
 }
 
-const injectChineseSupplement = async (tabId: number, url?: string) => {
-  const nativeTaiwan = isTaiwanPoe1Trade(url)
-  if (!nativeTaiwan && !isInternationalPoe1Trade(url)) return
-  if (!(await getChineseTradeLanguage())) return
-  const state = await getTradeTranslationState()
-  if (!nativeTaiwan && !state.enabled) return
-  try {
-    await chrome.scripting.executeScript({
-      target: { tabId },
-      files: [SUPPLEMENT_FILE]
-    })
-  } catch {
-    // The tab may have navigated away while the settings read was pending.
-  }
-}
-
 const reloadPoe1TradeTabs = async () => {
   const tabs = await chrome.tabs.query({})
   await Promise.all(
@@ -86,11 +65,6 @@ export default defineBackground({
   main() {
     registerBackgroundHandlers()
     void prepareChineseTradeCaches()
-    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
-      if (changeInfo.status === "loading") {
-        void injectChineseSupplement(tabId, tab.url)
-      }
-    })
     chrome.runtime.onInstalled.addListener(() => {
       void prepareChineseTradeCaches()
     })
