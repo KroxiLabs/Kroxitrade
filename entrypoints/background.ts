@@ -1,15 +1,40 @@
 import { registerBackgroundHandlers } from "~/lib/background"
+import { refreshChineseTradeCache } from "~/lib/services/chinese-trade/cache-builder"
+import { buildChineseItemNameCache } from "~/lib/services/chinese-trade/item-name-cache"
+import { loadChineseStatTemplates } from "~/lib/services/chinese-trade/stat-templates"
 import { getTradeTranslationState } from "~/lib/services/trade-translation"
 import { chineseTradeMessage } from "~/lib/services/chinese-trade/contract"
 
-const prepareChineseTradeCaches = async (force = false) => {
-  if (!force && !(await getTradeTranslationState()).enabled) return
-  const [{ refreshChineseTradeCache }, { buildChineseItemNameCache }] =
-    await Promise.all([
-      import("~/lib/services/chinese-trade/cache-builder"),
-      import("~/lib/services/chinese-trade/item-name-cache")
-    ])
-  await Promise.all([refreshChineseTradeCache(force), buildChineseItemNameCache(force)])
+const getStorageUsage = async () => {
+  const [localBytes, syncBytes] = await Promise.all([
+    chrome.storage.local.getBytesInUse(null),
+    chrome.storage.sync.getBytesInUse(null)
+  ])
+
+  return {
+    local: { usedBytes: localBytes, quotaBytes: chrome.storage.local.QUOTA_BYTES },
+    sync: { usedBytes: syncBytes, quotaBytes: chrome.storage.sync.QUOTA_BYTES }
+  }
+}
+
+const getErrorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : String(error)
+
+const prepareChineseTradeCaches = async (
+  force = false,
+  requestedLanguage?: unknown
+) => {
+  const state = await getTradeTranslationState()
+  const language = requestedLanguage === "zh-cn" || requestedLanguage === "zh-tw"
+    ? requestedLanguage
+    : state.language
+  if (language !== "zh-cn" && language !== "zh-tw") return
+  if (!force && !state.enabled) return
+  const [cacheReady] = await Promise.all([
+    refreshChineseTradeCache(force, language),
+    buildChineseItemNameCache(force, language)
+  ])
+  if (!cacheReady) throw new Error("Chinese Trade cache could not be prepared")
 }
 
 const isInternationalPoe1Trade = (url: string | undefined) => {
@@ -73,9 +98,15 @@ export default defineBackground({
     })
     chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
       if (request?.type === chineseTradeMessage.rebuildCache) {
-        prepareChineseTradeCaches(true)
+        prepareChineseTradeCaches(true, request.language)
           .then(() => sendResponse({ ok: true }))
-          .catch(() => sendResponse({ ok: false }))
+          .catch(async (error) =>
+            sendResponse({
+              ok: false,
+              error: getErrorMessage(error),
+              storage: await getStorageUsage().catch(() => undefined)
+            })
+          )
         return true
       }
 
@@ -83,9 +114,6 @@ export default defineBackground({
         getTradeTranslationState()
           .then(async (state) => {
             if (!state.enabled) return {}
-            const { loadChineseStatTemplates } = await import(
-              "~/lib/services/chinese-trade/stat-templates"
-            )
             const templates = await loadChineseStatTemplates()
             return state.language === "zh-cn"
               ? templates.cn ?? {}

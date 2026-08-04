@@ -5,16 +5,9 @@ import { chineseTradeStorage } from "~/lib/services/chinese-trade/contract"
 import { toSimplifiedChinese } from "~/lib/services/chinese-trade/simplifier"
 import { getChineseSupplementState } from "~/lib/services/trade-translation"
 
-const areas = [
-  ".search-advanced",
-  ".search-advanced-items",
-  ".search-advanced-pane",
-  ".search-form",
-  ".search-bar",
-  ".search-results",
-  ".resultset",
-  "#results"
-].join(", ")
+// Trade's header, navigation and dialogs sit outside the search/result
+// containers. Scan the page root so every known local UI phrase is covered.
+const areas = "body"
 
 const ignoredTags = new Set(["SCRIPT", "STYLE", "INPUT", "TEXTAREA", "SELECT", "NOSCRIPT"])
 const normalize = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, "")

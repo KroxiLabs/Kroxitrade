@@ -321,7 +321,12 @@ async function persistSynced(key: string, value: unknown): Promise<boolean> {
     null,
     SETTINGS_STORAGE_AREA
   )
-  if (!persisted) return false
+  if (!persisted) {
+    // A full or temporarily unavailable browser Sync area must not prevent a
+    // user from changing an extension setting. The next successful load will
+    // retry the normal local-to-Sync migration.
+    return storageService.setValue(key, value)
+  }
 
   await storageService.deleteValue(key)
   return true

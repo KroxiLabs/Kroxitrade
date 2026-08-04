@@ -12,10 +12,16 @@ const TAIWAN_TRADE_API = "https://pathofexile.tw/api/trade/data/"
 const INTERNATIONAL_TRADE_API = "https://www.pathofexile.com/api/trade/data/"
 const CACHE_MAX_AGE_MS = 8 * 60 * 60 * 1000
 
-const readCacheTimestamp = (): Promise<number> =>
+const readCache = (language: "zh-tw" | "zh-cn"): Promise<Record<string, unknown>> =>
   new Promise((resolve) =>
-    chrome.storage.local.get([chineseTradeStorage.updatedAt], (stored) =>
-      resolve(Number(stored[chineseTradeStorage.updatedAt]) || 0)
+    chrome.storage.local.get(
+      [
+        chineseTradeStorage.updatedAt,
+        language === "zh-cn"
+          ? chineseTradeStorage.simplified.stats
+          : chineseTradeStorage.traditional.stats
+      ],
+      (stored) => resolve(stored as Record<string, unknown>)
     )
   )
 
@@ -31,19 +37,24 @@ const writeCache = (payload: Record<string, unknown>): Promise<void> =>
     })
   )
 
-const removeSupersededCache = (): Promise<void> =>
+const removeSupersededCache = (language: "zh-tw" | "zh-cn"): Promise<void> =>
   new Promise((resolve, reject) =>
     chrome.storage.local.remove(
-      [
-        "poeTradePlus.chineseTrade.traditional.static",
-        "poeTradePlus.chineseTrade.simplified.static",
-        "poeTradePlus.chineseTrade.traditional.filters",
-        "poeTradePlus.chineseTrade.simplified.filters",
-        "poeTradePlus.chineseTrade.traditional.items",
-        "poeTradePlus.chineseTrade.simplified.items",
-        "poeTradePlus.chineseTrade.traditional.templates",
-        "poeTradePlus.chineseTrade.simplified.templates"
-      ],
+      (() => {
+        const inactive = language === "zh-cn"
+          ? chineseTradeStorage.traditional
+          : chineseTradeStorage.simplified
+        return [
+          "poeTradePlus.chineseTrade.traditional.items",
+          "poeTradePlus.chineseTrade.simplified.items",
+          "poeTradePlus.chineseTrade.traditional.templates",
+          "poeTradePlus.chineseTrade.simplified.templates",
+          inactive.stats,
+          inactive.modifiers,
+          inactive.static,
+          inactive.filters
+        ]
+      })(),
       () => {
         const error = chrome.runtime.lastError
         if (error) reject(new Error(error.message))
@@ -91,50 +102,79 @@ const applySimplifiedMercenaryNames = (
  * Rebuild the disposable Chinese Trade cache from official metadata and local
  * reviewed dictionaries. Stored ids are never translated, only display text.
  */
-export const refreshChineseTradeCache = async (force = false): Promise<void> => {
+export const refreshChineseTradeCache = async (
+  force = false,
+  language: "zh-tw" | "zh-cn" = "zh-tw"
+): Promise<boolean> => {
   try {
+    const cache = await readCache(language)
+    const statsKey = language === "zh-cn"
+      ? chineseTradeStorage.simplified.stats
+      : chineseTradeStorage.traditional.stats
     if (
       !force &&
-      !shouldRefreshChineseTradeCache(await readCacheTimestamp(), Date.now(), CACHE_MAX_AGE_MS)
+      Array.isArray(cache[statsKey]) &&
+      !shouldRefreshChineseTradeCache(
+        Number(cache[chineseTradeStorage.updatedAt]) || 0,
+        Date.now(),
+        CACHE_MAX_AGE_MS
+      )
     ) {
-      return
+      return true
     }
 
-    const [taiwanStats, internationalStats, templates] = await Promise.all([
+    const [taiwanStats, internationalStats, templates, taiwanStatic, taiwanFilters] = await Promise.all([
       fetchTradeResult(`${TAIWAN_TRADE_API}stats`),
       fetchTradeResult(`${INTERNATIONAL_TRADE_API}stats`).catch(() => null),
-      loadChineseStatTemplates()
+      loadChineseStatTemplates(),
+      fetchTradeResult(`${TAIWAN_TRADE_API}static`).catch(() => null),
+      fetchTradeResult(`${TAIWAN_TRADE_API}filters`).catch(() => null)
     ])
-    if (!taiwanStats) return
+    if (!taiwanStats) {
+      throw new Error("Taiwan Trade returned no stat data")
+    }
 
-    const traditionalStats = buildLocalizedStatCache(
-      taiwanStats,
-      internationalStats,
-      templates,
-      "tw"
-    )
-    const simplifiedStats = convertDeep(
-      buildLocalizedStatCache(taiwanStats, internationalStats, templates, "cn")
-    )
-    applySimplifiedMercenaryNames(simplifiedStats, await readSimplifiedItemNames())
+    const localizedStats = language === "zh-cn"
+      ? convertDeep(
+          buildLocalizedStatCache(taiwanStats, internationalStats, templates, "cn")
+        )
+      : buildLocalizedStatCache(taiwanStats, internationalStats, templates, "tw")
+    if (language === "zh-cn") {
+      applySimplifiedMercenaryNames(localizedStats, await readSimplifiedItemNames())
+    }
+
+    const modifiers = buildModifierTranslationMap(taiwanStats, internationalStats)
+    const modifierKey = language === "zh-cn"
+      ? chineseTradeStorage.simplified.modifiers
+      : chineseTradeStorage.traditional.modifiers
+    const staticKey = language === "zh-cn"
+      ? chineseTradeStorage.simplified.static
+      : chineseTradeStorage.traditional.static
+    const filtersKey = language === "zh-cn"
+      ? chineseTradeStorage.simplified.filters
+      : chineseTradeStorage.traditional.filters
 
     const payload: Record<string, unknown> = {
       [chineseTradeStorage.updatedAt]: Date.now(),
-      [chineseTradeStorage.traditional.stats]: traditionalStats,
-      [chineseTradeStorage.simplified.stats]: simplifiedStats,
-      [chineseTradeStorage.traditional.modifiers]: buildModifierTranslationMap(
-        taiwanStats,
-        internationalStats
-      ),
-      [chineseTradeStorage.simplified.modifiers]: {}
+      [statsKey]: localizedStats,
+      [modifierKey]: language === "zh-cn" ? convertDeep(modifiers) : modifiers
     }
-    payload[chineseTradeStorage.simplified.modifiers] = convertDeep(
-      payload[chineseTradeStorage.traditional.modifiers]
-    )
+    if (taiwanStatic) {
+      payload[staticKey] = language === "zh-cn"
+        ? convertDeep(taiwanStatic)
+        : taiwanStatic
+    }
+    if (taiwanFilters) {
+      payload[filtersKey] = language === "zh-cn"
+        ? convertDeep(taiwanFilters)
+        : taiwanFilters
+    }
 
-    await removeSupersededCache()
+    await removeSupersededCache(language)
     await writeCache(payload)
+    return true
   } catch (error) {
     console.error("[PoeTradePlus] Failed to refresh the Chinese Trade cache", error)
+    throw error
   }
 }

@@ -267,10 +267,16 @@
     }
   }
 
-  function rebuildChineseTradeData(): Promise<boolean> {
+  function rebuildChineseTradeData(language?: "zh-tw" | "zh-cn"): Promise<boolean> {
     return new Promise((resolve) => {
       try {
-        chrome.runtime.sendMessage({ type: chineseTradeMessage.rebuildCache }, (reply) => {
+        chrome.runtime.sendMessage({ type: chineseTradeMessage.rebuildCache, language }, (reply) => {
+          if (reply?.ok !== true) {
+            console.error("[PoeTradePlus] Chinese Trade cache rebuild failed", {
+              error: reply?.error ?? chrome.runtime.lastError?.message ?? "No response from background",
+              storage: reply?.storage
+            });
+          }
           resolve(reply?.ok === true);
         });
       } catch {
@@ -302,7 +308,7 @@
   }
 
   async function prepareChineseTradeCache(language: "zh-tw" | "zh-cn") {
-    if (!(await rebuildChineseTradeData())) return false;
+    if (!(await rebuildChineseTradeData(language))) return false;
 
     const source = language === "zh-cn"
       ? chineseTradeStorage.simplified

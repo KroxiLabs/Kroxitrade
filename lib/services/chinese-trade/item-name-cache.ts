@@ -216,12 +216,20 @@ const buildTraditionalMap = (
   return translations
 }
 
-export const buildChineseItemNameCache = async (force = false): Promise<void> => {
+export const buildChineseItemNameCache = async (
+  force = false,
+  language: "zh-tw" | "zh-cn" = "zh-tw"
+): Promise<void> => {
   const timestampKey = chineseTradeStorage.itemNamesUpdatedAt
   try {
-    const stored = await readLocal([timestampKey])
+    const active = language === "zh-cn"
+      ? chineseTradeStorage.simplified
+      : chineseTradeStorage.traditional
+    const stored = await readLocal([timestampKey, active.itemNames, active.reverseNames])
     if (
       !force &&
+      typeof stored[active.itemNames] === "object" &&
+      typeof stored[active.reverseNames] === "object" &&
       !shouldRefreshChineseTradeCache(Number(stored[timestampKey]) || 0, Date.now(), CACHE_AGE)
     ) {
       return
@@ -241,26 +249,31 @@ export const buildChineseItemNameCache = async (force = false): Promise<void> =>
       usStatic.result ?? [],
       twStatic.result ?? []
     )
-    const simplifiedMap = createSimplifiedMap(traditionalMap)
-    addScryingOrbNames(international, simplifiedMap, SCRYING_MAP_NAMES_CN, SCRYING_ORB_BASE_CN)
+    if (language === "zh-cn") {
+      const simplifiedMap = createSimplifiedMap(traditionalMap)
+      addScryingOrbNames(international, simplifiedMap, SCRYING_MAP_NAMES_CN, SCRYING_ORB_BASE_CN)
+      const simplified = localizeItems(international, simplifiedMap, uniqueNames.cn ?? {})
+      await chrome.storage.local.remove([
+        chineseTradeStorage.traditional.itemNames,
+        chineseTradeStorage.traditional.reverseNames
+      ])
+      await writeLocal({
+        [timestampKey]: Date.now(),
+        [chineseTradeStorage.simplified.itemNames]: simplifiedMap,
+        [chineseTradeStorage.simplified.reverseNames]: simplified.reverse
+      })
+      return
+    }
 
-    const traditional = localizeItems(
-      international,
-      traditionalMap,
-      uniqueNames.tw ?? {}
-    )
-    const simplified = localizeItems(
-      international,
-      simplifiedMap,
-      uniqueNames.cn ?? {}
-    )
-
+    const traditional = localizeItems(international, traditionalMap, uniqueNames.tw ?? {})
+    await chrome.storage.local.remove([
+      chineseTradeStorage.simplified.itemNames,
+      chineseTradeStorage.simplified.reverseNames
+    ])
     await writeLocal({
       [timestampKey]: Date.now(),
       [chineseTradeStorage.traditional.itemNames]: traditionalMap,
-      [chineseTradeStorage.simplified.itemNames]: simplifiedMap,
-      [chineseTradeStorage.traditional.reverseNames]: traditional.reverse,
-      [chineseTradeStorage.simplified.reverseNames]: simplified.reverse
+      [chineseTradeStorage.traditional.reverseNames]: traditional.reverse
     })
   } catch (error) {
     console.error("[PoeTradePlus] Failed to build the Chinese Trade item cache", error)
