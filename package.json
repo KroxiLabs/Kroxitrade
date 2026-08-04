@@ -24,6 +24,7 @@
     "build:chrome": "node scripts/wxt-runner.cjs build",
     "build:firefox": "node scripts/wxt-runner.cjs build -b firefox",
     "build": "pnpm run build:chrome && pnpm run build:firefox",
+    "check:bundle": "pnpm run build:chrome && node scripts/check-bundle-budget.cjs chrome-mv3",
     "version": "node scripts/bump-version.cjs",
     "zip:chrome": "node scripts/wxt-runner.cjs zip",
     "zip:firefox": "node scripts/wxt-runner.cjs zip -b firefox",

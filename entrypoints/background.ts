@@ -6,15 +6,36 @@ import { getTradeTranslationState } from "~/lib/services/trade-translation"
 import { chineseTradeMessage } from "~/lib/services/chinese-trade/contract"
 
 const getStorageUsage = async () => {
-  const [localBytes, syncBytes] = await Promise.all([
-    chrome.storage.local.getBytesInUse(null),
-    chrome.storage.sync.getBytesInUse(null)
-  ])
-
-  return {
-    local: { usedBytes: localBytes, quotaBytes: chrome.storage.local.QUOTA_BYTES },
-    sync: { usedBytes: syncBytes, quotaBytes: chrome.storage.sync.QUOTA_BYTES }
+  const measure = async (
+    area: (chrome.storage.StorageArea & {
+      QUOTA_BYTES?: number
+      QUOTA_BYTES_PER_ITEM?: number
+    }) | undefined
+  ) => {
+    if (!area) return { available: false }
+    try {
+      const usedBytes = await area.getBytesInUse(null)
+      return {
+        available: true,
+        usedBytes,
+        quotaBytes: area.QUOTA_BYTES,
+        quotaBytesPerItem: area.QUOTA_BYTES_PER_ITEM
+      }
+    } catch (error) {
+      return {
+        available: false,
+        error: getErrorMessage(error)
+      }
+    }
   }
+
+  const [local, sync, session, managed] = await Promise.all([
+    measure(chrome.storage.local),
+    measure(chrome.storage.sync),
+    measure(chrome.storage.session),
+    measure(chrome.storage.managed)
+  ])
+  return { local, sync, session, managed }
 }
 
 const getErrorMessage = (error: unknown) =>
@@ -99,7 +120,11 @@ export default defineBackground({
     chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
       if (request?.type === chineseTradeMessage.rebuildCache) {
         prepareChineseTradeCaches(true, request.language)
-          .then(() => sendResponse({ ok: true }))
+          .then(async () => {
+            const storage = await getStorageUsage()
+            console.info("[PoeTradePlus] Chrome storage usage", storage)
+            sendResponse({ ok: true, storage })
+          })
           .catch(async (error) =>
             sendResponse({
               ok: false,

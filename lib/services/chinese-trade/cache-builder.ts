@@ -15,12 +15,17 @@ const CACHE_MAX_AGE_MS = 8 * 60 * 60 * 1000
 const readCache = (language: "zh-tw" | "zh-cn"): Promise<Record<string, unknown>> =>
   new Promise((resolve) =>
     chrome.storage.local.get(
-      [
-        chineseTradeStorage.updatedAt,
-        language === "zh-cn"
-          ? chineseTradeStorage.simplified.stats
-          : chineseTradeStorage.traditional.stats
-      ],
+      (() => {
+        const active = language === "zh-cn"
+          ? chineseTradeStorage.simplified
+          : chineseTradeStorage.traditional
+        return [
+          chineseTradeStorage.updatedAt,
+          active.stats,
+          active.static,
+          active.filters
+        ]
+      })(),
       (stored) => resolve(stored as Record<string, unknown>)
     )
   )
@@ -37,7 +42,8 @@ const writeCache = (payload: Record<string, unknown>): Promise<void> =>
     })
   )
 
-const removeSupersededCache = (language: "zh-tw" | "zh-cn"): Promise<void> =>
+/** Keep only the active locale and discard cache formats from older releases. */
+const pruneChineseTradeCache = (language: "zh-tw" | "zh-cn"): Promise<void> =>
   new Promise((resolve, reject) =>
     chrome.storage.local.remove(
       (() => {
@@ -108,18 +114,22 @@ export const refreshChineseTradeCache = async (
 ): Promise<boolean> => {
   try {
     const cache = await readCache(language)
-    const statsKey = language === "zh-cn"
-      ? chineseTradeStorage.simplified.stats
-      : chineseTradeStorage.traditional.stats
+    const active = language === "zh-cn"
+      ? chineseTradeStorage.simplified
+      : chineseTradeStorage.traditional
+    const statsKey = active.stats
     if (
       !force &&
       Array.isArray(cache[statsKey]) &&
+      Array.isArray(cache[active.static]) &&
+      Array.isArray(cache[active.filters]) &&
       !shouldRefreshChineseTradeCache(
         Number(cache[chineseTradeStorage.updatedAt]) || 0,
         Date.now(),
         CACHE_MAX_AGE_MS
       )
     ) {
+      await pruneChineseTradeCache(language)
       return true
     }
 
@@ -170,7 +180,7 @@ export const refreshChineseTradeCache = async (
         : taiwanFilters
     }
 
-    await removeSupersededCache(language)
+    await pruneChineseTradeCache(language)
     await writeCache(payload)
     return true
   } catch (error) {
