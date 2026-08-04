@@ -19,60 +19,74 @@ The project currently focuses on making recurring trade searches easier to save,
 
 ## Features
 
-### Sidebar workflow
+### 📌 Bookmark management
 
-- **Integrated trade sidebar:** Poe Trade Plus mounts directly inside official Path of Exile trade pages, including PoE1, PoE2, and localized trade hosts.
-- **Resizable layout:** the sidebar width can be adjusted and persisted locally.
-- **Minimize and restore mode:** collapse the panel into a floating pill to recover screen space.
-- **Left or right docking:** choose which side of the trade site the panel should live on.
-- **Trade-site-aware layout shift:** the page adapts to the sidebar width so the official site remains usable.
-- **Popup shortcuts:** optional grouped links for Path of Exile Wiki, Path of Exile 2 Wiki, Path of Regex, Craft of Exile, PoEDb, PoE2Db, and poe.ninja.
+- Organize saved searches into folders aware of the active Path of Exile trade version.
+- Create, rename, archive, restore, duplicate, and reorder folders or saved searches instantly.
+- Drag and drop folders and bookmarks for fast organization.
+- Group saved searches into optional categories inside each folder.
+- Choose Classic, Compact, or Minimal bookmark layouts, with actions configured per layout.
+- Open one saved search or a whole folder in background tabs with middle-click.
+- Saved searches follow the active trade tab's realm and league, with the original league kept as a fallback.
+- Browse grouped Path of Exile 1 and 2 folder icons for currencies, classes, ascendancies, and more.
+- Import and export individual folders as portable backup strings.
+- Create a full extension backup for folders, searches, settings, and preferences, then restore it elsewhere.
+- Restore legacy folder-only `.txt` backups.
 
-### Bookmarks and folders
+### ⏱️ Search history
 
-- **Version-aware folders:** bookmarks are separated by Path of Exile trade version.
-- **Folder creation and inline organization:** create, rename, expand, collapse, archive, and delete folders in place.
-- **Drag and drop reordering:** reorder folders and searches without leaving the panel.
-- **Per-folder import:** paste a serialized folder string and restore it instantly.
-- **Full backup and restore:** export a portable `.json` file with folders, saved searches, settings, and extension preferences, then restore it in another browser.
-- **Legacy backup support:** older folder-only `.txt` backups can still be restored.
-- **Archived view:** switch between active and archived folders without losing saved searches.
-- **PoE2 folder icons:** includes PoE2 currency, class, ascendancy, and themed folder icons.
+- Automatically track visited trade searches.
+- Return to previous queries with one click.
+- Update the active trade tab instead of opening extra windows.
+- Keep Path of Exile 1 and 2 history separate for cleaner navigation.
 
-### Search history and navigation
+### 🎨 Smart result enhancements
 
-- **Automatic trade history:** visited searches are tracked and stored locally.
-- **Active-tab integration:** reopening a saved history entry updates the current trade tab instead of spawning extra tabs.
-- **Version filtering:** history entries are filtered to the currently detected trade version.
+- Show live chaos/divine price equivalents from `poe.ninja` for Path of Exile 1 and 2.
+- Highlight active stat filters directly in search results.
+- Adjust quick filters, including a shortcut to clear Buyout Price.
+- Show socket breakpoint warnings for armour items.
+- Enable the optional Pinned Items tab to keep results from the current search close at hand and jump back to them with one click.
+- Clear pins automatically when a new search starts or the page reloads, so the list never carries stale results.
+- Use integrated Finer Filters for fast stat modifications.
+- Open matching Path of Exile 1 and 2 Wiki pages for unique items.
+- Show optional Mageblood Legacy descriptions for Path of Exile 2 in supported interface languages.
+- Copy supported Path of Exile 1 and 2 items in Craft of Exile's advanced import format.
+- Optionally include desecrated modifiers in Craft of Exile exports.
+- Use the optional Path of Exile 2 copy helper for Path of Building workflows.
 
-### Result enhancements
+### ⚙️ Sidebar, popup, and customization
 
-- **Equivalent pricing:** optionally show chaos and divine equivalents using live `poe.ninja` currency ratios.
-- **Search-stat highlighting:** active stat filters are highlighted in the result list.
-- **Socket breakpoint warnings:** armor results can display max-socket warnings based on item level.
-- **Scroll back to result:** pinned-result navigation can scroll the active result list to a specific item.
-- **Mageblood Legacy descriptions:** optionally show hidden PoE2 Mageblood Legacy effects below item results, including duplicate Legacy scaling.
-- **Localized Mageblood support:** Mageblood Legacy detection uses stable trade stat ids and localized descriptions for English, Spanish, Portuguese, Russian, Thai, German, French, Japanese, and Korean.
-- **Craft of Exile export:** copy supported PoE1 and PoE2 item results in Craft of Exile's advanced import format.
-- **PoE2 copy helper:** optionally expose PoE2's native copy action for Path of Building workflows.
+- Use a resizable sidebar that adapts the trade-site layout.
+- Dock the panel on the left or right, or minimize it to a floating pill.
+- Persist sidebar width, position, text size, language, and result-tool preferences.
+- Choose Small, Medium, Large, or Extra interface text.
+- Configure Quick Filter Presets in the sidebar or directly above the trade site's Stat Filters.
+- Find setup help and the onboarding tutorial from About.
+- Open grouped popup shortcuts for popular Path of Exile tools and reference sites.
 
-### Filter helpers
+### 🔄 Browser Sync and storage
 
-- **Finer Filters integration:** add or exclude modifiers directly from hovered result stats.
-- **Grouped quick actions:** includes pseudo and explicit presets such as resistance/life, attack weapon, and spell weapon filters.
-- **Regex-friendly search inputs:** native trade-site search inputs automatically get the `~` prefix when appropriate.
+- Sync bookmarks, bookmark folders, and extension settings between installations signed into the same browser profile.
+- Safely migrate existing bookmark and settings data when updating.
+- Compact and chunk synced data to stay within browser Sync storage limits.
+- Keep search history and other high-volume data local to the browser.
 
-### Settings and local persistence
+### 🌍 Supported trade sites and languages
 
-- **Sidebar position preference**
-- **Equivalent pricing visibility toggle**
-- **PoE1 and PoE2 result settings**
-- **Mageblood Legacy description toggle**
-- **History, bulk sellers, quick filters, Craft of Exile, and PoE2 copy toggles**
-- **Persistent sidebar width**
-- **Local browser storage for settings, folders, history, and extension preferences**
-- **Portable full-extension backup file for moving data between browsers**
-- **Ephemeral caching for `poe.ninja` currency ratios**
+- Global: `pathofexile.com`.
+- Localized trade sites: BR, RU, TH, DE, FR, ES, JP, and Taiwan.
+- Kakao Games: `poe.kakaogames.com` and `poe2.kakaogames.com`.
+- Interface languages: English, Portuguese, Russian, Thai, German, French, Spanish, Japanese, Korean, Simplified Chinese, and Traditional Chinese.
+- Chinese Trade translation supports the international PoE1 trade site and Taiwan server, using bundled local dictionaries.
+
+### 💿 Data privacy
+
+- No Poe Trade Plus account, tracking, analytics, or application-owned data server.
+- Saved-search data stays in browser storage; when browser Sync is enabled, bookmarks and settings use the browser's built-in Sync service.
+- `poe.ninja` is read for optional price ratios. When Chinese Trade translation is enabled, the extension also retrieves official Path of Exile Trade metadata needed for that feature.
+- External reference sites open only when you choose them.
+- Full source code is available on GitHub.
 
 ## Tech Stack
 
@@ -107,18 +121,18 @@ See `docs/ARCHITECTURE.md` for a deeper architectural overview, `docs/EXTENSION-
 ### Requirements
 
 - Node.js
-- npm
+- pnpm
 
 ### Install dependencies
 
 ```bash
-npm install
+pnpm install
 ```
 
 ### Run development build
 
 ```bash
-npm run dev
+pnpm dev
 ```
 
 Load the generated development output from `build/chrome-mv3` in your browser's extensions page.
@@ -126,17 +140,15 @@ Load the generated development output from `build/chrome-mv3` in your browser's 
 ### Production build
 
 ```bash
-npm run build
+pnpm build
 ```
 
-This build step also runs the local version bump script before generating the final extension bundle.
-
-The unpacked production extension is generated in `build/chrome-mv3`.
+The unpacked production extensions are generated in `build/chrome-mv3` and `build/firefox-mv2`.
 
 ### Package the extension
 
 ```bash
-npm run package
+pnpm package
 ```
 
 This command creates browser-specific zip files in `build/`, such as `poe-trade-plus-1.0.70-chrome.zip` and `poe-trade-plus-1.0.70-firefox.zip`.
@@ -158,7 +170,7 @@ docs(readme): document release notes workflow
 To update the in-app release notes from Git commits, run:
 
 ```bash
-npm run whats-new
+pnpm whats-new
 ```
 
 The script reads commits since the latest `v*` tag, groups `feat:` commits as new features, `fix:` and `perf:` commits as fixes, and keeps `docs:`, `chore:`, and `build:` entries out of the user-facing What's New unless they affect users directly. It also has a fallback for existing non-conventional subjects such as `Add ...`, `Show ...`, and `Refine ...`.
@@ -173,7 +185,7 @@ The script reads commits since the latest `v*` tag, groups `feat:` commits as ne
 
 ## Credits
 
-This project is based on or incorporates ideas/material from:
+This project incorporates ideas or material from:
 
 - [better-trading](https://github.com/exile-center/better-trading)
 - [poe-trade-plus](https://github.com/KroxiLabs/poe-trade-plus/)
@@ -182,7 +194,7 @@ Special Thanks: Trompetin17, Maxime B and Fuzzy for creating the original script
 
 ## Privacy policy
 
-We do not save nor require any data from the end user, if this extension ever uses data from a user will be saved LOCALLY and we won't have any way whatsoever to access it.
+Poe Trade Plus has no account system, analytics, tracking, or application-owned data server. Saved searches, folders, settings, and preferences stay in browser storage. If browser Sync is enabled, supported bookmarks and settings use the browser's built-in Sync service; search history and other high-volume data remain local. The extension requests `poe.ninja` only for optional price ratios and official Path of Exile Trade endpoints only when needed by enabled trade features such as Chinese Trade translation.
 
 ## License
 

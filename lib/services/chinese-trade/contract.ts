@@ -9,21 +9,13 @@ export const chineseTradeStorage = {
   itemNamesUpdatedAt: "poeTradePlus.chineseTrade.itemNamesUpdatedAt",
   traditional: {
     stats: "poeTradePlus.chineseTrade.traditional.stats",
-    staticData: "poeTradePlus.chineseTrade.traditional.static",
-    filters: "poeTradePlus.chineseTrade.traditional.filters",
-    items: "poeTradePlus.chineseTrade.traditional.items",
     modifiers: "poeTradePlus.chineseTrade.traditional.modifiers",
-    templates: "poeTradePlus.chineseTrade.traditional.templates",
     itemNames: "poeTradePlus.chineseTrade.traditional.itemNames",
     reverseNames: "poeTradePlus.chineseTrade.traditional.reverseNames"
   },
   simplified: {
     stats: "poeTradePlus.chineseTrade.simplified.stats",
-    staticData: "poeTradePlus.chineseTrade.simplified.static",
-    filters: "poeTradePlus.chineseTrade.simplified.filters",
-    items: "poeTradePlus.chineseTrade.simplified.items",
     modifiers: "poeTradePlus.chineseTrade.simplified.modifiers",
-    templates: "poeTradePlus.chineseTrade.simplified.templates",
     itemNames: "poeTradePlus.chineseTrade.simplified.itemNames",
     reverseNames: "poeTradePlus.chineseTrade.simplified.reverseNames"
   }

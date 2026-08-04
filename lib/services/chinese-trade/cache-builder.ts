@@ -37,6 +37,27 @@ const writeCache = (payload: Record<string, unknown>): Promise<void> =>
     })
   )
 
+const removeSupersededCache = (): Promise<void> =>
+  new Promise((resolve, reject) =>
+    chrome.storage.local.remove(
+      [
+        "poeTradePlus.chineseTrade.traditional.static",
+        "poeTradePlus.chineseTrade.simplified.static",
+        "poeTradePlus.chineseTrade.traditional.filters",
+        "poeTradePlus.chineseTrade.simplified.filters",
+        "poeTradePlus.chineseTrade.traditional.items",
+        "poeTradePlus.chineseTrade.simplified.items",
+        "poeTradePlus.chineseTrade.traditional.templates",
+        "poeTradePlus.chineseTrade.simplified.templates"
+      ],
+      () => {
+        const error = chrome.runtime.lastError
+        if (error) reject(new Error(error.message))
+        else resolve()
+      }
+    )
+  )
+
 const fetchTradeResult = async (url: string): Promise<TradeStatGroup[] | null> => {
   const response = await fetch(url, { credentials: "omit" })
   if (!response.ok) throw new Error(`${url} -> ${response.status}`)
@@ -111,26 +132,13 @@ export const refreshChineseTradeCache = async (force = false): Promise<void> => 
         taiwanStats,
         internationalStats
       ),
-      [chineseTradeStorage.traditional.templates]: templates.tw ?? {},
-      [chineseTradeStorage.simplified.templates]: templates.cn ?? {}
-    }
-
-    const [traditionalStatic, traditionalFilters] = await Promise.all([
-      fetchTradeResult(`${TAIWAN_TRADE_API}static`).catch(() => null),
-      fetchTradeResult(`${TAIWAN_TRADE_API}filters`).catch(() => null)
-    ])
-    if (traditionalStatic) {
-      payload[chineseTradeStorage.traditional.staticData] = traditionalStatic
-      payload[chineseTradeStorage.simplified.staticData] = convertDeep(traditionalStatic)
-    }
-    if (traditionalFilters) {
-      payload[chineseTradeStorage.traditional.filters] = traditionalFilters
-      payload[chineseTradeStorage.simplified.filters] = convertDeep(traditionalFilters)
+      [chineseTradeStorage.simplified.modifiers]: {}
     }
     payload[chineseTradeStorage.simplified.modifiers] = convertDeep(
       payload[chineseTradeStorage.traditional.modifiers]
     )
 
+    await removeSupersededCache()
     await writeCache(payload)
   } catch (error) {
     console.error("[PoeTradePlus] Failed to refresh the Chinese Trade cache", error)

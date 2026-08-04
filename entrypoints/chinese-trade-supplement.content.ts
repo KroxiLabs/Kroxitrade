@@ -24,7 +24,11 @@ type ModifierMap = Record<string, { us?: string; tw?: string }>
 
 export default defineContentScript({
   matches: tradeHosts,
-  excludeMatches: ["*://*/*"],
+  excludeMatches: [
+    "*://*/trade2/*",
+    "https://poe.kakaogames.com/*",
+    "https://poe2.kakaogames.com/*"
+  ],
   runAt: "document_idle",
 
   async main() {
