@@ -304,6 +304,7 @@ if (action === "check") {
   run("pnpm", ["run", "typecheck"])
   run("pnpm", ["run", "test"])
   run("pnpm", ["run", "check:bundle"])
+  run("pnpm", ["run", "test:e2e"])
   run("pnpm", ["run", "build:firefox"])
   const releaseData = assertReleaseNotes()
   writeReleaseNotes(releaseData)
