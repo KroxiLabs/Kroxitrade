@@ -2,6 +2,10 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const germanTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.valdoRewardPricingTitle": "Valdo-Belohnungspreise",
+  "whatsNew.item.valdoRewardPricingDescription": "Die optionale Preisberechnung für PoE1-Valdo-Karten zeigt die Abschlussbelohnung, ihren Divine-Wert und den geschätzten Gewinn pro Angebot.",
+  "whatsNew.item.chineseTradeCacheRecoveryTitle": "Chinese-Trade-Cache wird zuverlässig wiederhergestellt",
+  "whatsNew.item.chineseTradeCacheRecoveryDescription": "Chinese-Trade-Daten werden nun korrekt neu aufgebaut, wenn ihr lokaler Cache abläuft, fehlt oder ungültig wird.",
   "whatsNew.item.reducedPermissionsTitle": "Weniger Browser-Berechtigungen",
   "whatsNew.item.reducedPermissionsDescription": "Die Erweiterung benötigt keine Chrome-Berechtigungen für Scripting oder unbegrenzten Speicher mehr. Chinesische Trade-Daten verwenden jetzt einen kleineren lokalen Cache.",
   "settings.tradeTranslationTitle": "Handelsseite übersetzen",

@@ -2,6 +2,10 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const thaiTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.valdoRewardPricingTitle": "ราคารางวัล Valdo",
+  "whatsNew.item.valdoRewardPricingDescription": "การประเมินราคาแผนที่ Valdo ของ PoE1 แบบเลือกเปิดได้ จะแสดงรางวัลเมื่อจบ มูลค่าเป็น Divine และกำไรโดยประมาณของแต่ละรายการ",
+  "whatsNew.item.chineseTradeCacheRecoveryTitle": "แคช Chinese Trade กู้คืนได้อย่างเสถียร",
+  "whatsNew.item.chineseTradeCacheRecoveryDescription": "ข้อมูล Chinese Trade จะสร้างใหม่ได้ถูกต้องเมื่อแคชในเครื่องหมดอายุ หายไป หรือใช้งานไม่ได้",
   "whatsNew.item.reducedPermissionsTitle": "สิทธิ์ของเบราว์เซอร์น้อยลง",
   "whatsNew.item.reducedPermissionsDescription": "ส่วนขยายไม่ต้องใช้สิทธิ์การรันสคริปต์หรือพื้นที่เก็บข้อมูลไม่จำกัดของ Chrome อีกต่อไป ข้อมูล Trade ภาษาจีนใช้แคชในเครื่องที่เล็กลงแล้ว",
   "settings.tradeTranslationTitle": "แปลเว็บไซต์เทรด",

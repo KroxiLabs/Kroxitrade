@@ -4,6 +4,10 @@ import type { TranslationValue } from "./types"
 export const traditionalChineseTranslations: Record<string, TranslationValue> =
   {
     ...englishTranslations,
+    "whatsNew.item.valdoRewardPricingTitle": "瓦爾多獎勵定價",
+    "whatsNew.item.valdoRewardPricingDescription": "可選的 PoE1 瓦爾多地圖定價會顯示完成獎勵、其 Divine 價值與每個物品的預估利潤。",
+    "whatsNew.item.chineseTradeCacheRecoveryTitle": "Chinese Trade 快取可可靠復原",
+    "whatsNew.item.chineseTradeCacheRecoveryDescription": "當本機快取過期、遺失或失效時，Chinese Trade 資料現在會正確重建。",
     "whatsNew.item.reducedPermissionsTitle": "更少的瀏覽器權限",
     "whatsNew.item.reducedPermissionsDescription": "擴充功能不再需要 Chrome 的指令碼執行和無限儲存空間權限。中文 Trade 資料現在使用更小的本機快取。",
     "app.name": "Poe Trade Plus",

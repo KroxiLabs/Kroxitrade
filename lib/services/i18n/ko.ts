@@ -2,6 +2,10 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const koreanTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.valdoRewardPricingTitle": "Valdo 보상 가격",
+  "whatsNew.item.valdoRewardPricingDescription": "선택적으로 켤 수 있는 PoE1 Valdo 지도 가격 기능은 완료 보상, Divine 가치 및 각 매물의 예상 수익을 표시합니다.",
+  "whatsNew.item.chineseTradeCacheRecoveryTitle": "Chinese Trade 캐시가 안정적으로 복구됩니다",
+  "whatsNew.item.chineseTradeCacheRecoveryDescription": "Chinese Trade 데이터는 로컬 캐시가 만료되거나 없거나 유효하지 않을 때 올바르게 다시 구축됩니다.",
   "whatsNew.item.reducedPermissionsTitle": "브라우저 권한 축소",
   "whatsNew.item.reducedPermissionsDescription": "확장 프로그램에 더 이상 Chrome 스크립팅 및 무제한 저장소 권한이 필요하지 않습니다. 중국어 Trade 데이터는 더 작은 로컬 캐시를 사용합니다.",
   "settings.tradeTranslationTitle": "거래 사이트 중국어 번역",

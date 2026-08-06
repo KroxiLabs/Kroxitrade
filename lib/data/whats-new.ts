@@ -149,6 +149,20 @@ const version1121Fixes: WhatsNewItem[] = [
   }
 ];
 
+const version1122Features: WhatsNewItem[] = [
+  {
+    titleKey: "whatsNew.item.valdoRewardPricingTitle",
+    descriptionKey: "whatsNew.item.valdoRewardPricingDescription"
+  }
+];
+
+const version1122Fixes: WhatsNewItem[] = [
+  {
+    titleKey: "whatsNew.item.chineseTradeCacheRecoveryTitle",
+    descriptionKey: "whatsNew.item.chineseTradeCacheRecoveryDescription"
+  }
+];
+
 const version112Features: WhatsNewItem[] = [
   {
     title: "External reference links in the popup",
@@ -401,9 +415,22 @@ const version1110Features: WhatsNewItem[] = [
 ];
 
 export const latestWhatsNew: WhatsNewEntry = {
-  version: "1.1.21",
-  date: "2026-08-04",
+  version: "1.1.22",
+  date: "2026-08-05",
   sections: [
+    {
+      title: "1.1.22",
+      groups: [
+        {
+          titleKey: "whatsNew.section.features",
+          items: version1122Features
+        },
+        {
+          titleKey: "whatsNew.section.fixes",
+          items: version1122Fixes
+        }
+      ]
+    },
     {
       title: "1.1.21",
       groups: [
