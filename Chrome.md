@@ -24,6 +24,7 @@
 • Highlight active stat filters directly in search results
 • Adjust quick filters, including a shortcut to clear Buyout Price
 • Show socket breakpoint warnings for armour items
+• Optionally show the completion reward, its Divine value, and estimated profit for Path of Exile 1 Valdo map listings
 • Enable the optional Pinned Items tab to keep results from the current search close at hand and jump back to them with one click
 • Pins are cleared automatically when you start a new search or reload the page, so the list never carries stale results
 • Use integrated Finer Filters for fast stat modifications
@@ -40,7 +41,7 @@
 • Choose Small, Medium, Large, or Extra interface text
 • Configure Quick Filter Presets in the sidebar or directly above the trade site's Stat Filters
 • Find setup help and the onboarding tutorial from About
-• Open grouped popup shortcuts for the wikis, Path of Regex, Craft of Exile, PoEDb, PoE2Db, and poe.ninja
+• Open optional popup shortcuts to selected community reference sites
 
 🔄 BROWSER SYNC & STORAGE
 • Sync bookmarks, bookmark folders, and extension settings between installations signed into the same browser profile
@@ -53,7 +54,7 @@
 • Localized trade sites: Brazil, Russia, Thailand, Germany, France, Spain, and Japan
 • Taiwan: pathofexile.tw
 • Kakao Games: poe.kakaogames.com and poe2.kakaogames.com
-• Interface languages: English, Portuguese, Russian, Thai, German, French, Spanish, Japanese, Korean, Traditional Chinese, and Simplified Chinese
+• Multilingual interface, including Simplified and Traditional Chinese
 • Chinese Trade translation supports the international Path of Exile 1 trade site and Taiwan server, using bundled local dictionaries
 
 💿 DATA PRIVACY
