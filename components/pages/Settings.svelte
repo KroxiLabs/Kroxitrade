@@ -156,7 +156,6 @@
       window.location.hostname !== "pathofexile.tw" &&
       !window.location.pathname.startsWith("/trade2/")
   );
-  const canShowValdoRewardPricing = !isPoe2Trade && !isNativeChineseTradeSite();
 
   const localizedLanguageNames: Record<AppLanguage, Record<AppLanguage, string>> = {
     en: { en: "English", es: "Spanish", pt: "Portuguese", ru: "Russian", th: "Thai", de: "German", fr: "French", ja: "Japanese", ko: "Korean", "zh-tw": "Traditional Chinese", "zh-cn": "Simplified Chinese" },
@@ -555,6 +554,9 @@
     $derived(languages.find((language) => language.code === $settings.language) ?? languages[0]);
   const currentLocation = tradeLocationService.locationStore;
   let isPoe2Trade = $derived($currentLocation.version === "2");
+  const canShowValdoRewardPricing = $derived(
+    !isPoe2Trade && !isNativeChineseTradeSite()
+  );
 
   $effect(() => {
     if (tutorialStep && tutorialStepTabs[tutorialStep]) {
