@@ -25,22 +25,24 @@ const numberTokens = /[+-]?\d+(?:\.\d+)?/g
 const templateTokens = /[+-]?#/g
 
 const getLineElements = (container: HTMLElement) => {
-  const spans = Array.from(container.querySelectorAll<HTMLElement>(":scope > span"))
+  const spans = Array.from(
+    container.querySelectorAll<HTMLElement>(":scope > span")
+  )
   return spans.length ? spans : [container]
 }
 
-const renderModifier = (
-  modifier: Modifier | undefined,
-  rendered: string
-) => {
+const renderModifier = (modifier: Modifier | undefined, rendered: string) => {
   if (!modifier?.tw || !rendered || isChinese(rendered)) return undefined
   if (modifier.opt && modifier.us?.includes("#")) {
     const splitAt = modifier.us.indexOf("#")
     const before = modifier.us.slice(0, splitAt)
     const after = modifier.us.slice(splitAt + 1)
     if (rendered.startsWith(before) && rendered.endsWith(after)) {
-      const choice = rendered.slice(before.length, rendered.length - after.length).trim()
-      if (modifier.opt[choice]) return modifier.tw.replace("#", modifier.opt[choice])
+      const choice = rendered
+        .slice(before.length, rendered.length - after.length)
+        .trim()
+      if (modifier.opt[choice])
+        return modifier.tw.replace("#", modifier.opt[choice])
     }
   }
   const values = rendered.match(numberTokens) ?? []
@@ -61,9 +63,10 @@ export default defineContentScript({
     const state = await getTradeTranslationState()
     if (!state.enabled) return
 
-    const locale = state.language === "zh-cn"
-      ? chineseTradeStorage.simplified
-      : chineseTradeStorage.traditional
+    const locale =
+      state.language === "zh-cn"
+        ? chineseTradeStorage.simplified
+        : chineseTradeStorage.traditional
     let templates: Record<string, string> = {}
     let modifiers: Record<string, Modifier> = {}
 
@@ -86,12 +89,14 @@ export default defineContentScript({
         const output = fromTemplate
           ? applyTradeTemplate(fromTemplate, source)
           : renderModifier(modifier, source)
-        if (output && output !== source) line.textContent = resolveTradeDisplayText(output)
+        if (output && output !== source)
+          line.textContent = resolveTradeDisplayText(output)
       }
     }
 
     const scan = (root: ParentNode) => {
-      if (root instanceof HTMLElement && root.matches(".item-mod")) translate(root)
+      if (root instanceof HTMLElement && root.matches(".item-mod"))
+        translate(root)
       root.querySelectorAll<HTMLElement>(".item-mod").forEach(translate)
     }
 

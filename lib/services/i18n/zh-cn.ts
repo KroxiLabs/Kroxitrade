@@ -2,6 +2,8 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const simplifiedChineseTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.chineseTradeTranslationLoadingTitle": "Chinese Trade 翻译可稳定加载",
+  "whatsNew.item.chineseTradeTranslationLoadingDescription": "翻译数据仅在需要时加载，因此可稳定启用 Chinese Trade，并减小扩展的初始体积。",
   "whatsNew.item.valdoRewardPricingTitle": "瓦尔多奖励定价",
   "whatsNew.item.valdoRewardPricingDescription": "可选的 PoE1 瓦尔多地图定价会显示完成奖励、其 Divine 价值以及每个物品的预估利润。",
   "whatsNew.item.chineseTradeCacheRecoveryTitle": "Chinese Trade 缓存可可靠恢复",

@@ -2,6 +2,8 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const thaiTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.chineseTradeTranslationLoadingTitle": "การแปล Chinese Trade โหลดได้อย่างเสถียร",
+  "whatsNew.item.chineseTradeTranslationLoadingDescription": "ข้อมูลการแปลจะโหลดเมื่อจำเป็นเท่านั้น เพื่อให้การเปิดใช้ Chinese Trade เสถียรและลดขนาดเริ่มต้นของส่วนขยาย",
   "whatsNew.item.valdoRewardPricingTitle": "ราคารางวัล Valdo",
   "whatsNew.item.valdoRewardPricingDescription": "การประเมินราคาแผนที่ Valdo ของ PoE1 แบบเลือกเปิดได้ จะแสดงรางวัลเมื่อจบ มูลค่าเป็น Divine และกำไรโดยประมาณของแต่ละรายการ",
   "whatsNew.item.chineseTradeCacheRecoveryTitle": "แคช Chinese Trade กู้คืนได้อย่างเสถียร",

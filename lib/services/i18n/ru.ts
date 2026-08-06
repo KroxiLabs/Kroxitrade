@@ -2,6 +2,8 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const russianTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.chineseTradeTranslationLoadingTitle": "Перевод Chinese Trade загружается надёжно",
+  "whatsNew.item.chineseTradeTranslationLoadingDescription": "Данные перевода теперь загружаются только при необходимости, обеспечивая надёжное включение Chinese Trade и уменьшая начальный размер расширения.",
   "whatsNew.item.valdoRewardPricingTitle": "Цены наград Вальдо",
   "whatsNew.item.valdoRewardPricingDescription": "Необязательная оценка карт Вальдо в PoE1 показывает награду за завершение, её стоимость в divine и примерную прибыль для каждого лота.",
   "whatsNew.item.chineseTradeCacheRecoveryTitle": "Кэш Chinese Trade восстанавливается надёжно",

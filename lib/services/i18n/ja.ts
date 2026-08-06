@@ -2,6 +2,8 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const japaneseTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.chineseTradeTranslationLoadingTitle": "Chinese Trade 翻訳を安定して読み込み",
+  "whatsNew.item.chineseTradeTranslationLoadingDescription": "翻訳データは必要なときだけ読み込まれるため、Chinese Trade を安定して有効にでき、拡張機能の起動サイズも小さくなります。",
   "whatsNew.item.valdoRewardPricingTitle": "Valdo 報酬の価格",
   "whatsNew.item.valdoRewardPricingDescription": "任意で有効にできる PoE1 Valdo マップの価格表示は、完了報酬、その Divine 価値、各出品の推定利益を表示します。",
   "whatsNew.item.chineseTradeCacheRecoveryTitle": "Chinese Trade キャッシュを確実に復旧",

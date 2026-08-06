@@ -2,6 +2,8 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const koreanTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.chineseTradeTranslationLoadingTitle": "Chinese Trade 번역이 안정적으로 로드됩니다",
+  "whatsNew.item.chineseTradeTranslationLoadingDescription": "번역 데이터는 필요할 때만 로드되어 Chinese Trade를 안정적으로 활성화하고 확장 프로그램의 초기 크기를 줄입니다.",
   "whatsNew.item.valdoRewardPricingTitle": "Valdo 보상 가격",
   "whatsNew.item.valdoRewardPricingDescription": "선택적으로 켤 수 있는 PoE1 Valdo 지도 가격 기능은 완료 보상, Divine 가치 및 각 매물의 예상 수익을 표시합니다.",
   "whatsNew.item.chineseTradeCacheRecoveryTitle": "Chinese Trade 캐시가 안정적으로 복구됩니다",
