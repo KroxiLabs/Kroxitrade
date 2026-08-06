@@ -115,6 +115,12 @@ const MAGEBLOOD_LEGACY_ALIASES: Record<string, string> = {
 
 export const extractValdoRewardName = (row: HTMLElement): string | null => {
   const itemRoot = row.querySelector<HTMLElement>(".itemBoxContent, .itemPopupContainer, .middle");
+  const rewardValue = itemRoot
+    ?.querySelector<HTMLElement>('.item-property .lc[type="76"] > span:last-child')
+    ?.textContent
+    ?.trim();
+  if (rewardValue) return rewardValue;
+
   const itemText = (
     itemRoot?.innerText ||
     row.innerText ||
