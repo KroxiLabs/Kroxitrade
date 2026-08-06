@@ -9,7 +9,6 @@ import { searchPanelService } from "./search-panel";
 import { settings } from "./settings";
 import { slugify } from "../utilities/slugify";
 import { normalizeValdoRewardName } from "../utilities/normalize-valdo-reward-name";
-import { extractValdoRewardName } from "../utilities/extract-valdo-reward-name";
 import { escapeRegex } from "../utilities/escape-regex";
 import { emitPageDebug } from "../utilities/page-debug";
 import { getCurrencyIconUrl } from "../data/currency-icons";
@@ -112,6 +111,21 @@ const MAGEBLOOD_LEGACY_ALIASES: Record<string, string> = {
   safira: "sapphire",
   prata: "silver",
   enxofre: "sulphur"
+};
+
+export const extractValdoRewardName = (row: HTMLElement): string | null => {
+  const itemRoot = row.querySelector<HTMLElement>(".itemBoxContent, .itemPopupContainer, .middle");
+  const itemText = (
+    itemRoot?.innerText ||
+    row.innerText ||
+    itemRoot?.textContent ||
+    row.textContent ||
+    ""
+  ).replace(/\r/g, "");
+  if (!/\bValdo(?:'s)? Map\b|\bLost Remnant\b/i.test(itemText)) return null;
+
+  const match = itemText.match(/^\s*Reward\s*[:：]\s*(.+?)\s*$/im);
+  return match?.[1]?.trim() || null;
 };
 
 const MAGEBLOOD_LEGACY_FIELD_PATTERN = /stat\.explicit\.stat_264262054\|(\d+)/;
