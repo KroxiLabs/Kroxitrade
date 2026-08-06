@@ -255,6 +255,11 @@ export const englishTranslations: Record<string, TranslationValue> = {
   "settings.equivalentTitle": "Equivalent Pricing",
   "settings.equivalentDescription":
     "Show or hide the extra chaos/divine equivalent line in trade results.",
+  "settings.valdoRewardPricingTitle": "Valdo reward pricing",
+  "settings.valdoRewardPricingDescription":
+    "Show the reward value and estimated profit on Path of Exile 1 Valdo map results.",
+  "results.valdoReward": "Reward:",
+  "results.valdoProfit": "Profit:",
   "settings.equivalentSource": "Uses poe.ninja ratios cached every 15 minutes.",
   "settings.equivalentRefresh": "Refresh Ratio",
   "settings.equivalentRefreshLoading": "Refreshing...",

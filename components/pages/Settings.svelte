@@ -186,6 +186,12 @@
     }
   }
 
+  async function handleValdoRewardPricingChange(showValdoRewardPricing: boolean) {
+    if (!(await settings.updateValdoRewardPricingVisibility(showValdoRewardPricing))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
+  }
+
   async function handleMagebloodLegacyDescriptionsChange(showMagebloodLegacyDescriptions: boolean) {
     if (!(await settings.updateMagebloodLegacyDescriptionsVisibility(showMagebloodLegacyDescriptions))) {
       flashMessages.alert(translate($languageStore, "settings.saveFailed"));
@@ -1044,6 +1050,21 @@
             onToggle={() => handleEquivalentPricingChange(!$settings.showEquivalentPricing)}
           />
         </div>
+
+        {#if !isPoe2Trade}
+          <div class="settings-row">
+            <div class="settings-row__copy">
+              <div class="settings-row__title">{translate($languageStore, "settings.valdoRewardPricingTitle")}</div>
+              <div class="settings-row__description">{translate($languageStore, "settings.valdoRewardPricingDescription")}</div>
+            </div>
+            <ToggleRow
+              checked={$settings.showValdoRewardPricing}
+              label={translate($languageStore, "settings.valdoRewardPricingTitle")}
+              stateLabel={toggleSwitchLabel($settings.showValdoRewardPricing)}
+              onToggle={() => handleValdoRewardPricingChange(!$settings.showValdoRewardPricing)}
+            />
+          </div>
+        {/if}
 
         <div class="settings-row">
           <div class="settings-row__copy">

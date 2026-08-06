@@ -121,6 +121,10 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "settings.languageEnglish": "อังกฤษ",
   "settings.languageSpanish": "สเปน",
   "settings.resultsTitle": "เครื่องมือผลลัพธ์",
+  "settings.valdoRewardPricingTitle": "ราคารางวัล Valdo",
+  "settings.valdoRewardPricingDescription": "แสดงมูลค่ารางวัลและกำไรโดยประมาณในผลลัพธ์แผนที่ Valdo ของ Path of Exile 1",
+  "results.valdoReward": "รางวัล:",
+  "results.valdoProfit": "กำไร:",
   "settings.equivalentTitle": "ราคาเทียบเท่า",
   "settings.equivalentDescription":
     "แสดงหรือซ่อนบรรทัดเพิ่มเติมที่แสดงราคาเทียบเท่า chaos/divine ในผลลัพธ์",

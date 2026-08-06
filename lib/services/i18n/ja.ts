@@ -126,6 +126,10 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "settings.languageEnglish": "英語",
   "settings.languageSpanish": "スペイン語",
   "settings.resultsTitle": "検索結果ツール",
+  "settings.valdoRewardPricingTitle": "Valdo 報酬の価格",
+  "settings.valdoRewardPricingDescription": "Path of Exile 1 の Valdo マップ結果に報酬価値と推定利益を表示します。",
+  "results.valdoReward": "報酬:",
+  "results.valdoProfit": "利益:",
   "settings.equivalentTitle": "等価価格",
   "settings.equivalentDescription":
     "検索結果に追加表示される chaos/divine 等価行を表示または非表示にします。",

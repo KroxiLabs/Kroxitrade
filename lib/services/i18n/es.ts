@@ -256,6 +256,10 @@ export const spanishTranslations: Record<string, TranslationValue> = {
     "Volvé a abrir la guía rápida para repasar las acciones y pestañas principales.",
   "settings.reopenTutorial": "Abrir tutorial",
   "settings.resultsTitle": "Herramientas de resultados",
+  "settings.valdoRewardPricingTitle": "Precio de recompensas de Valdo",
+  "settings.valdoRewardPricingDescription": "Muestra el valor de la recompensa y la ganancia estimada en los mapas de Valdo de Path of Exile 1.",
+  "results.valdoReward": "Recompensa:",
+  "results.valdoProfit": "Ganancia:",
   "settings.equivalentTitle": "Precio equivalente",
   "settings.equivalentDescription":
     "Mostrá u ocultá la línea extra con equivalencias en chaos/divine en los resultados.",

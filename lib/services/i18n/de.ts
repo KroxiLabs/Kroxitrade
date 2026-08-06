@@ -121,6 +121,10 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "settings.languageEnglish": "Englisch",
   "settings.languageSpanish": "Spanisch",
   "settings.resultsTitle": "Ergebniswerkzeuge",
+  "settings.valdoRewardPricingTitle": "Valdo-Belohnungspreise",
+  "settings.valdoRewardPricingDescription": "Zeigt den Belohnungswert und den geschätzten Gewinn bei Valdo-Karten in Path of Exile 1.",
+  "results.valdoReward": "Belohnung:",
+  "results.valdoProfit": "Gewinn:",
   "settings.equivalentTitle": "Äquivalenzpreis",
   "settings.equivalentDescription":
     "Zeige oder verberge die zusätzliche Zeile mit Chaos/Divine-Äquivalenten in den Ergebnissen.",

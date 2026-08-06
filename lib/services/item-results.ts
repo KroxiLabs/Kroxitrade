@@ -1,8 +1,14 @@
-import { poeNinjaService, type PoeNinjaCurrencyData } from "./poe-ninja";
+import {
+  poeNinjaService,
+  type PoeNinjaCurrencyData,
+  type PoeNinjaUniqueDivinePrices
+} from "./poe-ninja";
+import { translate } from "./i18n";
 import { tradeLocationService } from "./trade-location";
 import { searchPanelService } from "./search-panel";
 import { settings } from "./settings";
 import { slugify } from "../utilities/slugify";
+import { normalizeValdoRewardName } from "../utilities/normalize-valdo-reward-name";
 import { escapeRegex } from "../utilities/escape-regex";
 import { emitPageDebug } from "../utilities/page-debug";
 import { getCurrencyIconUrl } from "../data/currency-icons";
@@ -107,6 +113,21 @@ const MAGEBLOOD_LEGACY_ALIASES: Record<string, string> = {
   enxofre: "sulphur"
 };
 
+export const extractValdoRewardName = (row: HTMLElement): string | null => {
+  const itemRoot = row.querySelector<HTMLElement>(".itemBoxContent, .itemPopupContainer, .middle");
+  const itemText = (
+    itemRoot?.innerText ||
+    row.innerText ||
+    itemRoot?.textContent ||
+    row.textContent ||
+    ""
+  ).replace(/\r/g, "");
+  if (!/\bValdo(?:'s)? Map\b|\bLost Remnant\b/i.test(itemText)) return null;
+
+  const match = itemText.match(/^\s*Reward\s*[:：]\s*(.+?)\s*$/im);
+  return match?.[1]?.trim() || null;
+};
+
 const MAGEBLOOD_LEGACY_FIELD_PATTERN = /stat\.explicit\.stat_264262054\|(\d+)/;
 const MAGEBLOOD_DUPLICATE_FIELD = "stat.explicit.stat_3874491706";
 const MAGEBLOOD_LEGACY_PATTERN = /^(?:Legacy of|Legado de|มรดกแห่ง) (.+)$/i;
@@ -180,6 +201,8 @@ const isEnglishTradeHost = () => {
 
 export class ItemResultsService {
   private currencyData: PoeNinjaCurrencyData | null = null;
+  private valdoUniqueDivinePrices: PoeNinjaUniqueDivinePrices | null = null;
+  private valdoPriceRequest: Promise<void> | null = null;
   private statNeedles: RegExp[] = [];
   private readonly CHAOS_SLUG = "chaos-orb";
   private readonly referenceSlugs = {
@@ -203,6 +226,7 @@ export class ItemResultsService {
     chance: "orb-of-chance"
   };
   private showEquivalentPricing = false;
+  private showValdoRewardPricing = false;
   private showMagebloodLegacyDescriptions = false;
   private showPinnedItems = false;
   private unsubscribeSettings: (() => void) | null = null;
@@ -292,19 +316,32 @@ export class ItemResultsService {
 
     await settings.load();
     this.showEquivalentPricing = settings.getCurrent().showEquivalentPricing;
+    this.showValdoRewardPricing = settings.getCurrent().showValdoRewardPricing;
     this.showMagebloodLegacyDescriptions = settings.getCurrent().showMagebloodLegacyDescriptions;
     this.showPinnedItems = settings.getCurrent().showPinnedItems;
     this.unsubscribeSettings?.();
     this.unsubscribeSettings = settings.subscribe((value) => {
       const changed = this.showEquivalentPricing !== value.showEquivalentPricing;
+      const valdoChanged = this.showValdoRewardPricing !== value.showValdoRewardPricing;
       const magebloodChanged =
         this.showMagebloodLegacyDescriptions !== value.showMagebloodLegacyDescriptions;
       const pinsChanged = this.showPinnedItems !== value.showPinnedItems;
       this.showEquivalentPricing = value.showEquivalentPricing;
+      this.showValdoRewardPricing = value.showValdoRewardPricing;
       this.showMagebloodLegacyDescriptions = value.showMagebloodLegacyDescriptions;
       this.showPinnedItems = value.showPinnedItems;
       if (changed) {
         this.refreshEquivalentPricing();
+      }
+      if (valdoChanged) {
+        if (this.showValdoRewardPricing) {
+          void this.fetchValdoRewardPrices().then(() => {
+            this.refreshValdoRewardPricing();
+            this.schedulePostSearchRefresh();
+          });
+        } else {
+          this.refreshValdoRewardPricing();
+        }
       }
       if (magebloodChanged) {
         this.refreshMagebloodLegacyDescriptions();
@@ -403,6 +440,8 @@ export class ItemResultsService {
 
   private async handleLocationChange() {
     pinnedItemsService.clear();
+    this.valdoUniqueDivinePrices = null;
+    this.valdoPriceRequest = null;
 
     try {
       await this.fetchRatios();
@@ -421,6 +460,7 @@ export class ItemResultsService {
 
     if (!league) {
       this.currencyData = null;
+      this.valdoUniqueDivinePrices = null;
       emitPageDebug("poe-ninja-skip", {
         reason: "missing-league",
         league,
@@ -439,11 +479,46 @@ export class ItemResultsService {
     this.currencyData = forceFresh
       ? await poeNinjaService.fetchFreshCurrencyDataFor(league, version)
       : await poeNinjaService.fetchCurrencyDataFor(league, version);
+
+    if (this.showValdoRewardPricing && version === "1") {
+      await this.fetchValdoRewardPrices();
+    }
   }
 
   async forceRefreshEquivalentPricing() {
     await this.fetchRatios(true);
     this.refreshEquivalentPricing();
+  }
+
+  private async fetchValdoRewardPrices() {
+    if (tradeLocationService.current.version !== "1" || !tradeLocationService.current.league) {
+      this.valdoUniqueDivinePrices = null;
+      return;
+    }
+    if (this.valdoUniqueDivinePrices) return;
+    if (this.valdoPriceRequest) return this.valdoPriceRequest;
+
+    const { league } = tradeLocationService.current;
+    const request = poeNinjaService
+      .fetchUniqueDivinePricesFor(league)
+      .then((prices) => {
+        if (tradeLocationService.current.version === "1" && tradeLocationService.current.league === league) {
+          this.valdoUniqueDivinePrices = prices;
+        }
+      })
+      .catch((error) => {
+        console.error("[Poe Trade Plus] Failed to fetch Valdo reward prices from poe.ninja:", error);
+        if (tradeLocationService.current.version === "1" && tradeLocationService.current.league === league) {
+          this.valdoUniqueDivinePrices = null;
+        }
+      })
+      .finally(() => {
+        if (this.valdoPriceRequest === request) {
+          this.valdoPriceRequest = null;
+        }
+      });
+    this.valdoPriceRequest = request;
+    return request;
   }
 
   private injectEquivalentPricing(row: HTMLElement) {
@@ -622,6 +697,61 @@ export class ItemResultsService {
     row.querySelectorAll(".bt-equivalent-pricings-equivalent").forEach((el) => el.remove());
   }
 
+  private injectValdoRewardPricing(row: HTMLElement) {
+    if (!this.showValdoRewardPricing || tradeLocationService.current.version !== "1") {
+      this.removeValdoRewardPricing(row);
+      return;
+    }
+
+    const rewardName = extractValdoRewardName(row);
+    const priceInfo = this.extractPriceInfo(row);
+    if (!rewardName || !priceInfo || !this.valdoUniqueDivinePrices || !this.currencyData) {
+      this.removeValdoRewardPricing(row);
+      return;
+    }
+
+    const rewardValue = this.valdoUniqueDivinePrices[slugify(normalizeValdoRewardName(rewardName))];
+    const divineValue = this.currencyData["divine-orb"]?.value;
+    const priceCurrency = this.currencyData[this.resolveCurrencySlug(priceInfo.currencyText)]?.value;
+    if (rewardValue === undefined || !divineValue || !priceCurrency || !Number.isFinite(priceInfo.amount)) {
+      this.removeValdoRewardPricing(row);
+      return;
+    }
+
+    const mapCostInDivines = (priceInfo.amount * priceCurrency) / divineValue;
+    this.renderValdoRewardPricing(priceInfo.container, rewardValue, rewardValue - mapCostInDivines);
+  }
+
+  private renderValdoRewardPricing(container: HTMLElement, rewardValue: number, profit: number) {
+    let element = container.querySelector<HTMLElement>(".bt-valdo-reward-pricing");
+    if (!element) {
+      element = document.createElement("span");
+      element.className = "bt-equivalent-pricings bt-valdo-reward-pricing";
+      container.appendChild(element);
+    }
+    const language = settings.getCurrent().language;
+    const format = (value: number) => Math.round(value * 10) / 10;
+    const formattedProfit = format(profit);
+    const divineIcon = this.currencyData?.["divine-orb"]?.icon || getCurrencyIconUrl("divine");
+    element.replaceChildren(
+      this.createTextSpan("bt-valdo-reward-label", `${translate(language, "results.valdoReward")} `),
+      this.createCurrencyFragment(format(rewardValue), "divine-orb", divineIcon),
+      this.createTextSpan(
+        `bt-valdo-profit ${formattedProfit >= 0 ? "is-positive" : "is-negative"}`,
+        ` ${translate(language, "results.valdoProfit")} `
+      ),
+      this.createCurrencyFragment(
+        `${formattedProfit >= 0 ? "+" : ""}${formattedProfit}`,
+        "divine-orb",
+        divineIcon
+      )
+    );
+  }
+
+  private removeValdoRewardPricing(row: HTMLElement) {
+    row.querySelectorAll(".bt-valdo-reward-pricing").forEach((element) => element.remove());
+  }
+
   private syncEquivalentVisibility(element: HTMLElement) {
     const isHidden = !this.showEquivalentPricing;
     element.classList.toggle("is-hidden", isHidden);
@@ -688,6 +818,7 @@ export class ItemResultsService {
       this.syncWikiButton(typedRow);
       this.syncPoedbButton(typedRow);
       this.injectEquivalentPricing(typedRow);
+      this.injectValdoRewardPricing(typedRow);
        this.enhanceMagebloodLegacy(typedRow);
        this.syncPinButton(typedRow);
 
@@ -855,7 +986,6 @@ export class ItemResultsService {
       existingButton?.remove()
       return
     }
-
     let button = existingButton
     if (!button) {
       button = document.createElement("button")
@@ -949,6 +1079,11 @@ export class ItemResultsService {
   private refreshEquivalentPricing() {
     const results = document.querySelectorAll(".search-results .result-item, .search-results .row, .result-list .result-item, .row");
     results.forEach((row) => this.injectEquivalentPricing(row as HTMLElement));
+  }
+
+  private refreshValdoRewardPricing() {
+    const results = document.querySelectorAll(".search-results .result-item, .search-results .row, .result-list .result-item, .row");
+    results.forEach((row) => this.injectValdoRewardPricing(row as HTMLElement));
   }
 
   private highlightStats(row: HTMLElement) {

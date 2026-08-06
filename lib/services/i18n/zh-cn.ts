@@ -210,6 +210,10 @@ export const simplifiedChineseTranslations: Record<string, TranslationValue> = {
   "settings.onboardingDescription": "重新打开快速导览以复习主要的操作与分页。",
   "settings.reopenTutorial": "打开教学",
   "settings.resultsTitle": "结果工具",
+  "settings.valdoRewardPricingTitle": "瓦尔多奖励定价",
+  "settings.valdoRewardPricingDescription": "在 Path of Exile 1 的瓦尔多地图结果中显示奖励价值和预估利润。",
+  "results.valdoReward": "奖励：",
+  "results.valdoProfit": "利润：",
   "settings.equivalentTitle": "等值定价",
   "settings.equivalentDescription":
     "显示或隐藏交易结果中额外的混沌石／神圣石等值那一行。",

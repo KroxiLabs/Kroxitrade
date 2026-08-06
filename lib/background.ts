@@ -10,6 +10,11 @@ type PoeNinjaRequest = {
   resource: string;
 };
 
+type PoeNinjaItemRequest = {
+  query: "poe-ninja-item";
+  resource: string;
+};
+
 type LogHistoryRequest = {
   query: "log-trade-history";
   key: string;
@@ -17,7 +22,7 @@ type LogHistoryRequest = {
   max: number;
 };
 
-type BackgroundRequest = PoeNinjaRequest | LogHistoryRequest;
+type BackgroundRequest = PoeNinjaRequest | PoeNinjaItemRequest | LogHistoryRequest;
 
 const isSameHistoryLocation = (
   a: TradeLocationHistoryStruct | undefined,
@@ -41,6 +46,11 @@ const isBackgroundRequest = (request: unknown): request is BackgroundRequest => 
       typeof candidate.resource === "string" &&
       candidate.resource.startsWith("/exchange/current/overview?")
     );
+  }
+
+  if (candidate.query === "poe-ninja-item") {
+    return typeof candidate.resource === "string" &&
+      /^\/stash\/current\/item\/overview\?type=Unique(?:Weapon|Armour|Accessory|Flask|Jewel)&league=[^&]+$/.test(candidate.resource);
   }
 
   return candidate.query === "log-trade-history"
@@ -89,8 +99,10 @@ export const registerBackgroundHandlers = () => {
       return true
     }
 
-    if (request.query === "poe-ninja-exchange") {
-      const url = `https://poe.ninja/${request.game}/api/economy${request.resource}`
+    if (request.query === "poe-ninja-exchange" || request.query === "poe-ninja-item") {
+      const url = request.query === "poe-ninja-exchange"
+        ? `https://poe.ninja/${request.game}/api/economy${request.resource}`
+        : `https://poe.ninja/poe1/api/economy${request.resource}`
 
       fetch(url)
         .then(async (r) => {

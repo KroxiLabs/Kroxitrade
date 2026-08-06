@@ -31,6 +31,7 @@ const COMPACT_KEYS: Record<string, string> = {
   textSize: "T",
   translateTradeSite: "R",
   showEquivalentPricing: "e",
+  showValdoRewardPricing: "z",
   showMagebloodLegacyDescriptions: "m",
   showBulkSellers: "b",
   showHistory: "h",

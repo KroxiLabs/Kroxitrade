@@ -29,6 +29,7 @@ const DEFAULT_CLASSIC_BOOKMARK_TRADE_ACTIONS: BookmarkTradeActionId[] = [
 
 export interface VersionSettings {
   showEquivalentPricing: boolean
+  showValdoRewardPricing: boolean
   showMagebloodLegacyDescriptions: boolean
   showBulkSellers: boolean
   showPinnedItems: boolean
@@ -99,6 +100,7 @@ const DEFAULT_GLOBAL_SETTINGS: GlobalSettings = {
 
 const DEFAULT_VERSION_SETTINGS: VersionSettings = {
   showEquivalentPricing: false,
+  showValdoRewardPricing: false,
   showMagebloodLegacyDescriptions: true,
   showBulkSellers: false,
   showPinnedItems: false,
@@ -211,6 +213,7 @@ function legacyVersionSettings(
 ): VersionSettings {
   return normalizeVersionSettings({
     showEquivalentPricing: value?.showEquivalentPricing,
+    showValdoRewardPricing: value?.showValdoRewardPricing,
     showMagebloodLegacyDescriptions: value?.showMagebloodLegacyDescriptions,
     showBulkSellers: value?.showBulkSellers,
     showPinnedItems: value?.showPinnedItems,
@@ -446,6 +449,9 @@ export const settings = {
   },
   async updateEquivalentPricingVisibility(showEquivalentPricing: boolean) {
     return saveVersion({ ...activeVersionSettings, showEquivalentPricing })
+  },
+  async updateValdoRewardPricingVisibility(showValdoRewardPricing: boolean) {
+    return saveVersion({ ...activeVersionSettings, showValdoRewardPricing })
   },
   async updateMagebloodLegacyDescriptionsVisibility(
     showMagebloodLegacyDescriptions: boolean

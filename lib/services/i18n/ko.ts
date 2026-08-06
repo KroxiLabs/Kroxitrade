@@ -126,6 +126,10 @@ export const koreanTranslations: Record<string, TranslationValue> = {
   "settings.languageEnglish": "영어",
   "settings.languageSpanish": "스페인어",
   "settings.resultsTitle": "결과 도구",
+  "settings.valdoRewardPricingTitle": "Valdo 보상 가격",
+  "settings.valdoRewardPricingDescription": "Path of Exile 1 Valdo 지도 결과에 보상 가치와 예상 수익을 표시합니다.",
+  "results.valdoReward": "보상:",
+  "results.valdoProfit": "수익:",
   "settings.equivalentTitle": "환산 가격",
   "settings.equivalentDescription":
     "결과에 추가로 표시되는 chaos/divine 환산 줄을 표시하거나 숨깁니다.",

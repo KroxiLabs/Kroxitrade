@@ -121,6 +121,10 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "settings.languageEnglish": "Английский",
   "settings.languageSpanish": "Испанский",
   "settings.resultsTitle": "Инструменты результатов",
+  "settings.valdoRewardPricingTitle": "Цены наград Вальдо",
+  "settings.valdoRewardPricingDescription": "Показывает стоимость награды и примерную прибыль на картах Вальдо в Path of Exile 1.",
+  "results.valdoReward": "Награда:",
+  "results.valdoProfit": "Прибыль:",
   "settings.equivalentTitle": "Эквивалентная цена",
   "settings.equivalentDescription":
     "Показывать или скрывать дополнительную строку с эквивалентом в chaos/divine в результатах.",
