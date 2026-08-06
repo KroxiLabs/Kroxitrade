@@ -2,6 +2,10 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const frenchTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.syncRecoveryTitle": "Les données synchronisées se récupèrent après une suppression accidentelle",
+  "whatsNew.item.syncRecoveryDescription": "L’extension conserve une copie locale de récupération des favoris et réglages synchronisés et la restaure si la synchronisation du navigateur est vidée de façon inattendue.",
+  "whatsNew.item.valdoTaiwanAvailabilityTitle": "Les prix Valdo sont masqués sur Taiwan Trade",
+  "whatsNew.item.valdoTaiwanAvailabilityDescription": "Les prix des récompenses Valdo ne s’affichent plus sur pathofexile.tw car poe.ninja n’y fournit pas les prix nécessaires.",
   "whatsNew.item.chineseTradeTranslationLoadingTitle": "La traduction Chinese Trade se charge de manière fiable",
   "whatsNew.item.chineseTradeTranslationLoadingDescription": "Les données de traduction ne se chargent désormais qu'au besoin, pour une activation fiable de Chinese Trade et un démarrage plus léger de l'extension.",
   "whatsNew.item.valdoRewardPricingTitle": "Prix des récompenses Valdo",

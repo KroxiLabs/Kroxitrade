@@ -4,6 +4,7 @@ import { chineseTradeMessage } from "~/lib/services/chinese-trade/contract"
 import { buildChineseItemNameCache } from "~/lib/services/chinese-trade/item-name-cache"
 import { loadChineseStatTemplates } from "~/lib/services/chinese-trade/stat-templates"
 import { getTradeTranslationState } from "~/lib/services/trade-translation"
+import { storageService } from "~/lib/services/storage"
 
 const getStorageUsage = async () => {
   const measure = async (
@@ -115,6 +116,7 @@ const reloadPoe1TradeTabs = async () => {
 export default defineBackground({
   type: "module",
   main() {
+    storageService.initializeSyncRecovery()
     registerBackgroundHandlers()
     void prepareChineseTradeCaches()
     chrome.runtime.onInstalled.addListener(() => {

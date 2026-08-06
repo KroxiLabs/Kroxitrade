@@ -2,6 +2,10 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const thaiTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.syncRecoveryTitle": "ข้อมูลที่ซิงก์กู้คืนได้จากการลบโดยไม่ตั้งใจ",
+  "whatsNew.item.syncRecoveryDescription": "ส่วนขยายเก็บสำเนากู้คืนในเครื่องของบุ๊กมาร์กและการตั้งค่าที่ซิงก์ไว้ และจะกู้คืนเมื่อ Sync ของเบราว์เซอร์ว่างลงโดยไม่คาดคิด",
+  "whatsNew.item.valdoTaiwanAvailabilityTitle": "ซ่อนราคา Valdo บน Taiwan Trade",
+  "whatsNew.item.valdoTaiwanAvailabilityDescription": "จะไม่แสดงราคารางวัล Valdo บน pathofexile.tw อีกต่อไป เพราะ poe.ninja ไม่มีราคาที่จำเป็นที่นั่น",
   "whatsNew.item.chineseTradeTranslationLoadingTitle": "การแปล Chinese Trade โหลดได้อย่างเสถียร",
   "whatsNew.item.chineseTradeTranslationLoadingDescription": "ข้อมูลการแปลจะโหลดเมื่อจำเป็นเท่านั้น เพื่อให้การเปิดใช้ Chinese Trade เสถียรและลดขนาดเริ่มต้นของส่วนขยาย",
   "whatsNew.item.valdoRewardPricingTitle": "ราคารางวัล Valdo",

@@ -2,6 +2,10 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const russianTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.syncRecoveryTitle": "Синхронизированные данные восстанавливаются после случайного удаления",
+  "whatsNew.item.syncRecoveryDescription": "Расширение сохраняет локальную копию синхронизированных закладок и настроек и восстанавливает её, если Sync браузера неожиданно очищается.",
+  "whatsNew.item.valdoTaiwanAvailabilityTitle": "Цены Вальдо скрыты на Taiwan Trade",
+  "whatsNew.item.valdoTaiwanAvailabilityDescription": "Цены наград Вальдо больше не показываются на pathofexile.tw, потому что poe.ninja не предоставляет там нужные цены.",
   "whatsNew.item.chineseTradeTranslationLoadingTitle": "Перевод Chinese Trade загружается надёжно",
   "whatsNew.item.chineseTradeTranslationLoadingDescription": "Данные перевода теперь загружаются только при необходимости, обеспечивая надёжное включение Chinese Trade и уменьшая начальный размер расширения.",
   "whatsNew.item.valdoRewardPricingTitle": "Цены наград Вальдо",

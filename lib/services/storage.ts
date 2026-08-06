@@ -12,6 +12,21 @@ export type StorageArea = "local" | "sync"
 
 const SYNC_VALUE_FORMAT = 1
 const COMPRESSED_SYNC_VALUE_FORMAT = 2
+const SYNC_RECOVERY_SNAPSHOT_KEY = "poe-trade-plus-sync-recovery"
+const SYNC_RECOVERY_DELAY_MS = 750
+const MANAGED_SYNC_KEYS = new Set([
+  "app-settings",
+  "app-settings-poe1",
+  "app-settings-poe2",
+  "bookmark-folders",
+  "bookmark-folders-manifest"
+])
+const MANAGED_SYNC_PREFIXES = [
+  "bookmark-trades--",
+  "bookmark-trades-manifest--",
+  "bookmark-trades-chunk--",
+  "bookmark-folders-chunk--"
+]
 const COMPACT_KEYS: Record<string, string> = {
   id: "i",
   title: "t",
@@ -52,6 +67,20 @@ const COMPACT_KEYS: Record<string, string> = {
 const EXPANDED_KEYS = Object.fromEntries(
   Object.entries(COMPACT_KEYS).map(([key, compact]) => [compact, key])
 )
+
+type SyncRecoverySnapshot = {
+  capturedAt: string
+  data: Record<string, unknown>
+}
+
+const isManagedSyncKey = (key: string) =>
+  MANAGED_SYNC_KEYS.has(key) ||
+  MANAGED_SYNC_PREFIXES.some((prefix) => key.startsWith(prefix))
+
+const getManagedSyncValues = (values: Record<string, unknown>) =>
+  Object.fromEntries(
+    Object.entries(values).filter(([key]) => isManagedSyncKey(key))
+  )
 
 const isStoragePayload = (value: unknown): value is StoragePayload =>
   typeof value === "object" &&
@@ -154,10 +183,68 @@ const decodeSyncValue = async (value: unknown): Promise<unknown> => {
 
 export class StorageService {
   private static instance: StorageService
+  private syncRecoveryTimer: ReturnType<typeof setTimeout> | null = null
+  private syncRecoveryInitialized = false
 
   static getInstance() {
     if (!this.instance) this.instance = new StorageService()
     return this.instance
+  }
+
+  initializeSyncRecovery() {
+    if (
+      this.syncRecoveryInitialized ||
+      !hasValidExtensionContext() ||
+      !chrome.storage?.sync ||
+      !chrome.storage?.local ||
+      !chrome.storage?.onChanged
+    ) return
+
+    this.syncRecoveryInitialized = true
+    void this.snapshotManagedSyncData()
+    chrome.storage.onChanged.addListener((changes, areaName) => {
+      if (areaName !== "sync" || !Object.keys(changes).some(isManagedSyncKey)) return
+
+      if (this.syncRecoveryTimer) clearTimeout(this.syncRecoveryTimer)
+      this.syncRecoveryTimer = setTimeout(() => {
+        this.syncRecoveryTimer = null
+        void this.recoverOrSnapshotManagedSyncData()
+      }, SYNC_RECOVERY_DELAY_MS)
+    })
+  }
+
+  private async snapshotManagedSyncData() {
+    if (!hasValidExtensionContext() || !chrome.storage?.sync || !chrome.storage?.local) return
+
+    try {
+      const data = getManagedSyncValues(await chrome.storage.sync.get(null))
+      if (Object.keys(data).length === 0) return
+      const snapshot: SyncRecoverySnapshot = { capturedAt: new Date().toISOString(), data }
+      await chrome.storage.local.set({ [SYNC_RECOVERY_SNAPSHOT_KEY]: snapshot })
+    } catch (error) {
+      if (!isExtensionContextInvalidatedError(error)) console.warn("Sync recovery snapshot failed", error)
+    }
+  }
+
+  private async recoverOrSnapshotManagedSyncData() {
+    if (!hasValidExtensionContext() || !chrome.storage?.sync || !chrome.storage?.local) return
+
+    try {
+      const current = getManagedSyncValues(await chrome.storage.sync.get(null))
+      if (Object.keys(current).length > 0) {
+        await this.snapshotManagedSyncData()
+        return
+      }
+
+      const stored = await chrome.storage.local.get(SYNC_RECOVERY_SNAPSHOT_KEY)
+      const snapshot = stored[SYNC_RECOVERY_SNAPSHOT_KEY] as SyncRecoverySnapshot | undefined
+      if (!snapshot?.data || Object.keys(snapshot.data).length === 0) return
+
+      await chrome.storage.sync.set(snapshot.data)
+      console.warn("[Poe Trade Plus] Restored an empty Sync store from the local recovery copy")
+    } catch (error) {
+      if (!isExtensionContextInvalidatedError(error)) console.warn("Sync recovery failed", error)
+    }
   }
 
   async setValue(
@@ -289,6 +376,7 @@ export class StorageService {
         [key]:
           area === "sync" ? { ...value, value: storedValue } : value
       })
+      if (area === "sync") void this.snapshotManagedSyncData()
       return true
     } catch (error) {
       if (!isExtensionContextInvalidatedError(error)) {
@@ -306,6 +394,7 @@ export class StorageService {
     if (!storageArea) return false
     try {
       await storageArea.remove(keys)
+      if (area === "sync") void this.snapshotManagedSyncData()
       return true
     } catch (error) {
       if (!isExtensionContextInvalidatedError(error)) {

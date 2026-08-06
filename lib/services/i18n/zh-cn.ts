@@ -2,6 +2,10 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const simplifiedChineseTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.syncRecoveryTitle": "同步数据可从意外删除中恢复",
+  "whatsNew.item.syncRecoveryDescription": "扩展会保留已同步书签和设置的本地恢复副本，并在浏览器 Sync 意外清空时将其还原。",
+  "whatsNew.item.valdoTaiwanAvailabilityTitle": "台湾 Trade 隐藏瓦尔多定价",
+  "whatsNew.item.valdoTaiwanAvailabilityDescription": "由于 poe.ninja 未提供所需价格，pathofexile.tw 不再显示瓦尔多奖励定价。",
   "whatsNew.item.chineseTradeTranslationLoadingTitle": "Chinese Trade 翻译可稳定加载",
   "whatsNew.item.chineseTradeTranslationLoadingDescription": "翻译数据仅在需要时加载，因此可稳定启用 Chinese Trade，并减小扩展的初始体积。",
   "whatsNew.item.valdoRewardPricingTitle": "瓦尔多奖励定价",

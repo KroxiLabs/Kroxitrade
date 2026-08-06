@@ -167,6 +167,14 @@ const version1123Fixes: WhatsNewItem[] = [
   {
     titleKey: "whatsNew.item.chineseTradeTranslationLoadingTitle",
     descriptionKey: "whatsNew.item.chineseTradeTranslationLoadingDescription"
+  },
+  {
+    titleKey: "whatsNew.item.syncRecoveryTitle",
+    descriptionKey: "whatsNew.item.syncRecoveryDescription"
+  },
+  {
+    titleKey: "whatsNew.item.valdoTaiwanAvailabilityTitle",
+    descriptionKey: "whatsNew.item.valdoTaiwanAvailabilityDescription"
   }
 ];
 

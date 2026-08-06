@@ -3,6 +3,10 @@ import type { TranslationValue } from "./types"
 
 export const traditionalChineseTranslations: Record<string, TranslationValue> =
   {
+    "whatsNew.item.syncRecoveryTitle": "同步資料可從意外刪除中復原",
+    "whatsNew.item.syncRecoveryDescription": "擴充功能會保留已同步書籤和設定的本機復原副本，並在瀏覽器 Sync 意外清空時將其還原。",
+    "whatsNew.item.valdoTaiwanAvailabilityTitle": "在台灣 Trade 隱藏瓦爾多定價",
+    "whatsNew.item.valdoTaiwanAvailabilityDescription": "由於 poe.ninja 未提供所需價格，pathofexile.tw 不再顯示瓦爾多獎勵定價。",
     ...englishTranslations,
     "whatsNew.item.chineseTradeTranslationLoadingTitle": "Chinese Trade 翻譯可穩定載入",
     "whatsNew.item.chineseTradeTranslationLoadingDescription": "翻譯資料僅在需要時載入，因此能穩定啟用 Chinese Trade，並縮小擴充功能的初始大小。",

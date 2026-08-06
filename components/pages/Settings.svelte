@@ -18,6 +18,7 @@
   } from "../../lib/services/chinese-trade/contract";
   import { DEFAULT_SIDEBAR_WIDTH, settings, type BookmarkLayout, type BookmarkTradeActionId, type QuickFiltersPlacement, type SidebarSide, type TextSizePreference } from "../../lib/services/settings";
   import { tradeLocationService } from "../../lib/services/trade-location";
+  import { isNativeChineseTradeSite } from "../../lib/config/trade-hosts";
   import type { BookmarksFolderStruct, BookmarksTradeStruct } from "../../lib/types/bookmarks";
   import BookmarkFolder from "../BookmarkFolder.svelte";
   import Button from "../Button.svelte";
@@ -155,6 +156,7 @@
       window.location.hostname !== "pathofexile.tw" &&
       !window.location.pathname.startsWith("/trade2/")
   );
+  const canShowValdoRewardPricing = !isPoe2Trade && !isNativeChineseTradeSite();
 
   const localizedLanguageNames: Record<AppLanguage, Record<AppLanguage, string>> = {
     en: { en: "English", es: "Spanish", pt: "Portuguese", ru: "Russian", th: "Thai", de: "German", fr: "French", ja: "Japanese", ko: "Korean", "zh-tw": "Traditional Chinese", "zh-cn": "Simplified Chinese" },
@@ -1051,7 +1053,7 @@
           />
         </div>
 
-        {#if !isPoe2Trade}
+        {#if canShowValdoRewardPricing}
           <div class="settings-row">
             <div class="settings-row__copy">
               <div class="settings-row__title">{translate($languageStore, "settings.valdoRewardPricingTitle")}</div>
