@@ -2,6 +2,10 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const japaneseTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.valdoRewardPricingTitle": "Valdo 報酬の価格",
+  "whatsNew.item.valdoRewardPricingDescription": "任意で有効にできる PoE1 Valdo マップの価格表示は、完了報酬、その Divine 価値、各出品の推定利益を表示します。",
+  "whatsNew.item.chineseTradeCacheRecoveryTitle": "Chinese Trade キャッシュを確実に復旧",
+  "whatsNew.item.chineseTradeCacheRecoveryDescription": "Chinese Trade のデータは、ローカルキャッシュの期限切れ、欠落、無効化時に正しく再構築されるようになりました。",
   "whatsNew.item.reducedPermissionsTitle": "ブラウザー権限の削減",
   "whatsNew.item.reducedPermissionsDescription": "拡張機能は Chrome のスクリプト実行権限と無制限ストレージ権限を必要としなくなりました。中国語 Trade データはより小さいローカルキャッシュを使用します。",
   "settings.tradeTranslationTitle": "トレードサイトを中国語化",
@@ -126,6 +130,10 @@ export const japaneseTranslations: Record<string, TranslationValue> = {
   "settings.languageEnglish": "英語",
   "settings.languageSpanish": "スペイン語",
   "settings.resultsTitle": "検索結果ツール",
+  "settings.valdoRewardPricingTitle": "Valdo 報酬の価格",
+  "settings.valdoRewardPricingDescription": "Path of Exile 1 の Valdo マップ結果に報酬価値と推定利益を表示します。",
+  "results.valdoReward": "報酬:",
+  "results.valdoProfit": "利益:",
   "settings.equivalentTitle": "等価価格",
   "settings.equivalentDescription":
     "検索結果に追加表示される chaos/divine 等価行を表示または非表示にします。",

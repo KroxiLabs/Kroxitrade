@@ -186,6 +186,12 @@
     }
   }
 
+  async function handleValdoRewardPricingChange(showValdoRewardPricing: boolean) {
+    if (!(await settings.updateValdoRewardPricingVisibility(showValdoRewardPricing))) {
+      flashMessages.alert(translate($languageStore, "settings.saveFailed"));
+    }
+  }
+
   async function handleMagebloodLegacyDescriptionsChange(showMagebloodLegacyDescriptions: boolean) {
     if (!(await settings.updateMagebloodLegacyDescriptionsVisibility(showMagebloodLegacyDescriptions))) {
       flashMessages.alert(translate($languageStore, "settings.saveFailed"));
@@ -267,10 +273,16 @@
     }
   }
 
-  function rebuildChineseTradeData(): Promise<boolean> {
+  function rebuildChineseTradeData(language?: "zh-tw" | "zh-cn"): Promise<boolean> {
     return new Promise((resolve) => {
       try {
-        chrome.runtime.sendMessage({ type: chineseTradeMessage.rebuildCache }, (reply) => {
+        chrome.runtime.sendMessage({ type: chineseTradeMessage.rebuildCache, language }, (reply) => {
+          if (reply?.ok !== true) {
+            console.error("[PoeTradePlus] Chinese Trade cache rebuild failed", {
+              error: reply?.error ?? chrome.runtime.lastError?.message ?? "No response from background",
+              storage: reply?.storage
+            });
+          }
           resolve(reply?.ok === true);
         });
       } catch {
@@ -302,7 +314,7 @@
   }
 
   async function prepareChineseTradeCache(language: "zh-tw" | "zh-cn") {
-    if (!(await rebuildChineseTradeData())) return false;
+    if (!(await rebuildChineseTradeData(language))) return false;
 
     const source = language === "zh-cn"
       ? chineseTradeStorage.simplified
@@ -1038,6 +1050,21 @@
             onToggle={() => handleEquivalentPricingChange(!$settings.showEquivalentPricing)}
           />
         </div>
+
+        {#if !isPoe2Trade}
+          <div class="settings-row">
+            <div class="settings-row__copy">
+              <div class="settings-row__title">{translate($languageStore, "settings.valdoRewardPricingTitle")}</div>
+              <div class="settings-row__description">{translate($languageStore, "settings.valdoRewardPricingDescription")}</div>
+            </div>
+            <ToggleRow
+              checked={$settings.showValdoRewardPricing}
+              label={translate($languageStore, "settings.valdoRewardPricingTitle")}
+              stateLabel={toggleSwitchLabel($settings.showValdoRewardPricing)}
+              onToggle={() => handleValdoRewardPricingChange(!$settings.showValdoRewardPricing)}
+            />
+          </div>
+        {/if}
 
         <div class="settings-row">
           <div class="settings-row__copy">

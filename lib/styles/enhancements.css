@@ -254,6 +254,18 @@ body.bt-dev-result-actions-visible.bt-dev-wiki-visible
   display: none;
 }
 
+.bt-valdo-reward-pricing {
+  color: rgba(214, 183, 108, 0.9);
+}
+
+.bt-valdo-profit.is-positive {
+  color: #7dce7d;
+}
+
+.bt-valdo-profit.is-negative {
+  color: #e07070;
+}
+
 .bt-equivalent-label {
   margin-right: 4px;
   color: rgba(163, 141, 109, 0.58);

@@ -1,20 +1,24 @@
 import { tradeHosts } from "~/lib/config/trade-hosts"
-import { chineseTradeStorage } from "~/lib/services/chinese-trade/contract"
+import {
+  chineseTradeMessage,
+  chineseTradeStorage
+} from "~/lib/services/chinese-trade/contract"
 import {
   applyTradeTemplate,
   normalizeEnglishTradeText,
   resolveTradeDisplayText
 } from "~/lib/services/chinese-trade/text-transform"
-import type { ChineseStatTemplates } from "~/lib/services/chinese-trade/stat-cache-transform"
 import { getTradeTranslationState } from "~/lib/services/trade-translation"
 
 type Modifier = { tw: string; us?: string; opt?: Record<string, string> }
 
-let bundledTemplatesPromise: Promise<ChineseStatTemplates> | undefined
-const loadBundledTemplates = () =>
-  (bundledTemplatesPromise ??= import("~/data/chinese-trade/stat-templates.json").then(
-    ({ default: templates }) => templates as ChineseStatTemplates
-  ))
+const requestTemplates = () =>
+  new Promise<Record<string, string>>((resolve) => {
+    chrome.runtime.sendMessage(
+      { type: chineseTradeMessage.getTemplates },
+      (reply) => resolve(reply?.templates ?? {})
+    )
+  })
 
 const isChinese = (value: string) => /[一-鿿]/.test(value)
 const numberTokens = /[+-]?\d+(?:\.\d+)?/g
@@ -64,10 +68,7 @@ export default defineContentScript({
     let modifiers: Record<string, Modifier> = {}
 
     try {
-      const bundledTemplates = await loadBundledTemplates()
-      templates = state.language === "zh-cn"
-        ? bundledTemplates.cn ?? {}
-        : bundledTemplates.tw ?? {}
+      templates = await requestTemplates()
     } catch {
       // Result modifiers still use the smaller stat-id cache as a fallback.
     }

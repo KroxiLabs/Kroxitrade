@@ -12,11 +12,12 @@ const iconMap = {
 
 const firefoxBinary = process.env.FIREFOX_BINARY
 const useManualFirefoxRunner = process.env.WXT_FIREFOX_MANUAL === "1"
+const isE2eBuild = process.env.POETRADEPLUS_E2E === "1"
 
 export default defineConfig({
   modules: ["@wxt-dev/module-svelte"],
   srcDir: ".",
-  outDir: "build",
+  outDir: isE2eBuild ? "build-e2e" : "build",
   manifestVersion: 3,
   webExt: {
     disabled: useManualFirefoxRunner,

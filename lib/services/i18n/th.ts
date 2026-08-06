@@ -2,6 +2,10 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const thaiTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.valdoRewardPricingTitle": "ราคารางวัล Valdo",
+  "whatsNew.item.valdoRewardPricingDescription": "การประเมินราคาแผนที่ Valdo ของ PoE1 แบบเลือกเปิดได้ จะแสดงรางวัลเมื่อจบ มูลค่าเป็น Divine และกำไรโดยประมาณของแต่ละรายการ",
+  "whatsNew.item.chineseTradeCacheRecoveryTitle": "แคช Chinese Trade กู้คืนได้อย่างเสถียร",
+  "whatsNew.item.chineseTradeCacheRecoveryDescription": "ข้อมูล Chinese Trade จะสร้างใหม่ได้ถูกต้องเมื่อแคชในเครื่องหมดอายุ หายไป หรือใช้งานไม่ได้",
   "whatsNew.item.reducedPermissionsTitle": "สิทธิ์ของเบราว์เซอร์น้อยลง",
   "whatsNew.item.reducedPermissionsDescription": "ส่วนขยายไม่ต้องใช้สิทธิ์การรันสคริปต์หรือพื้นที่เก็บข้อมูลไม่จำกัดของ Chrome อีกต่อไป ข้อมูล Trade ภาษาจีนใช้แคชในเครื่องที่เล็กลงแล้ว",
   "settings.tradeTranslationTitle": "แปลเว็บไซต์เทรด",
@@ -121,6 +125,10 @@ export const thaiTranslations: Record<string, TranslationValue> = {
   "settings.languageEnglish": "อังกฤษ",
   "settings.languageSpanish": "สเปน",
   "settings.resultsTitle": "เครื่องมือผลลัพธ์",
+  "settings.valdoRewardPricingTitle": "ราคารางวัล Valdo",
+  "settings.valdoRewardPricingDescription": "แสดงมูลค่ารางวัลและกำไรโดยประมาณในผลลัพธ์แผนที่ Valdo ของ Path of Exile 1",
+  "results.valdoReward": "รางวัล:",
+  "results.valdoProfit": "กำไร:",
   "settings.equivalentTitle": "ราคาเทียบเท่า",
   "settings.equivalentDescription":
     "แสดงหรือซ่อนบรรทัดเพิ่มเติมที่แสดงราคาเทียบเท่า chaos/divine ในผลลัพธ์",

@@ -2,6 +2,10 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const russianTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.valdoRewardPricingTitle": "Цены наград Вальдо",
+  "whatsNew.item.valdoRewardPricingDescription": "Необязательная оценка карт Вальдо в PoE1 показывает награду за завершение, её стоимость в divine и примерную прибыль для каждого лота.",
+  "whatsNew.item.chineseTradeCacheRecoveryTitle": "Кэш Chinese Trade восстанавливается надёжно",
+  "whatsNew.item.chineseTradeCacheRecoveryDescription": "Данные Chinese Trade теперь корректно пересобираются, если локальный кэш истёк, отсутствует или стал недействительным.",
   "whatsNew.item.reducedPermissionsTitle": "Меньше разрешений браузера",
   "whatsNew.item.reducedPermissionsDescription": "Расширению больше не нужны разрешения Chrome на выполнение скриптов и неограниченное хранилище. Данные китайской торговли теперь используют меньший локальный кэш.",
   "settings.tradeTranslationTitle": "Переводить сайт торговли",
@@ -121,6 +125,10 @@ export const russianTranslations: Record<string, TranslationValue> = {
   "settings.languageEnglish": "Английский",
   "settings.languageSpanish": "Испанский",
   "settings.resultsTitle": "Инструменты результатов",
+  "settings.valdoRewardPricingTitle": "Цены наград Вальдо",
+  "settings.valdoRewardPricingDescription": "Показывает стоимость награды и примерную прибыль на картах Вальдо в Path of Exile 1.",
+  "results.valdoReward": "Награда:",
+  "results.valdoProfit": "Прибыль:",
   "settings.equivalentTitle": "Эквивалентная цена",
   "settings.equivalentDescription":
     "Показывать или скрывать дополнительную строку с эквивалентом в chaos/divine в результатах.",

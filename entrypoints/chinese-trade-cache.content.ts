@@ -61,7 +61,9 @@ export default defineContentScript({
       ? chineseTradeStorage.simplified
       : chineseTradeStorage.traditional
     const targets: Array<[string, (typeof tradeCacheKeys)[number]]> = [
-      [locale.stats, "lscache-tradestats"]
+      [locale.stats, "lscache-tradestats"],
+      [locale.static, "lscache-tradedata"],
+      [locale.filters, "lscache-tradefilters"]
     ]
 
     let values: Record<string, unknown>
@@ -71,7 +73,7 @@ export default defineContentScript({
       return
     }
 
-    const serialized = new Map<string, string>()
+    const serialized = new Map<(typeof tradeCacheKeys)[number], string>()
     for (const [source, target] of targets) {
       const value = values[source]
       if (!Array.isArray(value)) continue
@@ -83,7 +85,8 @@ export default defineContentScript({
     }
 
     const stats = serialized.get("lscache-tradestats")
-    if (!stats) {
+    const isComplete = targets.every(([, target]) => serialized.has(target))
+    if (!stats || !isComplete) {
       try {
         if (sessionStorage.getItem(chineseTradePageStorage.rebuildGuard) === "1") return
         sessionStorage.setItem(chineseTradePageStorage.rebuildGuard, "1")
@@ -95,7 +98,9 @@ export default defineContentScript({
     }
     sessionStorage.removeItem(chineseTradePageStorage.rebuildGuard)
 
-    const bootStats = localStorage.getItem("lscache-tradestats")
+    const bootCache = new Map(
+      targets.map(([, target]) => [target, localStorage.getItem(target)])
+    )
     const inject = () => {
       let wroteValue = false
       for (const [target, value] of serialized) {
@@ -109,13 +114,16 @@ export default defineContentScript({
     try {
       inject()
       ;[80, 240, 600].forEach((delay) => setTimeout(inject, delay))
+      const changedAtBoot = [...serialized].some(
+        ([target, value]) => bootCache.get(target) !== value
+      )
       if (
-        bootStats !== stats &&
+        changedAtBoot &&
         sessionStorage.getItem(chineseTradePageStorage.reloadGuard) !== "1"
       ) {
         sessionStorage.setItem(chineseTradePageStorage.reloadGuard, "1")
         setTimeout(() => location.reload(), 50)
-      } else if (bootStats === stats) {
+      } else if (!changedAtBoot) {
         sessionStorage.removeItem(chineseTradePageStorage.reloadGuard)
       }
     } catch {

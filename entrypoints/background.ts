@@ -1,12 +1,61 @@
 import { registerBackgroundHandlers } from "~/lib/background"
-import { buildChineseItemNameCache } from "~/lib/services/chinese-trade/item-name-cache"
 import { refreshChineseTradeCache } from "~/lib/services/chinese-trade/cache-builder"
+import { buildChineseItemNameCache } from "~/lib/services/chinese-trade/item-name-cache"
+import { loadChineseStatTemplates } from "~/lib/services/chinese-trade/stat-templates"
 import { getTradeTranslationState } from "~/lib/services/trade-translation"
 import { chineseTradeMessage } from "~/lib/services/chinese-trade/contract"
 
-const prepareChineseTradeCaches = async (force = false) => {
-  if (!force && !(await getTradeTranslationState()).enabled) return
-  await Promise.all([refreshChineseTradeCache(force), buildChineseItemNameCache(force)])
+const getStorageUsage = async () => {
+  const measure = async (
+    area: (chrome.storage.StorageArea & {
+      QUOTA_BYTES?: number
+      QUOTA_BYTES_PER_ITEM?: number
+    }) | undefined
+  ) => {
+    if (!area) return { available: false }
+    try {
+      const usedBytes = await area.getBytesInUse(null)
+      return {
+        available: true,
+        usedBytes,
+        quotaBytes: area.QUOTA_BYTES,
+        quotaBytesPerItem: area.QUOTA_BYTES_PER_ITEM
+      }
+    } catch (error) {
+      return {
+        available: false,
+        error: getErrorMessage(error)
+      }
+    }
+  }
+
+  const [local, sync, session, managed] = await Promise.all([
+    measure(chrome.storage.local),
+    measure(chrome.storage.sync),
+    measure(chrome.storage.session),
+    measure(chrome.storage.managed)
+  ])
+  return { local, sync, session, managed }
+}
+
+const getErrorMessage = (error: unknown) =>
+  error instanceof Error ? error.message : String(error)
+
+const prepareChineseTradeCaches = async (
+  force = false,
+  requestedLanguage?: unknown
+) => {
+  const state = await getTradeTranslationState()
+  const language = requestedLanguage === "zh-cn" || requestedLanguage === "zh-tw"
+    ? requestedLanguage
+    : state.language
+  if (language !== "zh-cn" && language !== "zh-tw") return
+  if (!force && !state.enabled) return
+  const [cacheReady] = await Promise.all([
+    refreshChineseTradeCache(force, language),
+    buildChineseItemNameCache(force, language)
+  ])
+  if (!cacheReady) throw new Error("Chinese Trade cache could not be prepared")
 }
 
 const isInternationalPoe1Trade = (url: string | undefined) => {
@@ -70,9 +119,33 @@ export default defineBackground({
     })
     chrome.runtime.onMessage.addListener((request, _sender, sendResponse) => {
       if (request?.type === chineseTradeMessage.rebuildCache) {
-        prepareChineseTradeCaches(true)
-          .then(() => sendResponse({ ok: true }))
-          .catch(() => sendResponse({ ok: false }))
+        prepareChineseTradeCaches(true, request.language)
+          .then(async () => {
+            const storage = await getStorageUsage()
+            console.info("[PoeTradePlus] Chrome storage usage", storage)
+            sendResponse({ ok: true, storage })
+          })
+          .catch(async (error) =>
+            sendResponse({
+              ok: false,
+              error: getErrorMessage(error),
+              storage: await getStorageUsage().catch(() => undefined)
+            })
+          )
+        return true
+      }
+
+      if (request?.type === chineseTradeMessage.getTemplates) {
+        getTradeTranslationState()
+          .then(async (state) => {
+            if (!state.enabled) return {}
+            const templates = await loadChineseStatTemplates()
+            return state.language === "zh-cn"
+              ? templates.cn ?? {}
+              : templates.tw ?? {}
+          })
+          .then((templates) => sendResponse({ templates }))
+          .catch(() => sendResponse({ templates: {} }))
         return true
       }
 

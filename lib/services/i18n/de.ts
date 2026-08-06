@@ -2,6 +2,10 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const germanTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.valdoRewardPricingTitle": "Valdo-Belohnungspreise",
+  "whatsNew.item.valdoRewardPricingDescription": "Die optionale Preisberechnung für PoE1-Valdo-Karten zeigt die Abschlussbelohnung, ihren Divine-Wert und den geschätzten Gewinn pro Angebot.",
+  "whatsNew.item.chineseTradeCacheRecoveryTitle": "Chinese-Trade-Cache wird zuverlässig wiederhergestellt",
+  "whatsNew.item.chineseTradeCacheRecoveryDescription": "Chinese-Trade-Daten werden nun korrekt neu aufgebaut, wenn ihr lokaler Cache abläuft, fehlt oder ungültig wird.",
   "whatsNew.item.reducedPermissionsTitle": "Weniger Browser-Berechtigungen",
   "whatsNew.item.reducedPermissionsDescription": "Die Erweiterung benötigt keine Chrome-Berechtigungen für Scripting oder unbegrenzten Speicher mehr. Chinesische Trade-Daten verwenden jetzt einen kleineren lokalen Cache.",
   "settings.tradeTranslationTitle": "Handelsseite übersetzen",
@@ -121,6 +125,10 @@ export const germanTranslations: Record<string, TranslationValue> = {
   "settings.languageEnglish": "Englisch",
   "settings.languageSpanish": "Spanisch",
   "settings.resultsTitle": "Ergebniswerkzeuge",
+  "settings.valdoRewardPricingTitle": "Valdo-Belohnungspreise",
+  "settings.valdoRewardPricingDescription": "Zeigt den Belohnungswert und den geschätzten Gewinn bei Valdo-Karten in Path of Exile 1.",
+  "results.valdoReward": "Belohnung:",
+  "results.valdoProfit": "Gewinn:",
   "settings.equivalentTitle": "Äquivalenzpreis",
   "settings.equivalentDescription":
     "Zeige oder verberge die zusätzliche Zeile mit Chaos/Divine-Äquivalenten in den Ergebnissen.",

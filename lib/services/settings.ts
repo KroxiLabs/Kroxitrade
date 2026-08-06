@@ -29,6 +29,7 @@ const DEFAULT_CLASSIC_BOOKMARK_TRADE_ACTIONS: BookmarkTradeActionId[] = [
 
 export interface VersionSettings {
   showEquivalentPricing: boolean
+  showValdoRewardPricing: boolean
   showMagebloodLegacyDescriptions: boolean
   showBulkSellers: boolean
   showPinnedItems: boolean
@@ -99,6 +100,7 @@ const DEFAULT_GLOBAL_SETTINGS: GlobalSettings = {
 
 const DEFAULT_VERSION_SETTINGS: VersionSettings = {
   showEquivalentPricing: false,
+  showValdoRewardPricing: false,
   showMagebloodLegacyDescriptions: true,
   showBulkSellers: false,
   showPinnedItems: false,
@@ -211,6 +213,7 @@ function legacyVersionSettings(
 ): VersionSettings {
   return normalizeVersionSettings({
     showEquivalentPricing: value?.showEquivalentPricing,
+    showValdoRewardPricing: value?.showValdoRewardPricing,
     showMagebloodLegacyDescriptions: value?.showMagebloodLegacyDescriptions,
     showBulkSellers: value?.showBulkSellers,
     showPinnedItems: value?.showPinnedItems,
@@ -321,7 +324,12 @@ async function persistSynced(key: string, value: unknown): Promise<boolean> {
     null,
     SETTINGS_STORAGE_AREA
   )
-  if (!persisted) return false
+  if (!persisted) {
+    // A full or temporarily unavailable browser Sync area must not prevent a
+    // user from changing an extension setting. The next successful load will
+    // retry the normal local-to-Sync migration.
+    return storageService.setValue(key, value)
+  }
 
   await storageService.deleteValue(key)
   return true
@@ -441,6 +449,9 @@ export const settings = {
   },
   async updateEquivalentPricingVisibility(showEquivalentPricing: boolean) {
     return saveVersion({ ...activeVersionSettings, showEquivalentPricing })
+  },
+  async updateValdoRewardPricingVisibility(showValdoRewardPricing: boolean) {
+    return saveVersion({ ...activeVersionSettings, showValdoRewardPricing })
   },
   async updateMagebloodLegacyDescriptionsVisibility(
     showMagebloodLegacyDescriptions: boolean

@@ -2,6 +2,10 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const simplifiedChineseTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.valdoRewardPricingTitle": "瓦尔多奖励定价",
+  "whatsNew.item.valdoRewardPricingDescription": "可选的 PoE1 瓦尔多地图定价会显示完成奖励、其 Divine 价值以及每个物品的预估利润。",
+  "whatsNew.item.chineseTradeCacheRecoveryTitle": "Chinese Trade 缓存可可靠恢复",
+  "whatsNew.item.chineseTradeCacheRecoveryDescription": "当本地缓存过期、缺失或失效时，Chinese Trade 数据现在会正确重建。",
   ...englishTranslations,
   "whatsNew.item.reducedPermissionsTitle": "更少的浏览器权限",
   "whatsNew.item.reducedPermissionsDescription": "扩展不再需要 Chrome 的脚本执行和无限存储权限。中文 Trade 数据现在使用更小的本地缓存。",
@@ -210,6 +214,10 @@ export const simplifiedChineseTranslations: Record<string, TranslationValue> = {
   "settings.onboardingDescription": "重新打开快速导览以复习主要的操作与分页。",
   "settings.reopenTutorial": "打开教学",
   "settings.resultsTitle": "结果工具",
+  "settings.valdoRewardPricingTitle": "瓦尔多奖励定价",
+  "settings.valdoRewardPricingDescription": "在 Path of Exile 1 的瓦尔多地图结果中显示奖励价值和预估利润。",
+  "results.valdoReward": "奖励：",
+  "results.valdoProfit": "利润：",
   "settings.equivalentTitle": "等值定价",
   "settings.equivalentDescription":
     "显示或隐藏交易结果中额外的混沌石／神圣石等值那一行。",

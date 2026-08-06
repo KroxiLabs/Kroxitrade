@@ -8,10 +8,13 @@ export interface TradeTranslationState {
 }
 
 const getStoredTradeLanguage = async () => {
-  const settings = await storageService.getValue<Record<string, unknown>>(
+  const syncedSettings = await storageService.getValue<Record<string, unknown>>(
     "app-settings",
     null,
     "sync"
+  )
+  const settings = syncedSettings ?? await storageService.getValue<Record<string, unknown>>(
+    "app-settings"
   )
   const language = String(settings?.language ?? "en")
   return { language, translateTradeSite: settings?.translateTradeSite === true }

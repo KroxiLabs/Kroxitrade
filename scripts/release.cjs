@@ -301,6 +301,11 @@ const publish = () => {
 const action = process.argv[2]
 if (action === "check") {
   run("pnpm", ["run", "data:refresh"])
+  run("pnpm", ["run", "typecheck"])
+  run("pnpm", ["run", "test"])
+  run("pnpm", ["run", "check:bundle"])
+  run("pnpm", ["run", "test:e2e"])
+  run("pnpm", ["run", "build:firefox"])
   const releaseData = assertReleaseNotes()
   writeReleaseNotes(releaseData)
   console.log(`What's New for ${tag} is complete. Changelog: ${releaseNotesPath()}`)
