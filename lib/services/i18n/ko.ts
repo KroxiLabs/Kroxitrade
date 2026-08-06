@@ -2,6 +2,12 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const koreanTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.syncRecoveryTitle": "실수로 삭제한 동기화 데이터를 복구",
+  "whatsNew.item.syncRecoveryDescription": "확장 프로그램은 동기화된 북마크와 설정의 로컬 복구 사본을 유지하며 브라우저 Sync가 예기치 않게 비워지면 복원합니다.",
+  "whatsNew.item.valdoTaiwanAvailabilityTitle": "대만 Trade에서 Valdo 가격 숨김",
+  "whatsNew.item.valdoTaiwanAvailabilityDescription": "poe.ninja가 필요한 가격을 제공하지 않으므로 pathofexile.tw에서는 Valdo 보상 가격을 더 이상 표시하지 않습니다.",
+  "whatsNew.item.chineseTradeTranslationLoadingTitle": "Chinese Trade 번역이 안정적으로 로드됩니다",
+  "whatsNew.item.chineseTradeTranslationLoadingDescription": "번역 데이터는 필요할 때만 로드되어 Chinese Trade를 안정적으로 활성화하고 확장 프로그램의 초기 크기를 줄입니다.",
   "whatsNew.item.valdoRewardPricingTitle": "Valdo 보상 가격",
   "whatsNew.item.valdoRewardPricingDescription": "선택적으로 켤 수 있는 PoE1 Valdo 지도 가격 기능은 완료 보상, Divine 가치 및 각 매물의 예상 수익을 표시합니다.",
   "whatsNew.item.chineseTradeCacheRecoveryTitle": "Chinese Trade 캐시가 안정적으로 복구됩니다",

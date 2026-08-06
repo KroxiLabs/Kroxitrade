@@ -2,6 +2,12 @@ import { englishTranslations } from "./en"
 import type { TranslationValue } from "./types"
 
 export const japaneseTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.syncRecoveryTitle": "同期データを誤削除から復元",
+  "whatsNew.item.syncRecoveryDescription": "拡張機能は同期済みブックマークと設定のローカル復元コピーを保持し、ブラウザの Sync が予期せず空になった場合に復元します。",
+  "whatsNew.item.valdoTaiwanAvailabilityTitle": "台湾 Trade では Valdo 価格を非表示",
+  "whatsNew.item.valdoTaiwanAvailabilityDescription": "poe.ninja が必要な価格を提供していないため、pathofexile.tw では Valdo 報酬価格を表示しません。",
+  "whatsNew.item.chineseTradeTranslationLoadingTitle": "Chinese Trade 翻訳を安定して読み込み",
+  "whatsNew.item.chineseTradeTranslationLoadingDescription": "翻訳データは必要なときだけ読み込まれるため、Chinese Trade を安定して有効にでき、拡張機能の起動サイズも小さくなります。",
   "whatsNew.item.valdoRewardPricingTitle": "Valdo 報酬の価格",
   "whatsNew.item.valdoRewardPricingDescription": "任意で有効にできる PoE1 Valdo マップの価格表示は、完了報酬、その Divine 価値、各出品の推定利益を表示します。",
   "whatsNew.item.chineseTradeCacheRecoveryTitle": "Chinese Trade キャッシュを確実に復旧",

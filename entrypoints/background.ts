@@ -1,16 +1,19 @@
 import { registerBackgroundHandlers } from "~/lib/background"
 import { refreshChineseTradeCache } from "~/lib/services/chinese-trade/cache-builder"
+import { chineseTradeMessage } from "~/lib/services/chinese-trade/contract"
 import { buildChineseItemNameCache } from "~/lib/services/chinese-trade/item-name-cache"
 import { loadChineseStatTemplates } from "~/lib/services/chinese-trade/stat-templates"
 import { getTradeTranslationState } from "~/lib/services/trade-translation"
-import { chineseTradeMessage } from "~/lib/services/chinese-trade/contract"
+import { storageService } from "~/lib/services/storage"
 
 const getStorageUsage = async () => {
   const measure = async (
-    area: (chrome.storage.StorageArea & {
-      QUOTA_BYTES?: number
-      QUOTA_BYTES_PER_ITEM?: number
-    }) | undefined
+    area:
+      | (chrome.storage.StorageArea & {
+          QUOTA_BYTES?: number
+          QUOTA_BYTES_PER_ITEM?: number
+        })
+      | undefined
   ) => {
     if (!area) return { available: false }
     try {
@@ -46,9 +49,10 @@ const prepareChineseTradeCaches = async (
   requestedLanguage?: unknown
 ) => {
   const state = await getTradeTranslationState()
-  const language = requestedLanguage === "zh-cn" || requestedLanguage === "zh-tw"
-    ? requestedLanguage
-    : state.language
+  const language =
+    requestedLanguage === "zh-cn" || requestedLanguage === "zh-tw"
+      ? requestedLanguage
+      : state.language
   if (language !== "zh-cn" && language !== "zh-tw") return
   if (!force && !state.enabled) return
   const [cacheReady] = await Promise.all([
@@ -112,6 +116,7 @@ const reloadPoe1TradeTabs = async () => {
 export default defineBackground({
   type: "module",
   main() {
+    storageService.initializeSyncRecovery()
     registerBackgroundHandlers()
     void prepareChineseTradeCaches()
     chrome.runtime.onInstalled.addListener(() => {
@@ -141,8 +146,8 @@ export default defineBackground({
             if (!state.enabled) return {}
             const templates = await loadChineseStatTemplates()
             return state.language === "zh-cn"
-              ? templates.cn ?? {}
-              : templates.tw ?? {}
+              ? (templates.cn ?? {})
+              : (templates.tw ?? {})
           })
           .then((templates) => sendResponse({ templates }))
           .catch(() => sendResponse({ templates: {} }))

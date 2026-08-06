@@ -1,6 +1,12 @@
 import type { TranslationValue } from "./types"
 
 export const englishTranslations: Record<string, TranslationValue> = {
+  "whatsNew.item.syncRecoveryTitle": "Sync data recovers from accidental deletion",
+  "whatsNew.item.syncRecoveryDescription": "The extension keeps a local recovery copy of synced bookmarks and settings, and restores it if browser Sync is unexpectedly emptied.",
+  "whatsNew.item.valdoTaiwanAvailabilityTitle": "Valdo pricing is hidden on Taiwan Trade",
+  "whatsNew.item.valdoTaiwanAvailabilityDescription": "Valdo reward pricing is no longer shown on pathofexile.tw because poe.ninja does not provide the required prices there.",
+  "whatsNew.item.chineseTradeTranslationLoadingTitle": "Chinese Trade translation loads reliably",
+  "whatsNew.item.chineseTradeTranslationLoadingDescription": "Translation data now loads only when needed, keeping Chinese Trade activation reliable while reducing the extension's startup size.",
   "whatsNew.item.valdoRewardPricingTitle": "Valdo reward pricing",
   "whatsNew.item.valdoRewardPricingDescription": "Optional PoE1 Valdo map pricing shows the completion reward, its Divine value, and the estimated profit for each listing.",
   "whatsNew.item.chineseTradeCacheRecoveryTitle": "Chinese Trade cache recovers reliably",

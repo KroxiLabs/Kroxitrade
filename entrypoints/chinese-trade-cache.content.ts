@@ -57,9 +57,10 @@ export default defineContentScript({
       return
     }
 
-    const locale = state.language === "zh-cn"
-      ? chineseTradeStorage.simplified
-      : chineseTradeStorage.traditional
+    const locale =
+      state.language === "zh-cn"
+        ? chineseTradeStorage.simplified
+        : chineseTradeStorage.traditional
     const targets: Array<[string, (typeof tradeCacheKeys)[number]]> = [
       [locale.stats, "lscache-tradestats"],
       [locale.static, "lscache-tradedata"],
@@ -88,7 +89,10 @@ export default defineContentScript({
     const isComplete = targets.every(([, target]) => serialized.has(target))
     if (!stats || !isComplete) {
       try {
-        if (sessionStorage.getItem(chineseTradePageStorage.rebuildGuard) === "1") return
+        if (
+          sessionStorage.getItem(chineseTradePageStorage.rebuildGuard) === "1"
+        )
+          return
         sessionStorage.setItem(chineseTradePageStorage.rebuildGuard, "1")
         if (await requestCacheBuild()) location.reload()
       } catch {
@@ -104,11 +108,13 @@ export default defineContentScript({
     const inject = () => {
       let wroteValue = false
       for (const [target, value] of serialized) {
-        if (localStorage.getItem(target) !== value) localStorage.setItem(target, value)
+        if (localStorage.getItem(target) !== value)
+          localStorage.setItem(target, value)
         localStorage.removeItem(`${target}-cacheexpiration`)
         wroteValue = true
       }
-      if (wroteValue) localStorage.setItem(chineseTradePageStorage.injected, "1")
+      if (wroteValue)
+        localStorage.setItem(chineseTradePageStorage.injected, "1")
     }
 
     try {

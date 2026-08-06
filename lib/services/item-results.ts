@@ -26,6 +26,7 @@ import {
 import { flashMessages } from "./flash";
 import { experimentalSettings } from "./experimental";
 import { pinnedItemsService } from "./pinned-items";
+import { isNativeChineseTradeSite } from "../config/trade-hosts";
 import pinIcon from "lucide-static/icons/pin.svg?raw";
 import pinOffIcon from "lucide-static/icons/pin-off.svg?raw";
 
@@ -115,6 +116,12 @@ const MAGEBLOOD_LEGACY_ALIASES: Record<string, string> = {
 
 export const extractValdoRewardName = (row: HTMLElement): string | null => {
   const itemRoot = row.querySelector<HTMLElement>(".itemBoxContent, .itemPopupContainer, .middle");
+  const rewardValue = itemRoot
+    ?.querySelector<HTMLElement>('.item-property .lc[type="76"] > span:last-child')
+    ?.textContent
+    ?.trim();
+  if (rewardValue) return rewardValue;
+
   const itemText = (
     itemRoot?.innerText ||
     row.innerText ||
@@ -316,18 +323,21 @@ export class ItemResultsService {
 
     await settings.load();
     this.showEquivalentPricing = settings.getCurrent().showEquivalentPricing;
-    this.showValdoRewardPricing = settings.getCurrent().showValdoRewardPricing;
+    this.showValdoRewardPricing =
+      settings.getCurrent().showValdoRewardPricing && !isNativeChineseTradeSite();
     this.showMagebloodLegacyDescriptions = settings.getCurrent().showMagebloodLegacyDescriptions;
     this.showPinnedItems = settings.getCurrent().showPinnedItems;
     this.unsubscribeSettings?.();
     this.unsubscribeSettings = settings.subscribe((value) => {
       const changed = this.showEquivalentPricing !== value.showEquivalentPricing;
-      const valdoChanged = this.showValdoRewardPricing !== value.showValdoRewardPricing;
+      const nextValdoRewardPricing =
+        value.showValdoRewardPricing && !isNativeChineseTradeSite();
+      const valdoChanged = this.showValdoRewardPricing !== nextValdoRewardPricing;
       const magebloodChanged =
         this.showMagebloodLegacyDescriptions !== value.showMagebloodLegacyDescriptions;
       const pinsChanged = this.showPinnedItems !== value.showPinnedItems;
       this.showEquivalentPricing = value.showEquivalentPricing;
-      this.showValdoRewardPricing = value.showValdoRewardPricing;
+      this.showValdoRewardPricing = nextValdoRewardPricing;
       this.showMagebloodLegacyDescriptions = value.showMagebloodLegacyDescriptions;
       this.showPinnedItems = value.showPinnedItems;
       if (changed) {
